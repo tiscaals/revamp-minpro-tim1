@@ -122,5 +122,3 @@ create table bootcamp.instructor_programs(
 	inpro_modified_date timestamptz,
 	primary key(batch_id,inpro_entity_id,inpro_emp_entity_id)
 );
-
-pg_dump -U postgres -h localhost -p 5432 -d minpro_lab -f keren.sql
