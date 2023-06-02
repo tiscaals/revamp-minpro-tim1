@@ -1,8 +1,10 @@
 import React from 'react';
 import Logo from '../../../public/img/logo.png';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const AuthLogin = () => {
+  const router = useRouter();
   return (
     <div>
       <div className="flex flex-col h-screen bg-gray-100">
@@ -35,13 +37,13 @@ const AuthLogin = () => {
                 className="block w-full py-3 px-1 mt-2 
                             text-gray-800 appearance-none 
                             border-b-2 border-gray-100
-                            focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                            focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white"
                 required
               />
 
               <label
                 htmlFor="password"
-                className="block mt-2 text-xs font-semibold text-gray-600 uppercase"
+                className="block mt-2 text-xs font-semibold text-gray-600 uppercase "
               >
                 Password
               </label>
@@ -54,17 +56,21 @@ const AuthLogin = () => {
                 className="block w-full py-3 px-1 mt-2
                             text-gray-800 appearance-none 
                             border-b-2 border-gray-100
-                            focus:text-gray-500 focus:outline-none focus:border-gray-200"
+                            focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white"
                 required
               />
 
               <div className="sm:flex sm:flex-wrap mt-8 sm:mb-4 text-sm text-center">
                 <div className="flex items-center">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox h-5 w-5 text-gray-600"
-                  />
-                  <span className="ml-2 text-gray-700">Remember me</span>
+                  <div className="form-control">
+                    <label className="cursor-pointer label">
+                      <input
+                        type="checkbox"
+                        className="checkbox checkbox-info mr-3"
+                      />
+                      <span className="label-text">Remember me</span>
+                    </label>
+                  </div>
                 </div>
 
                 <div className="flex-1 text-right">
@@ -74,7 +80,8 @@ const AuthLogin = () => {
                 </div>
               </div>
               <button
-                type="submit"
+                // type="submit"
+                onClick={() => router.push('/profesional/apply')}
                 className="w-full py-3 mt-10 bg-blue-800 rounded-sm
                             font-medium text-white uppercase
                             focus:outline-none hover:bg-blue-700 hover:shadow-none"
@@ -82,8 +89,13 @@ const AuthLogin = () => {
                 Sign In
               </button>
             </form>
-            <div className='text-center mt-5'>
-                <Link href='/external/signup' className='underline text-blue-800 text-sm'>Not yet registered, register now</Link>
+            <div className="text-center mt-5">
+              <Link
+                href="/external/signup"
+                className="underline text-blue-800 text-sm"
+              >
+                Not yet registered, register now
+              </Link>
             </div>
           </div>
         </div>
