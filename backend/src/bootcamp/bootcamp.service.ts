@@ -9,7 +9,7 @@ export class BootcampService {
   }
 
   findAll() {
-    return `This action returns all bootcamp`;
+    return `tes`;
   }
 
   findOne(id: number) {
