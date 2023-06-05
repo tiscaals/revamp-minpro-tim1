@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import logo from "../../images/codexlogo.png";
 import { MdCottage, MdGroup, MdShopTwo, MdCategory, MdViewModule, MdLocationOn, MdSportsMartialArts, MdGroups, MdAssignment, MdPostAdd, MdLibraryBooks, MdGroupAdd } from 'react-icons/md'
 import { useEffect } from "react";
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 
 
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
