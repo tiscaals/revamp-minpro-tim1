@@ -4,7 +4,7 @@
 
 ## THINGS TO DO AFTER CLONING REPO:
 1. restore database:
-psql -U postgres -h localhost -d db_minpro1 < db_minpro1.sql
+psql -U postgres -h localhost -d db_minpro1 -f db_minpro1.sql
 
 2. backend:
 npm i @nestjs/common
