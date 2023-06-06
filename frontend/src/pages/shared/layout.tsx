@@ -1,8 +1,8 @@
-import React from "react";
-import { Transition } from "@headlessui/react";
-import { useState, useEffect, Fragment } from "react";
-import SideBar from "./sidebar";
-import TopBar from "./topbar";
+import React from 'react';
+import { Transition } from '@headlessui/react';
+import { useState, useEffect, Fragment } from 'react';
+import SideBar from './sidebar';
+import TopBar from './topbar';
 // import { Animate } from "@material-tailwind/react";
 
 export default function Layout({ children }: any) {
@@ -21,11 +21,11 @@ export default function Layout({ children }: any) {
 
   useEffect(() => {
     if (typeof window != undefined) {
-      addEventListener("resize", handleResize);
+      addEventListener('resize', handleResize);
     }
 
     return () => {
-      removeEventListener("resize", handleResize);
+      removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -42,11 +42,11 @@ export default function Layout({ children }: any) {
         leaveFrom="translate-x-0"
         leaveTo="-translate-x-full"
       >
-      <SideBar />
+        <SideBar />
       </Transition>
       <main
         className={`bg-gray-100 pt-16 transition-all duration-[400ms] ${
-          showNav && !isMobile ? "pl-56" : ""
+          showNav && !isMobile ? 'pl-56' : ''
         }`}
       >
         <div className="px-4 md:px-16">{children}</div>
