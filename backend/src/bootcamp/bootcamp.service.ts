@@ -9,7 +9,7 @@ export class BootcampService {
   }
 
   findAll() {
-    return `berubah2`;
+    return `berubah2 updated`;
   }
 
   findOne(id: number) {
