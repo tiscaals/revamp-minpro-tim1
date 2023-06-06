@@ -1,7 +1,7 @@
 import { Breadcrumbs } from "@material-tailwind/react";
 import Link from 'next/link'
 import { useRouter } from "next/router";
-import { MdCottage } from 'react-icons/md'
+import { MdHome } from 'react-icons/md'
 
 export default function BreadcrumbsSlice() {
   const router = useRouter()
@@ -13,7 +13,7 @@ export default function BreadcrumbsSlice() {
     <Breadcrumbs>
       <Link href={'/'} className={`capitalize flex items-center mx-1 ${parts.length==0? 'font-medium opacity-100 text-sky-500' : 'opacity-60'}`}>
       <div className="mr-1">
-        <MdCottage/>
+        <MdHome/>
       </div>
       <div>
           <p>Home</p>

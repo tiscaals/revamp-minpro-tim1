@@ -3,23 +3,23 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from "next/router";
 import logo from "../../images/codexlogo.png";
-import { MdCottage, MdGroup, MdShopTwo, MdCategory, MdViewModule, MdLocationOn, MdSportsMartialArts, MdGroups, MdAssignment, MdPostAdd, MdLibraryBooks, MdGroupAdd } from 'react-icons/md'
+import { MdHome, MdGroup, MdShopTwo, MdCategory, MdViewModule, MdLocationOn, MdSportsMartialArts, MdGroups, MdAssignment, MdPostAdd, MdLibraryBooks, MdGroupAdd } from 'react-icons/md'
 import { useEffect } from "react";
 import jwt from 'jsonwebtoken'
 
 
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
-  const [listMenu, setListMenu]=useState([{ to: '/', path: '/', icon:<MdCottage/>, name:'Home'}])
+  const [listMenu, setListMenu]=useState([{ to: '/', path: '/', icon:<MdHome/>, name:'Home'}])
   let token:any;
   useEffect(()=>{
     token = localStorage.getItem('AuthToken')
-    // const decoded:any = jwt.verify(token, `SECRETKEY`);
-    const decoded = {role_id:5,username:"Tamariska"} //INI DUMMY NTAR HAPUS AJA AKTIFIN YG ATAS
+    const decoded:any = jwt.verify(token, `SECRETKEY`);
+    // const decoded = {role_id:5,username:"Tamariska"} //INI DUMMY NTAR HAPUS AJA AKTIFIN YG ATAS
     switch (decoded.role_id) {
       //admin
       case 1:
         setListMenu([
-          { to: '/', path: '/', icon:<MdCottage/>, name:'Home'},
+          { to: '/', path: '/', icon:<MdHome/>, name:'Home'},
           { to: '/category', path: '/category', icon:<MdCategory/>, name:'Category'},
           { to: '/skill', path: '/skill', icon:<MdSportsMartialArts/>, name:'Skill'},
           { to: '/modules', path: '/modules', icon:<MdViewModule/>, name:'Modules'},
@@ -30,7 +30,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       //direksi/busdev
       case 2:
         setListMenu([ //MENU BLM TAU
-          { to: '/', path: '/', icon:<MdCottage/>, name:'Home'},
+          { to: '/', path: '/', icon:<MdHome/>, name:'Home'},
           { to: '/user', path: '/user', icon:<MdGroup/>, name:'User'},
           { to: '/category', path: '/category', icon:<MdCategory/>, name:'Category'},
           { to: '/product', path: '/product', icon:<MdShopTwo/>, name:'Product'}
@@ -40,7 +40,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       //hr
       case 3:
         setListMenu([ //MENU BLM TAU
-          { to: '/', path: '/', icon:<MdCottage/>, name:'Home'},
+          { to: '/', path: '/', icon:<MdHome/>, name:'Home'},
           { to: '/user', path: '/user', icon:<MdGroup/>, name:'User'},
           { to: '/category', path: '/category', icon:<MdCategory/>, name:'Category'},
           { to: '/product', path: '/product', icon:<MdShopTwo/>, name:'Product'}
@@ -50,7 +50,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       //talent
       case 4: 
         setListMenu([ //MENU BLM TAU
-          { to: '/', path: '/', icon:<MdCottage/>, name:'Home'},
+          { to: '/', path: '/', icon:<MdHome/>, name:'Home'},
           { to: '/user', path: '/user', icon:<MdGroup/>, name:'User'},
           { to: '/category', path: '/category', icon:<MdCategory/>, name:'Category'},
           { to: '/product', path: '/product', icon:<MdShopTwo/>, name:'Product'}
@@ -62,7 +62,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       //recruiter
       case 6:
         setListMenu([
-          { to: '/', path: '/', icon:<MdCottage/>, name:'Home'},
+          { to: '/', path: '/', icon:<MdHome/>, name:'Home'},
           { to: '/candidate', path: '/candidate', icon:<MdGroupAdd/>, name:'Candidate'},
           { to: '/batch', path: '/batch', icon:<MdCategory/>, name:'Batch'},
           { to: '/talents', path: '/talents', icon:<MdGroups/>, name:'Talents'},
@@ -73,7 +73,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         break;
       default:
         setListMenu([
-          { to: '/', path: '/', icon:<MdCottage/>, name:'Home'}
+          { to: '/', path: '/', icon:<MdHome/>, name:'Home'}
           ])
         break;
     }
