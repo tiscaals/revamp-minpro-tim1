@@ -1,15 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBootcampDto } from './dto/create-bootcamp.dto';
 import { UpdateBootcampDto } from './dto/update-bootcamp.dto';
+import { Sequelize } from 'sequelize-typescript';
 
 @Injectable()
 export class BootcampService {
+  constructor(private sequelize: Sequelize){}
+
   create(createBootcampDto: CreateBootcampDto) {
     return 'This action adds a new bootcamp';
   }
 
-  findAll() {
-    return `berubah2 updated`;
+  async findAll() {
+    try {
+      const data = await this.sequelize.query('select * from bootcamp.batch')
+      return {
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        status: 400,
+        message: error.message
+      }
+    }
   }
 
   findOne(id: number) {
