@@ -50,15 +50,21 @@ CREATE TABLE users.users(
 
 CREATE TABLE users.users_roles(
 	usro_entity_id INTEGER REFERENCES users.users(user_entity_id),
-	usro_role_id INTEGER REFERENCES users.roles(role_id) UNIQUE,
+	usro_role_id INTEGER REFERENCES users.roles(role_id),
 	usro_modified_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY(usro_entity_id, usro_role_id)
 )
 
+-- ALTER TABLE users.users
+-- ADD CONSTRAINT fk_user_current_role
+-- FOREIGN KEY (user_current_role)
+-- REFERENCES users.users_roles (usro_role_id);
+
 ALTER TABLE users.users
-ADD CONSTRAINT fk_user_current_role
-FOREIGN KEY (user_current_role)
-REFERENCES users.users_roles (usro_role_id);
+ADD CONSTRAINT fk_users_current_role
+FOREIGN KEY (user_current_role, user_entity_id)
+REFERENCES users.users_roles (usro_role_id, usro_entity_id)
+ON DELETE CASCADE ON UPDATE CASCADE
 
 CREATE TABLE users.users_address(
 	etad_addr_id INTEGER REFERENCES master.address(addr_id),
