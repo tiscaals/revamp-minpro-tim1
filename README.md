@@ -3,7 +3,7 @@
 ## JANGAN LUPA PUSH KE BRANCH MASING-MASING
 
 ## THINGS TO DO AFTER CLONING REPO:
-1. restore database
+1. restore database:
 psql -U postgres -h localhost -d db_minpro1 < db_minpro1.sql
 
 2. backend:
