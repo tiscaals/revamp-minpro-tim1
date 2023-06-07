@@ -8,7 +8,7 @@ export class BootcampController {
   constructor(private readonly bootcampService: BootcampService) {}
 
   @Post()
-  create(@Body() createBootcampDto: CreateBootcampDto) {
+  create(@Body() createBootcampDto:any) {
     return this.bootcampService.create(createBootcampDto);
   }
 
