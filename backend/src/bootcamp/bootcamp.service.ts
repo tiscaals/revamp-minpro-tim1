@@ -87,43 +87,85 @@ export class BootcampService {
     }
   }
 
-  async updateWithSP(body:any) {
-    try {
-      
-    } catch (error) {
-      
-    }
-  }
 
   findOne(id: number) {
     return `This action returns a #${id} bootcamp`;
   }
 
-  update(id: number, updateBootcampDto: UpdateBootcampDto) {
-    return `This action updates a #${id} bootcamp`;
-  }
-
-  async changeStatus(id: number,status:any) {
+  async update(id: number, body: any): Promise<any> {
     try {
-      const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id = ${id}`)
-      if(find[0].length === 0) throw new Error('Data tidak ditemukan')
+      // const find = await batch.findByPk(id)
+      // if (!data) throw new Error('Id tidak ditemukan');
+      const {
+        batch_id,
+        batch_entity_id,
+        batch_name,
+        batch_description,
+        batch_start_date,
+        batch_end_date,
+        batch_status,
+        batch_reason,
+        batch_type,
+        batch_modified_date,
+        batch_pic_id,
+        batr_status,
+        batr_certificated,
+        batr_certificate_link,
+        batr_access_token,
+        batr_access_grant,
+        batr_review,
+        batr_total_score,
+        batr_modified_date,
+        batr_trainee_entity_id,
+        inpro_entity_id,
+        inpro_emp_entity_id,
+        inpro_modified_date
+      } = body.data
 
-      const data = await this.sequelize.query(`update bootcamp.batch set batch_status = '${status}' where batch_id = ${id} returning *`)
+      const data = {
+        batch_id: batch_id,
+        batch_entity_id: batch_entity_id,
+        batch_name: batch_name,
+        batch_description: batch_description,
+        batch_start_date: batch_start_date,
+        batch_end_date: batch_end_date,
+        batch_status: batch_status,
+        batch_reason: batch_reason,
+        batch_type: batch_type,
+        batch_modified_date: batch_modified_date,
+        batch_pic_id: batch_pic_id,
+      }
+
+      const data2 = {
+        batr_status: batr_status,
+        batr_certificated: batr_certificated,
+        batr_certificate_link: batr_certificate_link,
+        batr_access_token: batr_access_token,
+        batr_access_grant: batr_access_grant,
+        batr_review: batr_review,
+        batr_total_score: batr_total_score,
+        batr_modified_date: batr_modified_date,
+        batr_trainee_entity_id: batr_trainee_entity_id
+      }
+
+      const data3 = {
+        inpro_entity_id: inpro_entity_id,
+        inpro_emp_entity_id: inpro_emp_entity_id,
+        inpro_modified_date: inpro_modified_date
+      }
+
+      const dataString = `[${JSON.stringify(data)}]`
+      const data2String = `[${JSON.stringify(data2)}]`
+      const data3String = `${JSON.stringify(data3)}`
+
+      await this.sequelize.query(`call bootcamp.updateBatchWithBatchTrainee2 ('${dataString}','${data2String}','${data3String}')`)
       return {
-        status: 200,
-        message: 'sukses',
-        data: data[0]
+        status: 201,
+        message: 'sukses'
       }
     } catch (error) {
-      return {
-        status: 400,
-        message: error.message
-      }
+      return {status: 400, message: error.message} 
     }
-  }
-
-  update(id: number, updateBootcampDto: UpdateBootcampDto) {
-    return `This action updates a #${id} bootcamp`;
   }
 
   async changeStatus(id: number,status:any) {
