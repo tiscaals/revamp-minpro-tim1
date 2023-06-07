@@ -97,7 +97,7 @@ export class BootcampService {
         data: data[0]
       }
     } catch (error) {
-      
+      return {status: 400, message: error.message} 
     }
   }
 
