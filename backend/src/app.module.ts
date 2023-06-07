@@ -9,9 +9,30 @@ import { SalesModule } from './sales/sales.module';
 import { PaymentModule } from './payment/payment.module';
 import { BootcampModule } from './bootcamp/bootcamp.module';
 import { UsersModule } from './users/users.module';
+import { SequelizeModule } from '@nestjs/sequelize';
 
 @Module({
-  imports: [UsersModule, BootcampModule, PaymentModule, SalesModule, JobHireModule, PlacementModule, CurriculumModule, MasterModule],
+  imports: [
+    SequelizeModule.forRootAsync({
+      useFactory: () => ({
+        dialect: 'postgres',
+        host: "localhost",
+        port: 5432,
+        username: "postgres",
+        password: 'postgres',
+        database: "minpro",
+        models: [],
+        autoLoadModels: true,
+      })
+    }),
+    UsersModule, 
+    BootcampModule, 
+    PaymentModule, 
+    SalesModule, 
+    JobHireModule, 
+    PlacementModule, 
+    CurriculumModule, 
+    MasterModule],
   controllers: [AppController],
   providers: [AppService],
 })
