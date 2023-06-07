@@ -86,14 +86,25 @@ export class BootcampService {
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bootcamp`;
+  async findOne(id: number) {
+    try {
+      const data = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
+      if (data[0].length === 0) throw new Error('Id tidak ditemukan');
+
+      return {
+        status: 200,
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      
+    }
   }
 
   async update(id: number, body: any): Promise<any> {
     try {
-      // const find = await batch.findByPk(id)
-      // if (!data) throw new Error('Id tidak ditemukan');
+      const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
+      if (find[0].length === 0) throw new Error('Id tidak ditemukan');
       const {
         batch_entity_id,
         batch_name,
@@ -174,6 +185,16 @@ export class BootcampService {
         status: 400,
         message: error.message
       }
+    }
+  }
+
+  async remove(id: number): Promise<any>{
+    try{
+      const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
+      if(find[0].length === 0) throw new Error('Data tidak ditemukan')
+      
+    }catch(error){
+
     }
   }
 }
