@@ -116,9 +116,16 @@ export class BootcampService {
       if(find[0].length === 0) throw new Error('Data tidak ditemukan')
 
       const data = await this.sequelize.query(`update bootcamp.batch set batch_status = '${status}' where batch_id = ${id} returning *`)
-      return data
+      return {
+        status: 200,
+        message: 'sukses',
+        data: data[0]
+      }
     } catch (error) {
-      return error.message
+      return {
+        status: 400,
+        message: error.message
+      }
     }
   }
 }
