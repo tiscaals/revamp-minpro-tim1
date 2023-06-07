@@ -27,8 +27,8 @@ export class BootcampController {
     return this.bootcampService.update(+id, updateBootcampDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bootcampService.remove(+id);
+  @Patch('status/:id/:status')
+  changeStatus(@Param('id') id: string, @Param('status') status: string) {
+    return this.bootcampService.changeStatus(+id,status);
   }
 }
