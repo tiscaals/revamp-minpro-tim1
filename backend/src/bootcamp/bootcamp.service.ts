@@ -57,7 +57,6 @@ export class BootcampService {
       }
 
       const data3 = body.instructors
-
       const dataString = `[${JSON.stringify(data)}]`
       const data2String = `[${JSON.stringify(data2)}]`
       const data3String = `${JSON.stringify(data3)}`
@@ -87,7 +86,6 @@ export class BootcampService {
     }
   }
 
-
   findOne(id: number) {
     return `This action returns a #${id} bootcamp`;
   }
@@ -97,7 +95,6 @@ export class BootcampService {
       // const find = await batch.findByPk(id)
       // if (!data) throw new Error('Id tidak ditemukan');
       const {
-        batch_id,
         batch_entity_id,
         batch_name,
         batch_description,
@@ -117,13 +114,10 @@ export class BootcampService {
         batr_total_score,
         batr_modified_date,
         batr_trainee_entity_id,
-        inpro_entity_id,
-        inpro_emp_entity_id,
-        inpro_modified_date
       } = body.data
 
       const data = {
-        batch_id: batch_id,
+        batch_id: id,
         batch_entity_id: batch_entity_id,
         batch_name: batch_name,
         batch_description: batch_description,
@@ -148,11 +142,7 @@ export class BootcampService {
         batr_trainee_entity_id: batr_trainee_entity_id
       }
 
-      const data3 = {
-        inpro_entity_id: inpro_entity_id,
-        inpro_emp_entity_id: inpro_emp_entity_id,
-        inpro_modified_date: inpro_modified_date
-      }
+      const data3 = body.instructors
 
       const dataString = `[${JSON.stringify(data)}]`
       const data2String = `[${JSON.stringify(data2)}]`
