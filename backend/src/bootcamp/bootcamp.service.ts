@@ -74,9 +74,7 @@ export class BootcampService {
 
   async findAll() {
     try {
-      const data = await this.sequelize.query(
-        'select * from bootcamp.batch'
-      )
+      const data = await this.sequelize.query('select * from bootcamp.batch')
       return {
         message: 'sukses',
         data: data[0]
@@ -89,36 +87,23 @@ export class BootcampService {
     }
   }
 
-  async findOne(id: number) {
+  async updateWithSP(body:any) {
     try {
-      const data = await this.sequelize.query(`select * from bootcamp.batch where batch_id = ${id}`) 
-      if(data[0].length === 0) throw new Error('Data tidak ditemukan')
-      return {
-        status: 200,
-        message: 'sukses',
-        data: data[0]
-      }
+      
     } catch (error) {
-      return {
-        status: 400,
-        message: error.message
-      }
+      
     }
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} bootcamp`;
   }
 
   update(id: number, updateBootcampDto: UpdateBootcampDto) {
     return `This action updates a #${id} bootcamp`;
   }
 
-  async changeStatus(id: number,status:any) {
-    try {
-      const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id = ${id}`)
-      if(find[0].length === 0) throw new Error('Data tidak ditemukan')
-
-      const data = await this.sequelize.query(`update bootcamp.batch set batch_status = '${status}' where batch_id = ${id} returning *`)
-      return data
-    } catch (error) {
-      return error.message
-    }
+  remove(id: number) {
+    return `This action removes a #${id} bootcamp`;
   }
 }
