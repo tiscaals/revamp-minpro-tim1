@@ -103,7 +103,45 @@ export class BootcampService {
     return `This action updates a #${id} bootcamp`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} bootcamp`;
+  async changeStatus(id: number,status:any) {
+    try {
+      const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id = ${id}`)
+      if(find[0].length === 0) throw new Error('Data tidak ditemukan')
+
+      const data = await this.sequelize.query(`update bootcamp.batch set batch_status = '${status}' where batch_id = ${id} returning *`)
+      return {
+        status: 200,
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        status: 400,
+        message: error.message
+      }
+    }
+  }
+
+  update(id: number, updateBootcampDto: UpdateBootcampDto) {
+    return `This action updates a #${id} bootcamp`;
+  }
+
+  async changeStatus(id: number,status:any) {
+    try {
+      const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id = ${id}`)
+      if(find[0].length === 0) throw new Error('Data tidak ditemukan')
+
+      const data = await this.sequelize.query(`update bootcamp.batch set batch_status = '${status}' where batch_id = ${id} returning *`)
+      return {
+        status: 200,
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        status: 400,
+        message: error.message
+      }
+    }
   }
 }
