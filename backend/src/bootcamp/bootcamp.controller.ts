@@ -31,4 +31,9 @@ export class BootcampController {
   changeStatus(@Param('id') id: string, @Param('status') status: string) {
     return this.bootcampService.changeStatus(+id,status);
   }
+
+  @Post('evaluation')
+  createEvaluationWeek(@Body() body: CreateBootcampDto){
+    return this.bootcampService.createEvaluation(body)
+  }
 }

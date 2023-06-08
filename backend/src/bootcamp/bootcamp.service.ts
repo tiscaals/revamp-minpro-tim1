@@ -192,9 +192,17 @@ export class BootcampService {
     try{
       const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
       if(find[0].length === 0) throw new Error('Data tidak ditemukan')
-      
+
     }catch(error){
 
+    }
+  }
+
+  async createEvaluation(body:CreateBootcampDto): Promise<any>{
+    try {
+      
+    } catch (error) {
+      
     }
   }
 }
