@@ -32,6 +32,10 @@ export class BootcampController {
     return this.bootcampService.changeStatus(+id,status);
   }
 
+  @Post('evaluation')
+  createEvaluationWeek(@Body() body: CreateBootcampDto){
+    return this.bootcampService.createEvaluation(body)
+  }
   //Router Tabel Program Apply dan Program Apply Progress
 
   @Get('program-apply')
