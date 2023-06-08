@@ -7,7 +7,7 @@ import { Sequelize } from 'sequelize-typescript';
 export class BootcampService {
   constructor(private sequelize: Sequelize){}
 
-  async create(body:any) {
+  async createBatch(body:any) {
     try {
       const {
         batch_entity_id,
