@@ -22,7 +22,7 @@ import { SequelizeModule } from '@nestjs/sequelize';
         password: 'postgres',
         database: "minpro",
         models: [],
-        autoLoadModels: true,
+        autoLoadModels: false,
       })
     }),
     UsersModule, 
@@ -37,3 +37,4 @@ import { SequelizeModule } from '@nestjs/sequelize';
   providers: [AppService],
 })
 export class AppModule {}
+ 
