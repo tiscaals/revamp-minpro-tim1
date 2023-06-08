@@ -17,7 +17,7 @@ export class BootcampController {
     return this.bootcampService.findAllBatch();
   }
 
-  @Get(':id')
+  @Get('batch/:id')
   findOne(@Param('id') id: string) {
     return this.bootcampService.findOneBatch(+id);
   }
@@ -31,4 +31,12 @@ export class BootcampController {
   changeStatus(@Param('id') id: string, @Param('status') status: string) {
     return this.bootcampService.changeStatus(+id,status);
   }
+
+  //Router Tabel Program Apply dan Program Apply Progress
+
+  @Get('program-apply')
+  findAllProgram() {
+    return this.bootcampService.findAllProgramApply();
+  }
+
 }

@@ -197,4 +197,23 @@ export class BootcampService {
 
     }
   }
+
+  //Method Tabel Program Apply dan Program Apply Progress
+
+  async findAllProgramApply() {
+    try {
+      const data = await this.sequelize.query('select * from bootcamp.program_apply')
+      console.log(data)
+      return {
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        status: 400,
+        message: error.message
+      }
+    }
+  }
+
 }
