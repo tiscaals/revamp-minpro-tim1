@@ -10,8 +10,8 @@ import {
 
 export interface program_apply_progressAttributes {
   parog_id?: number;
-  parog_user_entity_id: number;
-  parog_prog_entity_id: number;
+  parog_user_entity_id?: number;
+  parog_prog_entity_id?: number;
   parog_action_date?: Date;
   parog_modified_date?: Date;
   parog_comment?: string;
@@ -43,22 +43,16 @@ export class program_apply_progress
   @Index({ name: 'program_apply_progress_pkey', using: 'btree', unique: true })
   parog_id?: number;
 
-  @Column({ primaryKey: true, type: DataType.INTEGER })
-  @Index({ name: 'program_apply_progress_pkey', using: 'btree', unique: true })
-  parog_user_entity_id!: number;
+  @Column({ allowNull: true, type: DataType.INTEGER })
+  parog_user_entity_id?: number;
 
-  @Column({ primaryKey: true, type: DataType.INTEGER })
-  @Index({ name: 'program_apply_progress_pkey', using: 'btree', unique: true })
-  parog_prog_entity_id!: number;
+  @Column({ allowNull: true, type: DataType.INTEGER })
+  parog_prog_entity_id?: number;
 
   @Column({ allowNull: true, type: DataType.DATE })
   parog_action_date?: Date;
 
-  @Column({
-    allowNull: true,
-    type: DataType.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-  })
+  @Column({ allowNull: true, type: DataType.DATE })
   parog_modified_date?: Date;
 
   @Column({ allowNull: true, type: DataType.STRING(512) })
