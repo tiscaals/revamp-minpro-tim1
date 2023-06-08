@@ -12,9 +12,25 @@ export class SalesController {
     return this.salesService.create(createSaleDto);
   }
 
-  @Get()
+  @Get('order-detail')
   findAll() {
-    return this.salesService.findAll();
+    return this.salesService.findAllOrderDetail();
+  }
+  @Get('order-header')
+  findAllOrderHeader() {
+    return this.salesService.findAllOrderHeader();
+  }
+  @Get('cart-items')
+  findAllCartItems() {
+    return this.salesService.findAllCartItems();
+  }
+  @Get('special-offer')
+  findAllSpecialOffer() {
+    return this.salesService.findAllSpecialOffer();
+  }
+  @Get('special-programs')
+  findAllSpecialOfferPrograms() {
+    return this.salesService.findAllSpecialOfferPrograms();
   }
 
   @Get(':id')

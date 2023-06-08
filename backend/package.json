@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "pgScript": "stg -D postgres -d db_minpro1 -u postgres -x 1234 -h localhost -p 5432 -o models/bootcamp -s bootcamp -i"
+    "pgScript": "stg -D postgres -d db_minpro1 -u postgres -x postgres -h localhost -p 5432 -o models/sales -s sales -i"
   },
   "dependencies": {
     "@nestjs/common": "^9.4.2",
