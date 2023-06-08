@@ -10,57 +10,10 @@ export class BootcampService {
 
   async createBatch(body:any) {
     try {
-      const {
-        batch_entity_id,
-        batch_name,
-        batch_description,
-        batch_start_date,
-        batch_end_date,
-        batch_status,
-        batch_reason,
-        batch_type,
-        batch_modified_date,
-        batch_pic_id,
-        batr_status,
-        batr_certificated,
-        batr_certificate_link,
-        batr_access_token,
-        batr_access_grant,
-        batr_review,
-        batr_total_score,
-        batr_modified_date,
-        batr_trainee_entity_id
-      } = body.data
-
-      const data = {
-        batch_entity_id: batch_entity_id,
-        batch_name: batch_name,
-        batch_description: batch_description,
-        batch_start_date: batch_start_date,
-        batch_end_date: batch_end_date,
-        batch_status: batch_status,
-        batch_reason: batch_reason,
-        batch_type: batch_type,
-        batch_modified_date: batch_modified_date,
-        batch_pic_id: batch_pic_id,
-      }
-
-      const data2 = {
-        batr_status: batr_status,
-        batr_certificated: batr_certificated,
-        batr_certificate_link: batr_certificate_link,
-        batr_access_token: batr_access_token,
-        batr_access_grant: batr_access_grant,
-        batr_review: batr_review,
-        batr_total_score: batr_total_score,
-        batr_modified_date: batr_modified_date,
-        batr_trainee_entity_id: batr_trainee_entity_id
-      }
-
-      const data3 = body.instructors
-      const dataString = `[${JSON.stringify(data)}]`
-      const data2String = `[${JSON.stringify(data2)}]`
-      const data3String = `${JSON.stringify(data3)}`
+      //cek dulu 
+      const dataString = `[${JSON.stringify(body.batch)}]`
+      const data2String = `${JSON.stringify(body.trainee)}`
+      const data3String = `${JSON.stringify(body.instructors)}`
 
       await this.sequelize.query(`call bootcamp.createBatch ('${dataString}','${data2String}','${data3String}')`)
       return {
@@ -104,63 +57,30 @@ export class BootcampService {
 
   async updateBatch(id: number, body: any): Promise<any> {
     try {
-      const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
-      if (find[0].length === 0) throw new Error('Id tidak ditemukan');
-      const {
-        batch_entity_id,
-        batch_name,
-        batch_description,
-        batch_start_date,
-        batch_end_date,
-        batch_status,
-        batch_reason,
-        batch_type,
-        batch_modified_date,
-        batch_pic_id,
-        batr_status,
-        batr_certificated,
-        batr_certificate_link,
-        batr_access_token,
-        batr_access_grant,
-        batr_review,
-        batr_total_score,
-        batr_modified_date,
-        batr_trainee_entity_id,
-      } = body.data
+      let find:any = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
+      find = find[0][0]
+      if (!find) throw new Error('data tidak ditemukan');
 
-      const data = {
-        batch_id: id,
-        batch_entity_id: batch_entity_id,
-        batch_name: batch_name,
-        batch_description: batch_description,
-        batch_start_date: batch_start_date,
-        batch_end_date: batch_end_date,
-        batch_status: batch_status,
-        batch_reason: batch_reason,
-        batch_type: batch_type,
-        batch_modified_date: batch_modified_date,
-        batch_pic_id: batch_pic_id,
+      let dbTrainees:any = await this.sequelize.query(`select * from bootcamp.batch_trainee where batr_batch_id = ${id}`)
+      dbTrainees = dbTrainees[0]
+
+      const {batch, trainee, instructors} = body
+
+      let toBeDeleted = []
+      let toBeChanged = []
+      let toBeAdded = []
+
+      for(let trnee of trainee){
+        toBeChanged.push(dbTrainees.filter(obj=>obj.batr_trainee_entity_id === trnee.batr_trainee_entity_id))
+        toBeDeleted.push(dbTrainees.filter(obj=>obj.batr_trainee_entity_id !== trnee.batr_trainee_entity_id))
       }
 
-      const data2 = {
-        batr_status: batr_status,
-        batr_certificated: batr_certificated,
-        batr_certificate_link: batr_certificate_link,
-        batr_access_token: batr_access_token,
-        batr_access_grant: batr_access_grant,
-        batr_review: batr_review,
-        batr_total_score: batr_total_score,
-        batr_modified_date: batr_modified_date,
-        batr_trainee_entity_id: batr_trainee_entity_id
-      }
+      // const dataString = `[${JSON.stringify(data)}]`
+      // const data2String = `[${JSON.stringify(data2)}]`
+      // const data3String = `${JSON.stringify(data3)}`
 
-      const data3 = body.instructors
-
-      const dataString = `[${JSON.stringify(data)}]`
-      const data2String = `[${JSON.stringify(data2)}]`
-      const data3String = `${JSON.stringify(data3)}`
-
-      await this.sequelize.query(`call bootcamp.updateBatchWithBatchTrainee2 ('${dataString}','${data2String}','${data3String}')`)
+      // await this.sequelize.query(`call bootcamp.updateBatchWithBatchTrainee2 ('${dataString}','${data2String}','${data3String}')`)
+      return toBeDeleted
       return {
         status: 201,
         message: 'sukses'
@@ -217,8 +137,6 @@ export class BootcampService {
     }
   }
 
-  // async create
-
   async changeProgressName(id:number, name:string){
     try {
       const data = await program_apply_progress.update({
@@ -239,8 +157,6 @@ export class BootcampService {
   async findAllProgramApply() {
     try {
       const data = await this.sequelize.query('select * from bootcamp.program_apply')
-      // const data = await program_apply.findAll()
-      // console.log(data)
       return {
         message: 'sukses',
         data: data[0]

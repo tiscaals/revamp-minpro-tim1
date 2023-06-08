@@ -20,6 +20,7 @@ export interface instructor_programsAttributes {
   schema: 'bootcamp',
   timestamps: false,
 })
+
 export class instructor_programs
   extends Model<instructor_programsAttributes, instructor_programsAttributes>
   implements instructor_programsAttributes
