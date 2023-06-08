@@ -4,6 +4,6 @@ import { BootcampController } from './bootcamp.controller';
 
 @Module({
   controllers: [BootcampController],
-  providers: [BootcampService]
+  providers: [BootcampService],
 })
 export class BootcampModule {}

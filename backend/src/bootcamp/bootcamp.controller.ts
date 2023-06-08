@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BootcampService } from './bootcamp.service';
 import { CreateBootcampDto } from './dto/create-bootcamp.dto';
 import { UpdateBootcampDto } from './dto/update-bootcamp.dto';
@@ -23,7 +31,10 @@ export class BootcampController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBootcampDto: UpdateBootcampDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateBootcampDto: UpdateBootcampDto,
+  ) {
     return this.bootcampService.update(+id, updateBootcampDto);
   }
 

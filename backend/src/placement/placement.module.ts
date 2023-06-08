@@ -4,6 +4,6 @@ import { PlacementController } from './placement.controller';
 
 @Module({
   controllers: [PlacementController],
-  providers: [PlacementService]
+  providers: [PlacementService],
 })
 export class PlacementModule {}
