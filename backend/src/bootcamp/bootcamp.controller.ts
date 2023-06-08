@@ -43,4 +43,9 @@ export class BootcampController {
     return this.bootcampService.findAllProgramApply();
   }
 
+  @Post('program-apply')
+  createProgramApply(@Body() createBootcampDto:any) {
+    return this.bootcampService.createProgram(createBootcampDto);
+  }
+
 }

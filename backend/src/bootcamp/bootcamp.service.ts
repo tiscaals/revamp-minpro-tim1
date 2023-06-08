@@ -156,7 +156,11 @@ export class BootcampService {
 
   async findAllProgramApply() {
     try {
-      const data = await this.sequelize.query('select * from bootcamp.program_apply')
+      // const data = await this.sequelize.query('select * from bootcamp.program_apply')
+      // const data = await program_apply.findAll()
+      // console.log(data)
+      const data = await program_apply.findAll()
+
       return {
         message: 'sukses',
         data: data[0]
@@ -167,6 +171,61 @@ export class BootcampService {
         message: error.message
       }
     }
+  }
+
+  async createProgram(body:any) {
+    try {
+      const {
+        prap_user_entity_id,
+		    prap_prog_entity_id,
+		    prap_test_score,
+		    prap_gpa,
+		    prap_iq_test,
+		    prap_review,
+		    prap_modified_date,
+		    prap_status,
+		    parog_action_date,
+		    parog_modified_date,
+		    parog_comment,
+		    parog_progress_name,
+		    parog_emp_entity_id,
+		    parog_status
+      } = body.data
+
+      const data = {
+        prap_user_entity_id: prap_user_entity_id ,
+		    prap_prog_entity_id: prap_prog_entity_id,
+		    prap_test_score: prap_test_score,
+		    prap_gpa: prap_gpa,
+		    prap_iq_test: prap_iq_test,
+		    prap_review: prap_review,
+		    prap_modified_date: prap_modified_date,
+		    prap_status: prap_status,
+      }
+
+      const data2 = {
+		    parog_action_date: parog_action_date,
+		    parog_modified_date: parog_modified_date,
+		    parog_comment: parog_comment,
+		    parog_progress_name: parog_progress_name,
+		    parog_emp_entity_id: parog_emp_entity_id,
+		    parog_status: parog_status
+      }
+
+      const dataString = `[${JSON.stringify(data)}]`
+      const data2String = `[${JSON.stringify(data2)}]`
+
+      await this.sequelize.query(`call bootcamp.createProgramApply ('${dataString}','${data2String}')`)
+
+      return {
+        status: 201,
+        message: 'sukses'
+      }
+
+    } catch (error) {
+      return {status: 400, message: error.message}
+    }
+
   }
 
 }
