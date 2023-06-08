@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateBootcampDto } from './dto/create-bootcamp.dto';
 import { UpdateBootcampDto } from './dto/update-bootcamp.dto';
 import { Sequelize } from 'sequelize-typescript';
+import { program_apply_progress } from 'models/bootcamp';
 
 @Injectable()
 export class BootcampService {
@@ -198,11 +199,39 @@ export class BootcampService {
     }
   }
 
-  async createEvaluation(body:CreateBootcampDto): Promise<any>{
+  async createEvaluation(body:any): Promise<any>{
     try {
-      
+      const dataString = `${JSON.stringify(body.weekly_data)}`
+      await this.sequelize.query(`call bootcamp.createEvaluation(${body.batr_total_score},'${dataString}')`)
+
+      return {
+        status: 201,
+        message: 'data berhasil ditambah'
+      }
+
     } catch (error) {
-      
+      return {
+        status: 400,
+        message: error.message
+      }
+    }
+  }
+
+  // async create
+
+  async changeProgressName(id:number, name:string){
+    try {
+      const data = await program_apply_progress.update({
+        parog_progress_name: name
+      },{
+        where:{parog_id:id},
+        returning: true
+      })
+      return {
+        data: data
+      }
+    } catch (error) {
+      return error.message
     }
   }
   //Method Tabel Program Apply dan Program Apply Progress

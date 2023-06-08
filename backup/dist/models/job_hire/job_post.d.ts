@@ -1,0 +1,51 @@
+import { Model } from 'sequelize-typescript';
+export interface job_postAttributes {
+    jopo_entity_id?: number;
+    jopo_number?: string;
+    jopo_title?: string;
+    jopo_start_date?: string;
+    jopo_end_date?: string;
+    jopo_min_salary?: string;
+    jopo_max_salary?: string;
+    jopo_min_experience?: number;
+    jopo_max_experience?: number;
+    jopo_primary_skill?: string;
+    jopo_secondary_skill?: string;
+    jopo_publish_date?: string;
+    jopo_modified_date?: Date;
+    jopo_emp_entity_id?: number;
+    jopo_clit_id?: number;
+    jopo_joro_id?: number;
+    jopo_joty_id?: number;
+    jopo_joca_id?: number;
+    jopo_addr_id?: number;
+    jopo_work_code?: string;
+    jopo_edu_code?: string;
+    jopo_indu_code?: string;
+    jopo_status?: string;
+}
+export declare class job_post extends Model<job_postAttributes, job_postAttributes> implements job_postAttributes {
+    jopo_entity_id?: number;
+    jopo_number?: string;
+    jopo_title?: string;
+    jopo_start_date?: string;
+    jopo_end_date?: string;
+    jopo_min_salary?: string;
+    jopo_max_salary?: string;
+    jopo_min_experience?: number;
+    jopo_max_experience?: number;
+    jopo_primary_skill?: string;
+    jopo_secondary_skill?: string;
+    jopo_publish_date?: string;
+    jopo_modified_date?: Date;
+    jopo_emp_entity_id?: number;
+    jopo_clit_id?: number;
+    jopo_joro_id?: number;
+    jopo_joty_id?: number;
+    jopo_joca_id?: number;
+    jopo_addr_id?: number;
+    jopo_work_code?: string;
+    jopo_edu_code?: string;
+    jopo_indu_code?: string;
+    jopo_status?: string;
+}
