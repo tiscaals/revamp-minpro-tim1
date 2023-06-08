@@ -9,22 +9,22 @@ export class BootcampController {
 
   @Post()
   create(@Body() createBootcampDto:any) {
-    return this.bootcampService.create(createBootcampDto);
+    return this.bootcampService.createBatch(createBootcampDto);
   }
 
   @Get()
   findAll() {
-    return this.bootcampService.findAll();
+    return this.bootcampService.findAllBatch();
   }
 
-  @Get(':id')
+  @Get('batch/:id')
   findOne(@Param('id') id: string) {
-    return this.bootcampService.findOne(+id);
+    return this.bootcampService.findOneBatch(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBootcampDto: UpdateBootcampDto) {
-    return this.bootcampService.update(+id, updateBootcampDto);
+    return this.bootcampService.updateBatch(+id, updateBootcampDto);
   }
 
   @Patch('status/:id/:status')
@@ -36,4 +36,11 @@ export class BootcampController {
   createEvaluationWeek(@Body() body: CreateBootcampDto){
     return this.bootcampService.createEvaluation(body)
   }
+  //Router Tabel Program Apply dan Program Apply Progress
+
+  @Get('program-apply')
+  findAllProgram() {
+    return this.bootcampService.findAllProgramApply();
+  }
+
 }

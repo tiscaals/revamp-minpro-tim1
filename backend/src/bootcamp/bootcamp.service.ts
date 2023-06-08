@@ -7,7 +7,7 @@ import { Sequelize } from 'sequelize-typescript';
 export class BootcampService {
   constructor(private sequelize: Sequelize){}
 
-  async create(body:any) {
+  async createBatch(body:any) {
     try {
       const {
         batch_entity_id,
@@ -71,7 +71,7 @@ export class BootcampService {
     }
   }
 
-  async findAll() {
+  async findAllBatch() {
     try {
       const data = await this.sequelize.query('select * from bootcamp.batch')
       return {
@@ -86,7 +86,7 @@ export class BootcampService {
     }
   }
 
-  async findOne(id: number) {
+  async findOneBatch(id: number) {
     try {
       const data = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
       if (data[0].length === 0) throw new Error('Id tidak ditemukan');
@@ -101,7 +101,7 @@ export class BootcampService {
     }
   }
 
-  async update(id: number, body: any): Promise<any> {
+  async updateBatch(id: number, body: any): Promise<any> {
     try {
       const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
       if (find[0].length === 0) throw new Error('Id tidak ditemukan');
@@ -205,4 +205,22 @@ export class BootcampService {
       
     }
   }
+  //Method Tabel Program Apply dan Program Apply Progress
+
+  async findAllProgramApply() {
+    try {
+      const data = await this.sequelize.query('select * from bootcamp.program_apply')
+      console.log(data)
+      return {
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        status: 400,
+        message: error.message
+      }
+    }
+  }
+
 }
