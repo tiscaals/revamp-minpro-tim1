@@ -14,17 +14,17 @@ export class BootcampController {
 
   @Get()
   findAll() {
-    return this.bootcampService.findAll();
+    return this.bootcampService.findAllBatch();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.bootcampService.findOne(+id);
+    return this.bootcampService.findOneBatch(+id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateBootcampDto: UpdateBootcampDto) {
-    return this.bootcampService.update(+id, updateBootcampDto);
+    return this.bootcampService.updateBatch(+id, updateBootcampDto);
   }
 
   @Patch('status/:id/:status')

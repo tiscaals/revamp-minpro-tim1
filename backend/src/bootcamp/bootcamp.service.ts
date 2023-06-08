@@ -71,7 +71,7 @@ export class BootcampService {
     }
   }
 
-  async findAll() {
+  async findAllBatch() {
     try {
       const data = await this.sequelize.query('select * from bootcamp.batch')
       return {
@@ -86,7 +86,7 @@ export class BootcampService {
     }
   }
 
-  async findOne(id: number) {
+  async findOneBatch(id: number) {
     try {
       const data = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
       if (data[0].length === 0) throw new Error('Id tidak ditemukan');
@@ -101,7 +101,7 @@ export class BootcampService {
     }
   }
 
-  async update(id: number, body: any): Promise<any> {
+  async updateBatch(id: number, body: any): Promise<any> {
     try {
       const find = await this.sequelize.query(`select * from bootcamp.batch where batch_id=${id}`)
       if (find[0].length === 0) throw new Error('Id tidak ditemukan');
