@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateBootcampDto } from './dto/create-bootcamp.dto';
 import { UpdateBootcampDto } from './dto/update-bootcamp.dto';
 import { Sequelize } from 'sequelize-typescript';
-import { program_apply_progress } from 'models/bootcamp';
+import { program_apply, program_apply_progress } from 'models/bootcamp';
 
 @Injectable()
 export class BootcampService {
@@ -239,6 +239,7 @@ export class BootcampService {
   async findAllProgramApply() {
     try {
       const data = await this.sequelize.query('select * from bootcamp.program_apply')
+      // const data = await program_apply.findAll()
       // console.log(data)
       return {
         message: 'sukses',
