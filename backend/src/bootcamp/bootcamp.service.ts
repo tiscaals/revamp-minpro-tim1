@@ -239,7 +239,7 @@ export class BootcampService {
   async findAllProgramApply() {
     try {
       const data = await this.sequelize.query('select * from bootcamp.program_apply')
-      console.log(data)
+      // console.log(data)
       return {
         message: 'sukses',
         data: data[0]
