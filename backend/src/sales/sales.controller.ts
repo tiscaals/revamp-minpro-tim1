@@ -12,9 +12,9 @@ export class SalesController {
     return this.salesService.create(createSaleDto);
   }
 
-  @Get('order-detail')
+  @Get()
   findAll() {
-    return this.salesService.findAllOrderDetail();
+    return this.salesService.findAll();
   }
 
   @Get(':id')
