@@ -10,7 +10,7 @@ import {
 
 export interface batchAttributes {
   batch_id?: number;
-  batch_entity_id: number;
+  batch_entity_id?: number;
   batch_name?: string;
   batch_description?: string;
   batch_start_date?: string;
@@ -29,20 +29,17 @@ export class batch
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('bootcamp.batch_batch_id_seq'::regclass)",
     ),
   })
-  @Index({ name: 'batch_pkey', using: 'btree', unique: true })
   @Index({ name: 'batch_unique_id', using: 'btree', unique: true })
+  @Index({ name: 'uc_batch', using: 'btree', unique: true })
   batch_id?: number;
 
-  @Column({ primaryKey: true, type: DataType.INTEGER })
-  @Index({ name: 'batch_pkey', using: 'btree', unique: true })
-  @Index({ name: 'batch_entity_unique_id', using: 'btree', unique: true })
-  batch_entity_id!: number;
+  @Column({ allowNull: true, type: DataType.INTEGER })
+  batch_entity_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(15) })
   @Index({ name: 'batch_batch_name_key', using: 'btree', unique: true })
@@ -63,11 +60,7 @@ export class batch
   @Column({ allowNull: true, type: DataType.STRING(15) })
   batch_type?: string;
 
-  @Column({
-    allowNull: true,
-    type: DataType.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-  })
+  @Column({ allowNull: true, type: DataType.DATE })
   batch_modified_date?: Date;
 
   @Column({ allowNull: true, type: DataType.STRING(15) })

@@ -36,7 +36,6 @@ export class batch_trainee_evaluation
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('bootcamp.batch_trainee_evaluation_btev_id_seq'::regclass)",
@@ -70,11 +69,7 @@ export class batch_trainee_evaluation
   @Column({ allowNull: true, type: DataType.STRING(256) })
   btev_note?: string;
 
-  @Column({
-    allowNull: true,
-    type: DataType.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-  })
+  @Column({ allowNull: true, type: DataType.DATE })
   btev_modified_date?: Date;
 
   @Column({ allowNull: true, type: DataType.INTEGER })

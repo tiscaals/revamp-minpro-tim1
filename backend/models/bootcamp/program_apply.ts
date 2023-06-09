@@ -44,11 +44,7 @@ export class program_apply
   @Column({ allowNull: true, type: DataType.STRING(256) })
   prap_review?: string;
 
-  @Column({
-    allowNull: true,
-    type: DataType.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-  })
+  @Column({ allowNull: true, type: DataType.DATE })
   prap_modified_date?: Date;
 
   @Column({ allowNull: true, type: DataType.STRING(15) })

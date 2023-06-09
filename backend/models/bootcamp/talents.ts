@@ -25,7 +25,6 @@ export class talents
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('bootcamp.talents_talent_id_seq'::regclass)",
