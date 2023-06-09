@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Sequelize } from 'sequelize-typescript';
+import { roles, users, users_email, users_roles } from 'models';
 
 @Injectable()
 export class UsersService {
@@ -9,14 +10,35 @@ export class UsersService {
 
   async getUsers() {
     try {
-      const result = await this.sequelize.query(
-        `SELECT * from users.selectUsers`,
-      );
+      const result = await users.findAll({
+        attributes: [
+          'user_entity_id',
+          'user_name',
+          'user_password',
+          'user_current_role',
+        ],
+        include: [
+          {
+            model: users_email,
+            attributes: ['pmail_address'],
+          },
+          {
+            model: users_roles,
+            attributes: ['usro_role_id'],
+            include: [
+              {
+                model: roles,
+                attributes: ['role_name'],
+              },
+            ],
+          },
+        ],
+      });
 
       const succes = {
         message: 'success',
         status: 200,
-        result: result[0],
+        result: result,
       };
 
       return succes;
@@ -27,14 +49,36 @@ export class UsersService {
 
   async getUsersById(id: number) {
     try {
-      const result = await this.sequelize.query(
-        `SELECT * from users.selectUsers WHERE user_entity_id = ${id}`,
-      );
+      const result = await users.findOne({
+        attributes: [
+          'user_entity_id',
+          'user_name',
+          'user_password',
+          'user_current_role',
+        ],
+        include: [
+          {
+            model: users_email,
+            attributes: ['pmail_address'],
+          },
+          {
+            model: users_roles,
+            attributes: ['usro_role_id'],
+            include: [
+              {
+                model: roles,
+                attributes: ['role_name'],
+              },
+            ],
+          },
+        ],
+        where: { user_entity_id: id },
+      });
 
       const succes = {
         message: 'success',
         status: 200,
-        result: result[0],
+        result: result,
       };
 
       return succes;

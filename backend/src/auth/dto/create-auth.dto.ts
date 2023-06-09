@@ -18,13 +18,9 @@ export class SignUpDto {
 }
 
 export class SignInDto {
-  // @IsNotEmpty({ message: 'username must be required' })
-  user_name: string;
+  @IsNotEmpty({ message: 'username or email must be required' })
+  usernameOrEmail: string;
 
   @IsNotEmpty({ message: 'password must be required' })
-  user_password: string;
-
-  // @IsEmail()
-  // @IsNotEmpty({ message: 'email must be required' })
-  pmail_address: string;
+  password: any;
 }
