@@ -1,12 +1,11 @@
-import { call, put } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects';
 // import apimethod from '../../api/apimethod'
 // import { addCustomerRes, deleteUserRes, getAllUserRes, updateCustomerRes, updatePasswordRes } from '../action/actionReducer'
-
 
 // function* handleGetAllUser():any{
 //     try {
 //         const result = yield call(apimethod.findAllUser)
-        
+
 //         yield put(getAllUserRes(result.data.result))
 //     } catch (error) {
 //         yield put(getAllUserRes({message:error, status:400}))

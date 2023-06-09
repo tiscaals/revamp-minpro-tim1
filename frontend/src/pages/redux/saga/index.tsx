@@ -1,4 +1,4 @@
-import { takeEvery,all } from "redux-saga/effects";
+import { takeEvery, all } from 'redux-saga/effects';
 // import ActionTypes from "../action/actionType";
 // import { handleAddUser, handleDeleteUser, handleGetAllUser, handleUpdatePassword, handleUpdateUser } from "./userSaga";
 // import { handleAddProduct, handleDeleteProduct, handleGetAllProduct, handleGetProductById, handleUpdateProduct } from "./productSaga";

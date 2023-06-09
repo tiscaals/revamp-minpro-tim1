@@ -49,7 +49,7 @@ export default function Layout({ children }: any) {
           showNav && !isMobile ? 'pl-56' : ''
         }`}
       >
-        <div className="px-4 md:px-16">{children}</div>
+        <div className="px-4 py-5 md:px-16">{children}</div>
       </main>
     </>
   );

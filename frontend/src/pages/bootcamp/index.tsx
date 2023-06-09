@@ -2,8 +2,8 @@ import React from 'react';
 import BreadcrumbsSlice from '../shared/breadcrumbs';
 
 export default function index() {
-  return 
+  return;
   <div>
-    <BreadcrumbsSlice/>
+    <BreadcrumbsSlice />
   </div>;
 }

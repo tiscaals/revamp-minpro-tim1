@@ -71,7 +71,6 @@
 //     }
 // }
 
-
 // // PRODUCT
 // const getAllProductReq = () =>{
 //     return{
