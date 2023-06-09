@@ -8,7 +8,8 @@ import {
   Select,
   Option,
   Button, 
-  IconButton
+  IconButton,
+  Avatar
 } from "@material-tailwind/react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import { Menu, Transition } from "@headlessui/react";
@@ -21,9 +22,7 @@ export default function Candidates() {
       {
         label: "Apply",
         value: "html",
-        desc: `Isi dari Apply Candidates Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum 
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
+        desc: `Isi dari Apply Candidates`,
       },
       {
         label: "Filtering Test",
@@ -58,19 +57,19 @@ export default function Candidates() {
   
     const trainees = [
       {
-        image: 'Ini Gambar John Doe',
+        image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
         name: 'John Doe',
         university: 'Univ Code X Academy',
         lulus: '2021',
       },
       {
-        image: 'Ini Gambar Jane Smith',
+        image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
         name: 'Jane Smith',
         university: 'Univ Code X Academy',
         lulus: '2021',
       },
       {
-        image: 'Ini Gambar Michael Johnson',
+        image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
         name: 'Michael Johnson',
         university: 'Univ Code X Academy',
         lulus: '2021',
@@ -202,7 +201,9 @@ export default function Candidates() {
                   (trainees || []).map((dt:any,index:any) =>
                   <tr key={dt.id}>
                       <td className="py-3 text-gray-900">{index+1}</td>
-                      <td className="py-3 text-gray-900">{dt.image}</td>
+                      <td className="py-3 text-gray-900">
+                        <Avatar src={dt.image} />
+                      </td>
                       <td className="py-3 text-gray-900">{dt.name}</td>
                       <td className="py-3 text-gray-900">{dt.university}</td>
                       <td className="py-3 text-gray-900">{dt.lulus}</td>
