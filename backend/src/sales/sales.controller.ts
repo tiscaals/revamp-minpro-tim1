@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
@@ -7,9 +7,19 @@ import { UpdateSaleDto } from './dto/update-sale.dto';
 export class SalesController {
   constructor(private readonly salesService: SalesService) {}
 
-  @Post()
+  @Post('insert-cart')
   create(@Body() createSaleDto: CreateSaleDto) {
-    return this.salesService.create(createSaleDto);
+    return this.salesService.insertCartItem(createSaleDto);
+  }
+
+  @Post('insert-special-offer')
+  createSpecialOfferdanPrograms(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSpecialOfferAndPrograms(createSaleDto);
+  }
+
+  @Post('insert-order-detail')
+  createOrderDetail(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSalesOrder(createSaleDto);
   }
 
   @Get('order-detail')
@@ -38,13 +48,33 @@ export class SalesController {
     return this.salesService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSaleDto: UpdateSaleDto) {
-    return this.salesService.update(+id, updateSaleDto);
+  @Put('update-cart/:id')
+  updateCartItems(@Param('id') id: number, @Body() updateSaleDto: UpdateSaleDto) {
+    return this.salesService.updateCartItemById(id, updateSaleDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.salesService.remove(+id);
+  @Put('update-order-header')
+  updateOrderHeader(@Body() updateSaleDto: UpdateSaleDto) {
+    return this.salesService.updateOrderDetailHeader(updateSaleDto);
+  }
+
+  @Put('update-special-offer')
+  updateSpecialOfferPrograms(@Body() updateSaleDto: UpdateSaleDto) {
+    return this.salesService.updateSpecialOfferAndPrograms(updateSaleDto);
+  }
+
+  @Delete('delete-cart/:id')
+  deleteCartItem(@Param('id') id: string) {
+    return this.salesService.deleteCartItemById(+id);
+  }
+
+  @Delete('delete-order/:id')
+  deleteOrder(@Param('id') id: number) {
+    return this.salesService.deleteOrderById(+id);
+  }
+
+  @Delete('delete-special-offer/:id')
+  deleteSpecialOffer(@Param('id') id: number) {
+    return this.salesService.deleteSpecialOfferById(+id);
   }
 }

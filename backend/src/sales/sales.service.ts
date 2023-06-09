@@ -2,16 +2,320 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { Sequelize } from 'sequelize-typescript';
-import { FindOptions, QueryTypes } from 'sequelize';
-import { sales_order_detail } from 'models/sales';
+import { QueryTypes } from 'sequelize';
 
 @Injectable()
 export class SalesService {
   constructor(private sequelize : Sequelize){}
   
-  create(createSaleDto: CreateSaleDto) {
-    return 'This action adds a new sale';
+  //------------------ Insert Cart Items -------------------------
+  
+  async insertCartItem(createSaleDto: CreateSaleDto): Promise<any> {
+    try {
+      await this.sequelize.query(
+        `CALL sales.insert_cart_item(
+          :p_cait_id,
+          :p_cait_quantity,
+          :p_cait_unit_price,
+          :p_cait_user_entity_id,
+          :p_cait_prog_entity_id
+        )`,
+        {
+          replacements: {
+            p_cait_id: createSaleDto.p_cait_id,
+            p_cait_quantity: createSaleDto.p_cait_quantity,
+            p_cait_unit_price: createSaleDto.p_cait_unit_price,
+            p_cait_user_entity_id: createSaleDto.p_cait_user_entity_id,
+            p_cait_prog_entity_id: createSaleDto.p_cait_prog_entity_id,
+          },
+        },
+      );
+
+      // Menggunakan message helper untuk menampilkan pesan berhasil
+      const successMessage = 'Data inserted successfully.';
+      this.sendMessage(successMessage);
+    } catch (error) {
+      const errorMessage = `Error inserting data: ${error.message}`;
+      this.sendMessage(errorMessage);
+    }
   }
+
+  private sendMessage(message: string) {
+    console.log(message);
+  }
+
+  //------------------ Insert Special Offer dan Programs -------------------------
+
+  async insertSpecialOfferAndPrograms(createSaleDto: CreateSaleDto): Promise<any> {
+    try {
+      await this.sequelize.query(
+        `CALL sales.insert_special_offer_and_program(
+          :p_spof_id,
+          :p_spof_description,
+          :p_spof_discount,
+          :p_spof_type,
+          :p_spof_start_date,
+          :p_spof_end_date,
+          :p_spof_min_qty,
+          :p_spof_max_qty,
+          :p_spof_cate_id,
+          :p_soco_id,
+          :p_soco_prog_entity_id,
+          :p_soco_status
+        )`,
+        {
+          replacements: {
+            p_spof_id: createSaleDto.p_spof_id,
+            p_spof_description: createSaleDto.p_spof_description,
+            p_spof_discount: createSaleDto.p_spof_discount,
+            p_spof_type: createSaleDto.p_spof_type,
+            p_spof_start_date: createSaleDto.p_spof_start_date,
+            p_spof_end_date: createSaleDto.p_spof_end_date,
+            p_spof_min_qty: createSaleDto.p_spof_min_qty,
+            p_spof_max_qty: createSaleDto.p_spof_max_qty,
+            p_spof_cate_id: createSaleDto.p_spof_cate_id,
+            p_soco_id: createSaleDto.p_soco_id,
+            p_soco_prog_entity_id: createSaleDto.p_soco_prog_entity_id,
+            p_soco_status: createSaleDto.p_soco_status,
+          },
+        },
+      );
+
+      const successMessage = 'Special offer and programs inserted successfully.';
+      this.sendMessage1(successMessage);
+    } catch (error) {
+      const errorMessage = `Error inserting special offer and programs: ${error.message}`;
+      this.sendMessage1(errorMessage);
+    }
+  }
+
+  private sendMessage1(message: string) {
+    console.log(message);
+  }
+
+  //------------------ Insert Order Header dan Order Detail -------------------------
+
+  async insertSalesOrder(createSaleDto: CreateSaleDto): Promise<any> {
+    try {
+      await this.sequelize.query(
+        `CALL sales.sales_place_order(
+          :p_cait_id,
+          :p_cait_quantity,
+          :p_cait_unit_price,
+          :p_cait_user_entity_id,
+          :p_cait_prog_entity_id,
+          :p_sode_unit_discount,
+          :p_sode_soco_id,
+          :p_sohe_order_date,
+          :p_sohe_due_date,
+          :p_sohe_ship_date,
+          :p_sohe_order_number,
+          :p_sohe_account_number,
+          :p_sohe_trpa_code_number,
+          :p_sohe_license_code,
+          :p_sohe_user_entity_id,
+          :p_sohe_status
+        )`,
+        {
+          replacements: {
+            p_cait_id: createSaleDto.p_cait_id,
+            p_cait_quantity: createSaleDto.p_cait_quantity,
+            p_cait_unit_price: createSaleDto.p_cait_unit_price,
+            p_cait_user_entity_id: createSaleDto.p_cait_user_entity_id,
+            p_cait_prog_entity_id: createSaleDto.p_cait_prog_entity_id,
+            p_sode_unit_discount: createSaleDto.p_sode_unit_discount,
+            p_sode_soco_id: createSaleDto.p_sode_soco_id,
+            p_sohe_order_date: createSaleDto.p_sohe_order_date,
+            p_sohe_due_date: createSaleDto.p_sohe_due_date,
+            p_sohe_ship_date: createSaleDto.p_sohe_ship_date,
+            p_sohe_order_number: createSaleDto.p_sohe_order_number,
+            p_sohe_account_number: createSaleDto.p_sohe_account_number,
+            p_sohe_trpa_code_number: createSaleDto.p_sohe_trpa_code_number,
+            p_sohe_license_code: createSaleDto.p_sohe_license_code,
+            p_sohe_user_entity_id: createSaleDto.p_sohe_user_entity_id,
+            p_sohe_status: createSaleDto.p_sohe_status,
+          },
+        }
+      );
+  
+      const successMessage = 'Sales order placed successfully.';
+      this.sendMessage2(successMessage);
+    } catch (error) {
+      const errorMessage = `Error placing sales order: ${error.message}`;
+      this.sendMessage2(errorMessage);
+    }
+  }
+
+  private sendMessage2(message: string) {
+    console.log(message);
+  }
+  
+  //------------------ Update Cart Items -------------------------
+
+  async updateCartItemById(id: number, updateSaleDto: UpdateSaleDto): Promise<any> {
+    try {
+      await this.sequelize.query(
+        `UPDATE sales.cart_items
+         SET cait_quantity = :cait_quantity,
+             cait_unit_price = :cait_unit_price,
+             cait_user_entity_id = :cait_user_entity_id,
+             cait_prog_entity_id = :cait_prog_entity_id
+         WHERE cait_id = :id`,
+        {
+          replacements: {
+            cait_quantity: updateSaleDto.cait_quantity,
+            cait_unit_price: updateSaleDto.cait_unit_price,
+            cait_user_entity_id: updateSaleDto.cait_user_entity_id,
+            cait_prog_entity_id: updateSaleDto.cait_prog_entity_id,
+            id: id,
+          },
+        },
+      );
+  
+      const successMessage = 'Cart item updated successfully.';
+      this.sendMessage(successMessage);
+    } catch (error) {
+      const errorMessage = `Error updating cart item: ${error.message}`;
+      this.sendMessage(errorMessage);
+    }
+  }
+
+  //------------------ Update Order Detail dan Header -------------------------
+
+  async updateOrderDetailHeader(updateSaleDto: UpdateSaleDto): Promise<any> {
+    const {
+      p_sohe_id,
+      p_cait_id,
+      p_cait_quantity,
+      p_cait_unit_price,
+      p_cait_user_entity_id,
+      p_cait_prog_entity_id,
+      p_sode_unit_discount,
+      p_sode_soco_id,
+      p_sohe_order_date,
+      p_sohe_due_date,
+      p_sohe_ship_date,
+      p_sohe_order_number,
+      p_sohe_account_number,
+      p_sohe_trpa_code_number,
+      p_sohe_license_code,
+      p_sohe_user_entity_id,
+      p_sohe_status,
+    } = updateSaleDto;
+  
+    try {
+      await this.sequelize.query(
+        `CALL sales.update_place_order(
+          :p_sohe_id,
+          :p_cait_id,
+          :p_cait_quantity,
+          :p_cait_unit_price,
+          :p_cait_user_entity_id,
+          :p_cait_prog_entity_id,
+          :p_sode_unit_discount,
+          :p_sode_soco_id,
+          :p_sohe_order_date,
+          :p_sohe_due_date,
+          :p_sohe_ship_date,
+          :p_sohe_order_number,
+          :p_sohe_account_number,
+          :p_sohe_trpa_code_number,
+          :p_sohe_license_code,
+          :p_sohe_user_entity_id,
+          :p_sohe_status
+        )`,
+        {
+          replacements: {
+            p_sohe_id,
+            p_cait_id,
+            p_cait_quantity,
+            p_cait_unit_price,
+            p_cait_user_entity_id,
+            p_cait_prog_entity_id,
+            p_sode_unit_discount,
+            p_sode_soco_id,
+            p_sohe_order_date,
+            p_sohe_due_date,
+            p_sohe_ship_date,
+            p_sohe_order_number,
+            p_sohe_account_number,
+            p_sohe_trpa_code_number,
+            p_sohe_license_code,
+            p_sohe_user_entity_id,
+            p_sohe_status,
+          },
+        },
+      );
+  
+      const successMessage = 'Order updated successfully.';
+      this.sendMessage(successMessage);
+    } catch (error) {
+      const errorMessage = `Error updating order: ${error.message}`;
+      this.sendMessage(errorMessage);
+    }
+  }
+  
+  //------------------ Update Special Offer dan Programs -------------------------  
+  
+  async updateSpecialOfferAndPrograms(updateSaleDto: UpdateSaleDto): Promise<any> {
+    const {
+      p_spof_id,
+      p_spof_description,
+      p_spof_discount,
+      p_spof_type,
+      p_spof_start_date,
+      p_spof_end_date,
+      p_spof_min_qty,
+      p_spof_max_qty,
+      p_spof_cate_id,
+      p_soco_id,
+      p_soco_prog_entity_id,
+      p_soco_status,
+    } = updateSaleDto;
+  
+    try {
+      await this.sequelize.query(
+        `CALL sales.update_special_offer_and_programs(
+          :p_spof_id,
+          :p_spof_description,
+          :p_spof_discount,
+          :p_spof_type,
+          :p_spof_start_date,
+          :p_spof_end_date,
+          :p_spof_min_qty,
+          :p_spof_max_qty,
+          :p_spof_cate_id,
+          :p_soco_id,
+          :p_soco_prog_entity_id,
+          :p_soco_status
+        )`,
+        {
+          replacements: {
+            p_spof_id,
+            p_spof_description,
+            p_spof_discount,
+            p_spof_type,
+            p_spof_start_date,
+            p_spof_end_date,
+            p_spof_min_qty,
+            p_spof_max_qty,
+            p_spof_cate_id,
+            p_soco_id,
+            p_soco_prog_entity_id,
+            p_soco_status,
+          },
+        },
+      );
+  
+      const successMessage = 'Special offer and programs updated successfully.';
+      this.sendMessage(successMessage);
+    } catch (error) {
+      const errorMessage = `Error updating special offer and programs: ${error.message}`;
+      this.sendMessage(errorMessage);
+    }
+  }
+
+  //------------------ FindAll Table -------------------------    
 
   async findAllOrderDetail():Promise<any> {
     const query = 'select * from sales.sales_order_detail';
@@ -38,6 +342,8 @@ export class SalesService {
     const result = await this.sequelize.query(query);
     return result;
   }
+
+  //------------------ FindOne -------------------------    
   
   async findOne(id: number): Promise<any> {
     const query = 'SELECT * FROM sales.sales_order_detail WHERE sode_id = :id';
@@ -58,7 +364,73 @@ export class SalesService {
     return `This action updates a #${id} sale`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} sale`;
+  //------------------ Delete Cart Items -------------------------    
+
+  async deleteCartItemById(id: number): Promise<any> {
+    try {
+      await this.sequelize.query(
+        `DELETE FROM sales.cart_items WHERE cait_id = :id`,
+        {
+          replacements: {
+            id: id,
+          },
+        },
+      );
+  
+      const successMessage = 'Cart item deleted successfully.';
+      this.sendMessage(successMessage);
+    } catch (error) {
+      const errorMessage = `Error deleting cart item: ${error.message}`;
+      this.sendMessage(errorMessage);
+    }
   }
+
+  //------------------ Delete Order Detail dan Header -------------------------    
+
+  async deleteOrderById(id: number): Promise<void> {
+    try {
+      await this.sequelize.query(
+        `DELETE FROM sales.sales_order_detail WHERE sode_sohe_id = :id;
+         DELETE FROM sales.sales_order_header WHERE sohe_id = :id;`,
+        {
+          replacements: {
+            id: id,
+          },
+        },
+      );
+  
+      const successMessage = 'Order deleted successfully.';
+      this.sendMessage(successMessage);
+    } catch (error) {
+      throw new Error(`Error deleting order: ${error.message}`);
+    }
+  }
+  
+  //------------------ Delete Special Offer dan Programs -------------------------  
+
+  async deleteSpecialOfferById(id: number): Promise<any> {
+    try {
+      await this.sequelize.query(
+        `
+        DELETE FROM sales.sales_order_detail WHERE sode_soco_id IN (
+          SELECT soco_id FROM sales.special_offer_programs WHERE soco_spof_id = :id
+        );
+        DELETE FROM sales.special_offer_programs WHERE soco_spof_id = :id;
+        DELETE FROM sales.special_offer WHERE spof_id = :id;
+        `,
+        {
+          replacements: {
+            id: id,
+          },
+        },
+      );
+  
+      const successMessage = 'Special offer deleted successfully.';
+      this.sendMessage(successMessage);
+    } catch (error) {
+      const errorMessage = `Error deleting special offer: ${error.message}`;
+      this.sendMessage(errorMessage);
+    }
+  }
+  
 }
