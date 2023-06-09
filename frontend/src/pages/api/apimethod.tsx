@@ -1,15 +1,15 @@
-import axios from "../config/endpoint";
+import axios from '../config/endpoint';
 
 // axios.interceptors.request.use(
 //     (config) => {
 //       // Retrieve the authorization token from storage
 //       const token = localStorage.getItem("AuthToken");
-  
+
 //       // If the token exists, add it to the request headers
 //       if (token && token!=undefined && token!='false') {
 //         config.headers["Authorization"] = token;
 //       }
-  
+
 //       return config;
 //     },
 //     (error) => {

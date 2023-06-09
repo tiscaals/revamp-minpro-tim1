@@ -71,8 +71,19 @@ export class BootcampService {
       let toBeAdded = []
 
       for(let trnee of trainee){
-        toBeChanged.push(dbTrainees.filter(obj=>obj.batr_trainee_entity_id === trnee.batr_trainee_entity_id))
-        toBeDeleted.push(dbTrainees.filter(obj=>obj.batr_trainee_entity_id !== trnee.batr_trainee_entity_id))
+        let found = dbTrainees.find(obj => obj.batr_trainee_entity_id === trnee.batr_trainee_entity_id);
+        if (found) {
+          toBeChanged.push(found);
+        } else {
+          toBeAdded.push(trnee);
+        }
+      }
+
+      for(let dbtr of dbTrainees){;
+        let found = trainee.find(obj=> obj.batr_trainee_entity_id === dbtr.batr_trainee_entity_id);
+        if(!found){
+          toBeDeleted.push(dbtr)
+        }
       }
 
       // const dataString = `[${JSON.stringify(data)}]`
@@ -80,7 +91,7 @@ export class BootcampService {
       // const data3String = `${JSON.stringify(data3)}`
 
       // await this.sequelize.query(`call bootcamp.updateBatchWithBatchTrainee2 ('${dataString}','${data2String}','${data3String}')`)
-      return toBeDeleted
+      return toBeAdded
       return {
         status: 201,
         message: 'sukses'
