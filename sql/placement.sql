@@ -78,7 +78,7 @@ create table hr.employee_client_contract(
 	references hr.employee(emp_entity_id),
 	constraint fk_ecco_account_manager
 	foreign key (ecco_account_manager)
-	references hr.employee(emp_joro_id),
+	references hr.employee(emp_entity_id),
 	primary key(ecco_id, ecco_entity_id)
 );
 
@@ -92,4 +92,4 @@ references master.job_type(joty_id);
 alter table hr.employee_client_contract
 add constraint fk_ecco_clit_id
 foreign key (ecco_clit_id)
-references job.client(clit_id)
+references job_hire.client(clit_id)
