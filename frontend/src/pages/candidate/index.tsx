@@ -9,7 +9,9 @@ import {
   Option,
   Button, 
   IconButton,
-  Avatar
+  Avatar,
+  ButtonGroup,
+  Input
 } from "@material-tailwind/react";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import { Menu, Transition } from "@headlessui/react";
@@ -187,7 +189,7 @@ export default function Candidates() {
                 {
                 (columns || []).map((col) => 
                   <th
-                    className="pr-6 py-2 text-left border-b border-gray-200 bg-blue-400 
+                    className="pl-3 pr-3 py-2 text-left border-b border-gray-200 bg-blue-400 
                     text-xs font-medium text-black-500 uppercase tracking-winder"
                   >
                     <span className="">{col.name}</span>
@@ -200,7 +202,7 @@ export default function Candidates() {
               {
                   (trainees || []).map((dt:any,index:any) =>
                   <tr key={dt.id}>
-                      <td className="py-3 text-gray-900">{index+1}</td>
+                      <td className="pl-3 py-3 text-gray-900">{index+1}</td>
                       <td className="py-3 text-gray-900">
                         <Avatar src={dt.image} />
                       </td>
@@ -212,7 +214,7 @@ export default function Candidates() {
                       <div className="w-full">
         <Menu as="div" className="relative inline-block text-left">
           <div>
-            <Menu.Button className="inline-flex w-full justify-center rounded-md bg-red-500 
+            <Menu.Button className="inline-flex w-full justify-center rounded-md bg-blue-500 
             bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 
             focus:outline-none focus-visible:ring-2 focus-visible:ring-white 
             focus-visible:ring-opacity-75">
@@ -231,9 +233,48 @@ export default function Candidates() {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              <div className="px-1 py-1 ">
-                <Menu.Item>
+            <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-blue-500 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <div className="px-1 py-1">
+                <h1 className="relative">
+                  Switch Status
+                  <span className="after:content after:block after:h-1 after:bg-black after:absolute after:bottom-0 after:left-0 after:w-full"></span>
+                </h1>
+                <br />
+                <h1>Kadidat {dt.name}</h1>
+                <br />
+                <h1>Score Filtering Test :</h1>
+                <div className="flex justify-end">
+                  <div className="w-72">
+                    <Input label="Masukkan Nilai" type='number' />
+                  </div>
+                
+                </div>
+                <br />
+                <h3>Set Status</h3>
+                <div className="w-13 text-white">
+                  <Select label="Select">
+                    <Option className='text-black'>Ready Test</Option>
+                    <Option className='text-black'>Passed</Option>
+                    <Option className='text-black'>Contracted</Option>
+                    <Option className='text-black'>Recommendation</Option>
+                  </Select>
+                </div>
+                <br />
+                <h3>Review</h3>
+                <div className="flex justify-end">
+                  <div className="w-72">
+                    <Input label="Review" type='text' />
+                  </div>
+                </div>
+                <br />
+                <div className="flex flex-col w-max gap-4">
+                <ButtonGroup>
+                  <Button className='text-black'>Cancel</Button>
+                  <Button className='text-black'>Submit</Button>
+                </ButtonGroup>
+                </div>
+                
+                {/* <Menu.Item>
                   {({ active }) => (
                     <Link
                     href={{ 
@@ -288,7 +329,7 @@ export default function Candidates() {
                       Delete
                     </button>
                   )}
-                </Menu.Item>
+                </Menu.Item> */}
               </div>
             </Menu.Items>
           </Transition>
