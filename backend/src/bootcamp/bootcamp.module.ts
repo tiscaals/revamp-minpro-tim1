@@ -7,6 +7,6 @@ import { program_apply } from 'models/bootcamp';
 @Module({
   imports: [SequelizeModule.forFeature([program_apply])],
   controllers: [BootcampController],
-  providers: [BootcampService]
+  providers: [BootcampService],
 })
 export class BootcampModule {}

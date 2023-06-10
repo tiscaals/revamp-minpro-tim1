@@ -7,10 +7,14 @@ import {
   Select,
   Option,
   Textarea,
+  Typography,
 } from '@material-tailwind/react';
 import SearchList from '../components/searchlist';
-import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
+import { HiUserGroup } from 'react-icons/hi';
 import { Combobox } from '@headlessui/react';
+import Image from 'next/image';
+
+import logo from '../../images/avatar.webp'
 
 const data = [
   { id: 11, name: 'nama' },
@@ -89,51 +93,64 @@ export default function Content() {
   };
 
   return (
-    <div className="w-full bg-white rounded-md p-10 my-20 mx-auto ">
+    <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex justify-between">
+          <Typography variant="h5" color="blue-gray">
+            Create Batch
+          </Typography>
+        </div>
+        <br />
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-5">
-          <div className="w-3/4 flex flex-col gap-5 border-r-2 pr-5 border-gray-300">
+          <div className="w-3/4 flex flex-col gap-5 lg:border-r-2 pr-10 border-gray-200">
+            <Typography color="gray" className="font-normal">
+              General Information
+            </Typography>
             <Input label="Batch Name" />
-            <Select label="Technology">
-              <Option>Material Tailwind HTML</Option>
-              <Option>Material Tailwind React</Option>
-              <Option>Material Tailwind Vue</Option>
-              <Option>Material Tailwind Angular</Option>
-              <Option>Material Tailwind Svelte</Option>
-            </Select>
-            <div className="lg:flex gap-4 mt-5">
-              <div className="flex w-1/2 lg:w-1/3">
-                <span className="text-sm mr-2 grid content-center">From</span>
-                <input
-                  type="date"
-                  {...register('datefrom')}
-                  className=" appearance-none border border-blue-gray-200 rounded-md px-4 py-2 w-full text-gray-600 text-sm focus:outline-none focus:ring-1 focus:ring-light-blue-500 focus:border-light-blue-500"
-                />
-              </div>
-              <div className="flex w-1/2 lg:w-1/3">
-                <span className="text-sm mr-2 grid content-center">To</span>
-                <input
-                  type="date"
-                  {...register('dateto')}
-                  className=" appearance-none border border-blue-gray-200 rounded-md px-4 py-2 w-full text-gray-600 text-sm  focus:outline-none focus:ring-1 focus:ring-light-blue-500 focus:border-light-blue-500"
-                />
-              </div>
-              <div className="w-1/2 lg:w-1/3">
-                <Select label="Type">
-                  <Option>Offline</Option>
-                  <Option>Online</Option>
-                  <Option>Corporate</Option>
-                </Select>
-              </div>
+            <div className="flex gap-5">
+              <Select label="Technology">
+                <Option>Material Tailwind HTML</Option>
+                <Option>Material Tailwind React</Option>
+              </Select>
+              <Select label="Type">
+                <Option>Offline</Option>
+                <Option>Online</Option>
+                <Option>Corporate</Option>
+              </Select>
+            </div>
+            <div className="lg:flex justify-between gap-5">
+              <Textarea label="Description"></Textarea>
             </div>
           </div>
-          <div className="w-1/4 flex justify-center text-3xl">
+          <div className="w-1/4 grid content-center px-auto text-3xl bg-red-400">
+            <HiUserGroup/>
             {checked.length}
           </div>
         </div>
         <br />
         <br />
-        <Textarea label='Description'></Textarea>
+        <Typography color="gray" className="mb-5 font-normal">
+          Additional Information
+        </Typography>
+        <div className="w-1/4">
+          <div>
+            <span className="text-sm mr-2 grid content-center">From</span>
+            <input
+              type="date"
+              {...register('datefrom')}
+              className=" appearance-none border border-blue-gray-200 rounded-md px-4 py-2 w-full text-gray-600 text-sm focus:outline-none focus:ring-1 focus:ring-light-blue-500 focus:border-light-blue-500"
+            />
+          </div>
+
+          <div>
+            <span className="text-sm mr-2 grid content-center">To</span>
+            <input
+              type="date"
+              {...register('dateto')}
+              className=" appearance-none border border-blue-gray-200 rounded-md px-4 py-2 w-full text-gray-600 text-sm  focus:outline-none focus:ring-1 focus:ring-light-blue-500 focus:border-light-blue-500"
+            />
+          </div>
+        </div>
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 mt-5 ">
           <div className="lg:w-1/2">
             <Combobox value={selectedPerson} onChange={setSelectedPerson}>

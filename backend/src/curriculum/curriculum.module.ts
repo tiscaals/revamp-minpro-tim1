@@ -4,6 +4,6 @@ import { CurriculumController } from './curriculum.controller';
 
 @Module({
   controllers: [CurriculumController],
-  providers: [CurriculumService]
+  providers: [CurriculumService],
 })
 export class CurriculumModule {}
