@@ -58,4 +58,9 @@ export class BootcampController {
   createProgramApply(@Body() createBootcampDto: any) {
     return this.bootcampService.createProgram(createBootcampDto);
   }
+
+  @Get('close')
+  setClose(){
+    return this.bootcampService.closeBatch()
+  }
 }

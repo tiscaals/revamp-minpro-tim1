@@ -257,4 +257,16 @@ export class BootcampService {
       return { status: 400, message: error.message };
     }
   }
+
+  async closeBatch () {
+    try {
+      const data = await this.sequelize.query('select * from selecttalent')
+      return data[0]
+      
+    } catch (error) {
+      return error
+    }
+  }
+
 }
+  
