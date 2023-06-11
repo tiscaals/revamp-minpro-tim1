@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateUsersDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Sequelize } from 'sequelize-typescript';
-import { roles, users, users_email, users_roles } from 'models';
+import { roles, users, users_email, users_phones, users_roles } from 'models';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +32,10 @@ export class UsersService {
               },
             ],
           },
+          {
+            model: users_phones,
+            attributes:['uspo_number']
+          }
         ],
       });
 
@@ -71,6 +75,10 @@ export class UsersService {
               },
             ],
           },
+          {
+            model: users_phones,
+            attributes: ['uspo_number']
+          }
         ],
         where: { user_entity_id: id },
       });

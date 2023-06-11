@@ -106,7 +106,7 @@ export class AuthService {
         { user_name: res.user_name },
         process.env.SECRET_KEY,
         {
-          expiresIn: '10m',
+          expiresIn: '24h',
         },
       );
 
@@ -119,12 +119,33 @@ export class AuthService {
 
       return succes;
     } catch (error) {
-      return error.message;
+      const errorMsg = {
+        message: error.message,
+        status: 400,
+      };
+
+      return errorMsg;
     }
   }
 
   async signUp(signUpDto: SignUpDto) {
     try {
+      const checkUsername = await users.findAll({
+        where: { user_name: signUpDto.user_name },
+      });
+
+      const checkEmail = await users_email.findAll({
+        where: {pmail_address: signUpDto.pmail_address}
+      })
+    
+      if (checkUsername.length > 0 && checkEmail.length > 0) {
+        throw new Error('username and email already exist, please try again.');
+      } else if (checkUsername.length > 0) {
+        throw new Error('username already exists, please try again.');
+      } else if (checkEmail.length > 0) {
+        throw new Error('email already exists, please try again.');
+      }
+
       const salt = await bcrypt.genSalt(10);
       const passHash = await bcrypt.hash(signUpDto.user_password, salt);
 

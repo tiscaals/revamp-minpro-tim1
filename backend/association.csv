@@ -1,3 +1,4 @@
 1:N, user_entity_id, pmail_entity_id, users, users_email
 1:N, user_entity_id, usro_entity_id, users, users_roles
 1:N, role_id, usro_role_id, roles, users_roles
+1:N, user_entity_id, uspo_entity_id, users, users_phones

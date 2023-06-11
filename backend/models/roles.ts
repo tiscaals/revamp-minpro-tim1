@@ -24,7 +24,6 @@ export class roles
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('users.roles_role_id_seq'::regclass)",
