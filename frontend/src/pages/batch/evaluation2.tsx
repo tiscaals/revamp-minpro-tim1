@@ -85,6 +85,15 @@ export default function evaluation2() {
                           label="Score Fundamental"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -97,6 +106,15 @@ export default function evaluation2() {
                           label="Score OOP"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -109,6 +127,15 @@ export default function evaluation2() {
                           label="Score Database"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -130,6 +157,15 @@ export default function evaluation2() {
                           label="Score Communication"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -142,6 +178,15 @@ export default function evaluation2() {
                           label="Score Teamwork"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -154,6 +199,15 @@ export default function evaluation2() {
                           label="Score Self-Learning"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -175,6 +229,15 @@ export default function evaluation2() {
                           label="Score Communication"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -187,6 +250,15 @@ export default function evaluation2() {
                           label="Score Teamwork"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>
@@ -199,6 +271,15 @@ export default function evaluation2() {
                           label="Score Self-Learning"
                           type="number"
                           color="black"
+                          min={0} // Batasan nilai minimum
+                          max={4}
+                          step="0.01"
+                          onChange={(e) => {
+                            const value = parseFloat(e.target.value);
+                            if (!isNaN(value)) {
+                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                            }
+                          }}
                         />
                       </div>
                     </div>

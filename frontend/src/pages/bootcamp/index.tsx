@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Navbar,
   Collapse,
@@ -12,7 +12,7 @@ import {
   MenuList,
   MenuItem,
   Chip,
-} from "@material-tailwind/react";
+} from '@material-tailwind/react';
 import {
   ChevronDownIcon,
   UserCircleIcon,
@@ -28,38 +28,38 @@ import {
   FaceSmileIcon,
   PuzzlePieceIcon,
   GiftIcon,
-} from "@heroicons/react/24/outline";
- 
+} from '@heroicons/react/24/outline';
+
 const colors = {
-  blue: "bg-blue-50 text-blue-500",
-  orange: "bg-orange-50 text-orange-500",
-  green: "bg-green-50 text-green-500",
-  "blue-gray": "bg-blue-gray-50 text-blue-gray-500",
-  purple: "bg-purple-50 text-purple-500",
-  teal: "bg-teal-50 text-teal-500",
-  cyan: "bg-cyan-50 text-cyan-500",
-  pink: "bg-pink-50 text-pink-500",
+  blue: 'bg-blue-50 text-blue-500',
+  orange: 'bg-orange-50 text-orange-500',
+  green: 'bg-green-50 text-green-500',
+  'blue-gray': 'bg-blue-gray-50 text-blue-gray-500',
+  purple: 'bg-purple-50 text-purple-500',
+  teal: 'bg-teal-50 text-teal-500',
+  cyan: 'bg-cyan-50 text-cyan-500',
+  pink: 'bg-pink-50 text-pink-500',
 };
- 
+
 const navListMenuItems = [
   {
-    color: "blue",
+    color: 'blue',
     icon: FlagIcon,
-    title: "About us",
-    description: "Learn about our story and our mission statement.",
+    title: 'About us',
+    description: 'Learn about our story and our mission statement.',
   },
   {
-    color: "orange",
+    color: 'orange',
     icon: ChatBubbleOvalLeftIcon,
-    title: "Press",
-    description: "News and writings, press releases, and resources",
+    title: 'Press',
+    description: 'News and writings, press releases, and resources',
   },
   {
-    color: "green",
+    color: 'green',
     icon: UsersIcon,
     title: (
       <div className="flex items-center gap-1">
-        Careers{" "}
+        Careers{' '}
         <Chip
           size="sm"
           color="green"
@@ -69,44 +69,44 @@ const navListMenuItems = [
         />
       </div>
     ),
-    description: "We are always looking for talented people. Join us!",
+    description: 'We are always looking for talented people. Join us!',
   },
   {
-    color: "blue-gray",
+    color: 'blue-gray',
     icon: FolderIcon,
-    title: "Legal",
-    description: "All the stuff that we dan from legal made us add.",
+    title: 'Legal',
+    description: 'All the stuff that we dan from legal made us add.',
   },
   {
-    color: "purple",
+    color: 'purple',
     icon: RocketLaunchIcon,
-    title: "Products",
-    description: "Checkout our products that helps a startup running.",
+    title: 'Products',
+    description: 'Checkout our products that helps a startup running.',
   },
   {
-    color: "teal",
+    color: 'teal',
     icon: FaceSmileIcon,
-    title: "Icons",
-    description: "Set of beautiful icons that you can use in your project.",
+    title: 'Icons',
+    description: 'Set of beautiful icons that you can use in your project.',
   },
   {
-    color: "cyan",
+    color: 'cyan',
     icon: PuzzlePieceIcon,
-    title: "UI Kits",
-    description: "High quality UI Kits helps you to 2x faster.",
+    title: 'UI Kits',
+    description: 'High quality UI Kits helps you to 2x faster.',
   },
   {
-    color: "pink",
+    color: 'pink',
     icon: GiftIcon,
-    title: "Open Source",
+    title: 'Open Source',
     description: "List of all our open-source projects, it's all free.",
   },
 ];
- 
+
 function NavListMenu() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
- 
+
   const renderItems = navListMenuItems.map(
     ({ icon, title, description, color }, key) => (
       <a href="#" key={key} className="">
@@ -114,7 +114,7 @@ function NavListMenu() {
           <div className={`rounded-lg p-5 ${colors[color]}`}>
             {React.createElement(icon, {
               strokeWidth: 2,
-              className: "h-6 w-6",
+              className: 'h-6 w-6',
             })}
           </div>
           <div>
@@ -133,7 +133,7 @@ function NavListMenu() {
       </a>
     )
   );
- 
+
   return (
     <React.Fragment>
       <Menu
@@ -148,20 +148,20 @@ function NavListMenu() {
             <ListItem
               className="flex items-center gap-2 py-2 pr-4"
               selected={isMenuOpen || isMobileMenuOpen}
-              onClick={() => setIsMobileMenuOpen((cur) => !cur)}
+              onClick={() => setIsMobileMenuOpen(cur => !cur)}
             >
               <Square3Stack3DIcon className="h-[18px] w-[18px]" />
               Resources
               <ChevronDownIcon
                 strokeWidth={2.5}
                 className={`hidden h-3 w-3 transition-transform lg:block ${
-                  isMenuOpen ? "rotate-180" : ""
+                  isMenuOpen ? 'rotate-180' : ''
                 }`}
               />
               <ChevronDownIcon
                 strokeWidth={2.5}
                 className={`block h-3 w-3 transition-transform lg:hidden ${
-                  isMobileMenuOpen ? "rotate-180" : ""
+                  isMobileMenuOpen ? 'rotate-180' : ''
                 }`}
               />
             </ListItem>
@@ -177,7 +177,7 @@ function NavListMenu() {
     </React.Fragment>
   );
 }
- 
+
 function NavList() {
   return (
     <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1">
@@ -209,17 +209,17 @@ function NavList() {
     </List>
   );
 }
- 
+
 export default function Example() {
   const [openNav, setOpenNav] = React.useState(false);
- 
+
   React.useEffect(() => {
     window.addEventListener(
-      "resize",
+      'resize',
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
- 
+
   return (
     <Navbar className="mx-auto max-w-screen-xl px-4 py-2">
       <div className="flex items-center justify-between text-blue-gray-900">
