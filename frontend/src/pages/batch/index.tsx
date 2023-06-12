@@ -47,11 +47,11 @@ const TABS = [
 ];
 
 const TABLE_HEAD = [
+  'No',
   'Batch',
   'Technology',
   'Members',
   'Trainer',
-  'Function',
   'Status',
   'Periode',
   '',
@@ -62,9 +62,9 @@ const TABLE_ROWS = [
     batr_name: 'Batch#1',
     batr_entity_name: 'Node JS ',
     img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-    name: 'John Michael',
+    trainer: 'John Michael',
+    cotrainer: '',
     email: 'john@creative-tim.com',
-    job: 'Manager',
     org: 'Organization',
     status: 'running',
     online: true,
@@ -74,9 +74,8 @@ const TABLE_ROWS = [
     batr_name: 'Batch#2',
     batr_entity_name: '.Net Technology',
     img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
-    name: 'Alexa Liras',
+    trainer: 'Alexa Liras',
     email: 'alexa@creative-tim.com',
-    job: 'Programator',
     org: 'Developer',
     status: 'closed',
     online: false,
@@ -86,9 +85,8 @@ const TABLE_ROWS = [
     batr_name: 'Batch#3',
     batr_entity_name: 'Golang',
     img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
-    name: 'Laurent Perrier',
+    trainer: 'Laurent Perrier',
     email: 'laurent@creative-tim.com',
-    job: 'Executive',
     org: 'Projects',
     status: 'closed',
     online: false,
@@ -100,8 +98,6 @@ export default function BatchList() {
   const [buttonSelect, setButtonSelect] = useState('')
 
   console.log(buttonSelect);
-
-  // cnst filteredBatch = 
 
   const router = useRouter();
   return (
@@ -145,7 +141,7 @@ export default function BatchList() {
           </div>
         </div>
       </CardHeader>
-      <CardBody className="lg:overflow overflow-scroll px-0">
+      <CardBody className=" overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -175,9 +171,9 @@ export default function BatchList() {
                   batr_name,
                   batr_entity_name,
                   img,
-                  name,
+                  trainer,
                   email,
-                  job,
+                  // job,
                   org,
                   online,
                   date,
@@ -190,7 +186,8 @@ export default function BatchList() {
                   : 'p-4 border-b border-blue-gray-50';
 
                 return (
-                  <tr key={name}>
+                  <tr key={trainer}>
+                    <td className={classes}>{index+1}</td>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
                         <Typography
@@ -218,25 +215,25 @@ export default function BatchList() {
                         <div className="flex -space-x-4 overflow-hidden">
                           <Avatar
                             src={img}
-                            alt={name}
+                            alt={trainer}
                             size="sm"
                             className="inline-block rounded-full ring-2 ring-white"
                           />
                           <Avatar
                             src={img}
-                            alt={name}
+                            alt={trainer}
                             size="sm"
                             className="inline-block rounded-full ring-2 ring-white"
                           />
                           <Avatar
                             src={img}
-                            alt={name}
+                            alt={trainer}
                             size="sm"
                             className="inline-block rounded-full ring-2 ring-white"
                           />
                           <Avatar
                             src={`https://ui-avatars.com/api/?name=%2B5&bold=true&color=757575`}
-                            alt={name}
+                            alt={trainer}
                             size="sm"
                             className="inline-block rounded-full ring-2 ring-white"
                           />
@@ -245,19 +242,26 @@ export default function BatchList() {
                     </td>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
-                        <Avatar src={img} alt={name} size="sm" />
+                        <Avatar src={img} alt={trainer} size="sm" />
                         <div className="flex flex-col">
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {name}
+                            {trainer}
                           </Typography>
+                          <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal opacity-70"
+                        >
+                          {/* {} */}
+                        </Typography>
                         </div>
                       </div>
                     </td>
-                    <td className={classes}>
+                    {/* <td className={classes}>
                       <div className="flex flex-col">
                         <Typography
                           variant="small"
@@ -274,7 +278,7 @@ export default function BatchList() {
                           {org}
                         </Typography>
                       </div>
-                    </td>
+                    </td> */}
                     <td className={classes}>
                       <div className="w-max">
                         <Chip
@@ -330,7 +334,7 @@ export default function BatchList() {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute z-10 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Items className="absolute z-50 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                             <div className="px-1 py-1 ">
                               <Menu.Item>
                                 {({ active }) => (
