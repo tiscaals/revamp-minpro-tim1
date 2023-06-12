@@ -10,7 +10,7 @@ export default function BreadcrumbsSlice() {
 
   return (
     <div className="text-gray-900">
-      <Breadcrumbs>
+      <Breadcrumbs className="bg-white">
         <Link
           href={'/'}
           className={`capitalize flex items-center mx-1 ${
@@ -21,9 +21,6 @@ export default function BreadcrumbsSlice() {
         >
           <div className="mr-1">
             <MdCottage />
-          </div>
-          <div>
-            <p>Home</p>
           </div>
         </Link>
         {(parts || []).map((part, index) => (

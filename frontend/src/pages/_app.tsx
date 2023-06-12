@@ -5,11 +5,11 @@ import { Input, ThemeProvider } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter()
-  if(router.pathname.startsWith('/bootcamp')){
+  const router = useRouter();
+  if (router.pathname.startsWith('/bootcamp')) {
     return (
       <ThemeProvider>
-          <Component {...pageProps} />
+        <Component {...pageProps} />
       </ThemeProvider>
     );
   }

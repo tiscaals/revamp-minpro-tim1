@@ -193,12 +193,10 @@ export default function Candidates() {
         </TabsBody>
       </Tabs>
       <table className="min-w-full table-fixed ">
-        <thead >
+        <thead>
           <tr className="border-t border-gray-200 bg-light-blue-500 ">
             {(columns || []).map(col => (
-              <th
-                className="pl-3 pr-3 py-2 text-left text-xs font-medium text-black-500 uppercase tracking-winder"
-              >
+              <th className="pl-3 pr-3 py-2 text-left text-xs font-medium text-black-500 uppercase tracking-winder">
                 <span className="">{col.name}</span>
               </th>
             ))}
@@ -251,13 +249,17 @@ export default function Candidates() {
                           {/* <h1>Score Filtering Test :</h1> */}
                           <div className="flex justify-end">
                             <div className="w-72">
-                              <Input label="Score Filtering Test" type="number" color='black' />
+                              <Input
+                                label="Score Filtering Test"
+                                type="number"
+                                color="black"
+                              />
                             </div>
                           </div>
                           <br />
                           {/* <h3>Set Status</h3> */}
                           <div className="w-13 text-white">
-                            <Select label="Set Status" >
+                            <Select label="Set Status">
                               <Option className="text-black">Ready Test</Option>
                               <Option className="text-black">Passed</Option>
                               <Option className="text-black">Contracted</Option>
@@ -270,7 +272,7 @@ export default function Candidates() {
                           {/* <h3>Review</h3> */}
                           <div className="flex justify-end">
                             <div className="w-72">
-                              <Textarea label='Review'/>
+                              <Textarea label="Review" />
                             </div>
                           </div>
                           <br />
