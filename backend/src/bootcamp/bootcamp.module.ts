@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { BootcampService } from './bootcamp.service';
 import { BootcampController } from './bootcamp.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { program_apply } from 'models/bootcamp';
+import { program_apply, program_apply_progress } from 'models/bootcamp';
 
 @Module({
-  imports: [SequelizeModule.forFeature([program_apply])],
+  imports: [SequelizeModule.forFeature([program_apply,program_apply_progress])],
   controllers: [BootcampController],
   providers: [BootcampService],
 })

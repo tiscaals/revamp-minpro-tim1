@@ -99,14 +99,17 @@ const TABLE_ROWS = [
 // const [filterActive, setFilterActive] = useState('TABS_ROWS')
 
 export default function BatchList() {
-  const [buttonSelect, setButtonSelect] = useState('')
+  const [buttonSelect, setButtonSelect] = useState('');
 
   console.log(buttonSelect);
 
-  const filteredBatch = buttonSelect === '' ? TABLE_ROWS : TABLE_ROWS.filter((item) => item.status == buttonSelect)
+  const filteredBatch =
+    buttonSelect === ''
+      ? TABLE_ROWS
+      : TABLE_ROWS.filter(item => item.status == buttonSelect);
 
   const router = useRouter();
-  useEffect(()=>{},[buttonSelect])
+  useEffect(() => {}, [buttonSelect]);
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -134,7 +137,11 @@ export default function BatchList() {
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
               {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value} onClick={()=>setButtonSelect(value)}>
+                <Tab
+                  key={value}
+                  value={value}
+                  onClick={() => setButtonSelect(value)}
+                >
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
@@ -216,7 +223,7 @@ export default function BatchList() {
                         </Typography>
                       </div>
                     </td>
-                    
+
                     <td className={classes}>
                       <div className="items-center">
                         <div className="flex -space-x-4 overflow-hidden">

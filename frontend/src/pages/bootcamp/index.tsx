@@ -6,7 +6,7 @@ import CardLearn from './components/card2';
 import { Button, Card, CardBody, Typography } from '@material-tailwind/react';
 import Instructor from './components/instructor';
 import Testi from './components/testimonials';
-import {RiWhatsappFill} from 'react-icons/ri'
+import { RiWhatsappFill } from 'react-icons/ri';
 import { HiCalendar, HiLocationMarker } from 'react-icons/hi';
 
 const dataCurriculum = {
@@ -58,14 +58,16 @@ export default function index() {
                 Description
               </Typography>
               <Typography>
-                Ini bedanya sama deskripsi diatas apa yaaaaaaaaaaaaaaa lurrrrrrrrrrrr tolong diisi aja gatau ahhhhhh uhhhhhhh hmmmmmmmmmmmmmmmmmmm
+                Ini bedanya sama deskripsi diatas apa yaaaaaaaaaaaaaaa
+                lurrrrrrrrrrrr tolong diisi aja gatau ahhhhhh uhhhhhhh
+                hmmmmmmmmmmmmmmmmmmm
               </Typography>
             </CardBody>
           </Card>
           <br />
-          <Instructor/>
+          <Instructor />
           <br />
-          <Testi/>
+          <Testi />
         </div>
         <div className="lg:w-2/6 bg-gradient-to-br from-blue-600 to-blue-300 rounded-lg">
           <video className="p-3 w-full rounded-lg" controls>
@@ -73,18 +75,20 @@ export default function index() {
             Your browser does not support the video tag.
           </video>
           <Typography className="flex gap-3 p-3 text-white text-sm">
-              <HiCalendar className='text-2xl'/>
-              Next batch, April 2023
+            <HiCalendar className="text-2xl" />
+            Next batch, April 2023
           </Typography>
           <Typography className="flex gap-3 p-3 text-white text-sm">
-              <HiLocationMarker className='text-2xl'/>
-              Sentul, Bogor, Jawa Barat
+            <HiLocationMarker className="text-2xl" />
+            Sentul, Bogor, Jawa Barat
           </Typography>
           <Typography className="flex gap-3 p-3 text-white text-sm">
-              <RiWhatsappFill className='text-2xl'/>
-              Next batch, April 2023
+            <RiWhatsappFill className="text-2xl" />
+            Next batch, April 2023
           </Typography>
-          <Button className='shadow-inner shadow-white w-5/6 '>Apply Bootcamp</Button>
+          <Button className="shadow-inner shadow-white w-5/6 ">
+            Apply Bootcamp
+          </Button>
         </div>
       </div>
     </div>

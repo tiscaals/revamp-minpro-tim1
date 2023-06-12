@@ -63,4 +63,28 @@ export class BootcampController {
   setClose(){
     return this.bootcampService.closeBatch()
   }
+
+  @Patch('program-apply-progress/:id')
+  updateProgramApplyProgress(
+    @Param('id') id: number,
+    @Body() body: any,
+  ) {
+    return this.bootcampService.updateProgramApplyProgress(
+      +id,
+      body
+    )
+  }
+
+  @Patch('program-apply/:id')
+  updateProgramApply(
+    @Param('id') id: number,
+    @Body() body: any,
+  ) {
+    // return body
+    return this.bootcampService.updateProgramApply(
+      +id,
+      body
+    )
+  }
+
 }

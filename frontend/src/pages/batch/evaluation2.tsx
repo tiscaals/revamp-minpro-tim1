@@ -88,10 +88,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -99,7 +102,9 @@ export default function evaluation2() {
                     </div>
                   </div>
                   <div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
-                    <li className="text-lg">Object Oriented Programming (OOP)</li>
+                    <li className="text-lg">
+                      Object Oriented Programming (OOP)
+                    </li>
                     <div className="flex justify-end flex-col w-max gap-4">
                       <div className="w-72">
                         <Input
@@ -109,10 +114,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -130,10 +138,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -145,10 +156,10 @@ export default function evaluation2() {
             </Accordion>
             <Accordion open={open === 2} icon={<Icon id={2} open={open} />}>
               <AccordionHeader onClick={() => handleOpen(2)}>
-              SoftSkill (Scale 1 - 4)
+                SoftSkill (Scale 1 - 4)
               </AccordionHeader>
               <AccordionBody>
-              <div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 md:rounded-lg">
+                <div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 md:rounded-lg">
                   <div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                     <li className="text-lg">Communication</li>
                     <div className="flex justify-end flex-col w-max gap-4">
@@ -160,10 +171,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -181,10 +195,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -202,10 +219,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -217,10 +237,10 @@ export default function evaluation2() {
             </Accordion>
             <Accordion open={open === 3} icon={<Icon id={3} open={open} />}>
               <AccordionHeader onClick={() => handleOpen(3)}>
-              Presentation (Scale 1 - 4)
+                Presentation (Scale 1 - 4)
               </AccordionHeader>
               <AccordionBody>
-              <div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 md:rounded-lg">
+                <div className="relative overflow-hidden bg-white shadow-md dark:bg-gray-800 md:rounded-lg">
                   <div className="flex flex-col items-center justify-between p-4 space-y-3 md:flex-row md:space-y-0 md:space-x-4">
                     <li className="text-lg">Communication</li>
                     <div className="flex justify-end flex-col w-max gap-4">
@@ -232,10 +252,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -253,10 +276,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
@@ -274,10 +300,13 @@ export default function evaluation2() {
                           min={0} // Batasan nilai minimum
                           max={4}
                           step="0.01"
-                          onChange={(e) => {
+                          onChange={e => {
                             const value = parseFloat(e.target.value);
                             if (!isNaN(value)) {
-                              e.target.value = Math.max(0, Math.min(4, value)).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
+                              e.target.value = Math.max(
+                                0,
+                                Math.min(4, value)
+                              ).toFixed(2); // Mengatur batasan nilai dan jumlah desimal menjadi 2
                             }
                           }}
                         />
