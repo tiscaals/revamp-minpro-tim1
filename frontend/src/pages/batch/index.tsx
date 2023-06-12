@@ -34,7 +34,7 @@ import { Fragment, useEffect, useRef, useState } from 'react';
 const TABS = [
   {
     label: 'All',
-    value: 'all',
+    value: '',
   },
   {
     label: 'Running',
@@ -66,6 +66,7 @@ const TABLE_ROWS = [
     email: 'john@creative-tim.com',
     job: 'Manager',
     org: 'Organization',
+    status: 'running',
     online: true,
     date: '18 March 2023',
   },
@@ -77,6 +78,7 @@ const TABLE_ROWS = [
     email: 'alexa@creative-tim.com',
     job: 'Programator',
     org: 'Developer',
+    status: 'closed',
     online: false,
     date: '19 April 2023',
   },
@@ -88,12 +90,19 @@ const TABLE_ROWS = [
     email: 'laurent@creative-tim.com',
     job: 'Executive',
     org: 'Projects',
+    status: 'closed',
     online: false,
     date: '20 Mei 2023',
   },
 ];
 
-export default function Example() {
+export default function BatchList() {
+  const [buttonSelect, setButtonSelect] = useState('')
+
+  console.log(buttonSelect);
+
+  // cnst filteredBatch = 
+
   const router = useRouter();
   return (
     <Card className="h-full w-full">
@@ -122,7 +131,7 @@ export default function Example() {
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
               {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value}>
+                <Tab key={value} value={value} onClick={()=>setButtonSelect(value)}>
                   &nbsp;&nbsp;{label}&nbsp;&nbsp;
                 </Tab>
               ))}
