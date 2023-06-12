@@ -221,9 +221,9 @@ export default function Candidates() {
                     <div>
                       <Menu.Button
                         className="inline-flex w-full justify-center rounded-md bg-blue-500 
-            bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 
-            focus:outline-none focus-visible:ring-2 focus-visible:ring-white 
-            focus-visible:ring-opacity-75"
+                        bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 
+                        focus:outline-none focus-visible:ring-2 focus-visible:ring-white 
+                        focus-visible:ring-opacity-75"
                       >
                         <BsThreeDotsVertical
                           className="h-5 w-5 text-black hover:text-violet-100"
@@ -252,13 +252,17 @@ export default function Candidates() {
                           {/* <h1>Score Filtering Test :</h1> */}
                           <div className="flex justify-end">
                             <div className="w-72">
-                              <Input label="Score Filtering Test" type="number" color='black' />
+                              <Input
+                                label="Score Filtering Test"
+                                type="number"
+                                color="black"
+                              />
                             </div>
                           </div>
                           <br />
                           {/* <h3>Set Status</h3> */}
                           <div className="w-13 text-white">
-                            <Select label="Set Status" >
+                            <Select label="Set Status">
                               <Option className="text-black">Ready Test</Option>
                               <Option className="text-black">Passed</Option>
                               <Option className="text-black">Contracted</Option>
@@ -271,7 +275,7 @@ export default function Candidates() {
                           {/* <h3>Review</h3> */}
                           <div className="flex justify-end">
                             <div className="w-72">
-                              <Textarea label='Review'/>
+                              <Textarea label="Review" />
                             </div>
                           </div>
                           <br />
