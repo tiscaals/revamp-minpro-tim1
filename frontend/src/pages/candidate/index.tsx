@@ -192,13 +192,12 @@ export default function Candidates() {
           ))}
         </TabsBody>
       </Tabs>
-      <table className="min-w-full table-fixed">
-        <thead>
-          <tr className="border-t border-gray-200">
+      <table className="min-w-full table-fixed ">
+        <thead >
+          <tr className="border-t border-gray-200 bg-light-blue-500 ">
             {(columns || []).map(col => (
               <th
-                className="pl-3 pr-3 py-2 text-left border-b border-gray-200 bg-blue-400 
-                    text-xs font-medium text-black-500 uppercase tracking-winder"
+                className="pl-3 pr-3 py-2 text-left text-xs font-medium text-black-500 uppercase tracking-winder"
               >
                 <span className="">{col.name}</span>
               </th>

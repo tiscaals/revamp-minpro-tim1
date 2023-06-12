@@ -98,10 +98,6 @@ export class BootcampService {
         }
       }
 
-      // const dataString = `[${JSON.stringify(data)}]`
-      // const data2String = `[${JSON.stringify(data2)}]`
-      // const data3String = `${JSON.stringify(data3)}`
-
       // await this.sequelize.query(`call bootcamp.updateBatchWithBatchTrainee2 ('${dataString}','${data2String}','${data3String}')`)
       return toBeAdded;
       return {
@@ -262,6 +258,8 @@ export class BootcampService {
     try {
       const data = await this.sequelize.query('select * from selecttalent')
       return data[0]
+
+      
       
     } catch (error) {
       return error
