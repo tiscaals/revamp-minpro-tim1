@@ -15,6 +15,7 @@ export interface clientAttributes {
   clit_modified_date?: Date;
   clit_addr_id?: number;
   clit_emra_id?: number;
+  clit_indu_code?: string;
 }
 
 @Table({ tableName: 'client', schema: 'job_hire', timestamps: false })
@@ -52,4 +53,7 @@ export class client
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   clit_emra_id?: number;
+
+  @Column({ allowNull: true, type: DataType.STRING(15) })
+  clit_indu_code?: string;
 }
