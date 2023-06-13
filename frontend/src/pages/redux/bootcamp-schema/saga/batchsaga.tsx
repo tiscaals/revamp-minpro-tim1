@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import apiMethod from '../apiMethod';
-import { getAllBatchesReq, getAllBatchesRes } from '../action/actionReducer';
+import { addBatchRes, getAllBatchesReq, getAllBatchesRes, getAllProgramsRes, getAllTrainersRes } from '../action/actionReducer';
 
 function* handleGetAllBatches():any{
     try {
@@ -12,53 +12,37 @@ function* handleGetAllBatches():any{
     }
 }
 
-export {
-    handleGetAllBatches
+function* handleGetAllPrograms():any{
+    try {
+        const result = yield call(apiMethod.findAllPrograms)
+        // console.log(result);
+        yield put(getAllProgramsRes(result.data))
+    } catch (error) {
+        yield put(getAllProgramsRes({message:error, status:400}))
+    }
 }
 
-// function* handleAddUser(action:any):any{
-//     try {
-//         const result = yield call(apimethod.createUser, action.payload)
+function* handleGetAllTrainers():any{
+    try {
+        const result = yield call(apiMethod.findAllTrainers)
+        yield put(getAllTrainersRes(result.data))
+    } catch (error) {
+        yield put(getAllTrainersRes({message:error, status:400}))
+    }
+}
 
-//         yield put(addCustomerRes(result.data.result))
-//     } catch (error) {
-//         yield put(addCustomerRes({message:error, status:400}))
-//     }
-// }
+function* handleAddBatch(action:any):any{
+    try {
+        const result = yield call(apiMethod.createBatch, action.payload)
+        yield put(addBatchRes(result.data))
+    } catch (error) {
+        yield put(addBatchRes({message:error, status:400}))
+    }
+}
 
-// function* handleUpdateUser(action:any):any{
-//     try {
-//         const result = yield call(apimethod.updateCustomer, action.payload)
-
-//         yield put(updateCustomerRes(result.data.result))
-//     } catch (error) {
-//         yield put(updateCustomerRes({message:error, status:400}))
-//     }
-// }
-
-// function* handleDeleteUser(action:any):any{
-//     try {
-//         const result = yield call(apimethod.deleteUser, action.payload)
-
-//         yield put(deleteUserRes(result.data.result))
-//     } catch (error) {
-//         yield put(deleteUserRes({message:error, status:400}))
-//     }
-// }
-
-// function* handleUpdatePassword(action:any):any{
-//     try {
-//         const result = yield call(apimethod.updatePassword, action.payload)
-
-//         yield put(updatePasswordRes(result.data))
-//     } catch (error) {
-//         yield put(updatePasswordRes({message:error, status:400}))
-//     }
-// }
-// export {
-//     handleGetAllUser,
-//     handleAddUser,
-//     handleUpdateUser,
-//     handleDeleteUser,
-//     handleUpdatePassword
-// }
+export {
+    handleGetAllBatches,
+    handleAddBatch,
+    handleGetAllPrograms,
+    handleGetAllTrainers
+}

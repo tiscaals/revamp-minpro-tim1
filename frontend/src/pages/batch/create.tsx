@@ -15,6 +15,8 @@ import { Combobox, Transition } from '@headlessui/react';
 import Image from 'next/image';
 
 import logo from '../../images/avatar.webp';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProgramsReq, getAllTrainersReq } from '../redux/bootcamp-schema/action/actionReducer';
 
 const data = [
   { id: 11, name: 'nama' },
@@ -61,7 +63,6 @@ const trainerData: any[] = [
 ];
 
 export default function Content() {
-  // const divRef = useRef(null);
   const [checked, setChecked] = useState<any>([]);
   const [selectedTrainer, setSelectedTrainer] = useState(trainerData[0]);
   const [selectedCoTrainer, setSelectedCoTrainer] = useState(trainerData[0]);
@@ -69,13 +70,10 @@ export default function Content() {
   const [selTechno, setSelTechno] = useState<string>('')
   const [batchType, setBatchType] = useState<string>('')
 
-  const filteredPeople =
-    query === ''
-      ? trainerData
-      : trainerData.filter((trainer: any) => {
-          return trainer.name.toLowerCase().includes(query.toLowerCase());
-        });
-
+  const {trainers,programs} = useSelector((state:any)=>state.batchReducers)
+  const dispatch = useDispatch()
+  console.log(trainers);
+  // console.log(programs);
   const {
     register,
     handleSubmit,
@@ -83,12 +81,11 @@ export default function Content() {
   } = useForm();
 
   const onSubmit = (data: any) => {
-    data.namecheck = checked.sort((a, b) => a - b);
     data.batch_entity_id = selTechno
-    data.batchType = batchType
-    data.trainer = selectedTrainer
-    data.cotrainer = selectedCoTrainer
-    console.log(data);
+    data.batch_type = batchType
+    data.trainee = checked.sort((a, b) => a - b)
+    data.instructors = [selectedTrainer,selectedCoTrainer]
+    console.log(data)
   };
 
   const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +96,19 @@ export default function Content() {
     }
   };
 
-  console.log(checked);
+  useEffect(()=>{
+    dispatch(getAllTrainersReq())
+    dispatch(getAllProgramsReq())
+  },[])
+
+  const filteredPeople = trainers
+  // query === ''
+  //   ? trainers
+  //   : trainers.filter((trainer: any) => {
+  //       return trainer.user_first_name.toLowerCase().includes(query.toLowerCase());
+  //     });
+
+// console.log(trainers);
 
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
@@ -118,8 +127,11 @@ export default function Content() {
             <Input label="Batch Name" {...register('batch_name')} />
             <div className="flex lg:flex-row flex-col gap-5">
               <Select onChange={setSelTechno} label="Technology">
-                <Option value='1'>Material Tailwind HTML</Option>
-                <Option value='2'>Material Tailwind React</Option>
+                {
+                  (programs || []).map((item:any)=>(
+                    <Option value={item.prog_entity_id}>{item.prog_title}</Option>
+                  ))
+                }
               </Select>
               <Select onChange={setBatchType} label="Type" >
                 <Option value='offline'>Offline</Option>
@@ -160,76 +172,13 @@ export default function Content() {
             <Typography color="black" className="font-normal mb-2 mt-3">
               Trainer
             </Typography>
-            <Combobox value={selectedTrainer} onChange={setSelectedTrainer}>
-              <div className="relative mt-1">
-                <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-                  <Combobox.Input
-                    className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none"
-                    displayValue={(person: any) => person.name}
-                    onChange={event => setQuery(event.target.value)}
-                  />
-                  <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                    <HiChevronDown
-                      className="h-5 w-5 text-gray-400"
-                      aria-hidden="true"
-                    />
-                  </Combobox.Button>
-                </div>
-                <Transition
-                  as={Fragment}
-                  leave="transition ease-in duration-100"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                  afterLeave={() => setQuery('')}
-                >
-                  <Combobox.Options className="absolute mt-1 z-10 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                    {filteredPeople.length === 0 && query !== '' ? (
-                      <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
-                        Nothing found.
-                      </div>
-                    ) : (
-                      filteredPeople.map(person => (
-                        <Combobox.Option
-                          key={person.id}
-                          className={({ active }) =>
-                            `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                              active
-                                ? 'bg-light-blue-500 text-white'
-                                : 'text-gray-900'
-                            }`
-                          }
-                          value={person}
-                        >
-                          {({ selected, active }) => (
-                            <>
-                              <span
-                                className={`block truncate ${
-                                  selected ? 'font-medium' : 'font-normal'
-                                }`}
-                              >
-                                {person.name}
-                              </span>
-                              {selected ? (
-                                <span
-                                  className={`absolute inset-y-0 left-0 flex items-center pl-3 ${
-                                    active ? 'text-white' : 'text-teal-600'
-                                  }`}
-                                >
-                                  <HiCheck
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                  />
-                                </span>
-                              ) : null}
-                            </>
-                          )}
-                        </Combobox.Option>
-                      ))
-                    )}
-                  </Combobox.Options>
-                </Transition>
-              </div>
-            </Combobox>
+            <Select onChange={setSelectedTrainer} label="Type" >
+                {
+                  (trainers || []).map((item:any)=> (
+                    <Option value={item.emp_entity_id}>{item.user_first_name}</Option>
+                  ))
+                }
+              </Select>
           </div>
           <div className="lg:w-1/2">
             <Typography color="black" className="font-normal mb-2 mt-3">
@@ -240,7 +189,7 @@ export default function Content() {
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                   <Combobox.Input
                     className="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:outline-none"
-                    displayValue={(person: any) => person.name}
+                    displayValue={(trainer: any) => trainer.name}
                     onChange={event => setQuery(event.target.value)}
                   />
                   <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -258,14 +207,14 @@ export default function Content() {
                   afterLeave={() => setQuery('')}
                 >
                   <Combobox.Options className="absolute mt-1 z-10 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                    {filteredPeople.length === 0 && query !== '' ? (
+                    {(filteredPeople || []).length === 0 && query !== '' ? (
                       <div className="relative cursor-default select-none py-2 px-4 text-gray-700">
                         Nothing found.
                       </div>
                     ) : (
-                      filteredPeople.map(person => (
+                      (filteredPeople || []).map(trainer => (
                         <Combobox.Option
-                          key={person.id}
+                          key={trainer.id}
                           className={({ active }) =>
                             `relative cursor-default select-none py-2 pl-10 pr-4 ${
                               active
@@ -273,7 +222,7 @@ export default function Content() {
                                 : 'text-gray-900'
                             }`
                           }
-                          value={person}
+                          value={trainer}
                         >
                           {({ selected, active }) => (
                             <>
@@ -282,7 +231,7 @@ export default function Content() {
                                   selected ? 'font-medium' : 'font-normal'
                                 }`}
                               >
-                                {person.name}
+                                {trainer.name}
                               </span>
                               {selected ? (
                                 <span

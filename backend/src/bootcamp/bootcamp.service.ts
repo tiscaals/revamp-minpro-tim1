@@ -323,7 +323,6 @@ export class BootcampService {
   }
 
   async updateProgramApply(id: number, body: any) {
-    // console.log(body)
     try {
       const idBody = await program_apply.findOne({where: {
         prap_user_entity_id: id,
@@ -351,6 +350,39 @@ export class BootcampService {
 
     } catch (error) {
       return error.message;
+    }
+  }
+
+  async getAllTrainers () {
+    try {
+      let data = await this.sequelize.query(`select * from hr.employee join master.job_role on employee.emp_joro_id = job_role.joro_id join users.users on users.user_entity_id = employee.emp_entity_id where joro_id = 1`)
+
+      if(data[0].length === 0) throw new Error('data tidak ditemukan')
+
+      return {
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        message: error.message
+      }
+    }
+  }
+
+  async getAllPrograms () {
+    try {
+      let data = await this.sequelize.query('select * from curriculum.program_entity')
+      if(data[0].length === 0) throw new Error('Data tidak ditemukan')
+
+      return {
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        message: error.message
+      }
     }
   }
 

@@ -12,9 +12,56 @@ const getAllBatchesRes = (payload:any) => {
     }
 }
 
+const getAllTrainersReq = () => {
+    return{
+        type: ActionTypes.REQ_GET_TRAINERS,
+    }
+}
+
+const getAllTrainersRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_GET_TRAINERS,
+        payload
+    }
+}
+
+const getAllProgramsReq = () => {
+    return{
+        type: ActionTypes.REQ_GET_PROGRAMS,
+    }
+}
+const getAllProgramsRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_GET_PROGRAMS,
+        payload
+    }
+}
+
+const addBatchReq = (payload:any) =>{
+    return{
+        type: ActionTypes.REQ_CREATE_BATCH,
+        payload
+    }
+}
+
+const addBatchRes = (payload:any) =>{
+    return{
+        type: ActionTypes.RES_CREATE_BATCH,
+        payload
+    }
+}
+
+
+
 export {
     getAllBatchesReq,
-    getAllBatchesRes
+    getAllBatchesRes,
+    addBatchReq,
+    addBatchRes,
+    getAllProgramsReq,
+    getAllProgramsRes,
+    getAllTrainersReq,
+    getAllTrainersRes
 }
 
 // const getAllUserRes = (payload:any) => {
