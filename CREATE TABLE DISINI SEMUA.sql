@@ -118,7 +118,18 @@ CREATE TABLE bootcamp.talents (
 
 ----- untuk rahmi dan mike (placement) ----- 
 
-create view selecttalent as
+Alter table curriculum.program_entity
+add column prog_title varchar(256);
+
+Alter table users.users
+add column user_first_name varchar(50);
+
+Alter table users.users
+add column user_last_name varchar(50);
+
+
+
+create view bootcamp.selecttalent as
 select
 	batch.batch_id , 
 	batch.batch_name, 
@@ -139,3 +150,5 @@ join bootcamp.batch_trainee on bootcamp.batch.batch_id = bootcamp.batch_trainee.
 join users.users on users.user_entity_id = batch_trainee.batr_trainee_entity_id
 join curriculum.program_entity on program_entity.prog_entity_id = bootcamp.batch.batch_entity_id
 
+select * from bootcamp.batch
+select * from bootcamp.trainer_programs

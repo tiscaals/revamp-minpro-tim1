@@ -105,7 +105,7 @@ end;
 $$;
 
 call bootcamp.createBatch('[{
-							"batch_entity_id": 5,
+							"batch_entity_id": 2,
 							"batch_name": "batch#1",
 							"batch_description": "batch#1description",
 							"batch_start_date": "2023-06-06",
@@ -124,7 +124,7 @@ call bootcamp.createBatch('[{
 							"batr_review": "review#4",
 							"batr_total_score": 92,
 							"batr_modified_date": "2023-06-06 12:30:00 +00:00",
-							"batr_trainee_entity_id": 2
+							"batr_trainee_entity_id": 1
 						  },{
 						  	"batr_status": "running",
 							"batr_certificated": "0",
@@ -144,7 +144,7 @@ call bootcamp.createBatch('[{
 							"batr_review": "review#4",
 							"batr_total_score": 92,
 							"batr_modified_date": "2023-06-06 12:30:00 +00:00",
-							"batr_trainee_entity_id": 3
+							"batr_trainee_entity_id": 1
 						  }]','[{
 						  	"tpro_entity_id": 1,
 							"tpro_emp_entity_id": 1,
@@ -305,8 +305,8 @@ call bootcamp.createEvaluation(80,
       "btev_week": "1",
       "btev_skor": 4,
       "btev_note": "",
-      "btev_batch_id": 36,
-      "btev_trainee_entity_id": 3
+      "btev_batch_id": 17,
+      "btev_trainee_entity_id": 1
     },
     {
       "btev_type": "softskill",
@@ -316,8 +316,8 @@ call bootcamp.createEvaluation(80,
       "btev_week": "1",
       "btev_skor": 3,
       "btev_note": "",
-      "btev_batch_id": 36,
-      "btev_trainee_entity_id": 3
+      "btev_batch_id": 17,
+      "btev_trainee_entity_id": 1
     }
   ]'
 );
@@ -399,9 +399,11 @@ begin
 end;
 $$;
 
+insert into users.users(user_entity_id,user_first_name,user_last_name) values(3,'Jordy','Saputra');
+
 call bootcamp.createProgramApply('[{
-								 	"prap_user_entity_id": 1,
-								 	"prap_prog_entity_id": 1,
+								 	"prap_user_entity_id": 3,
+								 	"prap_prog_entity_id": 3,
 								 	"prap_test_score": 69,
 								 	"prap_gpa": 69,
 								 	"prap_iq_test": 69,
