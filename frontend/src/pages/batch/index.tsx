@@ -114,7 +114,10 @@ export default function BatchList() {
   const {batches,refresh} = useSelector((state:any)=>state.batchReducers)
   const dispatch = useDispatch()
 
-  const filteredBatch = buttonSelect === 'all' ? batches : batches.filter((item:any) => item.batch_status == buttonSelect)
+  const filteredBatch =
+    buttonSelect === 'all'
+      ? batches
+      : batches.filter((item:any) => item.batch_status == buttonSelect);
 
   const router = useRouter();
   useEffect(()=>{
@@ -232,7 +235,7 @@ export default function BatchList() {
                         </Typography>
                       </div>
                     </td>
-                    
+
                     <td className={classes}>
                       <div className="items-center">
                         <div className="flex -space-x-4 overflow-hidden">

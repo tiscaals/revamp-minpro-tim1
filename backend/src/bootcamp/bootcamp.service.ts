@@ -294,5 +294,65 @@ export class BootcampService {
     }
   }
 
+  async updateProgramApplyProgress(id: number, body: any) {
+    try {
+      const idBody = await program_apply_progress.findOne({where: {
+        parog_user_entity_id: id,
+      }})
+      if (!idBody) throw new Error('Data Tidak diTemukan!!');
+
+      const result = await program_apply_progress.update(
+        {
+          parog_progress_name: body.parog_progress_name
+        },
+        {
+        where: {
+          parog_user_entity_id: id,
+        },
+        returning: true
+      }
+      );
+      return {
+        status: 201,
+        message: 'sukses',
+      };
+      
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async updateProgramApply(id: number, body: any) {
+    // console.log(body)
+    try {
+      const idBody = await program_apply.findOne({where: {
+        prap_user_entity_id: id,
+      }})
+      if (!idBody) throw new Error('Data Tidak diTemukan!!');
+
+      const result = await program_apply.update(
+        {
+          prap_test_score: body.prap_test_score,
+          prap_review: body.prap_review,
+          prap_status: body.prap_status
+        },
+        {
+          where: {
+            prap_user_entity_id: id
+          },
+          returning: true
+        }
+      );
+      return {
+        status: 201,
+        message: 'sukses',
+        body: body
+      };
+
+    } catch (error) {
+      return error.message;
+    }
+  }
+
 }
   

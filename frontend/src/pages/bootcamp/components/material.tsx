@@ -80,7 +80,10 @@ export default function Example() {
               </AccordionHeader>
               <AccordionBody>
                 {item.material.map((dt, index) => (
-                  <div key={index} className='flex gap-3'> <HiCheck/> {dt}</div>
+                  <div key={index} className="flex gap-3">
+                    {' '}
+                    <HiCheck /> {dt}
+                  </div>
                 ))}
               </AccordionBody>
             </Accordion>
