@@ -1,12 +1,21 @@
-// import ActionTypes from "./actionType";
-// // import apimethod from "../../component/api/apimethod";
+import ActionTypes from "./actionType";
 
-// //USER
-// const getAllUserReq = () => {
-//     return{
-//         type: ActionTypes.GET_USERS,
-//     }
-// }
+const getAllBatchesReq = () => {
+    return{
+        type: ActionTypes.REQ_GET_BATCHES,
+    }
+}
+const getAllBatchesRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_GET_BATCHES,
+        payload
+    }
+}
+
+export {
+    getAllBatchesReq,
+    getAllBatchesRes
+}
 
 // const getAllUserRes = (payload:any) => {
 //     return{
@@ -168,35 +177,4 @@
 //         type: ActionTypes.RES_LOGIN,
 //         payload
 //     }
-// }
-
-// export {
-//     //USER
-//     getAllUserReq,
-//     getAllUserRes,
-//     addCustomerReq,
-//     addCustomerRes,
-//     updateCustomerReq,
-//     updateCustomerRes,
-//     deleteUserReq,
-//     deleteUserRes,
-//     updatePasswordReq,
-//     updatePasswordRes,
-//     //PRODUCT
-//     getAllProductReq,
-//     getAllProductRes,
-//     getProductByIdReq,
-//     getProductByIdRes,
-//     addProductReq,
-//     addProductRes,
-//     updateProductReq,
-//     updateProductRes,
-//     deleteProductReq,
-//     deleteProductRes,
-//     //CATEGORY
-//     getAllCategoryReq,
-//     getAllCategoryRes,
-//     //LOGIN
-//     loginReq,
-//     loginRes
 // }

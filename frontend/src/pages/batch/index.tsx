@@ -3,6 +3,7 @@ import {
   ChevronUpDownIcon,
 } from '@heroicons/react/24/outline';
 import { PencilIcon, UserPlusIcon } from '@heroicons/react/24/solid';
+import axios from 'axios';
 import { Menu, Transition } from '@headlessui/react';
 import {
   Card,
@@ -16,9 +17,7 @@ import {
   Tabs,
   TabsHeader,
   Tab,
-  Avatar,
-  IconButton,
-  Tooltip,
+  Avatar
 } from '@material-tailwind/react';
 import {
   HiDotsVertical,
@@ -30,11 +29,18 @@ import {
 } from 'react-icons/hi';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAllBatchesReq } from '../redux/bootcamp-schema/action/actionReducer';
+import { useSelector } from 'react-redux';
 
 const TABS = [
   {
     label: 'All',
-    value: '',
+    value: 'all',
+  },
+  {
+    label: 'Open',
+    value: 'open',
   },
   {
     label: 'Running',
@@ -44,62 +50,78 @@ const TABS = [
     label: 'Closed',
     value: 'closed',
   },
+  {
+    label: 'Pending',
+    value: 'pending',
+  },
+  {
+    label: 'Cancelled',
+    value: 'cancelled',
+  },
 ];
 
 const TABLE_HEAD = [
-  'No',
   'Batch',
   'Technology',
   'Members',
+  'Periode',
   'Trainer',
   'Status',
-  'Periode',
   '',
 ];
 
 const TABLE_ROWS = [
   {
-    batr_name: 'Batch#1',
-    batr_entity_name: 'Node JS ',
+    batch_name: 'Batch#1',
+    prog_title: 'Node JS ',
     img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-    trainer: 'John Michael',
-    cotrainer: '',
+    trainer_names: 'John Michael',
+    cotrainer: 'anu co',
     email: 'john@creative-tim.com',
     org: 'Organization',
-    status: 'running',
-    online: true,
-    date: '18 March 2023',
+    batch_status: 'running',
+    // online: true,
+    batch_start_date: '18 March 2023',
   },
   {
-    batr_name: 'Batch#2',
-    batr_entity_name: '.Net Technology',
+    batch_name: 'Batch#2',
+    prog_title: '.Net Technology',
     img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
-    trainer: 'Alexa Liras',
+    trainer_names: 'Alexa Liras',
+    cotrainer: 'nganu',
     email: 'alexa@creative-tim.com',
     org: 'Developer',
-    status: 'closed',
-    online: false,
-    date: '19 April 2023',
+    batch_status: 'open',
+    // online: false,
+    batch_start_date: '19 April 2023',
   },
   {
-    batr_name: 'Batch#3',
-    batr_entity_name: 'Golang',
+    batch_name: 'Batch#3',
+    prog_title: 'Golang',
     img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
-    trainer: 'Laurent Perrier',
+    trainer_names: 'Laurent Perrier',
+    cotrainer: 'dia co',
     email: 'laurent@creative-tim.com',
     org: 'Projects',
-    status: 'closed',
-    online: false,
-    date: '20 Mei 2023',
+    batch_status: 'closed',
+    // online: false,
+    batch_start_date: '20 Mei 2023',
   },
 ];
 
 export default function BatchList() {
-  const [buttonSelect, setButtonSelect] = useState('')
+  const [buttonSelect, setButtonSelect] = useState('all')
+  const {batches,refresh} = useSelector((state:any)=>state.batchReducers)
+  const dispatch = useDispatch()
 
-  console.log(buttonSelect);
+  const filteredBatch = buttonSelect === 'all' ? batches : batches.filter((item:any) => item.batch_status == buttonSelect)
 
   const router = useRouter();
+  useEffect(()=>{
+    dispatch(getAllBatchesReq())
+  },[buttonSelect])
+
+  
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -128,7 +150,7 @@ export default function BatchList() {
             <TabsHeader>
               {TABS.map(({ label, value }) => (
                 <Tab key={value} value={value} onClick={()=>setButtonSelect(value)}>
-                  &nbsp;&nbsp;{label}&nbsp;&nbsp;
+                  <Typography variant='small' className='px-2'>{label}</Typography>
                 </Tab>
               ))}
             </TabsHeader>
@@ -165,18 +187,19 @@ export default function BatchList() {
             </tr>
           </thead>
           <tbody>
-            {TABLE_ROWS.map(
+            {filteredBatch.length === 0?<tr>
+              <td colSpan={7} className='text-center py-6 text-red-300'>No data found</td>
+            </tr>: filteredBatch.map(
               (
                 {
-                  batr_name,
-                  batr_entity_name,
-                  img,
-                  trainer,
-                  email,
-                  // job,
-                  org,
-                  online,
-                  date,
+                  batch_id,
+                  batch_name,
+                  prog_title,
+                  trainees,
+                  trainers,
+                  batch_status,
+                  batch_start_date,
+                  batch_end_date
                 },
                 index
               ) => {
@@ -186,8 +209,7 @@ export default function BatchList() {
                   : 'p-4 border-b border-blue-gray-50';
 
                 return (
-                  <tr key={trainer}>
-                    <td className={classes}>{index+1}</td>
+                  <tr key={batch_id}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
                         <Typography
@@ -195,7 +217,7 @@ export default function BatchList() {
                           color="blue-gray"
                           className="font-bold"
                         >
-                          {batr_name}
+                          {batch_name}
                         </Typography>
                       </div>
                     </td>
@@ -206,105 +228,82 @@ export default function BatchList() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {batr_entity_name}
+                          {prog_title}
                         </Typography>
                       </div>
                     </td>
+                    
                     <td className={classes}>
                       <div className="items-center">
                         <div className="flex -space-x-4 overflow-hidden">
-                          <Avatar
-                            src={img}
-                            alt={trainer}
+                        {
+                            trainees.map((poto:string)=>(
+                              <Avatar
+                              src={poto.user_photo}
+                              size="sm"
+                              className="inline-block rounded-full ring-2 ring-white"
+                            />
+                            ))
+                          }
+                          {/* {
+                            totaltrainee > 3?
+                            <Avatar
+                            src={`https://ui-avatars.com/api/?name=%2B${totaltrainee-3}&bold=true&color=757575`}
+                            alt={trainer_names}
                             size="sm"
                             className="inline-block rounded-full ring-2 ring-white"
-                          />
-                          <Avatar
-                            src={img}
-                            alt={trainer}
-                            size="sm"
-                            className="inline-block rounded-full ring-2 ring-white"
-                          />
-                          <Avatar
-                            src={img}
-                            alt={trainer}
-                            size="sm"
-                            className="inline-block rounded-full ring-2 ring-white"
-                          />
-                          <Avatar
-                            src={`https://ui-avatars.com/api/?name=%2B5&bold=true&color=757575`}
-                            alt={trainer}
-                            size="sm"
-                            className="inline-block rounded-full ring-2 ring-white"
-                          />
+                          />:''
+                          } */}
                         </div>
                       </div>
                     </td>
                     <td className={classes}>
+                      <div className="flex flex-col">
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {batch_start_date}
+                        </Typography>
+                        <Typography
+                          variant="small"
+                          color="blue-gray"
+                          className="font-normal"
+                        >
+                          {batch_end_date}
+                        </Typography>
+                      </div>
+                    </td>
+                    <td className={classes}>
                       <div className="flex items-center gap-3">
-                        <Avatar src={img} alt={trainer} size="sm" />
                         <div className="flex flex-col">
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {trainer}
+                            {trainers[0].concat}
                           </Typography>
                           <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal opacity-70"
                         >
-                          {/* {} */}
+                          (co) {trainers[1].concat}
                         </Typography>
                         </div>
                       </div>
                     </td>
-                    {/* <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {job}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          {org}
-                        </Typography>
-                      </div>
-                    </td> */}
                     <td className={classes}>
                       <div className="w-max">
                         <Chip
                           variant="ghost"
                           size="sm"
-                          value={online ? 'online' : 'offline'}
-                          color={online ? 'green' : 'blue-gray'}
+                          value={batch_status ? batch_status : 'offline'}
+                          color={batch_status === 'open'  ? 'green' : batch_status === 'running' ? 'yellow' : batch_status === 'closed' ? 'red': batch_status === 'pending'? 'blue': batch_status === 'cancelled'? 'purple': 'indigo'}
+                          // color='blue'
                         />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {date}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {date}
-                        </Typography>
                       </div>
                     </td>
                     <td className={classes}>

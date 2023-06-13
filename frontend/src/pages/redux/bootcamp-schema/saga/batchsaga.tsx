@@ -1,16 +1,20 @@
 import { call, put } from 'redux-saga/effects';
-// import apimethod from '../../api/apimethod'
-// import { addCustomerRes, deleteUserRes, getAllUserRes, updateCustomerRes, updatePasswordRes } from '../action/actionReducer'
+import apiMethod from '../apiMethod';
+import { getAllBatchesReq, getAllBatchesRes } from '../action/actionReducer';
 
-// function* handleGetAllUser():any{
-//     try {
-//         const result = yield call(apimethod.findAllUser)
+function* handleGetAllBatches():any{
+    try {
+        const result = yield call(apiMethod.findAllBatch)
+        // console.log(result);
+        yield put(getAllBatchesRes(result.data))
+    } catch (error) {
+        yield put(getAllBatchesRes({message:error, status:400}))
+    }
+}
 
-//         yield put(getAllUserRes(result.data.result))
-//     } catch (error) {
-//         yield put(getAllUserRes({message:error, status:400}))
-//     }
-// }
+export {
+    handleGetAllBatches
+}
 
 // function* handleAddUser(action:any):any{
 //     try {

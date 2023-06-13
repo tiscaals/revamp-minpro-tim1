@@ -62,9 +62,12 @@ const trainerData: any[] = [
 
 export default function Content() {
   // const divRef = useRef(null);
-  const [checked, setChecked] = useState<number[]>([]);
-  const [selectedPerson, setSelectedPerson] = useState(trainerData[0]);
+  const [checked, setChecked] = useState<any>([]);
+  const [selectedTrainer, setSelectedTrainer] = useState(trainerData[0]);
+  const [selectedCoTrainer, setSelectedCoTrainer] = useState(trainerData[0]);
   const [query, setQuery] = useState('');
+  const [selTechno, setSelTechno] = useState<string>('')
+  const [batchType, setBatchType] = useState<string>('')
 
   const filteredPeople =
     query === ''
@@ -81,18 +84,22 @@ export default function Content() {
 
   const onSubmit = (data: any) => {
     data.namecheck = checked.sort((a, b) => a - b);
+    data.batch_entity_id = selTechno
+    data.batchType = batchType
+    data.trainer = selectedTrainer
+    data.cotrainer = selectedCoTrainer
     console.log(data);
   };
 
-  const activate = (id: number, event: React.ChangeEvent<HTMLInputElement>) => {
+  const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      setChecked([...checked, id]);
+      setChecked([...checked,item]);
     } else {
-      setChecked(checked.filter(item => item !== id));
+      setChecked(checked.filter((it:any) => it.id !== item.id));
     }
   };
 
-  // console.log(query);
+  console.log(checked);
 
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
@@ -108,31 +115,31 @@ export default function Content() {
             <Typography color="gray" className="font-normal mb-5">
               General Information
             </Typography>
-            <Input label="Batch Name" />
+            <Input label="Batch Name" {...register('batch_name')} />
             <div className="flex lg:flex-row flex-col gap-5">
-              <Select label="Technology">
-                <Option>Material Tailwind HTML</Option>
-                <Option>Material Tailwind React</Option>
+              <Select onChange={setSelTechno} label="Technology">
+                <Option value='1'>Material Tailwind HTML</Option>
+                <Option value='2'>Material Tailwind React</Option>
               </Select>
-              <Select label="Type">
-                <Option>Offline</Option>
-                <Option>Online</Option>
-                <Option>Corporate</Option>
+              <Select onChange={setBatchType} label="Type" >
+                <Option value='offline'>Offline</Option>
+                <Option value='online'>Online</Option>
+                <Option value='corporate'>Corporate</Option>
               </Select>
             </div>
             <div className="lg:flex justify-between gap-5">
-              <Textarea label="Description"></Textarea>
+              <Textarea label="Description" {...register('batch_description')} />
             </div>
           </div>
           <div className="lg:w-1/4">
             <Typography color="gray" className="font-normal mb-5">
-              Additional Information
+              Range Date
             </Typography>
             <div>
               <span className="text-sm mr-2 grid content-center">From</span>
               <input
                 type="date"
-                {...register('datefrom')}
+                {...register('batch_start_date')}
                 className=" appearance-none border border-blue-gray-200 rounded-md px-4 py-2 w-full text-gray-600 text-sm focus:outline-none focus:ring-1 focus:ring-light-blue-500 focus:border-light-blue-500"
               />
             </div>
@@ -141,11 +148,10 @@ export default function Content() {
               <span className="text-sm mr-2 grid content-center">To</span>
               <input
                 type="date"
-                {...register('dateto')}
+                {...register('batch_end_date')}
                 className=" appearance-none border border-blue-gray-200 rounded-md px-4 py-2 w-full text-gray-600 text-sm  focus:outline-none focus:ring-1 focus:ring-light-blue-500 focus:border-light-blue-500"
               />
             </div>
-            <Textarea label="Reason" />
           </div>
         </div>
 
@@ -154,7 +160,7 @@ export default function Content() {
             <Typography color="black" className="font-normal mb-2 mt-3">
               Trainer
             </Typography>
-            <Combobox value={selectedPerson} onChange={setSelectedPerson}>
+            <Combobox value={selectedTrainer} onChange={setSelectedTrainer}>
               <div className="relative mt-1">
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                   <Combobox.Input
@@ -229,7 +235,7 @@ export default function Content() {
             <Typography color="black" className="font-normal mb-2 mt-3">
               Co-Trainer
             </Typography>
-            <Combobox value={selectedPerson} onChange={setSelectedPerson}>
+            <Combobox value={selectedCoTrainer} onChange={setSelectedCoTrainer}>
               <div className="relative mt-1">
                 <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
                   <Combobox.Input
@@ -310,9 +316,9 @@ export default function Content() {
             <div className="my-3" key={item.id}>
               <label
                 className={`flex justify-between content-center w-48 cursor-pointer rounded-lg py-3 px-4 font-semibold text-sm uppercase ${
-                  checked.includes(item.id)
-                    ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-md shadow-light-blue-100'
-                    : 'bg-white border border-gray-300 text-light-blue-400 hover:scale-105 transition-transform'
+                  checked.find((i:any) => i.id === item.id)
+                  ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-md shadow-light-blue-100'
+                  : 'bg-white border border-gray-`300 text-light-blue-400 hover:scale-105 transition-transform'
                 }`}
               >
                 <div>
@@ -325,12 +331,9 @@ export default function Content() {
                 <input
                   className="hidden"
                   type="checkbox"
-                  // id={`namecheck${index}`}
-                  value={item.id}
-                  // {...register(`namecheck`)}
-                  onChange={e => activate(item.id, e)}
+                  onChange={e => activate(item, e)}
                 />
-                {checked.includes(item.id) ? (
+                {checked.find((i:any) => i.id === item.id) ? (
                   <div className="text-xl grid content-center">
                     {' '}
                     <HiMinusSm />{' '}
@@ -341,6 +344,11 @@ export default function Content() {
                     <HiPlusSm />{' '}
                   </div>
                 )}
+                {/* {
+                  checked.map(check=>(
+                    check.
+                  ))
+                } */}
               </label>
             </div>
           ))}

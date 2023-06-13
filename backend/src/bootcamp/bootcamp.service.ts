@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateBootcampDto } from './dto/create-bootcamp.dto';
 import { UpdateBootcampDto } from './dto/update-bootcamp.dto';
 import { Sequelize } from 'sequelize-typescript';
-import { program_apply, program_apply_progress } from 'models/bootcamp';
+import { batch, batch_trainee, program_apply, program_apply_progress } from 'models/bootcamp';
 
 @Injectable()
 export class BootcampService {
@@ -29,10 +29,40 @@ export class BootcampService {
 
   async findAllBatch() {
     try {
-      const data = await this.sequelize.query('select * from bootcamp.batch');
+      const batchdata:any = await this.sequelize.query('select * from bootcamp.batchonly');
+      const batchtrainer:any = await this.sequelize.query('select * from bootcamp.batchtrainer');
+      const datatrainee:any = await this.sequelize.query('select * from bootcamp.batchtrainee')
+
+      for(let i in batchdata[0]){
+        const startdate = new Date(batchdata[0][i].batch_start_date)
+        batchdata[0][i].batch_start_date = startdate.toLocaleDateString('en-EN',{
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })
+
+        const enddate = new Date(batchdata[0][i].batch_end_date)
+        batchdata[0][i].batch_end_date = enddate.toLocaleDateString('en-EN',{
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        })
+      }
+
+      const mergedData = batchdata[0].map((batch:any) => {
+        const batchTrainers = batchtrainer[0].filter((trainer:any) => trainer.batch_id === batch.batch_id);
+        const trainees = datatrainee[0].filter((trainee:any) => trainee.batr_batch_id === batch.batch_id);
+        
+        return {
+          ...batch,
+          trainers: batchTrainers,
+          trainees: trainees
+        };
+      });
+
       return {
         message: 'sukses',
-        data: data[0],
+        data: mergedData
       };
     } catch (error) {
       return {
@@ -70,6 +100,7 @@ export class BootcampService {
       let dbTrainees: any = await this.sequelize.query(
         `select * from bootcamp.batch_trainee where batr_batch_id = ${id}`,
       );
+
       dbTrainees = dbTrainees[0];
 
       const { batch, trainee, instructors } = body;
@@ -258,9 +289,6 @@ export class BootcampService {
     try {
       const data = await this.sequelize.query('select * from selecttalent')
       return data[0]
-
-      
-      
     } catch (error) {
       return error
     }
