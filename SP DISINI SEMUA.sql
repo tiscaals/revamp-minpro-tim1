@@ -418,4 +418,6 @@ call bootcamp.createProgramApply('[{
 								 	"parog_emp_entity_id": 1,
 								 	"parog_status": "open"
 								 }]')
-								 
+
+alter table bootcamp.batch
+alter column batch_modified_date type timestamptz default now()

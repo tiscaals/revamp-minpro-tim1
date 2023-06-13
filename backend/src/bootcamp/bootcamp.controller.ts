@@ -87,4 +87,13 @@ export class BootcampController {
     )
   }
 
+  @Get('trainers')
+  findAllTrainers(){
+    return this.bootcampService.getAllTrainers()
+  }
+
+  @Get('programs')
+  findAllPrograms(){
+    return this.bootcampService.getAllPrograms()
+  }
 }
