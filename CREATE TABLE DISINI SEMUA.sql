@@ -150,6 +150,16 @@ join bootcamp.batch_trainee on bootcamp.batch.batch_id = bootcamp.batch_trainee.
 join users.users on users.user_entity_id = batch_trainee.batr_trainee_entity_id
 join curriculum.program_entity on program_entity.prog_entity_id = bootcamp.batch.batch_entity_id
 
+create or replace view bootcamp.batchonly as
+select
+	batch_id,
+	batch_name,
+	prog_title,
+	batch_status,
+	batch_start_date,
+	batch_end_date
+from bootcamp.batch
+join curriculum.program_entity on program_entity.prog_entity_id = batch.batch_entity_id
 
 create or replace view bootcamp.batchtrainer as
 select
