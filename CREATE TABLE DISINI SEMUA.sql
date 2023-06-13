@@ -139,3 +139,22 @@ join bootcamp.batch_trainee on bootcamp.batch.batch_id = bootcamp.batch_trainee.
 join users.users on users.user_entity_id = batch_trainee.batr_trainee_entity_id
 join curriculum.program_entity on program_entity.prog_entity_id = bootcamp.batch.batch_entity_id
 
+
+create or replace view bootcamp.batchtrainer as
+select
+	batch_id,
+	concat(user_first_name,' ',user_last_name),
+	user_photo
+from bootcamp.trainer_programs
+join users.users on users.user_entity_id = tpro_emp_entity_id
+
+create or replace view bootcamp.batchtrainee as
+select
+	batr_batch_id,
+	batch_name,
+	user_photo
+from 
+	users.users
+join bootcamp.batch_trainee on batr_trainee_entity_id = user_entity_id 
+join bootcamp.batch on batch_id = batr_batch_id
+order by batr_batch_id
