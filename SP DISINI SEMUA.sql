@@ -1,4 +1,3 @@
------- CREATE BATCH ------
 create or replace procedure bootcamp.createBatch(in data json, in data2 json, in data3 json)
 language plpgsql
 as 
@@ -6,6 +5,7 @@ $$
 declare
 	batchid int;
 	instructor record;
+	prog_id int;
 begin
 	with result as(
 	insert into bootcamp.batch (
@@ -15,9 +15,7 @@ begin
 		batch_start_date,
 		batch_end_date,
 		batch_status,
-		batch_reason,
 		batch_type,
-		batch_modified_date,
 		batch_pic_id
 	)
 	select
@@ -27,9 +25,7 @@ begin
 		x.batch_start_date,
 		x.batch_end_date,
 		x.batch_status,
-		x.batch_reason,
 		x.batch_type,
-		x.batch_modified_date,
 		x.batch_pic_id
 		
 	from json_to_recordset(data) as x(
@@ -39,120 +35,64 @@ begin
 		batch_start_date date,
 		batch_end_date date,
 		batch_status varchar(15),
-		batch_reason varchar(256),
 		batch_type varchar(15),
-		batch_modified_date timestamptz,
 		batch_pic_id int
 	)
-	returning batch_id
+	returning batch_id,batch_entity_id
 	)
-	select batch_id into batchid from result;
+	select batch_id,batch_entity_id into batchid,prog_id from result;
 	
 	insert into bootcamp.batch_trainee (
-		batr_status,
-		batr_certificated,
-		batr_certificate_link,
-		batr_access_token,
-		batr_access_grant,
-		batr_review,
-		batr_total_Score,
-		batr_modified_date,
 		batr_trainee_entity_id,
 		batr_batch_id
 	)
 	select 
-		y.batr_status,
-		y.batr_certificated,
-		y.batr_certificate_link,
-		y.batr_access_token,
-		y.batr_access_grant,
-		y.batr_review,
-		y.batr_total_Score,
-		y.batr_modified_date,
 		y.batr_trainee_entity_id,
 		batchid
 		
 	from json_to_recordset(data2) as y(
-		batr_status varchar(15),
-		batr_certificated char(1),
-		batr_certificate_link varchar(255),
-		batr_access_token varchar(255),
-		batr_access_grant char(1),
-		batr_review varchar(1024),
-		batr_total_score numeric,
-		batr_modified_date timestamptz,
 		batr_trainee_entity_id int
 	);
 	
 	insert into bootcamp.trainer_programs (
 		batch_id,
 		tpro_entity_id,
-		tpro_emp_entity_id,
-		tpro_modified_date
+		tpro_emp_entity_id
 	)
 	select 
 		batchid,
-		z.tpro_entity_id,
-		z.tpro_emp_entity_id,
-		z.tpro_modified_date
+		tpro_entity_id,
+		z.tpro_emp_entity_id
 	from json_to_recordset(data3) as z(
-		tpro_entity_id int,
-		tpro_emp_entity_id int,
-		tpro_modified_date timestamptz
+		tpro_emp_entity_id int
 	);
 
 end;
 $$;
 
+alter table bootcamp.trainer_programs
+alter column tpro_modified_date set default now()
+
 call bootcamp.createBatch('[{
-							"batch_entity_id": 5,
-							"batch_name": "batch#1",
+							"batch_entity_id": 3,
+							"batch_name": "batch#7",
 							"batch_description": "batch#1description",
 							"batch_start_date": "2023-06-06",
 							"batch_end_date": "2024-06-06",
 							"batch_status": "open",
-							"batch_reason": "ya open aja",
-							"batch_type": "online",
-							"batch_modified_date": "2023-06-06 12:30:00 +00:00",
+							"batch_type": "offline",
 							"batch_pic_id": 1
 						  }]','[{
-						  	"batr_status": "running",
-							"batr_certificated": "0",
-							"batr_certificate_link": "certificate link",
-							"batr_access_token": "access_token",
-							"batr_access_grant": "0",
-							"batr_review": "review#4",
-							"batr_total_score": 92,
-							"batr_modified_date": "2023-06-06 12:30:00 +00:00",
-							"batr_trainee_entity_id": 2
+							"batr_trainee_entity_id": 5
+						  },{
+							"batr_trainee_entity_id": 4
 						  },{
 						  	"batr_status": "running",
-							"batr_certificated": "0",
-							"batr_certificate_link": "certificate link",
-							"batr_access_token": "access_token",
-							"batr_access_grant": "0",
-							"batr_review": "review#4",
-							"batr_total_score": 92,
-							"batr_modified_date": "2023-06-06 12:30:00 +00:00",
-							"batr_trainee_entity_id": 1
-						  },{
-						  	"batr_status": "running",
-							"batr_certificated": "0",
-							"batr_certificate_link": "certificate link",
-							"batr_access_token": "access_token",
-							"batr_access_grant": "0",
-							"batr_review": "review#4",
-							"batr_total_score": 92,
-							"batr_modified_date": "2023-06-06 12:30:00 +00:00",
 							"batr_trainee_entity_id": 3
 						  }]','[{
-						  	"tpro_entity_id": 1,
-							"tpro_emp_entity_id": 1,
-							"tpro_modified_date": "2023-06-06 12:30:00 +00:00"
+							"tpro_emp_entity_id": 1
 						  },{
-						  	"tpro_entity_id": 1,
-							"tpro_emp_entity_id": 2,
-							"tpro_modified_date": "2023-06-06 12:30:00 +00:00"
+							"tpro_emp_entity_id": 2
 						  }]')
 						  
 						  
