@@ -2,9 +2,9 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Input } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import DefaultImage from '../../../public/img/default.jpg';
+import DefaultImage from '../../../../public/img/default.jpg';
 import { useDispatch } from 'react-redux';
-import { doRequestUpdateProfile } from '../redux/users-schema/action/actionReducer';
+import { doRequestUpdateProfile } from '../../redux/users-schema/action/actionReducer';
 
 const EditProfile = (props: any) => {
   type FormValue = {
@@ -127,6 +127,7 @@ const EditProfile = (props: any) => {
                                   'user_name',
                                   editProfileValidation.user_name
                                 )}
+                                autoComplete="off"
                               />
                               <span className="text-sm text-red-600">
                                 {errors?.user_name && errors.user_name.message}
@@ -138,6 +139,7 @@ const EditProfile = (props: any) => {
                                   label="Firstname"
                                   defaultValue={props.profile.user_first_name}
                                   {...register('user_first_name')}
+                                  autoComplete="off"
                                 />
                               </div>
                               <div className=" w-full lg:w-1/2 flex ">
@@ -145,6 +147,7 @@ const EditProfile = (props: any) => {
                                   label="Lastname"
                                   defaultValue={props.profile.user_last_name}
                                   {...register('user_last_name')}
+                                  autoComplete="off"
                                 />
                               </div>
                             </div>

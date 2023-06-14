@@ -1,5 +1,5 @@
 import { call, put } from 'redux-saga/effects';
-import apiMethod from '@/pages/api/apimethod';
+import apiMethod from '@/pages/api/user-api/apimethod';
 import Cookies from 'js-cookie';
 import { doReqLoginResponse } from '../../action/actionReducer';
 

@@ -88,3 +88,48 @@ export const doGetUpdatePasswordResponse = (payload: any) => {
     payload,
   };
 };
+
+//Add Email
+export const doRequestAddEmail = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_EMAIL,
+    payload,
+  };
+};
+
+export const doGetAddEmailResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_EMAIL,
+    payload,
+  };
+};
+
+//Update Email
+export const dotRequestUpdateEmail = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_EMAIL,
+    payload,
+  };
+};
+
+export const doGetUpdateEmailResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_EMAIL,
+    payload,
+  };
+};
+
+//Delete Email
+export const doRequestDeleteEmail = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_EMAIL,
+    payload,
+  };
+};
+
+export const doGetDeleteEmailResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_EMAIL,
+    payload,
+  };
+};

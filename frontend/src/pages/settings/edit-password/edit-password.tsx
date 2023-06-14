@@ -4,7 +4,7 @@ import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
-import { doRequestUpdatePassword } from '../redux/users-schema/action/actionReducer';
+import { doRequestUpdatePassword } from '../../redux/users-schema/action/actionReducer';
 
 const EditPassword = (props: any) => {
   type FormValue = {

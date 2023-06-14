@@ -1,4 +1,4 @@
-import axios from '../config/endpoint';
+import axios from '../../config/endpoint';
 import Cookies from 'js-cookie';
 
 axios.interceptors.request.use((config: any) => {
@@ -59,6 +59,18 @@ const updatePassword = (data: any) => {
   return axios.patch(`/users/update-password/${data.user_entity_id}`, data);
 };
 
+const addEmail = (data: any) => {
+  return axios.post('/users/add-email', data);
+};
+
+const updateEmail = (data: any) => {
+  return axios.patch(`/users/update-email/${data.pmail_id}`, data);
+};
+
+const removeEmail = (id: any) => {
+  return axios.delete(`/users/remove-email/${id}`, id);
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -66,4 +78,7 @@ export default {
   getUsersById,
   updateProfile,
   updatePassword,
+  addEmail,
+  updateEmail,
+  removeEmail,
 };

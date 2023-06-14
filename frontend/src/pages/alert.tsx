@@ -15,7 +15,7 @@ const notifySuccess = (status: any, message: any) => {
 };
 
 const notifyFailed = (status: any, message: any) => {
-  toast.error(`Status Code: ${status} , ${message}`, {
+  toast.error(`${status} , ${message}`, {
     position: 'bottom-left',
     autoClose: 2000,
     hideProgressBar: false,
