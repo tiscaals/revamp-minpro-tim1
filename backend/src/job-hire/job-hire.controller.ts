@@ -24,7 +24,9 @@ export function uploadGambar(): ReturnType<typeof FileInterceptor> {
             throw new Error('Client not found');
           }
 
-          const fileName = `${clit.clit_name}-${file.originalname}`;
+          const randomName = Array(8).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
+
+          const fileName = `${clit.clit_name}-${randomName}-${file.originalname}`;
           cb(null, fileName);
         } catch (error) {
           cb(error);
@@ -40,11 +42,11 @@ export function uploadGambar(): ReturnType<typeof FileInterceptor> {
   });
 }
 
-
 @Controller('job-hire')
 export class JobHireController {
   constructor(private readonly jobHireService: JobHireService) {}
 
+  // JOB POSTING
   @Post()
   @UseInterceptors(uploadGambar())
   createJopo(@Body() createJopo: any, @UploadedFile() image: Multer.File) {
@@ -52,12 +54,17 @@ export class JobHireController {
   }
 
   @Get()
-  findAll(@Body() show:any) {
+  findAllJopo(@Body() show:any) {
     const pagination = show.pagination;
     const search = show.search;
     const filter = show.filter;
     // console.log("limit",+show.pagination.limit, "offset", +show.pagination.offset);
     return this.jobHireService.findAllJopo(pagination, search, filter);
+  }
+
+  @Get('photo')
+  findJopho() {
+    return this.jobHireService.findJopho();
   }
 
   @Get('currnum')
@@ -66,8 +73,8 @@ export class JobHireController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.jobHireService.findOne(+id);
+  findOneJopo(@Param('id') id: string) {
+    return this.jobHireService.findOneJopo(+id);
   }
 
   @Patch(':id')
@@ -76,8 +83,26 @@ export class JobHireController {
     return this.jobHireService.updateJopo(+id, updateJobHireDto, images);
   }
 
-  @Delete(':id')
-  removeJopo(@Param('id') id: string) {
-    return this.jobHireService.removeJopo(+id);
+  @Patch('delete/:id')
+  removeJopoSoft(@Param('id') id: string) {
+    return this.jobHireService.removeJopoSoft(+id);
+  }
+
+  // CLIENT
+  @Post('client')
+  createClient(@Body() createClient: any) {
+    return this.jobHireService.createClient(createClient);
+  }
+
+  @Get('client')
+  findAllClient(@Body() show:any) {
+    const pagination = show.pagination;
+    const search = show.search;
+    return this.jobHireService.findAllClient(pagination, search);
+  }
+
+  @Patch('client/:id')
+  updateClient(@Param('id') id: string, @Body() updateJobHireDto: any) {
+    return this.jobHireService.updateClient(+id, updateJobHireDto);
   }
 }
