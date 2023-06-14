@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Checkbox } from '@material-tailwind/react';
 import Cookies from 'js-cookie';
-import { doReqSignup } from '../redux/action/actionReducer';
+import { doReqSignup } from '../redux/users-schema/action/actionReducer';
 
 const AuthSignUpExternal = () => {
   type FormValue = {
@@ -61,7 +61,7 @@ const AuthSignUpExternal = () => {
   const handleSignUp = async (data: any) => {
     try {
       dispacth(doReqSignup(data));
-  
+
       if (status === 400) {
         setIsError(message);
       } else if (status === 200) {

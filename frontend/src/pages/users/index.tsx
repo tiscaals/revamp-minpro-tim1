@@ -13,7 +13,7 @@ import {
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { UserPlusIcon } from '@heroicons/react/24/solid';
 import BreadcrumbsSlice from '../shared/breadcrumbs';
-import { doRequestGetUser } from '../redux/action/actionReducer';
+import { doRequestGetUser } from '../redux/users-schema/action/actionReducer';
 
 const UserIndex = () => {
   const dispatch = useDispatch();

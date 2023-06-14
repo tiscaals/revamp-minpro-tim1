@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Checkbox } from '@material-tailwind/react';
-import { doReqLogin } from '../redux/action/actionReducer';
+import { doReqLogin } from '../redux/users-schema/action/actionReducer';
 
 const AuthLogin = () => {
   type FormValue = {

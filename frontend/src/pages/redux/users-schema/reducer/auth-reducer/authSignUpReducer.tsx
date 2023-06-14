@@ -1,26 +1,22 @@
-import ActionTypes from '../action/actionType';
+import ActionTypes from '../../action/actionType';
 
 const initialState = {
-  token: [],
   message: '',
   status: 0,
   refresh: '',
 };
 
-function authLoginReducers(state = initialState, action: any) {
+export function authSignUpReducers(state = initialState, action: any) {
   const { type, payload } = action;
   switch (type) {
-    case ActionTypes.GET_LOGIN_RESPONSE:
+    case ActionTypes.RES_GET_SIGNUP:
       return {
         state,
-        token: payload,
         status: payload.status,
         message: payload.message,
-        refresh: true,
+        refresh: false,
       };
     default:
       return state;
   }
 }
-
-export default authLoginReducers;

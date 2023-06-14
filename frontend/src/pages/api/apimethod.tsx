@@ -23,12 +23,6 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-//Users
-const getAllUsers = () => {
-  return axios.get('/users');
-};
-
 //Login
 const authLogin = (data: any) => {
   return axios.post('/auth/signin', data);
@@ -39,8 +33,37 @@ const authSignUp = (data: any) => {
   return axios.post('/auth/signup', data);
 };
 
+//Users
+const getAllUsers = () => {
+  return axios.get('/users');
+};
+
+const getUsersById = (id: any) => {
+  return axios.get(`/users/${id}`);
+};
+
+//Settings
+const updateProfile = (data: any) => {
+  return axios.patch(
+    `/users/update-profile/${data.get('user_entity_id')}`,
+    data,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }
+  );
+};
+
+const updatePassword = (data: any) => {
+  return axios.patch(`/users/update-password/${data.user_entity_id}`, data);
+};
+
 export default {
-  getAllUsers,
   authLogin,
   authSignUp,
+  getAllUsers,
+  getUsersById,
+  updateProfile,
+  updatePassword,
 };

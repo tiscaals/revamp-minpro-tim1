@@ -11,6 +11,7 @@ export default function TopBar({ showNav, setShowNav }: any) {
   const [token, setToken] = useState('');
   const router = useRouter();
 
+  const [user_entity_id, setUserId] = useState('');
   const [user_name, setUserName] = useState('');
 
   const logoutAuth = async (id: any) => {
@@ -39,6 +40,7 @@ export default function TopBar({ showNav, setShowNav }: any) {
     const token = localStorage.getItem('userData');
     if (token) {
       const userData = JSON.parse(token);
+      setUserId(userData.user_entity_id);
       setUserName(userData.user_name);
     }
   });
@@ -80,91 +82,57 @@ export default function TopBar({ showNav, setShowNav }: any) {
             leaveTo="transform opacity-0 scale-95"
           >
             <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-              {token ? (
-                <>
-                  <div className="px-1 py-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          // onClick={()=>{setIsDelete(true); setDataUser(dt)}}
-                          className={`${
-                            active ? 'bg-red-500 text-white' : 'text-gray-900'
-                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                        >
-                          {active ? (
-                            <BsPencilFill
-                              className="mr-2 h-5 w-5 text-red-400"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <BsPencilFill
-                              className="mr-2 h-5 w-5 text-red-400"
-                              aria-hidden="true"
-                            />
-                          )}
-                          Edit Account
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                  <div className="px-1 py-1 ">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          onClick={() => {
-                            localStorage.removeItem('AuthToken');
-                            router.reload();
-                          }}
-                          className={`${
-                            active ? 'bg-blue-500 text-white' : 'text-gray-900'
-                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                        >
-                          {active ? (
-                            <BiLogOutCircle
-                              className="mr-2 h-5 w-5 text-red-400"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <BiLogOutCircle
-                              className="mr-2 h-5 w-5 text-red-400"
-                              aria-hidden="true"
-                            />
-                          )}
-                          Logout
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className="px-1 py-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          onClick={logoutAuth}
-                          className={`${
-                            active ? 'bg-blue-500 text-white' : 'text-gray-900'
-                          } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                        >
-                          {active ? (
-                            <BiLogInCircle
-                              className="mr-2 h-5 w-5 text-white"
-                              aria-hidden="true"
-                            />
-                          ) : (
-                            <BiLogInCircle
-                              className="mr-2 h-5 w-5 text-blue-400"
-                              aria-hidden="true"
-                            />
-                          )}
-                          Logout
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </>
-              )}
+              <>
+                <div className="px-1 py-1">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        // onClick={()=>{setIsDelete(true); setDataUser(dt)}}
+                        onClick={() => router.push('/settings')}
+                        className={`${
+                          active ? 'bg-blue-500 text-white' : 'text-gray-900'
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        {active ? (
+                          <BsPencilFill
+                            className="mr-2 h-5 w-5 text-white-400"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <BsPencilFill
+                            className="mr-2 h-5 w-5 text-blue-400"
+                            aria-hidden="true"
+                          />
+                        )}
+                        Edit Account
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }: any) => (
+                      <button
+                        onClick={logoutAuth}
+                        className={`${
+                          active ? 'bg-blue-500 text-white' : 'text-gray-900'
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        {active ? (
+                          <BiLogInCircle
+                            className="mr-2 h-5 w-5 text-white"
+                            aria-hidden="true"
+                          />
+                        ) : (
+                          <BiLogInCircle
+                            className="mr-2 h-5 w-5 text-blue-400"
+                            aria-hidden="true"
+                          />
+                        )}
+                        Logout
+                      </button>
+                    )}
+                  </Menu.Item>
+                </div>
+              </>
             </Menu.Items>
           </Transition>
         </Menu>

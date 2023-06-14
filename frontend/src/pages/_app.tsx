@@ -4,7 +4,7 @@ import Layout from './shared/layout';
 import { Input, ThemeProvider } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { Provider } from 'react-redux';
-import store from './redux/store';
+import store from './redux/users-schema/store';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();

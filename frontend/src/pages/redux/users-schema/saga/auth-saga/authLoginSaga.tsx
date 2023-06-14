@@ -1,7 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import apiMethod from '@/pages/api/apimethod';
 import Cookies from 'js-cookie';
-import { doReqLoginResponse } from '../action/actionReducer';
+import { doReqLoginResponse } from '../../action/actionReducer';
 
 export function* handleAuthLogin(action: any): any {
   try {
