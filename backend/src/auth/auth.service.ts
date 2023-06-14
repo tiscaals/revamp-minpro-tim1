@@ -11,7 +11,7 @@ import isValidUsernameOrEmail from 'src/helpers/checkUserNameOrEmail';
 export class AuthService {
   constructor(private sequelize: Sequelize) {}
 
-  async findByUsername(user_name: string) {
+  async findByUsername(user_name: string): Promise<any> {
     try {
       const result = await users.findOne({
         attributes: [
@@ -46,7 +46,7 @@ export class AuthService {
     }
   }
 
-  async findByEmail(pmail_address: string) {
+  async findByEmail(pmail_address: string): Promise<any> {
     try {
       const result = await users.findOne({
         attributes: [
@@ -79,7 +79,7 @@ export class AuthService {
     }
   }
 
-  async signIn(signInDto: SignInDto) {
+  async signIn(signInDto: SignInDto): Promise<any> {
     let res: any;
     let result: any;
 
@@ -103,10 +103,10 @@ export class AuthService {
 
       if (!matchPassword) throw new Error('wrong password');
       const token = jwt.sign(
-        { user_name: res.user_name },
+        { user_entity_id: res.user_entity_id, user_name: res.user_name },
         process.env.SECRET_KEY,
         {
-          expiresIn: '24h',
+          expiresIn: '4h',
         },
       );
 
@@ -128,16 +128,16 @@ export class AuthService {
     }
   }
 
-  async signUp(signUpDto: SignUpDto) {
+  async signUp(signUpDto: SignUpDto): Promise<any> {
     try {
       const checkUsername = await users.findAll({
         where: { user_name: signUpDto.user_name },
       });
 
       const checkEmail = await users_email.findAll({
-        where: {pmail_address: signUpDto.pmail_address}
-      })
-    
+        where: { pmail_address: signUpDto.pmail_address },
+      });
+
       if (checkUsername.length > 0 && checkEmail.length > 0) {
         throw new Error('username and email already exist, please try again.');
       } else if (checkUsername.length > 0) {

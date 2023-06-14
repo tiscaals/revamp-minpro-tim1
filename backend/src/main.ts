@@ -14,7 +14,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.useStaticAssets(join(__dirname, '..', '..', 'image'));
+  app.useStaticAssets(join(__dirname, '..', '..', 'public', 'user-image'));
 
   await app.listen(port, () => {
     console.log(`Server run on port ${port}`);
