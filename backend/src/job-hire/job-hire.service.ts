@@ -409,7 +409,5 @@ export class JobHireService {
         return messageHelper(error.message, 400, "Tidak bisa update Client")
     }
   }
-
-  
 }
 
