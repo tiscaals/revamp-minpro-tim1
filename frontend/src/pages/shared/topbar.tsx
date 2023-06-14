@@ -6,13 +6,18 @@ import { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
+import { useDispatch, useSelector } from 'react-redux';
+import defaultImage from '../../../public/img/default.jpg';
+import { doRequestGetProfile } from '../redux/users-schema/action/actionReducer';
 
 export default function TopBar({ showNav, setShowNav }: any) {
-  const [token, setToken] = useState('');
   const router = useRouter();
-
+  const dispatch = useDispatch();
+  const port = 'http://localhost:7300/';
   const [user_entity_id, setUserId] = useState('');
   const [user_name, setUserName] = useState('');
+  const { profile }: any = useSelector((state: any) => state.settingReducers);
+  const [profileImage, setProfileImage] = useState('');
 
   const logoutAuth = async (id: any) => {
     try {
@@ -43,7 +48,17 @@ export default function TopBar({ showNav, setShowNav }: any) {
       setUserId(userData.user_entity_id);
       setUserName(userData.user_name);
     }
-  });
+
+    if (user_entity_id) {
+      dispatch(doRequestGetProfile(user_entity_id));
+    }
+
+    if (profile.user_photo) {
+      setProfileImage(`${port}${profile.user_photo}`);
+    } else {
+      setProfileImage(defaultImage.src);
+    }
+  }, [user_entity_id, profile.user_photo]);
 
   return (
     <div
@@ -62,10 +77,13 @@ export default function TopBar({ showNav, setShowNav }: any) {
         <Menu as="div" className="relative inline-block text-left">
           <div className="flex items-center">
             <Menu.Button className="group flex items-center rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 md:mr-4">
-              <BsPersonCircle
-                className="h-6 w-6 mr-1 text-gray-700 group-hover:text-gray-400 sm:flex"
-                aria-hidden="true"
-              />
+              <picture>
+                <img
+                  src={profileImage}
+                  className="rounded-full h-8 md:mr-4 border-2 border-white shadow-sm"
+                  alt="profile picture"
+                />
+              </picture>
               <BsCaretDownFill
                 className="h-4 w-4 text-gray-700 group-hover:text-gray-400 sm:flex group-aria-pressed:rotate-180"
                 aria-hidden="true"

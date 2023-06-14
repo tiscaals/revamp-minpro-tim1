@@ -124,7 +124,8 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-2">
           <Button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
+            color="amber"
+            className="font-bold py-2 px-4 rounded flex items-center"
             onClick={() => setIsEditProfile(true)}
           >
             <BsPencilFill className="mr-2" />
@@ -141,13 +142,16 @@ const Settings = (props: any) => {
         <div className="md:flex">
           <div className="p-8 flex flex-col">
             <div>
-              <Typography variant="h6">Change Password</Typography>
+              <Typography variant="h6" className="uppercase">
+                Change Password
+              </Typography>
             </div>
           </div>
         </div>
         <div className="flex w-full justify-end pr-10 pb-2">
           <Button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center"
+            color="amber"
+            className="font-bold py-2 px-4 rounded flex items-center"
             onClick={() => setIsEditPassword(true)}
           >
             <BsPencilFill className="mr-2" />
@@ -162,7 +166,8 @@ const Settings = (props: any) => {
           Email
           <div className="flex w-full justify-end pr-10 pb-2">
             <Button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded flex items-center"
+              color="blue"
+              className="font-bold py-2 px-4 rounded flex items-center"
               onClick={() => setIsAddEmail(true)}
             >
               <BsPlusCircleFill />
@@ -173,7 +178,9 @@ const Settings = (props: any) => {
         <div className="lg:flex">
           <div className="p-8 flex flex-col lg:w-1/2">
             <div className="mb-5">
-              <Typography variant="h6">Your Email :</Typography>
+              <Typography variant="h6" className="uppercase">
+                Your Email :
+              </Typography>
             </div>
             <div className="flex flex-col">
               {/* For First Email */}
@@ -189,7 +196,8 @@ const Settings = (props: any) => {
                   <div className="flex items-center ml-auto">
                     <div className="flex flex-col lg:flex-row">
                       <Button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                        color="amber"
+                        className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
                         onClick={() => {
                           setSelectedEmail(profile.users_emails[0]);
                           setIsEditEmail(true);
@@ -226,7 +234,8 @@ const Settings = (props: any) => {
                   <div className="flex items-center ml-auto">
                     <div className="flex flex-col lg:flex-row">
                       <Button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                        color="amber"
+                        className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
                         onClick={() => {
                           setSelectedEmail(profile.users_emails[1]);
                           setIsEditEmail(true);

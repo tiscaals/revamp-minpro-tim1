@@ -19,11 +19,11 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </Provider>
       ) : (
-        <Layout>
-          <Provider store={store}>
+        <Provider store={store}>
+          <Layout>
             <Component {...pageProps} />
-          </Provider>
-        </Layout>
+          </Layout>
+        </Provider>
       )}
     </ThemeProvider>
   );
