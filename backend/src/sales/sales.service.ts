@@ -7,6 +7,14 @@ import { QueryTypes } from 'sequelize';
 @Injectable()
 export class SalesService {
   constructor(private sequelize : Sequelize){}
+
+  //------------------ View Cart Items ---------------------------
+
+  async viewCartItems():Promise<any> {
+    const query = 'select * from sales.viev_cart_items';
+    const result = await this.sequelize.query(query);
+    return result[0];
+  }
   
   //------------------ Insert Cart Items -------------------------
   

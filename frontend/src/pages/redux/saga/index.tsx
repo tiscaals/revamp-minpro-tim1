@@ -1,4 +1,16 @@
 import { takeEvery,all } from "redux-saga/effects";
+import ActionTypes from "../action/actionType";
+import { handleDelCart, handleGetAllCart } from "./salesSaga";
+
+function* watchAll() {
+    yield all([
+        takeEvery(ActionTypes.GET_CART, handleGetAllCart),
+        takeEvery(ActionTypes.DEL_CART, handleDelCart)
+    ])
+}
+
+export default watchAll
+
 // import ActionTypes from "../action/actionType";
 // import { handleAddUser, handleDeleteUser, handleGetAllUser, handleUpdatePassword, handleUpdateUser } from "./userSaga";
 // import { handleAddProduct, handleDeleteProduct, handleGetAllProduct, handleGetProductById, handleUpdateProduct } from "./productSaga";

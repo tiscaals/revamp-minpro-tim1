@@ -1,21 +1,16 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import UserReducers from "../reducer/userReducer";
-import ProductReducers from "../reducer/productReducer";
-import CategoryReducers from "../reducer/categoryReducer";
 import { combineReducers } from "redux";
 import { createLogger } from "redux-logger";
 import createSagaMiddleware from '@redux-saga/core'
 import rootSaga from '../saga/index'
-import LoginReducers from "../reducer/loginReducer";
+import salesReducers from "../reducer/salesReducer";
+
 
 const logger = createLogger()
 const saga = createSagaMiddleware()
 
 const reducer = combineReducers({
-    UserReducers,
-    ProductReducers,
-    CategoryReducers,
-    LoginReducers
+    salesReducers
 })
 
 const store = configureStore({

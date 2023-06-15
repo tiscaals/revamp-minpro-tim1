@@ -26,6 +26,12 @@ export class SalesController {
   findAll() {
     return this.salesService.findAllOrderDetail();
   }
+
+  @Get('view-cart')
+  findAllCart() {
+    return this.salesService.viewCartItems();
+  }
+
   @Get('order-header')
   findAllOrderHeader() {
     return this.salesService.findAllOrderHeader();

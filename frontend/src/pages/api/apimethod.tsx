@@ -1,5 +1,18 @@
 import axios from "../config/endpoint";
 
+const findAllCartItems=()=>{
+    return axios.get("/sales/view-cart")
+}
+
+const deleteCartItems=(id:any)=>{
+    return axios.delete(`/sales/delete-cart/${id}`)
+}
+
+export default {
+    findAllCartItems,
+    deleteCartItems
+}
+
 // axios.interceptors.request.use(
 //     (config) => {
 //       // Retrieve the authorization token from storage
@@ -18,10 +31,7 @@ import axios from "../config/endpoint";
 //     }
 // );
 
-// //USER
-// const findAllUser=()=>{
-//     return axios.get("/customer")
-// }
+
 
 // const createUser=(data:any)=>{
 //     return axios.post("/user", data)

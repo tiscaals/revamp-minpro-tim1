@@ -1,4 +1,4 @@
-// const ActionTypes = {
+const ActionTypes = {
 //     //USER
 //     GET_USERS: 'GET_USERS',
 //     GET_USERS_RES: 'GET_USERS_RES',
@@ -27,6 +27,13 @@
 //     //LOGIN
 //     REQ_LOGIN: 'REQ_LOGIN',
 //     RES_LOGIN: 'RES_LOGIN'
-// }
 
-// export default ActionTypes
+        GET_CART: 'GET_CART',
+        GET_CART_RESPONSE: 'GET_CART_RESPONSE',
+        ADD_CART: 'ADD_CART',
+        ADD_CART_RES: 'ADD_CART_RES',
+        DEL_CART: 'DEL_CART',
+        DEL_CART_RES: 'DEL_CART_RES'
+}
+
+export default ActionTypes

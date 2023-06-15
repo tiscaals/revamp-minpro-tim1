@@ -1,5 +1,42 @@
-// import ActionTypes from "./actionType";
-// // import apimethod from "../../component/api/apimethod";
+import ActionTypes from "./actionType";
+
+const getAllCartReq = () => {
+    return {
+        type: ActionTypes.GET_CART,
+    }
+}
+
+const getAllCartRes = (payload:any) => {
+    return {
+        type: ActionTypes.GET_CART_RESPONSE,
+        payload
+    }
+}
+
+const delCartReq = (id:any) => {
+    return {
+        type: ActionTypes.DEL_CART,
+        id
+    }
+}
+
+const delCartRes = (payload:any) => {
+    return {
+        type: ActionTypes.DEL_CART_RES,
+        payload
+    }
+}
+
+export {
+    getAllCartReq, 
+    getAllCartRes,
+    delCartReq, 
+    delCartRes,
+}
+
+
+
+
 
 // //USER
 // const getAllUserReq = () => {
