@@ -3,9 +3,12 @@ import ActionTypes from '../action/actionType';
 import { handleAuthLogin } from './auth-saga/authLoginSaga';
 import {
   handleAddEmail,
+  handleAddPhoneNumber,
   handleDeleteEmail,
+  handleDeletePhoneNumber,
   handleEditEmail,
   handleEditPassword,
+  handleEditPhoneNumber,
   handleEditProfile,
   handleGetAllUser,
   handleGetProfile,
@@ -30,6 +33,11 @@ function* watchAll() {
     takeEvery(ActionTypes.REQ_ADD_EMAIL, handleAddEmail),
     takeEvery(ActionTypes.REQ_UPDATE_EMAIL, handleEditEmail),
     takeEvery(ActionTypes.REQ_DELETE_EMAIL, handleDeleteEmail),
+
+    //Phone-Number
+    takeEvery(ActionTypes.REQ_ADD_PHONE, handleAddPhoneNumber),
+    takeEvery(ActionTypes.REQ_UPDATE_PHONE, handleEditPhoneNumber),
+    takeEvery(ActionTypes.REQ_DELETE_PHONE, handleDeletePhoneNumber),
   ]);
 }
 

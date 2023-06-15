@@ -2,10 +2,13 @@ import { call, put } from 'redux-saga/effects';
 import apiMethod from '@/pages/api/user-api/apimethod';
 import {
   doGetAddEmailResponse,
+  doGetAddPhoneNumberResponse,
   doGetDeleteEmailResponse,
+  doGetDeletePhoneResponse,
   doGetProfileResponse,
   doGetUpdateEmailResponse,
   doGetUpdatePasswordResponse,
+  doGetUpdatePhoneNumberResponse,
   doGetUpdateProfileResponse,
   doGetUserResponse,
 } from '../../action/actionReducer';
@@ -19,6 +22,7 @@ export function* handleGetAllUser(): any {
   }
 }
 
+// Saga Profile
 export function* handleGetProfile(action: any): any {
   try {
     const result = yield call(apiMethod.getUsersById, action.payload);
@@ -39,6 +43,7 @@ export function* handleEditProfile(action: any): any {
   }
 }
 
+// Saga Edit Password
 export function* handleEditPassword(action: any): any {
   try {
     const result = yield call(apiMethod.updatePassword, action.payload);
@@ -50,6 +55,7 @@ export function* handleEditPassword(action: any): any {
   }
 }
 
+// Saga Profile Email
 export function* handleAddEmail(action: any): any {
   try {
     const result = yield call(apiMethod.addEmail, action.payload);
@@ -77,6 +83,40 @@ export function* handleDeleteEmail(action: any): any {
   } catch (error: any) {
     yield put(
       doGetDeleteEmailResponse({ message: error.message, status: 400 })
+    );
+  }
+}
+
+// Saga Profile Phone Number
+export function* handleAddPhoneNumber(action: any): any {
+  try {
+    const result = yield call(apiMethod.addPhoneNumber, action.payload);
+    yield put(doGetAddPhoneNumberResponse(result.data));
+  } catch (error: any) {
+    yield put(
+      doGetAddPhoneNumberResponse({ message: error.message, status: 400 })
+    );
+  }
+}
+
+export function* handleEditPhoneNumber(action: any): any {
+  try {
+    const result = yield call(apiMethod.updatePhoneNumber, action.payload);
+    yield put(doGetUpdatePhoneNumberResponse(result.data));
+  } catch (error: any) {
+    yield put(
+      doGetUpdatePhoneNumberResponse({ message: error.message, status: 400 })
+    );
+  }
+}
+
+export function* handleDeletePhoneNumber(action: any): any {
+  try {
+    const result = yield call(apiMethod.removePhoneNumber, action.payload);
+    yield put(doGetDeletePhoneResponse(result.data));
+  } catch (error: any) {
+    yield put(
+      doGetDeletePhoneResponse({ message: error.message, status: 400 })
     );
   }
 }

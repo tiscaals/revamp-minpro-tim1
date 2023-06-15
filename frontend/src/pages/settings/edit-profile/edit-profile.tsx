@@ -32,7 +32,7 @@ const EditProfile = (props: any) => {
 
   const [selectedPhotoFile, setSelectedPhotoFile] = useState(null);
   const [selectedPhotoURL, setSelectedPhotoURL] = useState(
-    props.profile.user_photo
+    props.profile?.user_photo
       ? `${port}${props.profile.user_photo}`
       : DefaultImage.src
   );
@@ -113,7 +113,7 @@ const EditProfile = (props: any) => {
                           <div className="col-span-1">
                             <input
                               type="hidden"
-                              defaultValue={props.profile.user_entity_id}
+                              defaultValue={props.profile?.user_entity_id}
                               {...register(
                                 'user_entity_id',
                                 editProfileValidation.user_entity_id
@@ -122,7 +122,7 @@ const EditProfile = (props: any) => {
                             <div className="w-full mt-2 mb-2">
                               <Input
                                 label="Username"
-                                defaultValue={props.profile.user_name}
+                                defaultValue={props.profile?.user_name}
                                 {...register(
                                   'user_name',
                                   editProfileValidation.user_name
@@ -137,7 +137,7 @@ const EditProfile = (props: any) => {
                               <div className="w-full lg:w-1/2 flex mb-2 lg:mb-0">
                                 <Input
                                   label="Firstname"
-                                  defaultValue={props.profile.user_first_name}
+                                  defaultValue={props.profile?.user_first_name}
                                   {...register('user_first_name')}
                                   autoComplete="off"
                                 />
@@ -145,7 +145,7 @@ const EditProfile = (props: any) => {
                               <div className=" w-full lg:w-1/2 flex ">
                                 <Input
                                   label="Lastname"
-                                  defaultValue={props.profile.user_last_name}
+                                  defaultValue={props.profile?.user_last_name}
                                   {...register('user_last_name')}
                                   autoComplete="off"
                                 />
@@ -156,7 +156,7 @@ const EditProfile = (props: any) => {
                               <Input
                                 label="Birthdate"
                                 type="date"
-                                defaultValue={props.profile.user_birth_date}
+                                defaultValue={props.profile?.user_birth_date}
                                 {...register('user_birth_date')}
                               />
                             </div>

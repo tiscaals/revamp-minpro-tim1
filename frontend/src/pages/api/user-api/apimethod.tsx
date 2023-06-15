@@ -71,6 +71,21 @@ const removeEmail = (id: any) => {
   return axios.delete(`/users/remove-email/${id}`, id);
 };
 
+const addPhoneNumber = (data: any) => {
+  return axios.post('/users/add-phone', data);
+};
+
+const updatePhoneNumber = (phone_number: any) => {
+  return axios.patch(
+    `/users/update-phone/${phone_number.uspo_number}`,
+    phone_number
+  );
+};
+
+const removePhoneNumber = (phone_number: any) => {
+  return axios.delete(`/users/remove-phone/${phone_number}`, phone_number);
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -81,4 +96,7 @@ export default {
   addEmail,
   updateEmail,
   removeEmail,
+  addPhoneNumber,
+  updatePhoneNumber,
+  removePhoneNumber,
 };

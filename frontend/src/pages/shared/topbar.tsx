@@ -23,7 +23,7 @@ export default function TopBar({ showNav, setShowNav }: any) {
     try {
       const result = await Swal.fire({
         title: 'logout confirm',
-        text: 'are you sure you want to exit?',
+        text: 'are you sure want to exit?',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -53,12 +53,12 @@ export default function TopBar({ showNav, setShowNav }: any) {
       dispatch(doRequestGetProfile(user_entity_id));
     }
 
-    if (profile.user_photo) {
+    if (profile && profile.user_photo) {
       setProfileImage(`${port}${profile.user_photo}`);
     } else {
       setProfileImage(defaultImage.src);
     }
-  }, [user_entity_id, profile.user_photo]);
+  }, [user_entity_id, profile?.user_photo]);
 
   return (
     <div

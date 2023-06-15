@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import {
   doRequestDeleteEmail,
+  doRequestDeletePhone,
   doRequestGetProfile,
 } from '../redux/users-schema/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +17,8 @@ import { Button, Typography } from '@material-tailwind/react';
 import AddEmail from './email/add-email';
 import Swal from 'sweetalert2';
 import EditEmail from './email/edit-email';
+import AddPhoneNumber from './phone-number/add-phone';
+import EditPhoneNumber from './phone-number/edit-phone';
 
 const Settings = (props: any) => {
   // Fn Core
@@ -30,17 +33,23 @@ const Settings = (props: any) => {
   const [user_entity_id, setUserId]: any = useState('');
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isEditPassword, setIsEditPassword] = useState(false);
+
   const [isAddEmail, setIsAddEmail] = useState(false);
   const [isEditEmail, setIsEditEmail] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState(null);
+
+  const [isAddPhoneNumber, setIsAddPhoneNumber] = useState(false);
+  const [selectedPhone, setSelectedPhone] = useState(null);
+  const [selectedPontyCode, setSelectedPontyCode] = useState(null);
+  const [isEditPhoneNumber, setIsEditPhoneNumber] = useState(false);
   // End State
 
   // Handle Delete Email
-  const handleDeleteEmail = async (id: any) => {
+  const handleDeleteEmail = async (id: any, email: any) => {
     try {
       const result = await Swal.fire({
         title: 'email delete confirm',
-        text: 'are you sure to delete the selected emails?',
+        text: `are you sure to delete the selected emails? ${email}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -61,6 +70,32 @@ const Settings = (props: any) => {
   };
   // End Handle Delete Email
 
+  // Handle Delete Phone Number
+  const handleDeletePhone = async (phone_number: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'phone number delete confirm',
+        text: `are you sure to delete the selected number? ${phone_number}`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      });
+
+      if (result.isConfirmed) {
+        dispatch(doRequestDeletePhone(phone_number));
+      }
+
+      if (user_entity_id) {
+        dispatch(doRequestGetProfile(user_entity_id));
+      }
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
+  // End Handle Delete Phone
+
   useEffect(() => {
     const storedToken = localStorage.getItem('userData');
     if (storedToken) {
@@ -79,7 +114,7 @@ const Settings = (props: any) => {
         } else if (status == 400) {
           notifyFailed('error', message);
         }
-      }, 100);
+      }, 500);
     }
   }, [user_entity_id, refresh]);
 
@@ -209,7 +244,10 @@ const Settings = (props: any) => {
                       <Button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
                         onClick={() => {
-                          handleDeleteEmail(profile.users_emails[0].pmail_id);
+                          handleDeleteEmail(
+                            profile.users_emails[0].pmail_id,
+                            profile.users_emails[0].pmail_address
+                          );
                         }}
                       >
                         <BsTrash3Fill className="mr-2" />
@@ -247,7 +285,10 @@ const Settings = (props: any) => {
                       <Button
                         className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
                         onClick={() => {
-                          handleDeleteEmail(profile.users_emails[1].pmail_id);
+                          handleDeleteEmail(
+                            profile.users_emails[1].pmail_id,
+                            profile.users_emails[1].pmail_address
+                          );
                         }}
                       >
                         <BsTrash3Fill className="mr-2" />
@@ -258,6 +299,130 @@ const Settings = (props: any) => {
                 </div>
               )}
               {/*End First Email */}
+            </div>
+          </div>
+        </div>
+        <div className="flex w-full justify-end pr-10 pb-2"></div>
+      </div>
+
+      {/* Page Phone */}
+      <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
+        <div className="pl-8 mt-8 uppercase tracking-wide text-lg text-indigo-500 font-semibold">
+          Phones
+          <div className="flex w-full justify-end pr-10 pb-2">
+            <Button
+              color="blue"
+              className="font-bold py-2 px-4 rounded flex items-center"
+              onClick={() => setIsAddPhoneNumber(true)}
+            >
+              <BsPlusCircleFill />
+              <span className="ml-2">Add</span>
+            </Button>
+          </div>
+        </div>
+        <div className="lg:flex">
+          <div className="p-8 flex flex-col lg:w-1/2">
+            <div className="mb-5">
+              <Typography variant="h6" className="uppercase">
+                Your Phones :
+              </Typography>
+            </div>
+            <div className="flex flex-col">
+              {/* For PhoneCellular*/}
+              {profile?.users_phones && profile.users_phones.length > 0 && (
+                <div className="flex items-center justify-start">
+                  <Typography variant="h6">
+                    <span className="underline">
+                      {profile?.users_phones && profile.users_phones.length > 0
+                        ? profile.users_phones[0].uspo_number
+                        : ''}
+                    </span>
+                    <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white">
+                      {profile?.users_phones && profile.users_phones.length > 0
+                        ? profile.users_phones[0].uspo_ponty_code
+                        : ''}
+                    </span>
+                  </Typography>
+                  <div className="flex items-center ml-auto">
+                    <div className="flex flex-col lg:flex-row">
+                      <Button
+                        color="amber"
+                        className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                        onClick={() => {
+                          setSelectedPhone(profile.users_phones[0]);
+                          setSelectedPontyCode(
+                            profile.users_phones[0].uspo_ponty_code
+                          );
+                          setIsEditPhoneNumber(true);
+                        }}
+                      >
+                        <BsPencilFill className="mr-2" />
+                        <span>Edit</span>
+                      </Button>
+                      <Button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                        onClick={() => {
+                          handleDeletePhone(
+                            profile.users_phones[0].uspo_number
+                          );
+                        }}
+                      >
+                        <BsTrash3Fill className="mr-2" />
+                        <span>Delete</span>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* End PhoneCellular*/}
+
+              {/* For PhoneHome  */}
+              {profile?.users_phones && profile.users_phones.length > 1 && (
+                <div className="flex items-center justify-start mt-4">
+                  <Typography variant="h6">
+                    <span className="underline">
+                      {profile?.users_phones && profile.users_phones.length > 1
+                        ? profile.users_phones[1].uspo_number
+                        : ''}
+                    </span>
+                    <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white">
+                      {profile?.users_phones && profile.users_phones.length > 1
+                        ? profile.users_phones[1].uspo_ponty_code
+                        : ''}
+                    </span>
+                  </Typography>
+                  <div className="flex items-center ml-auto">
+                    <div className="flex flex-col lg:flex-row">
+                      <Button
+                        color="amber"
+                        className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                        onClick={() => {
+                          setSelectedPhone(profile.users_phones[1]);
+                          setSelectedPontyCode(
+                            profile.users_phones[1].uspo_ponty_code
+                          );
+                          setIsEditPhoneNumber(true);
+                        }}
+                      >
+                        <BsPencilFill className="mr-2" />
+                        <span>Edit</span>
+                      </Button>
+                      <Button
+                        className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                        onClick={() => {
+                          handleDeletePhone(
+                            profile.users_phones[1].uspo_number
+                          );
+                        }}
+                      >
+                        <BsTrash3Fill className="mr-2" />
+                        <span>Delete</span>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/*End PhoneHome */}
             </div>
           </div>
         </div>
@@ -301,6 +466,28 @@ const Settings = (props: any) => {
           profile={profile}
           selectedEmail={selectedEmail}
           closeModal={() => setIsEditEmail(false)}
+        />
+      ) : (
+        ''
+      )}
+
+      {isAddPhoneNumber ? (
+        <AddPhoneNumber
+          show={isAddPhoneNumber}
+          profile={profile}
+          closeModal={() => setIsAddPhoneNumber(false)}
+        />
+      ) : (
+        ''
+      )}
+
+      {isEditPhoneNumber ? (
+        <EditPhoneNumber
+          show={isEditPhoneNumber}
+          profile={profile}
+          selectedPhone={selectedPhone}
+          selectedPontyCode={selectedPontyCode}
+          closeModal={() => setIsEditPhoneNumber(false)}
         />
       ) : (
         ''

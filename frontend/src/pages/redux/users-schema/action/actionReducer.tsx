@@ -133,3 +133,48 @@ export const doGetDeleteEmailResponse = (payload: any) => {
     payload,
   };
 };
+
+//Add Phone Number
+export const doRequestAddPhoneNumber = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_PHONE,
+    payload,
+  };
+};
+
+export const doGetAddPhoneNumberResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_PHONE,
+    payload,
+  };
+};
+
+//Update Phone Number
+export const doRequestUpdatePhoneNumber = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_PHONE,
+    payload,
+  };
+};
+
+export const doGetUpdatePhoneNumberResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_PHONE,
+    payload,
+  };
+};
+
+//Delete Phone Number
+export const doRequestDeletePhone = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_PHONE,
+    payload,
+  };
+};
+
+export const doGetDeletePhoneResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_PHONE,
+    payload,
+  };
+};
