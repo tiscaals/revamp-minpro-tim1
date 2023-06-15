@@ -412,7 +412,7 @@ BEGIN
 		x.jopo_joro_id,
 		x.jopo_joty_id,
 		x.jopo_joca_id,
-		(SELECT clit_addr_id FROM job_hire.client WHERE clit_id = x.jopo_clit_id),
+		x.jopo_addr_id,
 		x.jopo_work_code,
 		x.jopo_edu_code,
 		x.jopo_status,
@@ -485,6 +485,51 @@ $$;
 
 
 ALTER PROCEDURE job_hire.createpostingjob(IN data json, IN data1 json, IN data2 json) OWNER TO postgres;
+
+--
+-- Name: createtalent(json); Type: PROCEDURE; Schema: job_hire; Owner: postgres
+--
+
+CREATE PROCEDURE job_hire.createtalent(IN data json)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+	user_id INT;
+	jopo_id INT;
+BEGIN
+	INSERT INTO job_hire.talent_apply (
+		taap_user_entity_id,
+		taap_entity_id,
+		taap_status
+	)
+	SELECT
+		x.taap_user_entity_id,
+		x.taap_entity_id,
+		'apply'
+	FROM json_to_recordset(data) AS x(
+		taap_user_entity_id INT,
+		taap_entity_id INT,
+		taap_status VARCHAR(15)
+	)
+	RETURNING taap_user_entity_id, taap_entity_id INTO user_id, jopo_id;
+	
+	INSERT INTO job_hire.talent_apply_progress (
+		tapr_taap_user_entity_id,
+		tapr_taap_entity_id,
+		tapr_status,
+		tapr_progress_name
+	)
+	VALUES (
+		user_id,
+		jopo_id,
+		'Open',
+		'Ready Test'
+	);
+END;
+$$;
+
+
+ALTER PROCEDURE job_hire.createtalent(IN data json) OWNER TO postgres;
 
 --
 -- Name: update_jopho_modified_date(); Type: FUNCTION; Schema: job_hire; Owner: postgres
@@ -731,69 +776,6 @@ $$;
 
 
 ALTER PROCEDURE payment.spaccountnumber(IN data1 json, IN data2 json, IN trpa_target_id character varying) OWNER TO postgres;
-
---
--- Name: createtalent(json, json); Type: PROCEDURE; Schema: public; Owner: postgres
---
-
-CREATE PROCEDURE public.createtalent(IN data json, IN data1 json)
-    LANGUAGE plpgsql
-    AS $$
-declare
- user_id INT;
- entity_id INT;
-begin
- WITH result AS (
-	INSERT INTO job_hire.talent_apply (
-		taap_user_entity_id,
-		taap_entity_id,
-		taap_intro,
-		taap_scoring,
-		taap_status
-	)
-	 SELECT
-	 	x.taap_user_entity_id,
-		x.taap_entity_id,
-		x.taap_intro,
-		x.taap_scoring,
-		x.taap_status
-	 FROM json_to_recordset(data) AS x(
-	 	taap_user_entity_id INT,
-		taap_entity_id INT,
-		taap_intro VARCHAR(512),
-		taap_scoring INT,
-		taap_status VARCHAR(15)
-	 )
-	RETURNING taap_user_entity_id, taap_entity_id
- )
- SELECT taap_user_entity_id INTO user_id FROM result;
- SELECT taap_entity_id INTO entity_id FROM result;
- 
- INSERT INTO job_hire.talent_apply_progress (
-  	 tapr_taap_user_entity_id,
-	 tapr_taap_entity_id,
-	 tapr_status,
-	 tapr_comment,
-	 tapr_progress_name
- )
- SELECT 
- 	 user_id,
-	 entity_id,
-	 tapr_status,
-	 tapr_comment,
-	 tapr_progress_name
- FROM json_to_recordset(data1) AS x(
-	 tapr_taap_user_entity_id INT,
-	 tapr_taap_entity_id INT,
-	 tapr_status VARCHAR(15),
-	 tapr_comment VARCHAR(256),
-	 tapr_progress_name VARCHAR(55)
- );
-end;
-$$;
-
-
-ALTER PROCEDURE public.createtalent(IN data json, IN data1 json) OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -1824,7 +1806,7 @@ CREATE TABLE job_hire.talent_apply (
     taap_scoring integer,
     taap_modified_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
     taap_status character varying(15),
-    CONSTRAINT talent_apply_taap_status_check CHECK (((taap_status)::text = ANY ((ARRAY['interview'::character varying, 'failed'::character varying, 'succeed'::character varying])::text[])))
+    CONSTRAINT taap_status_check CHECK (((taap_status)::text = ANY ((ARRAY['apply'::character varying, 'interview'::character varying, 'failed'::character varying, 'succeed'::character varying])::text[])))
 );
 
 
@@ -3325,6 +3307,7 @@ COPY job_hire.client (clit_id, clit_name, clit_about, clit_modified_date, clit_a
 6	Ini Company	Sample About ini company Company	2023-06-12 18:10:14.920273+07	8	2	TECH
 7	PT. Tamariska International	Perusahaannya tama hohoho	2023-06-12 18:21:34.463456+07	10	3	FOOD
 8	PT. CodeX	Semoga ga bangkrut	2023-06-14 14:06:10.343269+07	11	3	TECH
+9	PT. Ipin Upin	Kuala Lumpur	2023-06-15 16:21:08.299223+07	12	1	FASH
 \.
 
 
@@ -3382,6 +3365,7 @@ COPY job_hire.job_photo (jopho_id, jopho_filename, jopho_filesize, jopho_filetyp
 55	PT. Bulan Bintang-cocacola.jpg	7065	jpeg	2023-06-14 11:42:32.077182+07	75
 56	PT. Bulan Bintang-bk.jpg	10322	jpeg	2023-06-14 11:49:05.974867+07	76
 33	PT. Astra International-61a27997-nasiGoreng.jpg	99997	jpeg	2023-06-14 14:51:54.61062+07	50
+57	PT. Bulan Bintang-0ccd61075-bk.jpg	10322	jpeg	2023-06-15 20:14:01.222329+07	78
 \.
 
 
@@ -3414,6 +3398,7 @@ COPY job_hire.job_post (jopo_entity_id, jopo_number, jopo_title, jopo_start_date
 69	JOB#20230614-0019	Fullstack developer 15	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	remove	19	1
 73	JOB#20230614-0023	Fullstack developer 19	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	23	1
 76	JOB#20230614-0026	Graphic Designer 1	2023-07-01	2023-07-31	30000000	40000000	5	9	Adobe Photoshop, Adobe Illustrator	Analytic	2023-06-14	2023-06-14 11:56:47.346393+07	2	4	1	1	1	5	FT	BS	publish	26	0
+78	JOB#20230615-0027	Graphic Designer 1	2023-07-01	2023-07-31	30000000	40000000	5	9	Adobe Photoshop, Adobe Illustrator	Analytic	2023-06-15	2023-06-15 20:14:01.222329+07	2	4	1	1	\N	4	FT	BS	publish	28	1
 72	JOB#20230614-0022	Fullstack developer 18	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	draft	22	1
 74	JOB#20230614-0024	Fullstack developer 20	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	draft	24	1
 \.
@@ -3450,6 +3435,7 @@ COPY job_hire.job_post_desc (jopo_entity_id, jopo_description, jopo_responsibili
 74	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
 75	"Design Graphic tingkat dewa"	\N	{"jopo_min_experience":"5","jopo_primary_skill":"Adobe Photoshop, Adobe Illustrator"}	"Tunjangan ini itu dan lain lain"
 76	"Design Graphic tingkat dewa"	\N	{"jopo_min_experience":"5","jopo_primary_skill":"Adobe Photoshop, Adobe Illustrator"}	"Tunjangan ini itu dan lain lain"
+78	"Design Graphic tingkat dewa"	\N	{"jopo_min_experience":"5","jopo_primary_skill":"Adobe Photoshop, Adobe Illustrator"}	"Tunjangan ini itu dan lain lain"
 \.
 
 
@@ -3458,6 +3444,9 @@ COPY job_hire.job_post_desc (jopo_entity_id, jopo_description, jopo_responsibili
 --
 
 COPY job_hire.talent_apply (taap_user_entity_id, taap_entity_id, taap_intro, taap_scoring, taap_modified_date, taap_status) FROM stdin;
+2	50	This is the introduction	80	2023-06-14 15:42:36.340767+07	apply
+3	51	This is the introduction of user 3	\N	2023-06-14 15:45:30.924854+07	apply
+4	70	\N	\N	2023-06-15 19:08:42.754147+07	apply
 \.
 
 
@@ -3466,6 +3455,9 @@ COPY job_hire.talent_apply (taap_user_entity_id, taap_entity_id, taap_intro, taa
 --
 
 COPY job_hire.talent_apply_progress (tapr_id, tapr_taap_user_entity_id, tapr_taap_entity_id, tapr_modified_date, tapr_status, tapr_comment, tapr_progress_name) FROM stdin;
+5	2	50	2023-06-14 15:42:36.340767+07	Open	Great talent!	Interview
+6	3	51	2023-06-14 15:45:30.924854+07	Open	\N	Ready Test
+12	4	70	2023-06-15 19:08:42.754147+07	Open	\N	Ready Test
 \.
 
 
@@ -3481,6 +3473,7 @@ COPY master.address (addr_id, addr_line1, addr_line2, addr_postal_code, addr_spa
 7	New Address Line 1	New Address Line 2	12345	{"lat": 40.7128, "lng": -74.0060}	2023-06-12 18:06:33.028448+07	5
 10	Perumahan Taman Aloha	Suko, Sukodono	61258	"-6.358948, 106.808810"	2023-06-12 18:21:34.463456+07	1
 11	Jl. Bukit Golf Hijau 131	Babakan Madang	61277	"-6.358948, 106.808810"	2023-06-14 14:06:10.343269+07	4
+12	Jl. coca cola	Suko, Sukodono	61258	"-6.358948, 106.808810"	2023-06-15 16:21:08.299223+07	1
 \.
 
 
@@ -3595,6 +3588,7 @@ Module B
 Module C
 Module D
 Module E
+Job Hire
 \.
 
 
@@ -3616,11 +3610,11 @@ COPY master.province (prov_id, prov_code, prov_name, prov_modified_date, prov_co
 
 COPY master.route_actions (roac_id, roac_name, roac_orderby, roac_display, roac_module_name) FROM stdin;
 1	apply	\N	\N	\N
-2	Action 1	1	1	Module A
-3	Action 2	2	1	Module B
-4	Action 3	3	1	Module C
 5	Action 4	4	1	Module D
 6	Action 5	5	1	Module E
+2	Interview	1	1	Job Hire
+3	Test	2	1	Job Hire
+4	Ready Test	3	1	Job Hire
 \.
 
 
@@ -3651,6 +3645,11 @@ passed	2023-06-08 10:38:45.734767+07
 publish	2023-06-09 02:08:23.645288+07
 draft	2023-06-10 09:56:06.025623+07
 remove	2023-06-13 20:33:47.246301+07
+apply	2023-06-14 15:32:57.271468+07
+interview	2023-06-14 15:33:05.009467+07
+failed	2023-06-14 15:33:13.914179+07
+succeed	2023-06-14 15:33:22.831828+07
+Open	2023-06-14 15:37:26.852124+07
 \.
 
 
@@ -3792,6 +3791,7 @@ COPY users.business_entity (entity_id) FROM stdin;
 74
 75
 76
+78
 \.
 
 
@@ -3996,7 +3996,7 @@ SELECT pg_catalog.setval('hr.employee_department_history_edhi_id_seq', 1, false)
 -- Name: client_clit_id_seq; Type: SEQUENCE SET; Schema: job_hire; Owner: postgres
 --
 
-SELECT pg_catalog.setval('job_hire.client_clit_id_seq', 8, true);
+SELECT pg_catalog.setval('job_hire.client_clit_id_seq', 9, true);
 
 
 --
@@ -4017,7 +4017,7 @@ SELECT pg_catalog.setval('job_hire.job_category_joca_id_seq', 3, true);
 -- Name: job_photo_jopho_id_seq; Type: SEQUENCE SET; Schema: job_hire; Owner: postgres
 --
 
-SELECT pg_catalog.setval('job_hire.job_photo_jopho_id_seq', 56, true);
+SELECT pg_catalog.setval('job_hire.job_photo_jopho_id_seq', 57, true);
 
 
 --
@@ -4031,21 +4031,21 @@ SELECT pg_catalog.setval('job_hire.job_post_jopo_entity_id_seq', 1, false);
 -- Name: job_post_jopo_id_seq; Type: SEQUENCE SET; Schema: job_hire; Owner: postgres
 --
 
-SELECT pg_catalog.setval('job_hire.job_post_jopo_id_seq', 26, true);
+SELECT pg_catalog.setval('job_hire.job_post_jopo_id_seq', 28, true);
 
 
 --
 -- Name: talent_apply_progress_tapr_id_seq; Type: SEQUENCE SET; Schema: job_hire; Owner: postgres
 --
 
-SELECT pg_catalog.setval('job_hire.talent_apply_progress_tapr_id_seq', 1, false);
+SELECT pg_catalog.setval('job_hire.talent_apply_progress_tapr_id_seq', 12, true);
 
 
 --
 -- Name: address_addr_id_seq; Type: SEQUENCE SET; Schema: master; Owner: postgres
 --
 
-SELECT pg_catalog.setval('master.address_addr_id_seq', 11, true);
+SELECT pg_catalog.setval('master.address_addr_id_seq', 12, true);
 
 
 --
@@ -4150,7 +4150,7 @@ SELECT pg_catalog.setval('sales.special_offer_spof_id_seq', 1, false);
 -- Name: business_entity_entity_id_seq; Type: SEQUENCE SET; Schema: users; Owner: postgres
 --
 
-SELECT pg_catalog.setval('users.business_entity_entity_id_seq', 76, true);
+SELECT pg_catalog.setval('users.business_entity_entity_id_seq', 78, true);
 
 
 --
@@ -4488,22 +4488,6 @@ ALTER TABLE ONLY job_hire.talent_apply
 
 ALTER TABLE ONLY job_hire.talent_apply_progress
     ADD CONSTRAINT talent_apply_progress_pkey PRIMARY KEY (tapr_id, tapr_taap_user_entity_id, tapr_taap_entity_id);
-
-
---
--- Name: address address_addr_line1_key; Type: CONSTRAINT; Schema: master; Owner: postgres
---
-
-ALTER TABLE ONLY master.address
-    ADD CONSTRAINT address_addr_line1_key UNIQUE (addr_line1);
-
-
---
--- Name: address address_addr_line2_key; Type: CONSTRAINT; Schema: master; Owner: postgres
---
-
-ALTER TABLE ONLY master.address
-    ADD CONSTRAINT address_addr_line2_key UNIQUE (addr_line2);
 
 
 --
