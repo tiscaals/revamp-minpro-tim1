@@ -362,6 +362,7 @@ CREATE PROCEDURE job_hire.createpostingjob(IN data json, IN data1 json, IN data2
     AS $$
 DECLARE
 	bus_entity_id INT;
+	
 BEGIN
 	WITH result AS (
 		INSERT INTO users.business_entity (entity_id) VALUES (DEFAULT)
@@ -411,7 +412,7 @@ BEGIN
 		x.jopo_joro_id,
 		x.jopo_joty_id,
 		x.jopo_joca_id,
-		x.jopo_addr_id,
+		(SELECT clit_addr_id FROM job_hire.client WHERE clit_id = x.jopo_clit_id),
 		x.jopo_work_code,
 		x.jopo_edu_code,
 		x.jopo_status,
@@ -444,20 +445,20 @@ BEGIN
 	INSERT INTO job_hire.job_post_desc (
 		jopo_entity_id,
 		jopo_description,
-		jopo_responsibility,
+-- 		jopo_responsibility,
 		jopo_target,
 		jopo_benefit
 	)
 	SELECT
 		bus_entity_id,
 		x.jopo_description,
-		x.jopo_responsibility,
+-- 		x.jopo_responsibility,
 		x.jopo_target,
 		x.jopo_benefit
 	FROM json_to_recordset(data1) AS x(
 		jopo_entity_id INT,
 		jopo_description JSON,
-		jopo_responsibility JSON,
+-- 		jopo_responsibility JSON,
 		jopo_target JSON,
 		jopo_benefit JSON
 	);
@@ -537,6 +538,55 @@ $$;
 
 
 ALTER FUNCTION job_hire.update_jopo_publish_date() OWNER TO postgres;
+
+--
+-- Name: updateclient(integer, json, json); Type: PROCEDURE; Schema: job_hire; Owner: postgres
+--
+
+CREATE PROCEDURE job_hire.updateclient(IN id integer, IN data json, IN data1 json)
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+  address_id INT;
+BEGIN
+  SELECT clit_addr_id INTO address_id FROM job_hire.client WHERE clit_id = id;
+
+
+  UPDATE master.address
+  SET
+  	addr_line1 = x.addr_line1,
+    addr_line2 = x.addr_line2,
+    addr_postal_code = x.addr_postal_code,
+    addr_spatial_location = x.addr_spatial_location,
+    addr_city_id = x.addr_city_id
+  FROM json_to_recordset(data) AS x(
+	  addr_line1 varchar(255),
+      addr_line2 varchar(255),
+      addr_postal_code varchar(10),
+      addr_spatial_location json,
+      addr_city_id INT
+  )
+  WHERE addr_id = address_id;
+  
+  UPDATE job_hire.client
+  SET
+    clit_name = x.clit_name,
+    clit_about = x.clit_about,
+    clit_addr_id = address_id,
+    clit_emra_id = x.clit_emra_id,
+    clit_indu_code = x.clit_indu_code
+  FROM json_to_recordset(data1) AS x(
+    clit_name varchar(256),
+    clit_about varchar(512),
+    clit_emra_id int,
+    clit_indu_code varchar(15)
+  )
+  WHERE clit_addr_id = address_id;
+END;
+$$;
+
+
+ALTER PROCEDURE job_hire.updateclient(IN id integer, IN data json, IN data1 json) OWNER TO postgres;
 
 --
 -- Name: updatepostingjob(integer, json, json, json); Type: PROCEDURE; Schema: job_hire; Owner: postgres
@@ -681,6 +731,69 @@ $$;
 
 
 ALTER PROCEDURE payment.spaccountnumber(IN data1 json, IN data2 json, IN trpa_target_id character varying) OWNER TO postgres;
+
+--
+-- Name: createtalent(json, json); Type: PROCEDURE; Schema: public; Owner: postgres
+--
+
+CREATE PROCEDURE public.createtalent(IN data json, IN data1 json)
+    LANGUAGE plpgsql
+    AS $$
+declare
+ user_id INT;
+ entity_id INT;
+begin
+ WITH result AS (
+	INSERT INTO job_hire.talent_apply (
+		taap_user_entity_id,
+		taap_entity_id,
+		taap_intro,
+		taap_scoring,
+		taap_status
+	)
+	 SELECT
+	 	x.taap_user_entity_id,
+		x.taap_entity_id,
+		x.taap_intro,
+		x.taap_scoring,
+		x.taap_status
+	 FROM json_to_recordset(data) AS x(
+	 	taap_user_entity_id INT,
+		taap_entity_id INT,
+		taap_intro VARCHAR(512),
+		taap_scoring INT,
+		taap_status VARCHAR(15)
+	 )
+	RETURNING taap_user_entity_id, taap_entity_id
+ )
+ SELECT taap_user_entity_id INTO user_id FROM result;
+ SELECT taap_entity_id INTO entity_id FROM result;
+ 
+ INSERT INTO job_hire.talent_apply_progress (
+  	 tapr_taap_user_entity_id,
+	 tapr_taap_entity_id,
+	 tapr_status,
+	 tapr_comment,
+	 tapr_progress_name
+ )
+ SELECT 
+ 	 user_id,
+	 entity_id,
+	 tapr_status,
+	 tapr_comment,
+	 tapr_progress_name
+ FROM json_to_recordset(data1) AS x(
+	 tapr_taap_user_entity_id INT,
+	 tapr_taap_entity_id INT,
+	 tapr_status VARCHAR(15),
+	 tapr_comment VARCHAR(256),
+	 tapr_progress_name VARCHAR(55)
+ );
+end;
+$$;
+
+
+ALTER PROCEDURE public.createtalent(IN data json, IN data1 json) OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -1339,23 +1452,120 @@ CREATE TABLE job_hire.employee_range (
 ALTER TABLE job_hire.employee_range OWNER TO postgres;
 
 --
+-- Name: address; Type: TABLE; Schema: master; Owner: postgres
+--
+
+CREATE TABLE master.address (
+    addr_id integer NOT NULL,
+    addr_line1 character varying(255),
+    addr_line2 character varying(255),
+    addr_postal_code character varying(10),
+    addr_spatial_location json,
+    addr_modifed_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    addr_city_id integer
+);
+
+
+ALTER TABLE master.address OWNER TO postgres;
+
+--
+-- Name: city; Type: TABLE; Schema: master; Owner: postgres
+--
+
+CREATE TABLE master.city (
+    city_id integer NOT NULL,
+    city_name character varying(155),
+    city_modified_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    city_prov_id integer
+);
+
+
+ALTER TABLE master.city OWNER TO postgres;
+
+--
+-- Name: country; Type: TABLE; Schema: master; Owner: postgres
+--
+
+CREATE TABLE master.country (
+    country_code character varying(3) NOT NULL,
+    country_name character varying(85),
+    country_modified_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE master.country OWNER TO postgres;
+
+--
+-- Name: industry; Type: TABLE; Schema: master; Owner: postgres
+--
+
+CREATE TABLE master.industry (
+    indu_code character varying(5) NOT NULL,
+    indu_name character varying(85)
+);
+
+
+ALTER TABLE master.industry OWNER TO postgres;
+
+--
+-- Name: province; Type: TABLE; Schema: master; Owner: postgres
+--
+
+CREATE TABLE master.province (
+    prov_id integer NOT NULL,
+    prov_code character varying(5),
+    prov_name character varying(85),
+    prov_modified_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    prov_country_code character varying(3)
+);
+
+
+ALTER TABLE master.province OWNER TO postgres;
+
+--
 -- Name: client_view; Type: VIEW; Schema: job_hire; Owner: postgres
 --
 
 CREATE VIEW job_hire.client_view AS
- SELECT clit.clit_id,
-    clit.clit_name,
-    clit.clit_about,
-    clit.clit_modified_date,
-    clit.clit_addr_id,
-    clit.clit_emra_id,
-    clit.clit_indu_code,
-    emra.emra_id,
-    emra.emra_range_min,
-    emra.emra_range_max,
-    emra.emra_modified_date
-   FROM (job_hire.client clit
-     LEFT JOIN job_hire.employee_range emra ON ((clit.clit_emra_id = emra.emra_id)));
+ SELECT client.clit_id,
+    client.clit_name,
+    client.clit_about,
+    client.clit_modified_date,
+    client.clit_addr_id,
+    client.clit_emra_id,
+    client.clit_indu_code,
+    employee_range.emra_id,
+    employee_range.emra_range_min,
+    employee_range.emra_range_max,
+    employee_range.emra_modified_date,
+    industry.indu_code,
+    industry.indu_name,
+    address.addr_id,
+    address.addr_line1,
+    address.addr_line2,
+    address.addr_postal_code,
+    address.addr_spatial_location,
+    address.addr_modifed_date,
+    address.addr_city_id,
+    city.city_id,
+    city.city_name,
+    city.city_modified_date,
+    city.city_prov_id,
+    province.prov_id,
+    province.prov_code,
+    province.prov_name,
+    province.prov_modified_date,
+    province.prov_country_code,
+    country.country_code,
+    country.country_name,
+    country.country_modified_date
+   FROM ((((((job_hire.client
+     JOIN job_hire.employee_range ON ((client.clit_emra_id = employee_range.emra_id)))
+     JOIN master.industry ON (((client.clit_indu_code)::text = (industry.indu_code)::text)))
+     JOIN master.address ON ((client.clit_addr_id = address.addr_id)))
+     JOIN master.city ON ((address.addr_city_id = city.city_id)))
+     JOIN master.province ON ((city.city_prov_id = province.prov_id)))
+     JOIN master.country ON (((country.country_code)::text = (province.prov_country_code)::text)));
 
 
 ALTER TABLE job_hire.client_view OWNER TO postgres;
@@ -1418,52 +1628,6 @@ ALTER SEQUENCE job_hire.job_category_joca_id_seq OWNED BY job_hire.job_category.
 
 
 --
--- Name: address; Type: TABLE; Schema: master; Owner: postgres
---
-
-CREATE TABLE master.address (
-    addr_id integer NOT NULL,
-    addr_line1 character varying(255),
-    addr_line2 character varying(255),
-    addr_postal_code character varying(10),
-    addr_spatial_location json,
-    addr_modifed_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    addr_city_id integer
-);
-
-
-ALTER TABLE master.address OWNER TO postgres;
-
---
--- Name: city; Type: TABLE; Schema: master; Owner: postgres
---
-
-CREATE TABLE master.city (
-    city_id integer NOT NULL,
-    city_name character varying(155),
-    city_modified_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    city_prov_id integer
-);
-
-
-ALTER TABLE master.city OWNER TO postgres;
-
---
--- Name: job_list_client_view; Type: VIEW; Schema: job_hire; Owner: postgres
---
-
-CREATE VIEW job_hire.job_list_client_view AS
- SELECT client.clit_name,
-    city.city_name,
-    client.clit_id
-   FROM ((job_hire.client
-     LEFT JOIN master.address ON ((client.clit_addr_id = address.addr_id)))
-     LEFT JOIN master.city ON ((address.addr_city_id = city.city_id)));
-
-
-ALTER TABLE job_hire.job_list_client_view OWNER TO postgres;
-
---
 -- Name: job_photo; Type: TABLE; Schema: job_hire; Owner: postgres
 --
 
@@ -1479,6 +1643,21 @@ CREATE TABLE job_hire.job_photo (
 
 
 ALTER TABLE job_hire.job_photo OWNER TO postgres;
+
+--
+-- Name: job_post_jopo_id_seq; Type: SEQUENCE; Schema: job_hire; Owner: postgres
+--
+
+CREATE SEQUENCE job_hire.job_post_jopo_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE job_hire.job_post_jopo_id_seq OWNER TO postgres;
 
 --
 -- Name: job_post; Type: TABLE; Schema: job_hire; Owner: postgres
@@ -1507,7 +1686,7 @@ CREATE TABLE job_hire.job_post (
     jopo_work_code character varying(15),
     jopo_edu_code character varying(15),
     jopo_status character varying(15) NOT NULL,
-    jopo_id integer NOT NULL,
+    jopo_id integer DEFAULT nextval('job_hire.job_post_jopo_id_seq'::regclass) NOT NULL,
     jopo_open character(1) DEFAULT 1 NOT NULL,
     CONSTRAINT job_post_jopo_open_check CHECK ((jopo_open = ANY (ARRAY['0'::bpchar, '1'::bpchar]))),
     CONSTRAINT job_post_jopo_status_check CHECK (((jopo_status)::text = ANY ((ARRAY['publish'::character varying, 'draft'::character varying, 'cancelled'::character varying, 'remove'::character varying])::text[])))
@@ -1532,48 +1711,60 @@ CREATE TABLE job_hire.job_post_desc (
 ALTER TABLE job_hire.job_post_desc OWNER TO postgres;
 
 --
--- Name: job_list_posting_view; Type: VIEW; Schema: job_hire; Owner: postgres
---
-
-CREATE VIEW job_hire.job_list_posting_view AS
- SELECT job_post.jopo_entity_id,
-    job_photo.jopho_filename,
-    job_post.jopo_title,
-    job_post.jopo_min_experience,
-    job_post.jopo_max_experience,
-    job_post.jopo_joro_id,
-    job_post.jopo_joty_id,
-    job_post.jopo_work_code,
-    job_post.jopo_modified_date,
-    job_post.jopo_clit_id
-   FROM ((job_hire.job_post
-     LEFT JOIN job_hire.job_post_desc ON ((job_post.jopo_entity_id = job_post_desc.jopo_entity_id)))
-     LEFT JOIN job_hire.job_photo ON ((job_post.jopo_entity_id = job_photo.jopho_entity_id)))
-  WHERE ((job_post.jopo_open = '1'::bpchar) AND ((job_post.jopo_status)::text = 'publish'::text));
-
-
-ALTER TABLE job_hire.job_list_posting_view OWNER TO postgres;
-
---
 -- Name: job_list_view; Type: VIEW; Schema: job_hire; Owner: postgres
 --
 
 CREATE VIEW job_hire.job_list_view AS
- SELECT v1.jopo_entity_id,
-    v1.jopho_filename,
-    v1.jopo_title,
-    v1.jopo_min_experience,
-    v1.jopo_max_experience,
-    v1.jopo_joro_id,
-    v1.jopo_joty_id,
-    v1.jopo_work_code,
-    v1.jopo_modified_date,
-    v1.jopo_clit_id,
-    v2.clit_name,
-    v2.city_name,
-    v2.clit_id
-   FROM (job_hire.job_list_posting_view v1
-     LEFT JOIN job_hire.job_list_client_view v2 ON ((v1.jopo_clit_id = v2.clit_id)));
+ SELECT jopo.jopo_entity_id,
+    jopo.jopo_number,
+    jopo.jopo_title,
+    jopo.jopo_start_date,
+    jopo.jopo_end_date,
+    jopo.jopo_min_salary,
+    jopo.jopo_max_salary,
+    jopo.jopo_min_experience,
+    jopo.jopo_max_experience,
+    jopo.jopo_primary_skill,
+    jopo.jopo_secondary_skill,
+    jopo.jopo_publish_date,
+    jopo.jopo_clit_id,
+    jopo.jopo_joro_id,
+    jopo.jopo_joty_id,
+    jopo.jopo_joca_id,
+    jopo.jopo_addr_id,
+    jopo.jopo_work_code,
+    jopo.jopo_edu_code,
+    jopo.jopo_status,
+    jopo.jopo_id,
+    jopo.jopo_open,
+    jode.jopo_description,
+    jode.jopo_target,
+    jode.jopo_benefit,
+    jopho.jopho_id,
+    jopho.jopho_filename,
+    jopho.jopho_filesize,
+    jopho.jopho_filetype,
+    clit.clit_id,
+    clit.clit_name,
+    clit.clit_about,
+    clit.clit_addr_id,
+    clit.clit_emra_id,
+    clit.clit_indu_code,
+    addr.addr_id,
+    addr.addr_line1,
+    addr.addr_line2,
+    addr.addr_postal_code,
+    addr.addr_spatial_location,
+    addr.addr_city_id,
+    city.city_id,
+    city.city_name,
+    city.city_prov_id
+   FROM (((((job_hire.job_post jopo
+     JOIN job_hire.job_post_desc jode ON ((jopo.jopo_entity_id = jode.jopo_entity_id)))
+     JOIN job_hire.job_photo jopho ON ((jopo.jopo_entity_id = jopho.jopho_entity_id)))
+     JOIN job_hire.client clit ON ((jopo.jopo_clit_id = clit.clit_id)))
+     JOIN master.address addr ON ((clit.clit_addr_id = addr.addr_id)))
+     JOIN master.city city ON ((addr.addr_city_id = city.city_id)));
 
 
 ALTER TABLE job_hire.job_list_view OWNER TO postgres;
@@ -1620,28 +1811,6 @@ ALTER TABLE job_hire.job_post_jopo_entity_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE job_hire.job_post_jopo_entity_id_seq OWNED BY job_hire.job_post.jopo_entity_id;
-
-
---
--- Name: job_post_jopo_id_seq; Type: SEQUENCE; Schema: job_hire; Owner: postgres
---
-
-CREATE SEQUENCE job_hire.job_post_jopo_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE job_hire.job_post_jopo_id_seq OWNER TO postgres;
-
---
--- Name: job_post_jopo_id_seq; Type: SEQUENCE OWNED BY; Schema: job_hire; Owner: postgres
---
-
-ALTER SEQUENCE job_hire.job_post_jopo_id_seq OWNED BY job_hire.job_post.jopo_id;
 
 
 --
@@ -1817,19 +1986,6 @@ ALTER SEQUENCE master.city_city_id_seq OWNED BY master.city.city_id;
 
 
 --
--- Name: country; Type: TABLE; Schema: master; Owner: postgres
---
-
-CREATE TABLE master.country (
-    country_code character varying(3) NOT NULL,
-    country_name character varying(85),
-    country_modified_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP
-);
-
-
-ALTER TABLE master.country OWNER TO postgres;
-
---
 -- Name: education; Type: TABLE; Schema: master; Owner: postgres
 --
 
@@ -1840,18 +1996,6 @@ CREATE TABLE master.education (
 
 
 ALTER TABLE master.education OWNER TO postgres;
-
---
--- Name: industry; Type: TABLE; Schema: master; Owner: postgres
---
-
-CREATE TABLE master.industry (
-    indu_code character varying(5) NOT NULL,
-    indu_name character varying(85)
-);
-
-
-ALTER TABLE master.industry OWNER TO postgres;
 
 --
 -- Name: job_role; Type: TABLE; Schema: master; Owner: postgres
@@ -1932,21 +2076,6 @@ CREATE TABLE master.modules (
 
 
 ALTER TABLE master.modules OWNER TO postgres;
-
---
--- Name: province; Type: TABLE; Schema: master; Owner: postgres
---
-
-CREATE TABLE master.province (
-    prov_id integer NOT NULL,
-    prov_code character varying(5),
-    prov_name character varying(85),
-    prov_modified_date timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
-    prov_country_code character varying(3)
-);
-
-
-ALTER TABLE master.province OWNER TO postgres;
 
 --
 -- Name: province_prov_id_seq; Type: SEQUENCE; Schema: master; Owner: postgres
@@ -2886,13 +3015,6 @@ ALTER TABLE ONLY job_hire.job_photo ALTER COLUMN jopho_id SET DEFAULT nextval('j
 
 
 --
--- Name: job_post jopo_id; Type: DEFAULT; Schema: job_hire; Owner: postgres
---
-
-ALTER TABLE ONLY job_hire.job_post ALTER COLUMN jopo_id SET DEFAULT nextval('job_hire.job_post_jopo_id_seq'::regclass);
-
-
---
 -- Name: talent_apply_progress tapr_id; Type: DEFAULT; Schema: job_hire; Owner: postgres
 --
 
@@ -3202,6 +3324,7 @@ COPY job_hire.client (clit_id, clit_name, clit_about, clit_modified_date, clit_a
 5	Bukan Company	Sample About bukan company Company	2023-06-12 18:06:33.028448+07	1	2	TECH
 6	Ini Company	Sample About ini company Company	2023-06-12 18:10:14.920273+07	8	2	TECH
 7	PT. Tamariska International	Perusahaannya tama hohoho	2023-06-12 18:21:34.463456+07	10	3	FOOD
+8	PT. CodeX	Semoga ga bangkrut	2023-06-14 14:06:10.343269+07	11	3	TECH
 \.
 
 
@@ -3233,28 +3356,32 @@ COPY job_hire.job_category (joca_id, joca_name, joca_modified_date) FROM stdin;
 --
 
 COPY job_hire.job_photo (jopho_id, jopho_filename, jopho_filesize, jopho_filetype, jopho_modified_date, jopho_entity_id) FROM stdin;
-1	job_photo1.jpg	1024	png	2023-06-09 02:08:28.630485+07	9
-2	job_photo1.jpg	1024	png	2023-06-09 02:08:28.630485+07	9
-3	job_photo1.jpg	1024	jpeg	2023-06-10 07:59:35.725027+07	11
-4	job_photo2.jpg	2048	jpeg	2023-06-10 07:59:35.725027+07	11
-5	job_photo1.jpg	1024	jpeg	2023-06-10 08:50:52.300141+07	15
-6	job_photo2.jpg	2048	jpeg	2023-06-10 08:50:52.300141+07	15
-7	job_photo1.jpg	1024	jpeg	2023-06-10 09:56:12.988318+07	17
-8	job_photo2.jpg	2048	jpeg	2023-06-10 09:56:12.988318+07	17
-9	PT. Astra International-logo-astra.jpg	8684	\N	2023-06-10 11:28:06.32088+07	18
-10	PT. Astra International-kantor1.jpg	27325	\N	2023-06-10 11:28:06.32088+07	18
-11	PT. Astra International-kantor2.jpg	45468	\N	2023-06-10 11:28:06.32088+07	18
-18	job_photo1.jpg	1024	jpeg	2023-06-10 12:33:40.067408+07	29
-19	job_photo2.jpg	2048	jpeg	2023-06-10 12:33:40.067408+07	29
-15	PT. Astra International-topi1.jpg	19778	jpeg	2023-06-10 12:55:01.226584+07	28
-16	PT. Astra International-topi1.jpg	19778	jpeg	2023-06-10 12:55:01.226584+07	28
-17	PT. Astra International-topi1.jpg	19778	jpeg	2023-06-10 12:55:01.226584+07	28
-20	PT. Astra International-kaoswanita2.jpg	88687	jpeg	2023-06-10 16:00:10.081419+07	35
-21	PT. Astra International-kaoswanita1.jpg	120733	jpeg	2023-06-10 16:00:10.081419+07	35
-12	PT. Bulan Bintang-kemejamaroon.jpg	73703	jpeg	2023-06-10 16:16:27.020184+07	26
-13	PT. Bulan Bintang-kemejamaroon.jpg	73703	jpeg	2023-06-10 16:16:27.020184+07	26
-14	PT. Bulan Bintang-kemejamaroon.jpg	73703	jpeg	2023-06-10 16:16:27.020184+07	26
-27	PT. Astra International-20230430_174543.jpg	2419911	jpeg	2023-06-11 01:03:54.492813+07	42
+31	PT. Astra International-logo-astra.jpg	8684	jpeg	2023-06-14 00:36:41.034837+07	47
+32	PT. Astra International-logo-astra.jpg	8684	jpeg	2023-06-14 11:10:03.248234+07	49
+34	PT. Bulan Bintang-logo-sogu.jpg	17649	jpeg	2023-06-14 11:16:24.90744+07	51
+35	PT. Bulan Bintang-fcb.jpg	9643	jpeg	2023-06-14 11:29:51.145924+07	52
+36	PT. Bulan Bintang-sbucks.jpg	11111	jpeg	2023-06-14 11:30:04.192781+07	53
+37	PT. Bulan Bintang-samsung.jpg	7096	jpeg	2023-06-14 11:30:19.264269+07	54
+38	PT. Bulan Bintang-hp.jpg	5799	jpeg	2023-06-14 11:30:34.186723+07	55
+39	PT. Bulan Bintang-pln.jpg	4771	jpeg	2023-06-14 11:31:29.818558+07	58
+40	PT. Bulan Bintang-bk.jpg	10322	jpeg	2023-06-14 11:31:46.007006+07	59
+41	PT. Bulan Bintang-cocacola.jpg	7065	jpeg	2023-06-14 11:32:04.739375+07	60
+42	PT. Bulan Bintang-mu.jpg	13520	jpeg	2023-06-14 11:32:25.87459+07	61
+43	PT. Bulan Bintang-bmw.jpg	5888	jpeg	2023-06-14 11:32:44.201761+07	62
+44	PT. Bulan Bintang-volkswagen.jpg	10827	jpeg	2023-06-14 11:32:58.55103+07	63
+45	PT. Bulan Bintang-volkswagen.jpg	10827	jpeg	2023-06-14 11:33:16.349916+07	64
+46	PT. Bulan Bintang-bmw.jpg	5888	jpeg	2023-06-14 11:33:30.533241+07	65
+47	PT. Bulan Bintang-mu.jpg	13520	jpeg	2023-06-14 11:33:44.08926+07	66
+48	PT. Bulan Bintang-cocacola.jpg	7065	jpeg	2023-06-14 11:34:44.277671+07	68
+49	PT. Bulan Bintang-bk.jpg	10322	jpeg	2023-06-14 11:34:57.574321+07	69
+50	PT. Bulan Bintang-pln.jpg	4771	jpeg	2023-06-14 11:35:12.79258+07	70
+51	PT. Bulan Bintang-hp.jpg	5799	jpeg	2023-06-14 11:35:25.123943+07	71
+52	PT. Bulan Bintang-samsung.jpg	7096	jpeg	2023-06-14 11:35:37.70192+07	72
+53	PT. Bulan Bintang-sbucks.jpg	11111	jpeg	2023-06-14 11:35:50.344075+07	73
+54	PT. Bulan Bintang-fcb.jpg	9643	jpeg	2023-06-14 11:36:04.896774+07	74
+55	PT. Bulan Bintang-cocacola.jpg	7065	jpeg	2023-06-14 11:42:32.077182+07	75
+56	PT. Bulan Bintang-bk.jpg	10322	jpeg	2023-06-14 11:49:05.974867+07	76
+33	PT. Astra International-61a27997-nasiGoreng.jpg	99997	jpeg	2023-06-14 14:51:54.61062+07	50
 \.
 
 
@@ -3263,19 +3390,32 @@ COPY job_hire.job_photo (jopho_id, jopho_filename, jopho_filesize, jopho_filetyp
 --
 
 COPY job_hire.job_post (jopo_entity_id, jopo_number, jopo_title, jopo_start_date, jopo_end_date, jopo_min_salary, jopo_max_salary, jopo_min_experience, jopo_max_experience, jopo_primary_skill, jopo_secondary_skill, jopo_publish_date, jopo_modified_date, jopo_emp_entity_id, jopo_clit_id, jopo_joro_id, jopo_joty_id, jopo_joca_id, jopo_addr_id, jopo_work_code, jopo_edu_code, jopo_status, jopo_id, jopo_open) FROM stdin;
-9	J001	UI/UX Designer	2023-06-01	2023-06-30	300000	800000	0	3	Figma	Adobe	2023-05-31	2023-06-09 02:08:28.630485+07	2	3	1	1	1	4	FT	BS	publish	1	1
-11	J005	Software Engineer	2023-06-01	2023-06-30	50000	80000	2	5	Java	SQL	2023-05-31	2023-06-10 07:59:35.725027+07	2	3	1	1	1	4	FT	BS	publish	3	1
-42	J054	Jadi leader bukan ketua	2023-07-01	2023-07-31	1000000	10000000	4	7	JavaScript	SQL	\N	2023-06-11 01:03:54.492813+07	2	3	1	1	1	4	PT	BS	draft	31	0
-15	J006	Software Engineer	2023-06-01	2023-06-30	50000	80000	2	5	Java	SQL	2023-06-10	2023-06-10 08:50:52.300141+07	2	3	1	1	1	4	FT	BS	publish	6	1
-17	J007	Software Engineer	2023-06-01	2023-06-30	50000	80000	2	5	Java	SQL	2023-06-10	2023-06-10 09:56:12.988318+07	2	3	1	1	1	4	FT	BS	publish	8	1
-18	J008	Node JS Developer	2023-07-01	2023-07-31	1000000	10000000	4	7	JavaScript	SQL	\N	2023-06-10 11:28:06.32088+07	2	3	1	1	1	4	PT	BS	draft	9	0
-20	J009	Node JS Developer	2023-07-01	2023-07-31	1000000	10000000	4	7	JavaScript	SQL	\N	2023-06-10 11:41:40.103672+07	2	3	1	1	1	4	PT	BS	draft	11	0
-24	J010	Node JS Developer	2023-07-01	2023-07-31	1000000	10000000	4	7	JavaScript	SQL	\N	2023-06-10 11:45:44.239043+07	2	3	1	1	1	4	PT	BS	draft	15	0
-29	J013	Software Engineer	2023-06-01	2023-06-30	50000	80000	2	5	Java	SQL	\N	2023-06-10 12:33:40.067408+07	2	3	1	1	1	4	FT	BS	draft	20	1
-28	J012	Update JS Developer	2023-07-01	2023-07-31	5000000	50000000	8	10	SQL	JavaScript	2023-06-10	2023-06-10 12:55:01.226584+07	2	3	1	1	1	4	FT	BS	publish	19	1
-35	J050	Express JS Developer	2023-07-01	2023-07-31	1000000	10000000	4	7	JavaScript	SQL	\N	2023-06-10 16:00:10.081419+07	2	3	1	1	1	4	PT	BS	draft	26	0
-26	J011	Update JS Developer	2023-07-01	2023-07-31	5000000	50000000	8	10	SQL	JavaScript	2023-06-10	2023-06-10 16:16:27.020184+07	2	4	1	1	1	4	FT	BS	publish	17	1
-36	J049	Ketua kelompok lucknut	2023-07-01	2023-07-31	1000000	8000000	8	10	Tupperware	Hijau	2023-06-10	2023-06-10 23:26:58.713963+07	2	3	1	1	1	4	FT	BS	publish	27	1
+49	JOB#20230614-0002	UI/UX Designer	2023-07-01	2023-07-31	500000	1000000	0	2	FIgma	Adobe	2023-06-14	2023-06-14 11:56:47.346393+07	2	3	2	2	2	4	PT	BS	publish	2	0
+51	JOB#20230614-0004	Fullstack developer	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:56:47.346393+07	2	4	1	1	1	5	FT	BS	publish	4	0
+71	JOB#20230614-0021	Fullstack developer 17	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:56:47.346393+07	2	4	1	1	1	5	FT	BS	publish	21	0
+50	JOB#20230614-0003	Guru Bahasa Inggris	2023-07-01	2023-07-31	1000000	8000000	8	10	Bahasa Inggris, Bahasa Indonesia	Bahasa Jepang	2023-06-14	2023-06-14 14:51:54.61062+07	2	3	1	1	1	4	FT	BS	publish	3	1
+47	JOB#20230613-0001	Node JS Developer	2023-07-01	2023-07-31	1000000	10000000	0	2	JavaScript	SQL	2023-06-14	2023-06-14 00:37:31.732233+07	2	3	1	1	1	4	FT	BS	remove	1	0
+52	JOB#20230614-0005	Fullstack developer 1	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:29:51.145924+07	2	4	1	1	1	5	FT	BS	publish	5	1
+53	JOB#20230614-0006	Fullstack developer 2	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:30:04.192781+07	2	4	1	1	1	5	FT	BS	publish	6	1
+54	JOB#20230614-0007	Fullstack developer 3	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:30:19.264269+07	2	4	1	1	1	5	FT	BS	publish	7	1
+55	JOB#20230614-0008	Fullstack developer 4	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:30:34.186723+07	2	4	1	1	1	5	FT	BS	publish	8	1
+75	JOB#20230614-0025	Graphic Designer	2023-07-01	2023-07-31	30000000	40000000	5	9	Adobe Photoshop, Adobe Illustrator	Analytic	2023-06-14	2023-06-14 11:42:32.077182+07	2	4	1	1	1	5	FT	BS	publish	25	1
+58	JOB#20230614-0009	Fullstack developer 5	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	9	1
+59	JOB#20230614-0010	Fullstack developer 6	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	10	1
+61	JOB#20230614-0012	Fullstack developer 8	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	12	1
+63	JOB#20230614-0014	Fullstack developer 10	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	14	1
+64	JOB#20230614-0015	Fullstack developer 11	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	15	1
+65	JOB#20230614-0016	Fullstack developer 12	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	16	1
+66	JOB#20230614-0017	Fullstack developer 13	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	17	1
+70	JOB#20230614-0020	Fullstack developer 16	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	20	1
+60	JOB#20230614-0011	Fullstack developer 7	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	draft	11	1
+62	JOB#20230614-0013	Fullstack developer 9	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	remove	13	1
+68	JOB#20230614-0018	Fullstack developer 14	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	remove	18	1
+69	JOB#20230614-0019	Fullstack developer 15	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	remove	19	1
+73	JOB#20230614-0023	Fullstack developer 19	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:42:45.242956+07	2	4	1	1	1	5	FT	BS	publish	23	1
+76	JOB#20230614-0026	Graphic Designer 1	2023-07-01	2023-07-31	30000000	40000000	5	9	Adobe Photoshop, Adobe Illustrator	Analytic	2023-06-14	2023-06-14 11:56:47.346393+07	2	4	1	1	1	5	FT	BS	publish	26	0
+72	JOB#20230614-0022	Fullstack developer 18	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	draft	22	1
+74	JOB#20230614-0024	Fullstack developer 20	2023-07-01	2023-07-31	30000000	40000000	7	10	HTML, Javascript, CSS	Design	2023-06-14	2023-06-14 11:54:30.690251+07	2	4	1	1	1	5	FT	BS	draft	24	1
 \.
 
 
@@ -3284,19 +3424,32 @@ COPY job_hire.job_post (jopo_entity_id, jopo_number, jopo_title, jopo_start_date
 --
 
 COPY job_hire.job_post_desc (jopo_entity_id, jopo_description, jopo_responsibility, jopo_target, jopo_benefit) FROM stdin;
-9	"This is a job description update."	"These are the job responsibilities update."	"This is the target for the job update."	"These are the job benefits update."
-11	"This is a job description."	"These are the job responsibilities."	"This is the target for the job."	"These are the job benefits."
-15	"This is a job description."	"These are the job responsibilities."	"This is the target for the job."	"These are the job benefits."
-17	"This is a job description."	"These are the job responsibilities."	"This is the target for the job."	"These are the job benefits."
-18	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"4","jopo_primary_skill":"JavaScript"}	"Dapat makan, Main sama jaki"
-20	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"4","jopo_primary_skill":"JavaScript"}	"Dapat makan, Main sama jaki"
-24	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"4","jopo_primary_skill":"JavaScript"}	"Dapat makan, Main sama jaki"
-29	"This is a job description."	"These are the job responsibilities."	"This is the target for the job."	"These are the job benefits."
-28	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"8","jopo_primary_skill":"SQL"}	"Dapat makan, Main sama jaki"
-35	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"4","jopo_primary_skill":"JavaScript"}	"Dapat makan, Main sama jaki"
-26	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"8","jopo_primary_skill":"SQL"}	"Dapat makan, Main sama jaki"
-36	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"8","jopo_primary_skill":"Tupperware"}	"Dapat makan, Main sama jaki"
-42	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"4","jopo_primary_skill":"JavaScript"}	"Dapat makan, Main sama jaki"
+50	"Mengajar Bahasa"	\N	{"jopo_min_experience":"8","jopo_primary_skill":"Bahasa Inggris, Bahasa Indonesia"}	"Dapat makan, Main sama jaki"
+47	"Membuat program job_hire"	"Menjadi ketua sok sibuk"	{"jopo_min_experience":"0","jopo_primary_skill":"JavaScript"}	"Dapat makan, Main sama jaki"
+49	"Membuat design mockup"	\N	{"jopo_min_experience":"0","jopo_primary_skill":"FIgma"}	"Tunjangan ini itu"
+51	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+52	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+53	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+54	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+55	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+58	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+59	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+60	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+61	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+62	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+63	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+64	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+65	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+66	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+68	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+69	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+70	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+71	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+72	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+73	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+74	"Membuat basic html"	\N	{"jopo_min_experience":"7","jopo_primary_skill":"HTML, Javascript, CSS"}	"Tunjangan ini itu dan lain lain"
+75	"Design Graphic tingkat dewa"	\N	{"jopo_min_experience":"5","jopo_primary_skill":"Adobe Photoshop, Adobe Illustrator"}	"Tunjangan ini itu dan lain lain"
+76	"Design Graphic tingkat dewa"	\N	{"jopo_min_experience":"5","jopo_primary_skill":"Adobe Photoshop, Adobe Illustrator"}	"Tunjangan ini itu dan lain lain"
 \.
 
 
@@ -3324,9 +3477,10 @@ COPY master.address (addr_id, addr_line1, addr_line2, addr_postal_code, addr_spa
 1	jalan garuda1212	jalan rajawali1212	88880	"antara jalan garuda dan rajawali"	2023-05-27 20:56:26.835595+07	1
 4	123 Main Street	Apt 4	12345	{"lat": 40.123, "lng": -74.567}	2023-06-09 01:28:12.012718+07	1
 5	456 Elm Street	\N	67890	{"lat": 40.456, "lng": -74.890}	2023-06-09 01:28:12.012718+07	4
-7	Sample Address 1	Sample Address 2	54321	{"lat": 123.456, "lng": 789.012}	2023-06-12 18:06:33.028448+07	1
 8	Sample Address 3	Sample Address 4	54322	{"lat": 123.456, "lng": 789.012}	2023-06-12 18:10:14.920273+07	1
+7	New Address Line 1	New Address Line 2	12345	{"lat": 40.7128, "lng": -74.0060}	2023-06-12 18:06:33.028448+07	5
 10	Perumahan Taman Aloha	Suko, Sukodono	61258	"-6.358948, 106.808810"	2023-06-12 18:21:34.463456+07	1
+11	Jl. Bukit Golf Hijau 131	Babakan Madang	61277	"-6.358948, 106.808810"	2023-06-14 14:06:10.343269+07	4
 \.
 
 
@@ -3425,8 +3579,8 @@ COPY master.job_role (joro_id, joro_name, joro_modified_date) FROM stdin;
 --
 
 COPY master.job_type (joty_id, joty_name) FROM stdin;
-1	Remote
-2	Onsite
+1	Onsite
+2	Remote
 \.
 
 
@@ -3496,6 +3650,7 @@ COPY master.status (status, status_modified_date) FROM stdin;
 passed	2023-06-08 10:38:45.734767+07
 publish	2023-06-09 02:08:23.645288+07
 draft	2023-06-10 09:56:06.025623+07
+remove	2023-06-13 20:33:47.246301+07
 \.
 
 
@@ -3611,6 +3766,32 @@ COPY users.business_entity (entity_id) FROM stdin;
 44
 45
 46
+47
+49
+50
+51
+52
+53
+54
+55
+58
+59
+60
+61
+62
+63
+64
+65
+66
+68
+69
+70
+71
+72
+73
+74
+75
+76
 \.
 
 
@@ -3815,7 +3996,7 @@ SELECT pg_catalog.setval('hr.employee_department_history_edhi_id_seq', 1, false)
 -- Name: client_clit_id_seq; Type: SEQUENCE SET; Schema: job_hire; Owner: postgres
 --
 
-SELECT pg_catalog.setval('job_hire.client_clit_id_seq', 7, true);
+SELECT pg_catalog.setval('job_hire.client_clit_id_seq', 8, true);
 
 
 --
@@ -3836,7 +4017,7 @@ SELECT pg_catalog.setval('job_hire.job_category_joca_id_seq', 3, true);
 -- Name: job_photo_jopho_id_seq; Type: SEQUENCE SET; Schema: job_hire; Owner: postgres
 --
 
-SELECT pg_catalog.setval('job_hire.job_photo_jopho_id_seq', 30, true);
+SELECT pg_catalog.setval('job_hire.job_photo_jopho_id_seq', 56, true);
 
 
 --
@@ -3850,7 +4031,7 @@ SELECT pg_catalog.setval('job_hire.job_post_jopo_entity_id_seq', 1, false);
 -- Name: job_post_jopo_id_seq; Type: SEQUENCE SET; Schema: job_hire; Owner: postgres
 --
 
-SELECT pg_catalog.setval('job_hire.job_post_jopo_id_seq', 35, true);
+SELECT pg_catalog.setval('job_hire.job_post_jopo_id_seq', 26, true);
 
 
 --
@@ -3864,7 +4045,7 @@ SELECT pg_catalog.setval('job_hire.talent_apply_progress_tapr_id_seq', 1, false)
 -- Name: address_addr_id_seq; Type: SEQUENCE SET; Schema: master; Owner: postgres
 --
 
-SELECT pg_catalog.setval('master.address_addr_id_seq', 10, true);
+SELECT pg_catalog.setval('master.address_addr_id_seq', 11, true);
 
 
 --
@@ -3969,7 +4150,7 @@ SELECT pg_catalog.setval('sales.special_offer_spof_id_seq', 1, false);
 -- Name: business_entity_entity_id_seq; Type: SEQUENCE SET; Schema: users; Owner: postgres
 --
 
-SELECT pg_catalog.setval('users.business_entity_entity_id_seq', 46, true);
+SELECT pg_catalog.setval('users.business_entity_entity_id_seq', 76, true);
 
 
 --
