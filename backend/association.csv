@@ -2,3 +2,4 @@
 1:N, user_entity_id, usro_entity_id, users, users_roles
 1:N, role_id, usro_role_id, roles, users_roles
 1:N, user_entity_id, uspo_entity_id, users, users_phones
+1:N, ponty_code, uspo_ponty_code, phone_number_type, users_phones

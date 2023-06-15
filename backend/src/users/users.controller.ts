@@ -13,9 +13,16 @@ import {
 } from '@nestjs/common';
 import * as fs from 'fs-extra';
 import { UsersService } from './users.service';
-import { UpdatePasswordDto, UpdateUserDto } from './dto/update-user.dto';
+import {
+  UpdateEmailDto,
+  UpdatePasswordDto,
+  UpdatePhoneNumberDto,
+  UpdateUserDto,
+} from './dto/update-user.dto';
 import { AuthGuard } from 'src/midleware/auth-guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateEmailDto, CreatePhoneNumberDto } from './dto/create-user.dto';
+import { phone_number_type } from 'models';
 
 const fileUploadInterceptor = FileInterceptor('user_photo', {
   storage: diskStorage({
@@ -48,17 +55,21 @@ const fileUploadInterceptor = FileInterceptor('user_photo', {
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  //Controller Get Users
   @UseGuards(AuthGuard)
   @Get()
   GetUsers() {
     return this.usersService.getUsers();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   GetUsersById(@Param('id') id: string) {
     return this.usersService.getUsersById(+id);
   }
 
+  // Controller Update Profile
+  @UseGuards(AuthGuard)
   @Patch('/update-profile/:id')
   @UseInterceptors(fileUploadInterceptor)
   UpdateProfile(
@@ -77,6 +88,8 @@ export class UsersController {
     return this.usersService.updateProfile(+id, updateUserDto);
   }
 
+  //Controller Profile Edit Password
+  @UseGuards(AuthGuard)
   @Patch('/update-password/:id')
   UpdatePassword(
     @Param('id') id: string,
@@ -85,8 +98,47 @@ export class UsersController {
     return this.usersService.updatePassword(+id, updatePasswordDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  //Controller Profile Email
+  @UseGuards(AuthGuard)
+  @Post('/add-email')
+  AddEmail(@Body() createEmailDto: CreateEmailDto) {
+    return this.usersService.addEmailProfile(createEmailDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('/update-email/:id')
+  UpdateEmail(@Param('id') id: string, @Body() updateEmailDto: UpdateEmailDto) {
+    return this.usersService.updateEmailProfile(+id, updateEmailDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('/remove-email/:id')
+  RemoveEmailProfile(@Param('id') id: string) {
+    return this.usersService.removeEmailProfile(+id);
+  }
+
+  // Controller Profile Phone Number
+  @UseGuards(AuthGuard)
+  @Post('/add-phone')
+  AddPhoneNumber(@Body() createPhoneNumberDto: CreatePhoneNumberDto) {
+    return this.usersService.addNumberPhone(createPhoneNumberDto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('/update-phone/:phone_number')
+  UpdatePhoneNumber(
+    @Param('phone_number') phone_number: any,
+    @Body() updatePhoneNumberDto: UpdatePhoneNumberDto,
+  ) {
+    return this.usersService.updateNumberPhone(
+      phone_number,
+      updatePhoneNumberDto,
+    );
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('/remove-phone/:phone_number')
+  RemovePhoneNumber(@Param('phone_number') phone_number: string) {
+    return this.usersService.removeNumberPhone(phone_number);
   }
 }

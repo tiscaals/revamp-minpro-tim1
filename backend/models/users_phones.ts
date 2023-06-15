@@ -9,6 +9,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { users } from './users';
+import { phone_number_type } from './phone_number_type';
 
 export interface users_phonesAttributes {
   uspo_entity_id: number;
@@ -38,9 +39,13 @@ export class users_phones
   })
   uspo_modified_date?: Date;
 
+  @ForeignKey(() => phone_number_type)
   @Column({ allowNull: true, type: DataType.STRING(15) })
   uspo_ponty_code?: string;
 
   @BelongsTo(() => users)
   user?: users;
+
+  @BelongsTo(() => phone_number_type)
+  phone_number_type?: phone_number_type;
 }
