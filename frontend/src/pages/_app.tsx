@@ -7,11 +7,16 @@ import { useRouter } from 'next/router';
 export default function App({ Component, pageProps }: AppProps) {
 
   const router = useRouter()
-  if (router.pathname.startsWith(`/landing`)) {
+  if (router.pathname.startsWith(`/checkout`) || router.pathname.startsWith(`/sales/checkout`) || router.pathname.startsWith(`/sales/createorder`)) {
     return (
-    // <Provider store={storeSaga}>
+      // <Provider store={storeSaga}>
       <Component {...pageProps} />
-    // </Provider>
+      // </Provider>
+    )
+  } else if (router.pathname.startsWith(`/landing`)) {
+    return (
+      // Render komponen khusus untuk halaman landing
+      <Component {...pageProps} />
     )
   }
 
@@ -23,3 +28,4 @@ export default function App({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   );
 }
+
