@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { client, job_photo, job_post, job_post_desc } from 'models/job_hire';
+import { client, job_photo, job_post } from 'models/job_hire';
 import { Sequelize } from 'sequelize-typescript';
 import messageHelper from 'messegeHelper';
 import { promises as fsPromises} from 'fs';
@@ -53,7 +53,7 @@ export class JobHireService {
         jopo_joro_id:fields.jopo_joro_id,
         jopo_joty_id:fields.jopo_joty_id,
         jopo_joca_id:fields.jopo_joca_id,
-        // jopo_addr_id:fields.jopo_addr_id,
+        jopo_addr_id:fields.jopo_addr_id,
         jopo_work_code:fields.jopo_work_code,
         jopo_edu_code:fields.jopo_edu_code,
         jopo_status:fields.jopo_status,
@@ -338,7 +338,7 @@ export class JobHireService {
       const data1: any[] = [{
         clit_name: fields.clit_name,
         clit_about: fields.clit_about,
-        clit_addr_id: fields.clit_addr_id,
+        // clit_addr_id: fields.clit_addr_id,
         clit_emra_id: fields.clit_emra_id,
         clit_indu_code: fields.clit_indu_code
       }]
@@ -350,6 +350,16 @@ export class JobHireService {
       return messageHelper(result, 200, "Berhasil menambah Client")
     } catch (error) {
       return messageHelper(error.message, 400, "Tidak bisa menambah Client")
+    }
+  }
+
+  async findClient(): Promise <any> {
+    try {
+      const result = await client.findAll()
+
+      return result;
+    } catch (error) {
+      return messageHelper("Gagal", 400, error.message)
     }
   }
 
@@ -407,6 +417,24 @@ export class JobHireService {
       return messageHelper(result, 200, "Berhasil update Client")
     } catch (error) {
         return messageHelper(error.message, 400, "Tidak bisa update Client")
+    }
+  }
+
+  // TALENT APPLY
+  async createTalent(fields:any): Promise <any> {
+    try {
+      const data: any[] = [{
+        taap_user_entity_id: fields.user_entity_id,
+        taap_entity_id: fields.entity_id
+      }]
+      console.log("DATA",data);
+
+      const query = `CALL job_hire.createtalent('${JSON.stringify(data)}')`;
+      const result = await this.sequelize.query(query);
+
+      return messageHelper(result, 200, "Berhasil daftar")
+    } catch (error) {
+      return messageHelper(error.message, 400, "Tidak bisa daftar")
     }
   }
 }

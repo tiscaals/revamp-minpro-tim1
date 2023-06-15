@@ -1,203 +1,142 @@
-// import ActionTypes from "./actionType";
-// // import apimethod from "../../component/api/apimethod";
-
-// //USER
-// const getAllUserReq = () => {
-//     return{
-//         type: ActionTypes.GET_USERS,
-//     }
-// }
-
-// const getAllUserRes = (payload:any) => {
-//     return{
-//         type: ActionTypes.GET_USERS_RES,
-//         payload
-//     }
-// }
-
-// const addCustomerReq = (payload:any) => {
-//     return{
-//         type: ActionTypes.ADD_USER,
-//         payload
-//     }
-// }
-
-// const addCustomerRes = (payload:any) => {
-//     return{
-//         type: ActionTypes.ADD_USER_RES,
-//         payload
-//     }
-// }
-
-// const updateCustomerReq = (data:any, id:any) => {
-//     return{
-//         type: ActionTypes.UPDATE_USER,
-//         payload: {data, id}
-//     }
-// }
-
-// const updateCustomerRes = (payload:any) => {
-//     return{
-//         type: ActionTypes.UPDATE_USER_RES,
-//         payload
-//     }
-// }
-
-// const deleteUserReq = (payload:any) => {
-//     return{
-//         type: ActionTypes.DEL_USER,
-//         payload
-//     }
-// }
-
-// const deleteUserRes = (payload:any) => {
-//     return{
-//         type: ActionTypes.DEL_USER_RES,
-//         payload
-//     }
-// }
-
-// const updatePasswordReq = (data:any, id:any) => {
-//     return{
-//         type: ActionTypes.UPDATE_PASSWORD,
-//         payload: {data, id}
-//     }
-// }
-
-// const updatePasswordRes = (payload:any) =>{
-//     return{
-//         type: ActionTypes.UPDATE_PASSWORD_RES,
-//         payload
-//     }
-// }
+import ActionTypes from "./actionType";
 
 
-// // PRODUCT
-// const getAllProductReq = () =>{
-//     return{
-//         type: ActionTypes.GET_PRODUCT,
-//     }
-// }
+/*------------ JOB POST SECTION -------------*/
+export const doRequestGetJobPost = () => {
+    return {
+      type: ActionTypes.REQ_GET_JOBPOST,
+    };
+  };
+  export const doResponseGetJobPost = (payload: any) => {
+    return {
+      type: ActionTypes.RES_GET_JOBPOST,
+      payload,
+    };
+  };
 
-// const getAllProductRes = (payload:any) =>{
-//     // console.log("ISI PAYLOAD",payload);
-//     return{
-//         type: ActionTypes.GET_PRODUCT_RES,
-//         payload
-//     }
-// }
+  export const doRequestGetCurnumber = () => {
+    return {
+      type: ActionTypes.REQ_GET_CURNUMBER,
+    };
+  };
+  export const doResponseGetCurnumber = (cur_number: any) => {
+    return {
+      type: ActionTypes.RES_GET_CURNUMBER,
+      cur_number,
+    };
+  };
 
-// const getProductByIdReq = (payload:any) =>{
-//     return{
-//         type: ActionTypes.GET_PRODUCT_ID,
-//         payload
-//     }
-// }
+  
+  export const doRequestAddJobPost = (payload: any) => {
+    return {
+      type: ActionTypes.REQ_ADD_JOBPOST,
+      payload,
+    };
+  };
+  
+  export const doResponseAddJobPost = (payload: any) => {
+    return {
+      type: ActionTypes.RES_ADD_JOBPOST,
+      payload,
+    };
+  };
 
-// const getProductByIdRes = (payload:any) =>{
-//     // console.log("ISI PAYLOAD",payload);
-//     return{
-//         type: ActionTypes.GET_PRODUCT_ID_RES,
-//         payload
-//     }
-// }
+  export const doRequestUpdateJobPost = (payload: any) => {
+    return {
+      type: ActionTypes.REQ_UPDATE_JOBPOST,
+      payload,
+    };
+  };
+  
+  export const doResponseUpdateJobPost = (payload: any) => {
+    return {
+      type: ActionTypes.RES_UPDATE_JOBPOST,
+      payload,
+    };
+  };
 
-// const addProductReq = (payload:any) =>{
-//     return{
-//         type: ActionTypes.ADD_PRODUCT,
-//         payload
-//     }
-// }
+  export const doRequestDeleteJobPost = (payload: any) => {
+    return {
+      type: ActionTypes.REQ_DELETE_JOBPOST,
+      payload,
+    };
+  };
+  
+  export const doResponseDeleteJobPost = (payload: any) => {
+    return {
+      type: ActionTypes.RES_DELETE_JOBPOST,
+      payload,
+    };
+  };
 
-// const addProductRes = (payload:any) =>{
-//     return{
-//         type: ActionTypes.ADD_PRODUCT_RES,
-//         payload
-//     }
-// }
+  
+/*------------ CLIENT SECTION -------------*/
 
-// const updateProductReq = (data:any, id:any) =>{
-//     return{
-//         type: ActionTypes.UPDATE_PRODUCT,
-//         payload: {data, id}
-//     }
-// }
+export const doRequestGetClient = () => {
+  return {
+    type: ActionTypes.REQ_GET_CLIENT,
+  };
+};
+export const doResponseGetClient = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_CLIENT,
+    payload,
+  };
+};
 
-// const updateProductRes = (payload:any) =>{
-//     return{
-//         type: ActionTypes.UPDATE_PRODUCT_RES,
-//         payload
-//     }
-// }
 
-// const deleteProductReq = (payload:any) =>{
-//     return{
-//         type: ActionTypes.DEL_PRODUCT,
-//         payload
-//     }
-// }
+export const doRequestAddClient = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_CLIENT,
+    payload,
+  };
+};
 
-// const deleteProductRes = (payload:any) =>{
-//     return{
-//         type: ActionTypes.DEL_PRODUCT_RES,
-//         payload
-//     }
-// }
+export const doResponseAddClient = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_CLIENT,
+    payload,
+  };
+};
 
-// const getAllCategoryReq = () =>{
-//     return{
-//         type: ActionTypes.GET_CATEGORY,
-//     }
-// }
+export const doRequestUpdateClient = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_CLIENT,
+    payload,
+  };
+};
 
-// const getAllCategoryRes = (payload:any) =>{
-//     return{
-//         type: ActionTypes.GET_CATEGORY_RES,
-//         payload
-//     }
-// }
+export const doResponseUpdateClient = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_CLIENT,
+    payload,
+  };
+};
 
-// const loginReq = (payload:any) =>{
-//     return{
-//         type: ActionTypes.REQ_LOGIN,
-//         payload
-//     }
-// }
+export const doRequestDeleteClient = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_CLIENT,
+    payload,
+  };
+};
 
-// const loginRes = (payload:any) =>{
-//     return{
-//         type: ActionTypes.RES_LOGIN,
-//         payload
-//     }
-// }
+export const doResponseDeleteClient = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_CLIENT,
+    payload,
+  };
+};
 
-// export {
-//     //USER
-//     getAllUserReq,
-//     getAllUserRes,
-//     addCustomerReq,
-//     addCustomerRes,
-//     updateCustomerReq,
-//     updateCustomerRes,
-//     deleteUserReq,
-//     deleteUserRes,
-//     updatePasswordReq,
-//     updatePasswordRes,
-//     //PRODUCT
-//     getAllProductReq,
-//     getAllProductRes,
-//     getProductByIdReq,
-//     getProductByIdRes,
-//     addProductReq,
-//     addProductRes,
-//     updateProductReq,
-//     updateProductRes,
-//     deleteProductReq,
-//     deleteProductRes,
-//     //CATEGORY
-//     getAllCategoryReq,
-//     getAllCategoryRes,
-//     //LOGIN
-//     loginReq,
-//     loginRes
-// }
+/*--------------- EMPLOYEE RANGE SECTION ---------------*/
+
+export const doRequestGetEmprange = () => {
+  return {
+    type: ActionTypes.REQ_GET_EMPRANGE,
+  };
+};
+export const doResponseGetEmprange = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_EMPRANGE,
+    payload,
+  };
+};

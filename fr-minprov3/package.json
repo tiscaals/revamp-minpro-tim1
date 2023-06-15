@@ -1,0 +1,47 @@
+{
+  "name": "fr-minprov3",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "@ckeditor/ckeditor5-build-classic": "^38.0.1",
+    "@ckeditor/ckeditor5-react": "^6.0.0",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
+    "@headlessui/react": "^1.7.15",
+    "@material-tailwind/react": "^2.0.1",
+    "@mui/icons-material": "^5.11.16",
+    "@mui/material": "^5.13.3",
+    "@mui/x-date-pickers": "^6.6.0",
+    "@reduxjs/toolkit": "^1.9.5",
+    "@types/node": "20.2.5",
+    "@types/react": "18.2.7",
+    "@types/react-dom": "18.2.4",
+    "antd": "^5.5.2",
+    "autoprefixer": "10.4.14",
+    "axios": "^1.4.0",
+    "date-fns": "^2.30.0",
+    "dayjs": "^1.11.8",
+    "next": "13.4.4",
+    "npm": "^9.6.7",
+    "postcss": "8.4.24",
+    "react": "18.2.0",
+    "react-ckeditor-component": "^1.1.0",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.44.3",
+    "react-redux": "^8.0.7",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.2.3",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4"
+  },
+  "devDependencies": {
+    "@types/redux-logger": "^3.0.9"
+  }
+}

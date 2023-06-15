@@ -156,8 +156,8 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             name: 'Assignment',
           },
           {
-            to: '/postinghiring',
-            path: '/postinghiring',
+            to: 'app/jobs',
+            path: 'app/jobs',
             icon: <MdPostAdd />,
             name: 'Posting Hiring',
           },
@@ -166,6 +166,12 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             path: '/bootcamp',
             icon: <MdPostAdd />,
             name: 'Bootcamp',
+          },
+          {
+            to: '/client',
+            path: '/client',
+            icon: <MdPostAdd />,
+            name: 'Client',
           },
         ]);
         break;

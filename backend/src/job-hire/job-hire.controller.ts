@@ -72,7 +72,7 @@ export class JobHireController {
     return this.jobHireService.findCurrentNumber();
   }
 
-  @Get(':id')
+  @Get('jopo/:id')
   findOneJopo(@Param('id') id: string) {
     return this.jobHireService.findOneJopo(+id);
   }
@@ -94,6 +94,11 @@ export class JobHireController {
     return this.jobHireService.createClient(createClient);
   }
 
+  @Get('clientall')
+  findClient() {
+    return this.jobHireService.findClient();
+  }
+
   @Get('client')
   findAllClient(@Body() show:any) {
     const pagination = show.pagination;
@@ -104,5 +109,11 @@ export class JobHireController {
   @Patch('client/:id')
   updateClient(@Param('id') id: string, @Body() updateJobHireDto: any) {
     return this.jobHireService.updateClient(+id, updateJobHireDto);
+  }
+
+  // TALENT
+  @Post('talent')
+  createTalent(@Body() createClient: any) {
+    return this.jobHireService.createTalent(createClient)
   }
 }
