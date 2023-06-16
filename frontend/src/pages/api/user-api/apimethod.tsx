@@ -45,7 +45,7 @@ const getUsersById = (id: any) => {
 //Settings
 const updateProfile = (data: any) => {
   return axios.patch(
-    `/users/update-profile/${data.get('user_entity_id')}`,
+    `/profile/update-profile/${data.get('user_entity_id')}`,
     data,
     {
       headers: {
@@ -60,30 +60,30 @@ const updatePassword = (data: any) => {
 };
 
 const addEmail = (data: any) => {
-  return axios.post('/users/add-email', data);
+  return axios.post('/email/add-email', data);
 };
 
 const updateEmail = (data: any) => {
-  return axios.patch(`/users/update-email/${data.pmail_id}`, data);
+  return axios.patch(`/email/update-email/${data.pmail_id}`, data);
 };
 
 const removeEmail = (id: any) => {
-  return axios.delete(`/users/remove-email/${id}`, id);
+  return axios.delete(`/email/remove-email/${id}`, id);
 };
 
 const addPhoneNumber = (data: any) => {
-  return axios.post('/users/add-phone', data);
+  return axios.post('/phone/add-phone', data);
 };
 
 const updatePhoneNumber = (phone_number: any) => {
   return axios.patch(
-    `/users/update-phone/${phone_number.uspo_number}`,
+    `/phone/update-phone/${phone_number.uspo_number}`,
     phone_number
   );
 };
 
 const removePhoneNumber = (phone_number: any) => {
-  return axios.delete(`/users/remove-phone/${phone_number}`, phone_number);
+  return axios.delete(`/phone/remove-phone/${phone_number}`, phone_number);
 };
 
 //Profile Address
@@ -96,15 +96,15 @@ const getAddressType = () => {
 };
 
 const addAddress = (data: any) => {
-  return axios.post('/users/add-address', data);
+  return axios.post('/address/add-address', data);
 };
 
 const updateAddress = (data: any) => {
-  return axios.patch(`users/update-address/${data.address_id}`, data);
+  return axios.patch(`address/update-address/${data.address_id}`, data);
 };
 
 const removeAddress = (id: any) => {
-  return axios.delete(`/users/remove-address/${id}`, id);
+  return axios.delete(`/address/remove-address/${id}`, id);
 };
 
 export default {
