@@ -52,7 +52,7 @@ export class JobHireService {
         jopo_clit_id:fields.jopo_clit_id,
         jopo_joro_id:fields.jopo_joro_id,
         jopo_joty_id:fields.jopo_joty_id,
-        jopo_joca_id:fields.jopo_joca_id,
+        // jopo_joca_id:fields.jopo_joca_id,
         jopo_addr_id:fields.jopo_addr_id,
         jopo_work_code:fields.jopo_work_code,
         jopo_edu_code:fields.jopo_edu_code,
@@ -72,13 +72,13 @@ export class JobHireService {
       }];
       console.log("DATA 1",data1);
 
-      const mimetype = image.mimetype;
+      // const mimetype = image.mimetype;
       //   console.log("MIMETYPE:", mimetype);
-        const fileExtension = mimetype.split('/')[1];
+        // const fileExtension = mimetype.split('/')[1];
       const data2: any[] = [{
         jopho_filename:image.filename,
-        jopho_filesize:image.size,
-        jopho_filetype:fileExtension
+        jopho_filesize:fields.image_size,
+        jopho_filetype:fields.image_type
       }];
       console.log("DATA 2",data2);
 
