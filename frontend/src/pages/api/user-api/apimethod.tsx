@@ -86,6 +86,27 @@ const removePhoneNumber = (phone_number: any) => {
   return axios.delete(`/users/remove-phone/${phone_number}`, phone_number);
 };
 
+//Profile Address
+const getCity = () => {
+  return axios.get('/address/get-city');
+};
+
+const getAddressType = () => {
+  return axios.get('/address/address-type');
+};
+
+const addAddress = (data: any) => {
+  return axios.post('/users/add-address', data);
+};
+
+const updateAddress = (data: any) => {
+  return axios.patch(`users/update-address/${data.address_id}`, data);
+};
+
+const removeAddress = (id: any) => {
+  return axios.delete(`/users/remove-address/${id}`, id);
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -99,4 +120,9 @@ export default {
   addPhoneNumber,
   updatePhoneNumber,
   removePhoneNumber,
+  getCity,
+  getAddressType,
+  addAddress,
+  updateAddress,
+  removeAddress,
 };

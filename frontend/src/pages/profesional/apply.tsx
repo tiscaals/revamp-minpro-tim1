@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Logo from '../../../public/img/logo.png';
 import { CalendarIcon } from '@heroicons/react/24/solid';
 import DefaultIcon from '../../../public/img/default.jpg';
+import { Button } from '@material-tailwind/react';
 
 const Apply = () => {
   const router = useRouter();
@@ -54,154 +55,184 @@ const Apply = () => {
           method="POST"
         >
           <div>
-            <label
-              htmlFor=""
-              className="block text-xs font-semibold text-gray-600 uppercase mb-1"
-            >
-              Fullname
-            </label>
-            <input
-              id=""
-              type="text"
-              name=""
-              placeholder="Full Name"
-              autoComplete="off"
-              className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white"
-              required
-            />
-
-            <label
-              htmlFor=""
-              className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-            >
-              BirthDay
-            </label>
-            <div className="flex items-center ">
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mb-1"
+              >
+                Firstname
+              </label>
               <input
-                id="dateInput"
-                type="date"
-                value={selectedDate}
-                onChange={handleDateChange}
-                className="bg-white text-black focus:text-gray-500 focus:outline-none border-b-2"
-              />
-              <CalendarIcon className="w-6 mx-3" />
-              <input
-                id="age"
+                id=""
                 type="text"
-                name="age"
-                value={age ? `${age} tahun` : ''}
-                placeholder="Age"
-                className="bg-white text-black focus:outline-none"
-                readOnly
+                name=""
+                placeholder="First name"
+                autoComplete="off"
+                className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white"
+                required
               />
             </div>
 
-            <label
-              htmlFor=""
-              className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-            >
-              Education
-            </label>
-            <div className="form-control">
-              <select className="select select-bordere border-gray-400 bg-white text-black">
-                <option disabled selected>
-                  Pendidikan
-                </option>
-                <option>S1</option>
-                <option>SLTA</option>
-              </select>
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mb-1 mt-2"
+              >
+                Lastname
+              </label>
+              <input
+                id=""
+                type="text"
+                name=""
+                placeholder="Last Name"
+                autoComplete="off"
+                className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white"
+                required
+              />
             </div>
 
-            <label
-              htmlFor=""
-              className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-            >
-              Major
-            </label>
-            <input
-              id=""
-              type="text"
-              name=""
-              placeholder="Jurusan"
-              autoComplete="off"
-              className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white"
-              required
-            />
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
+              >
+                BirthDay
+              </label>
+              <div className="flex items-center ">
+                <input
+                  id="dateInput"
+                  type="date"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  className="bg-white text-black focus:text-gray-500 focus:outline-none border-b-2"
+                />
+                <CalendarIcon className="w-6 mx-3" />
+                <input
+                  id="age"
+                  type="text"
+                  name="age"
+                  value={age ? `${age} tahun` : ''}
+                  placeholder="Age"
+                  className="bg-white text-black focus:outline-none"
+                  readOnly
+                />
+              </div>
+            </div>
 
-            <label
-              htmlFor=""
-              className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-            >
-              Phone Number
-            </label>
-            <input
-              id=""
-              type="text"
-              name=""
-              placeholder="Phone Number"
-              autoComplete="off"
-              className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white mb-3"
-              required
-            />
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
+              >
+                Education
+              </label>
+              <div className="form-control">
+                <select className="select select-bordere border-gray-400 bg-white text-black">
+                  <option disabled selected>
+                    Pendidikan
+                  </option>
+                  <option value="Bachelor">Bachelor</option>
+                  <option value="Diploma">Diploma</option>
+                </select>
+              </div>
+            </div>
 
-            <label
-              htmlFor=""
-              className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-            >
-              Resume
-            </label>
-            <input
-              id="file-input"
-              type="file"
-              accept=".pdf"
-              className="file-input file-input-ghost w-full mt-1 bg-white border-gray-400"
-              placeholder="Pilih file PDF"
-            />
-            {/* <span className='text-rose-700  text-xs'>* PDF FILE</span> */}
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
+              >
+                Major
+              </label>
+              <input
+                id=""
+                type="text"
+                name=""
+                placeholder="Jurusan"
+                autoComplete="off"
+                className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white"
+                required
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
+              >
+                Phone Number
+              </label>
+              <input
+                id=""
+                type="text"
+                name=""
+                placeholder="Phone Number"
+                autoComplete="off"
+                className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white mb-3"
+                required
+              />
+            </div>
           </div>
 
           <div className="lg:mt-0 sm:mt-8">
-            <label
-              htmlFor=""
-              className="block text-xs font-semibold text-gray-600 uppercase mb-2"
-            >
-              Photo Profile
-            </label>
-            <div className="shrink-0">
-              <img
-                className="h-16 w-25 object-cover rounded-full mb-3"
-                src={selectedPhoto}
-                alt="Current profile photo"
-              />
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mb-2"
+              >
+                Photo Profile
+              </label>
+              <div className="shrink-0">
+                <img
+                  className="h-16 w-25 object-cover rounded-full mb-3"
+                  src={selectedPhoto}
+                  alt="Current profile photo"
+                />
+              </div>
+              <label className="block">
+                <span className="sr-only">Choose profile photo</span>
+                <input
+                  type="file"
+                  className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 hover:file:bg-violet-100"
+                  onChange={handlePhotoSelection}
+                />
+              </label>
             </div>
-            <label className="block">
-              <span className="sr-only">Choose profile photo</span>
+
+            <div>
+              <label
+                htmlFor=""
+                className="block text-xs font-semibold text-gray-600 uppercase mt-5  mb-1"
+              >
+                Resume
+              </label>
               <input
                 type="file"
+                accept=".pdf"
                 className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 hover:file:bg-violet-100"
-                onChange={handlePhotoSelection}
+                placeholder="Pilih file PDF"
               />
-            </label>
+            </div>
           </div>
 
-          <Link
-            href="/signin"
+          <Button
+            onClick={() => router.push('/')}
             className="lg:py-3 lg:px-16 md:px-12 sm:px-8 mt-4 sm:mt-0 bg-blue-800 rounded-sm
                       font-medium text-white uppercase text-center
                       focus:outline-none hover:bg-blue-700 hover:shadow-none"
           >
             Cancel
-          </Link>
+          </Button>
 
-          <button
-            // type="submit"
-            onClick={() => router.push('/signup/confirm')}
+          <Button
+            type="submit"
+            // onClick={() => router.push('/signup/confirm')}
             className="lg:py-3 lg:px-16 md:px-12 sm:px-8 mt-4 sm:mt-0 bg-blue-800 rounded-sm
                       font-medium text-white uppercase
                       focus:outline-none hover:bg-blue-700 hover:shadow-none"
           >
             Apply
-          </button>
+          </Button>
         </form>
       </div>
     </div>

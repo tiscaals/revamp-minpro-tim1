@@ -178,3 +178,75 @@ export const doGetDeletePhoneResponse = (payload: any) => {
     payload,
   };
 };
+
+// Get Address Type & City
+export const doReqAddressType = () => {
+  return {
+    type: ActionTypes.REQ_GET_ADDRESS_TYPE,
+  };
+};
+
+export const doGetAddressTypeResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_ADDRESS_TYPE,
+    payload,
+  };
+};
+
+export const doReqCity = () => {
+  return {
+    type: ActionTypes.REQ_GET_CITY,
+  };
+};
+
+export const doGetCityResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_CITY,
+    payload,
+  };
+};
+
+// Add Address
+export const doRequestAddAddress = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_ADDRESS,
+    payload,
+  };
+};
+
+export const doGetAddAddressResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_ADDRESS,
+    payload,
+  };
+};
+
+// Update Address
+export const doRequestUpdateAddress = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_ADDRESS,
+    payload,
+  };
+};
+
+export const doGetUpdateAddressResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_ADDRESS,
+    payload,
+  };
+};
+
+//Delete Address
+export const doRequestDeleteAddress = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_ADDRESS,
+    payload,
+  };
+};
+
+export const doGetDeleteAddressResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_ADDRESS,
+    payload,
+  };
+};

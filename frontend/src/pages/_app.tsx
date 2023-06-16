@@ -14,7 +14,8 @@ export default function App({ Component, pageProps }: AppProps) {
       {router.pathname.startsWith('/signin') ||
       router.pathname.startsWith('/external/signup') ||
       router.pathname.startsWith('/internal/signup') ||
-      router.pathname.startsWith('/signup/confirm') ? (
+      router.pathname.startsWith('/signup/confirm') ||
+      router.pathname.startsWith('/apply-jobs/confirm') ? (
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>

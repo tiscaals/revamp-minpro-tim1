@@ -81,6 +81,30 @@ function settingReducers(state = initialState, action: any) {
         message: payload.message,
         refresh: false,
       };
+    case ActionTypes.RES_ADD_ADDRESS:
+      return {
+        state,
+        profile: payload.result,
+        status: payload.status,
+        message: payload.message,
+        refresh: false,
+      };
+    case ActionTypes.RES_UPDATE_ADDRESS:
+      return {
+        state,
+        profile: payload.result,
+        status: payload.status,
+        message: payload.message,
+        refresh: false,
+      };
+    case ActionTypes.RES_DELETE_ADDRESS:
+      return {
+        state,
+        profile: payload.result,
+        status: payload.status,
+        message: payload.message,
+        refresh: false,
+      };
     default:
       return state;
   }
