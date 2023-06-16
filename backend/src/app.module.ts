@@ -11,7 +11,7 @@ import { BootcampModule } from './bootcamp/bootcamp.module';
 import { UsersModule } from './users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthModule } from './auth/auth.module';
-import { AddressModule } from './users/adress/address.module';
+import { AddressModule } from './users/address/address.module';
 import { ProfileModule } from './users/profile/profile.module';
 import { EmailModule } from './users/email/email.module';
 import { PhoneModule } from './users/phone-number/phone.module';
