@@ -1,6 +1,6 @@
+export * from './users_address';
 export * from './users_roles';
 export * from './users';
-export * from './users_address';
 export * from './users_phones';
 export * from './users_skill';
 export * from './users_experiences_skill';

@@ -4,7 +4,7 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 import { Sequelize } from 'sequelize-typescript';
-import { roles, users, users_email, users_roles } from 'models';
+import { roles, users, users_email, users_roles } from 'models/users';
 import isValidUsernameOrEmail from 'src/helpers/checkUserNameOrEmail';
 
 @Injectable()
@@ -111,7 +111,7 @@ export class AuthService {
       );
 
       const succes = {
-        message: 'login succes',
+        message: `login succes, welcome ${res.user_name}`,
         status: 200,
         token: token,
         result: result,

@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { MulterModule } from '@nestjs/platform-express';
 import {
   users,
   roles,
@@ -10,13 +9,11 @@ import {
   users_roles,
   users_phones,
   phone_number_type,
-} from 'models';
-
+  users_address,
+} from 'models/users';
+import { address, address_type, city } from 'models/master';
 @Module({
   imports: [
-    MulterModule.register({
-      dest: './public/user-image',
-    }),
     SequelizeModule.forFeature([
       users,
       users_email,
@@ -24,6 +21,10 @@ import {
       roles,
       users_phones,
       phone_number_type,
+      users_address,
+      address,
+      city,
+      address_type,
     ]),
   ],
   controllers: [UsersController],

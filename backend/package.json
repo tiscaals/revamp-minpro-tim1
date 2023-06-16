@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "pgScript": "stg -D postgres -h localhost -p 5432 -d db_minpro1 -u postgres -x mozarl00 --indices --associations-file ./association.csv -s users --out-dir models --clean"
+    "pgScript": "stg -D postgres -h localhost -p 5432 -d db_minpro1 -u postgres -x mozarl00 --indices --associations-file ./association.csv -s master --out-dir models/master --clean"
   },
   "dependencies": {
     "@nestjs/core": "^9.0.0",

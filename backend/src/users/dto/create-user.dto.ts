@@ -22,3 +22,13 @@ export class CreatePhoneNumberDto {
   uspo_ponty_code: string;
   uspo_modified_date: any;
 }
+
+export class CreateAddressDto {
+  address_id: any;
+  first_address: string;
+  second_address: string;
+  code_pos: string;
+  city_id: any;
+  user_id: any;
+  address_type_id: any;
+}

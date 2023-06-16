@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { roles, users, users_email, users_roles } from 'models';
+import { roles, users, users_email, users_roles } from 'models/users';
 
 @Module({
   imports: [

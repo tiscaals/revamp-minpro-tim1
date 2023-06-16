@@ -11,6 +11,7 @@ import {
 import { users_email } from './users_email';
 import { users_roles } from './users_roles';
 import { users_phones } from './users_phones';
+import { users_address } from './users_address';
 
 export interface usersAttributes {
   user_entity_id: number;
@@ -82,4 +83,7 @@ export class users
 
   @HasMany(() => users_phones, { sourceKey: 'user_entity_id' })
   users_phones?: users_phones[];
+
+  @HasMany(() => users_address, { sourceKey: 'user_entity_id' })
+  users_addresses?: users_address[];
 }

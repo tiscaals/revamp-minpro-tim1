@@ -1,5 +1,9 @@
+1:1, etad_addr_id, addr_id, users_address, address
+1:N, city_id, addr_city_id, city, address
+1:N, adty_id, etad_adty_id, address_type, users_address 
 1:N, user_entity_id, pmail_entity_id, users, users_email
 1:N, user_entity_id, usro_entity_id, users, users_roles
 1:N, role_id, usro_role_id, roles, users_roles
 1:N, user_entity_id, uspo_entity_id, users, users_phones
 1:N, ponty_code, uspo_ponty_code, phone_number_type, users_phones
+1:N, user_entity_id, etad_entity_id, users, users_address
