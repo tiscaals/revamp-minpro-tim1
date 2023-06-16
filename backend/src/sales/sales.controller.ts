@@ -74,6 +74,11 @@ export class SalesController {
     return this.salesService.deleteCartItemById(+id);
   }
 
+  @Delete('delete-cart-sp/:id')
+  deleteCartItemSP(@Param('id') id: string) {
+    return this.salesService.deleteCartItemSP(+id);
+  }
+
   @Delete('delete-order/:id')
   deleteOrder(@Param('id') id: number) {
     return this.salesService.deleteOrderById(+id);

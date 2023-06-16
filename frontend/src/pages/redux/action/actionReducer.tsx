@@ -13,10 +13,11 @@ const getAllCartRes = (payload:any) => {
     }
 }
 
-const delCartReq = (id:any) => {
+const delCartReq = (id:number, payload:any) => {
     return {
         type: ActionTypes.DEL_CART,
-        id
+        id,
+        payload
     }
 }
 

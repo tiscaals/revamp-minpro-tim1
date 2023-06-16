@@ -372,9 +372,34 @@ export class SalesService {
     return `This action updates a #${id} sale`;
   }
 
+  //------------------ Delete Cart Items SP -------------------------  
+
+  async deleteCartItemSP(id: number): Promise<void> {
+    try {
+      await this.sequelize.query(
+        'CALL sales.delete_cart_item(:p_cait_id)',
+        {
+          replacements: { p_cait_id: id },
+        },
+      );
+
+      const successMessage = 'Item keranjang berhasil dihapus.';
+      this.sendMessage3(successMessage);
+    } catch (error) {
+      const errorMessage = `Error menghapus item keranjang: ${error.message}`;
+      this.sendMessage3(errorMessage);
+    }
+  }
+
+  // ...
+
+  private sendMessage3(message: string) {
+    console.log(message);
+  }
+
   //------------------ Delete Cart Items -------------------------    
 
-  async deleteCartItemById(id: number): Promise<any> {
+  async deleteCartItemById(id) {
     try {
       await this.sequelize.query(
         `DELETE FROM sales.cart_items WHERE cait_id = :id`,
@@ -385,13 +410,14 @@ export class SalesService {
         },
       );
   
-      const successMessage = 'Cart item deleted successfully.';
+      const successMessage = 'Item keranjang berhasil dihapus.';
       this.sendMessage(successMessage);
     } catch (error) {
-      const errorMessage = `Error deleting cart item: ${error.message}`;
+      const errorMessage = `Error menghapus item keranjang: ${error.message}`;
       this.sendMessage(errorMessage);
     }
   }
+  
 
   //------------------ Delete Order Detail dan Header -------------------------    
 

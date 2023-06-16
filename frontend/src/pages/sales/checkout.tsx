@@ -28,18 +28,12 @@ const ApplyButton = styled(Button)(({ theme }) => ({
 }));
 
 const CartPage: React.FC = () => {
-
   const { items, message, refresh } = useSelector((state: any) => state.salesReducers);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getAllCartReq());
   }, [dispatch]);
-
-  const deleteCartItems = (id:any) => {
-    dispatch(delCartReq(id));
-  };
-  
 
   const [isAccountValid, setIsAccountValid] = useState(false);
   const [coursePrice, setCoursePrice] = useState(3500000);
@@ -57,68 +51,74 @@ const CartPage: React.FC = () => {
     setIsAccountValid(true);
   };
 
-  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (event: any) => {
     const searchTerm = event.target.value;
-    // Perform search operations based on the searchTerm
+    // Lakukan operasi pencarian berdasarkan searchTerm
   };
 
-  const handleCoursePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCoursePriceChange = (event: any) => {
     const price = parseInt(event.target.value);
     setCoursePrice(price);
     setTotal(price);
   };
 
+  const handleRemoveCartItem = (id: number, payload: any) => {
+    const item = items.find((item: any) => item.cait_id === id);
+    if (item) {
+      if (window.confirm(`Apakah Anda yakin ingin menghapus ${item.prog_headline}?`)) {
+        dispatch(delCartReq(id, payload));
+      }
+    } else {
+      console.error(`Item with ID ${id} not found.`);
+    }
+  };
 
   return (
     <>
       <Navbar />
 
       <div className="container mx-auto p-4">
-      <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
-        <div className="col-span-1">
-          <div className="grid grid-cols-1 gap-4">
-            {items && items.map((course:any, index:any) => (
-              <div key={index} className="flex items-center p-4 bg-white rounded-lg shadow-lg">
-                <div className="h-16 w-16 mr-4 relative">
-                  <Image
-                    src={courseImage}
-                    alt="Course Image"
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-full"
-                  />
-                </div>
-                <div className="flex flex-col flex-grow">
-                  <div className="flex justify-between mb-4">
-                    <div>
-                      <p className="text-lg font-bold text-gray-800">{course.prog_headline}</p>
-                      <p className="text-gray-600">{course.prog_title}</p>
+        <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
+          <div className="col-span-1">
+            <div className="grid grid-cols-1 gap-4">
+              {items &&
+                items.map((course: any, index: any) => (
+                  <div key={index} className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+                    <div className="h-16 w-16 mr-4 relative">
+                      <Image src={courseImage} alt="Course Image" layout="fill" objectFit="cover" className="rounded-full" />
                     </div>
-                    <div className="flex items-center">
-                      <p className="text-gray-600">Rp. {course.prog_price}</p>
+                    <div className="flex flex-col flex-grow">
+                      <div className="flex justify-between mb-4">
+                        <div>
+                          <p className="text-lg font-bold text-gray-800">{course.prog_headline}</p>
+                          <p className="text-gray-600">{course.prog_title}</p>
+                        </div>
+                        <div className="flex items-center">
+                          <p className="text-gray-600">Rp. {course.prog_price}</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-4">
+                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
+                          Save for later
+                          <BookmarkAddIcon className="ml-2" />
+                        </button>
+                        <button
+                          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
+                          onClick={() => handleRemoveCartItem(course.cait_id, course.payload)}
+                        >
+                          Remove
+                          <DeleteForeverIcon className="ml-2" />
+                        </button>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex gap-4">
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
-                      Save for later
-                      <BookmarkAddIcon className="ml-2" />
-                    </button>
-                    <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
-                    onClick={() => deleteCartItems(course.cait_id)}
-                    >
-                      Remove
-                      <DeleteForeverIcon className="ml-2" />
-                    </button>
-                  </div>
-                </div>
+                ))}
+              <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+                <p className="text-lg font-bold text-gray-800">Payment</p>
+                <PaymentsIcon className="ml-2" />
               </div>
-            ))}
-            <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
-              <p className="text-lg font-bold text-gray-800">Payment</p>
-              <PaymentsIcon className="ml-2" />
             </div>
           </div>
-        </div>
 
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4 h-full">
@@ -145,13 +145,7 @@ const CartPage: React.FC = () => {
                       className="mr-2"
                     />
 
-                    <ApplyButton
-                      variant="contained"
-                      color="primary"
-                      startIcon={<ThumbUpAltIcon />}
-                      style={{ backgroundColor: '#3f51b5' }}
-                      className="mr-2"
-                    >
+                    <ApplyButton variant="contained" color="primary" startIcon={<ThumbUpAltIcon />} style={{ backgroundColor: '#3f51b5' }} className="mr-2">
                       Apply
                     </ApplyButton>
                   </div>
@@ -185,8 +179,7 @@ const CartPage: React.FC = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                          } block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-200 hover:text-gray-900 rounded-md shadow-md`}
+                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'} block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-200 hover:text-gray-900 rounded-md shadow-md`}
                       >
                         <FontAwesomeIcon icon={faHome} className="mr-2" /> GoTo
                       </a>
@@ -196,8 +189,7 @@ const CartPage: React.FC = () => {
                     {({ active }) => (
                       <a
                         href="#"
-                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                          } block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-200 hover:text-gray-900 rounded-md shadow-md`}
+                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'} block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-200 hover:text-gray-900 rounded-md shadow-md`}
                       >
                         <FontAwesomeIcon icon={faWallet} className="mr-2" /> OVO
                       </a>
@@ -223,8 +215,8 @@ const CartPage: React.FC = () => {
           <p className="text-lg font-bold text-gray-800">Your account is valid, please continue to complete</p>
         </div>
       )}
-  </>
-);
-      }
+    </>
+  );
+};
 
 export default CartPage;

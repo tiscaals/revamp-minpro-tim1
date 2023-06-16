@@ -5,7 +5,7 @@ const findAllCartItems=()=>{
 }
 
 const deleteCartItems=(id:any)=>{
-    return axios.delete(`/sales/delete-cart/${id}`)
+    return axios.delete(`/sales/delete-cart-sp/${id}`)
 }
 
 export default {
