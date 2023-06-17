@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import {
   CreateAddressDto,
+  CreateEducationDto,
   CreateEmailDto,
   CreatePhoneNumberDto,
   CreateUsersDto,
@@ -10,6 +11,7 @@ export class UpdateUserDto extends PartialType(CreateUsersDto) {}
 export class UpdateEmailDto extends PartialType(CreateEmailDto) {}
 export class UpdatePhoneNumberDto extends PartialType(CreatePhoneNumberDto) {}
 export class UpdateAddressDto extends PartialType(CreateAddressDto) {}
+export class UpdateEducationDto extends PartialType(CreateEducationDto) {}
 
 export class UpdatePasswordDto {
   current_password: string;

@@ -42,19 +42,16 @@ export class EmailService {
         pmail_address: createEmailDto.pmail_address,
       });
 
-      const success = {
+      return {
         message: 'add email successfully',
         status: 200,
         result: result,
       };
-
-      return success;
     } catch (error) {
-      const errorMsg = {
+      return {
         message: error.message,
         status: 400,
       };
-      return errorMsg;
     }
   }
 
@@ -81,20 +78,17 @@ export class EmailService {
         { where: { pmail_id: id }, returning: true },
       );
 
-      const succes = {
+      return {
         message: 'update email successfully',
         status: 200,
         result: result,
       };
 
-      return succes;
     } catch (error) {
-      const errorMsg = {
+      return {
         message: error.message,
         status: 400,
       };
-
-      return errorMsg;
     }
   }
 
@@ -104,11 +98,10 @@ export class EmailService {
         where: { pmail_id: id },
       });
 
-      const succes = {
+      return {
         message: 'delete email successfully',
         status: 200,
       };
-      return succes;
     } catch (error) {
       return error.message;
     }

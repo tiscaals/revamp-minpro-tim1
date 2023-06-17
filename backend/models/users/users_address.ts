@@ -10,7 +10,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { users } from './users';
-import { address, address_type } from 'models/master';
+import { address_type, address } from 'models/master';
 
 export interface users_addressAttributes {
   etad_addr_id: number;

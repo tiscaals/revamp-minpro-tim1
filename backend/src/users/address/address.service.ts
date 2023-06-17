@@ -14,14 +14,14 @@ export class AddressServices {
       const result = await this.sequelize.query(
         'SELECT city.city_id, city.city_name FROM master.city',
       );
-      const succes = {
-        result: result[0],
-        status: 200,
+
+      return  {
         message: 'success',
+        status: 200,
+        result: result[0],
       };
-      return succes;
     } catch (error) {
-      return error.message;
+      return {message: error.message, status:400};
     }
   }
 
@@ -30,14 +30,14 @@ export class AddressServices {
       const result = await this.sequelize.query(
         'SELECT address_type.adty_id, address_type.adty_name FROM master.address_type',
       );
-      const succes = {
-        result: result[0],
-        status: 200,
+
+      return {
         message: 'success',
+        status: 200,
+        result: result[0],
       };
-      return succes;
     } catch (error) {
-      return error.message;
+      return {message: error.message, status:400};
     }
   }
 
@@ -56,19 +56,13 @@ export class AddressServices {
         },
       });
 
-      const success = {
+      return {
         message: 'add address successfully',
         status: 200,
         result: result,
       };
-
-      return success;
     } catch (error) {
-      const errorMsg = {
-        message: error.message,
-        status: 400,
-      };
-      return errorMsg;
+      return {message: error.message, status: 400};
     }
   }
 
@@ -97,11 +91,7 @@ export class AddressServices {
 
       return success;
     } catch (error) {
-      const errorMsg = {
-        message: error.message,
-        status: 400,
-      };
-      return errorMsg;
+      return {message: error.message, status: 400};
     }
   }
 
@@ -117,7 +107,7 @@ export class AddressServices {
 
       return { message: 'delete address successfully', status: 200 };
     } catch (error) {
-      return error.message;
+      return {message: error.message, status: 400};
     }
   }
 }

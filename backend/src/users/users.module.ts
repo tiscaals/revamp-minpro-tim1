@@ -10,6 +10,7 @@ import {
   users_phones,
   phone_number_type,
   users_address,
+  users_education,
 } from 'models/users';
 import { address, address_type, city } from 'models/master';
 @Module({
@@ -20,6 +21,7 @@ import { address, address_type, city } from 'models/master';
       users_roles,
       roles,
       users_phones,
+      users_education,
       phone_number_type,
       users_address,
       address,

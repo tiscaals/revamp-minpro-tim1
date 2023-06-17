@@ -32,3 +32,15 @@ export class CreateAddressDto {
   user_id: any;
   address_type_id: any;
 }
+
+export class CreateEducationDto {
+  usdu_entity_id: any;
+  usdu_school: string;
+  usdu_degree: string;
+  usdu_field_study: string;
+  usdu_start_date: any;
+  usdu_end_date: any;
+  usdu_grade: string;
+  usdu_activities: string;
+  usdu_description: string;
+}

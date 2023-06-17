@@ -7,3 +7,4 @@
 1:N, user_entity_id, uspo_entity_id, users, users_phones
 1:N, ponty_code, uspo_ponty_code, phone_number_type, users_phones
 1:N, user_entity_id, etad_entity_id, users, users_address
+1:N, user_entity_id, usdu_entity_id, users, users_education

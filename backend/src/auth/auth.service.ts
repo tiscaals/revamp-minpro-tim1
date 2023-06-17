@@ -110,21 +110,14 @@ export class AuthService {
         },
       );
 
-      const succes = {
+      return {
         message: `login succes, welcome ${res.user_name}`,
         status: 200,
         token: token,
         result: result,
       };
-
-      return succes;
     } catch (error) {
-      const errorMsg = {
-        message: error.message,
-        status: 400,
-      };
-
-      return errorMsg;
+      return {message: error.message, status: 400};
     }
   }
 
@@ -162,20 +155,14 @@ export class AuthService {
         },
       });
 
-      const success = {
+      return {
         message: 'account created successfully, please login',
         status: 200,
         result: result,
       };
 
-      return success;
     } catch (error) {
-      const errorMsg = {
-        message: error.message,
-        status: 400,
-      };
-
-      return errorMsg;
+      return {message: error.message,status: 400};
     }
   }
 }

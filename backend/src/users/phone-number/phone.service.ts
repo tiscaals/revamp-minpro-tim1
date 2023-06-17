@@ -43,19 +43,16 @@ export class PhoneService {
         uspo_ponty_code: createPhoneNumberDto.uspo_ponty_code,
       });
 
-      const success = {
+      return {
         message: 'add new number phone successfully',
         status: 200,
         result: result,
       };
-
-      return success;
     } catch (error) {
-      const errorMsg = {
+      return {
         message: error.message,
         status: 400,
       };
-      return errorMsg;
     }
   }
 
@@ -86,20 +83,16 @@ export class PhoneService {
         { where: { uspo_number: phone_number }, returning: true },
       );
 
-      const success = {
+      return {
         message: 'number phone update successfully',
         status: 200,
         result: result,
       };
-
-      return success;
     } catch (error) {
-      const errorMsg = {
+      return {
         message: error.message,
         status: 400,
       };
-
-      return errorMsg;
     }
   }
 
@@ -109,14 +102,12 @@ export class PhoneService {
         where: { uspo_number: phone_number },
       });
 
-      const succes = {
+      return {
         message: 'delete phone number successfully',
         status: 200,
       };
-
-      return succes;
     } catch (error) {
-      return error.message;
+      return {message: error.message, status:400};
     }
   }
 }

@@ -7,6 +7,7 @@ import {
   roles,
   users,
   users_address,
+  users_education,
   users_email,
   users_phones,
   users_roles,
@@ -58,15 +59,13 @@ export class UsersService {
         ],
       });
 
-      const succes = {
+      return {
         message: 'success',
         status: 200,
         result: result,
       };
-
-      return succes;
     } catch (error) {
-      return error.message;
+      return {message: error.message, status:400};
     }
   }
 
@@ -132,19 +131,20 @@ export class UsersService {
               },
             ],
           },
+          {
+            model: users_education,
+          },
         ],
         where: { user_entity_id: id },
       });
 
-      const succes = {
+      return {
         message: 'success',
         status: 200,
         result: result,
       };
-
-      return succes;
     } catch (error) {
-      return error.message;
+      return {message: error.message, status:400};
     }
   }
 
@@ -175,18 +175,12 @@ export class UsersService {
         { where: { user_entity_id: id } },
       );
 
-      const succes = {
+      return {
         message: 'password updated successfully',
         status: 200,
       };
-      return succes;
     } catch (error) {
-      const errorMsg = {
-        message: error.message,
-        status: 400,
-      };
-
-      return errorMsg;
+      return {message: error.message, status:400};
     }
   }
 }

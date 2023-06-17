@@ -15,6 +15,7 @@ import { AddressModule } from './users/address/address.module';
 import { ProfileModule } from './users/profile/profile.module';
 import { EmailModule } from './users/email/email.module';
 import { PhoneModule } from './users/phone-number/phone.module';
+import { EducationModule } from './users/education/education.module';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { PhoneModule } from './users/phone-number/phone.module';
     ProfileModule,
     EmailModule,
     PhoneModule,
+    EducationModule,
   ],
   controllers: [AppController],
   providers: [AppService],
