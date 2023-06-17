@@ -133,7 +133,7 @@ const EditProfile = (props: any) => {
                                 {errors?.user_name && errors.user_name.message}
                               </span>
                             </div>
-                            <div className="flex flex-wrap ">
+                            <div className="flex flex-col lg:flex-row gap-2">
                               <div className="w-full lg:w-1/2 flex mb-2 lg:mb-0">
                                 <Input
                                   label="Firstname"
@@ -156,7 +156,6 @@ const EditProfile = (props: any) => {
                               <Input
                                 label="Birthdate"
                                 type="date"
-                                defaultValue={props.profile?.user_birth_date}
                                 {...register('user_birth_date')}
                               />
                             </div>

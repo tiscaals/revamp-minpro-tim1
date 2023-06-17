@@ -107,6 +107,19 @@ const removeAddress = (id: any) => {
   return axios.delete(`/address/remove-address/${id}`, id);
 };
 
+//Profile Education
+const addEducation = (data: any) => {
+  return axios.post(`/education/add-education`, data);
+};
+
+const updateEducation = (data: any) => {
+  return axios.patch(`/education/update-education/${data.usdu_id}`, data);
+};
+
+const removeEducation = (id: any) => {
+  return axios.delete(`/education/remove-education/${id}`, id);
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -125,4 +138,7 @@ export default {
   addAddress,
   updateAddress,
   removeAddress,
+  addEducation,
+  updateEducation,
+  removeEducation,
 };

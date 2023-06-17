@@ -25,6 +25,11 @@ import {
   handleEditEmail,
   handleDeleteEmail,
 } from '../user-saga/emailSaga';
+import {
+  handleAddEducation,
+  handleDeleteEducation,
+  handleEditEducation,
+} from '../user-saga/educationSaga';
 
 function* watchAll() {
   yield all([
@@ -56,6 +61,11 @@ function* watchAll() {
     takeEvery(ActionTypes.REQ_ADD_ADDRESS, handleAddAddress),
     takeEvery(ActionTypes.REQ_UPDATE_ADDRESS, handleUpdateAddress),
     takeEvery(ActionTypes.REQ_DELETE_ADDRESS, handleDeleteAddress),
+
+    //Education
+    takeEvery(ActionTypes.REQ_ADD_EDUCATION, handleAddEducation),
+    takeEvery(ActionTypes.REQ_UPDATE_EDUCATION, handleEditEducation),
+    takeEvery(ActionTypes.REQ_DELETE_EDUCATION, handleDeleteEducation),
   ]);
 }
 

@@ -250,3 +250,48 @@ export const doGetDeleteAddressResponse = (payload: any) => {
     payload,
   };
 };
+
+// Add Education
+export const doRequestAddEducation = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_EDUCATION,
+    payload,
+  };
+};
+
+export const doGetAddEducationResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_EDUCATION,
+    payload,
+  };
+};
+
+// Update Education
+export const doRequestUpdateEducation = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_EDUCATION,
+    payload,
+  };
+};
+
+export const doGetUpdateEducationResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_EDUCATION,
+    payload,
+  };
+};
+
+//Delete Education
+export const doRequestDeleteEducation = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_EDUCATION,
+    payload,
+  };
+};
+
+export const doGetDeleteEducationResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_EDUCATION,
+    payload,
+  };
+};
