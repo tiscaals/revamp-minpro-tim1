@@ -410,3 +410,46 @@ call bootcamp.updatebatch(57,'[{
 							}]')
 							
 select * from bootcamp.program_apply_progress
+
+----- RUNNING BATCH -----
+
+CREATE OR REPLACE PROCEDURE bootcamp.updateRunningBatch(
+	IN data json,
+	IN data2 json,
+	IN data3 json
+)
+LANGUAGE 'plpgsql'
+as
+$$
+declare
+	data_store record;
+
+begin
+	select * from json_to_recordset(data) as x(
+		batch_id int,
+		batch_entity_id int
+	)
+	into data_store;
+	
+	update bootcamp.batch set
+		batch_status = 'running',
+		batch_start_date = CURRENT_DATE
+	where batch_id = data_store.batch_id;
+	
+	FOR i IN 0..json_array_length(data2)-1 LOOP	
+	update bootcamp.batch_trainee set
+		batr_status = 'running'
+	where batr_batch_id = data_store.batch_id
+	AND batr_trainee_entity_id = (data2->i->>'batr_trainee_entity_id')::integer  ;
+	END LOOP;
+	
+	FOR i IN 0..json_array_length(data3)-1 LOOP
+	update bootcamp.program_apply_progress set
+		parog_status = 'closed',
+		parog_progress_name = 'contract'
+	where parog_prog_entity_id = data_store.batch_entity_id
+	AND parog_user_entity_id = (data3->i->>'parog_user_entity_id')::integer;
+	END LOOP;
+
+end;
+$$;

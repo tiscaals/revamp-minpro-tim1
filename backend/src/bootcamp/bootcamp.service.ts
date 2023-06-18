@@ -340,9 +340,15 @@ export class BootcampService {
       if (!idBody) throw new Error('Data Batch Tidak diTemukan!!');
 
       if(dataBody.batch_status === 'running'){
+        const trainee = await this.sequelize.query(`select * from bootcamp.batch_trainee where batr_batch_id = ${dataBody.batch_id}`);
+        const traineeProgramApply = await this.sequelize.query(`select * from bootcamp.program_apply_progress where parog_prog_entity_id = ${dataBody.batch_entity_id}`);
+
         const dataString = `[${JSON.stringify(dataBody)}]`;
+        const traineeString = `${JSON.stringify(trainee[0])}`;
+        const traineeProgramApplyString = `${JSON.stringify(traineeProgramApply[0])}`;
+
         await this.sequelize.query(
-          `call bootcamp.updaterunningbatch ('${dataString}')`,
+          `call bootcamp.updaterunningbatch ('${dataString}','${traineeString}','${traineeProgramApplyString}')`,
         );
       } else if(dataBody.batch_status === 'pending' || dataBody.batch_status === 'cancelled' || dataBody.batch_status === 'extend'){
         const result = await batch.update(
@@ -368,7 +374,7 @@ export class BootcampService {
 
   async cobaCoba () {
     try {
-      const result = await this.sequelize.query('select * from bootcamp.selecttalent')
+      const result = await this.sequelize.query('select * from bootcamp.program_apply_progress where parog_prog_entity_id = 5')
       const resultString = `${JSON.stringify(result[0])}`;
 
       return resultString
