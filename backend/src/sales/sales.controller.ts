@@ -79,6 +79,11 @@ export class SalesController {
     return this.salesService.deleteCartItemSP(+id);
   }
 
+  @Delete('hapus-cart/:id')
+  hapusCartItems(@Param('id') id: string) {
+    return this.salesService.hapusCartItem(id);
+  }
+
   @Delete('delete-order/:id')
   deleteOrder(@Param('id') id: number) {
     return this.salesService.deleteOrderById(+id);

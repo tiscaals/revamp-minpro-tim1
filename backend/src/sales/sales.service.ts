@@ -3,6 +3,7 @@ import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { QueryTypes } from 'sequelize';
+import { cart_items } from 'models/sales';
 
 @Injectable()
 export class SalesService {
@@ -391,11 +392,25 @@ export class SalesService {
     }
   }
 
-  // ...
-
   private sendMessage3(message: string) {
     console.log(message);
   }
+
+  //------------------ Delete Cart Items Models -------------------------    
+
+  async hapusCartItem(id: any) : Promise<any>{
+    try {
+        const data = await cart_items.destroy({
+            where:{
+                cait_id: id
+            }
+        })
+        return data[0]
+    } catch (error) {
+        return error.message
+    }
+}
+
 
   //------------------ Delete Cart Items -------------------------    
 

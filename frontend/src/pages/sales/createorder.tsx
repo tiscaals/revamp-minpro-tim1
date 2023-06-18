@@ -25,24 +25,28 @@ const CreateOrder: React.FC = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  useEffect(() => {
-    dispatch(getAllCartReq());
-  }, [dispatch]);
-
   const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
+    dispatch(getAllCartReq());
+  }, [dispatch]);
+  
+  useEffect(() => {
     calculateTotalPrice();
   }, [items]);
-
-const calculateTotalPrice = () => {
-  const total = items.reduce((accumulator: number, course: any) => {
-    return accumulator + course.prog_price;
-  }, 0);
-  setTotalPrice(total * items.length);
-};
-
-
+  
+  const calculateTotalPrice = () => {
+    if (items && items.length > 0) {
+      const total = items.reduce((accumulator: number, course: any) => {
+        const price = parseFloat(course.prog_price.replace(/[^0-9.-]+/g, ""));
+        return accumulator + price;
+      }, 0);
+      setTotalPrice(total);
+    } else {
+      setTotalPrice(0); // Atur total harga ke 0 jika tidak ada item
+    }
+  };
+  
   const handleCancelOrder = () => {
     router.push('/sales/checkout');
   };
@@ -99,7 +103,8 @@ const calculateTotalPrice = () => {
             <div className="grid grid-cols-1 gap-4 h-full">
               <div className="p-5 y-1 bg-white rounded-lg shadow-lg flex flex-col">
                 <p className="text-lg font-bold text-gray-800">Total:</p>
-                <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice}</p>
+                <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice.toLocaleString()}</p>
+
 
                 <button className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4 flex items-center justify-center flex-row-reverse">
                   <MdShoppingCart className="ml-2" />

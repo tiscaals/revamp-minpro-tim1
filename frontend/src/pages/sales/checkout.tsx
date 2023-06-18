@@ -31,13 +31,8 @@ const CartPage: React.FC = () => {
   const { items, message, refresh } = useSelector((state: any) => state.salesReducers);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllCartReq());
-  }, [dispatch]);
-
   const [isAccountValid, setIsAccountValid] = useState(false);
-  const [coursePrice, setCoursePrice] = useState(3500000);
-  const [total, setTotal] = useState(coursePrice);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   const router = useRouter();
 
@@ -56,21 +51,28 @@ const CartPage: React.FC = () => {
     // Lakukan operasi pencarian berdasarkan searchTerm
   };
 
-  const handleCoursePriceChange = (event: any) => {
-    const price = parseInt(event.target.value);
-    setCoursePrice(price);
-    setTotal(price);
+  useEffect(() => {
+    dispatch(getAllCartReq());
+  }, [dispatch]);
+  
+  useEffect(() => {
+    calculateTotalPrice();
+  }, [items]);
+  
+  const calculateTotalPrice = () => {
+    if (items && items.length > 0) {
+      const total = items.reduce((accumulator: number, course: any) => {
+        const price = parseFloat(course.prog_price.replace(/[^0-9.-]+/g, ""));
+        return accumulator + price;
+      }, 0);
+      setTotalPrice(total);
+    } else {
+      setTotalPrice(0); // Atur total harga ke 0 jika tidak ada item
+    }
   };
 
-  const handleRemoveCartItem = (id: number, payload: any) => {
-    const item = items.find((item: any) => item.cait_id === id);
-    if (item) {
-      if (window.confirm(`Apakah Anda yakin ingin menghapus ${item.prog_headline}?`)) {
-        dispatch(delCartReq(id, payload));
-      }
-    } else {
-      console.error(`Item with ID ${id} not found.`);
-    }
+  const handleRemoveCartItem = (id: number) => {
+      dispatch(delCartReq(id));
   };
 
   return (
@@ -82,37 +84,43 @@ const CartPage: React.FC = () => {
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
               {items &&
-                items.map((course: any, index: any) => (
-                  <div key={index} className="flex items-center p-4 bg-white rounded-lg shadow-lg">
-                    <div className="h-16 w-16 mr-4 relative">
-                      <Image src={courseImage} alt="Course Image" layout="fill" objectFit="cover" className="rounded-full" />
-                    </div>
-                    <div className="flex flex-col flex-grow">
-                      <div className="flex justify-between mb-4">
-                        <div>
-                          <p className="text-lg font-bold text-gray-800">{course.prog_headline}</p>
-                          <p className="text-gray-600">{course.prog_title}</p>
+                items.map((course: any, index: any) => {
+                  if (course.cait_id && !isNaN(course.cait_id)) {
+                    return (
+                      <div key={index} className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+                        <div className="h-16 w-16 mr-4 relative">
+                          <Image src={courseImage} alt="Course Image" layout="fill" objectFit="cover" className="rounded-full" />
                         </div>
-                        <div className="flex items-center">
-                          <p className="text-gray-600">Rp. {course.prog_price}</p>
+                        <div className="flex flex-col flex-grow">
+                          <div className="flex justify-between mb-4">
+                            <div>
+                              <p className="text-lg font-bold text-gray-800">{course.prog_headline}</p>
+                              <p className="text-gray-600">{course.prog_title}</p>
+                            </div>
+                            <div className="flex items-center">
+                              <p className="text-gray-600">Rp. {course.prog_price}</p>
+                            </div>
+                          </div>
+                          <div className="flex gap-4">
+                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
+                              Simpan untuk nanti
+                              <BookmarkAddIcon className="ml-2" />
+                            </button>
+                            <button
+                              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
+                              onClick={() => handleRemoveCartItem(course.cait_id)}
+                            >
+                              Hapus
+                              <DeleteForeverIcon className="ml-2" />
+                            </button>
+                          </div>
                         </div>
                       </div>
-                      <div className="flex gap-4">
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
-                          Save for later
-                          <BookmarkAddIcon className="ml-2" />
-                        </button>
-                        <button
-                          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
-                          onClick={() => handleRemoveCartItem(course.cait_id, course.payload)}
-                        >
-                          Remove
-                          <DeleteForeverIcon className="ml-2" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                    );
+                  } else {
+                    return null; // Jika cait_id tidak valid, item kursus tidak akan dirender
+                  }
+                })}
               <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
                 <p className="text-lg font-bold text-gray-800">Payment</p>
                 <PaymentsIcon className="ml-2" />
@@ -124,7 +132,7 @@ const CartPage: React.FC = () => {
             <div className="grid grid-cols-1 gap-4 h-full">
               <div className="p-5 y-1 bg-white rounded-lg shadow-lg flex flex-col">
                 <p className="text-lg font-bold text-gray-800">Total:</p>
-                <p className="text-3xl font-bold text-gray-800">Rp. {total}</p>
+                <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice.toLocaleString()}</p>
 
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4"
@@ -161,60 +169,42 @@ const CartPage: React.FC = () => {
               <div>
                 <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                   Fintech
-                  <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
+                  <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-500" aria-hidden="true" />
                 </Menu.Button>
               </div>
-
               <Transition
                 as={React.Fragment}
                 enter="transition ease-out duration-200"
-                enterFrom="opacity-0 scale-95"
-                enterTo="opacity-100 scale-100"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
                 leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 scale-100"
-                leaveTo="opacity-0 scale-95"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
               >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href="#"
-                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'} block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-200 hover:text-gray-900 rounded-md shadow-md`}
-                      >
-                        <FontAwesomeIcon icon={faHome} className="mr-2" /> GoTo
-                      </a>
-                    )}
-                  </Menu.Item>
-                  <Menu.Item>
-                    {({ active }) => (
-                      <a
-                        href="#"
-                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'} block px-4 py-2 text-sm transition-all duration-300 hover:bg-gray-200 hover:text-gray-900 rounded-md shadow-md`}
-                      >
-                        <FontAwesomeIcon icon={faWallet} className="mr-2" /> OVO
-                      </a>
-                    )}
-                  </Menu.Item>
+                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                  <div className="py-1">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <button
+                          className={`${
+                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                          onClick={handleAccountFintechClick}
+                        >
+                          Fintech Account
+                        </button>
+                      )}
+                    </Menu.Item>
+                  </div>
                 </Menu.Items>
               </Transition>
             </Menu>
           </div>
-          <div>
-            <button
-              className="ml-4 inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-              onClick={handleAccountFintechClick}
-            >
-              Account Fintech
-            </button>
-          </div>
+          <IconButton>
+            <FontAwesomeIcon icon={faArrowRight} className="text-gray-600" />
+          </IconButton>
         </div>
       </div>
-
-      {isAccountValid && (
-        <div className="flex items-center p-4 bg-white rounded-lg shadow-lg mt-2">
-          <p className="text-lg font-bold text-gray-800">Your account is valid, please continue to complete</p>
-        </div>
-      )}
     </>
   );
 };
