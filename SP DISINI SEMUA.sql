@@ -1,6 +1,6 @@
 create or replace procedure bootcamp.createBatch(in data json, in data2 json, in data3 json)
 language plpgsql
-as 
+as
 $$
 declare
 	batchid int;
@@ -69,9 +69,6 @@ begin
 
 end;
 $$;
-
-alter table bootcamp.trainer_programs
-alter column tpro_modified_date set default now()
 
 call bootcamp.createBatch('[{
 							"batch_entity_id": 3,
@@ -238,8 +235,8 @@ call bootcamp.createEvaluation(80,
       "btev_header": "batch#3 anu",
       "btev_section": "technical",
       "btev_skill": "fundamental javascript",
-      "btev_week": "1",
-      "btev_skor": 4,
+      "btev_week": "",
+      "btev_skor": 3,
       "btev_note": "",
       "btev_batch_id": 36,
       "btev_trainee_entity_id": 3
@@ -249,7 +246,7 @@ call bootcamp.createEvaluation(80,
       "btev_header": "batch#3 anu",
       "btev_section": "softskill",
       "btev_skill": "komunikasi",
-      "btev_week": "1",
+      "btev_week": "",
       "btev_skor": 3,
       "btev_note": "",
       "btev_batch_id": 36,
@@ -380,8 +377,6 @@ begin
 end;
 $$;
 
-select * from bootcamp.batch_trainee
-
 call bootcamp.updatebatch(57,'[{
 							"batch_entity_id": 1,
 							"batch_name": "batch#99",
@@ -402,5 +397,4 @@ call bootcamp.updatebatch(57,'[{
 						  },{
 							"tpro_emp_entity_id": 2			   			   
 							}]')
-							
 select * from bootcamp.program_apply_progress

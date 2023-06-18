@@ -395,6 +395,7 @@ export default function BatchList() {
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
+                                    disabled={batch_status !== 'running'? true: false}
                                       onClick={() =>
                                         router.push(
                                           `/batch/evaluation/${batch_id}`
@@ -404,10 +405,10 @@ export default function BatchList() {
                                         active
                                           ? 'bg-light-blue-500 text-white'
                                           : 'text-gray-900'
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      } disabled:bg-gray-200 disabled:text-gray-400 group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                     >
                                       <HiOutlineAcademicCap
-                                        className={`mr-2 h-5 w-5 ${
+                                        className={`${batch_status !== 'running'? 'text-gray-400': ''} mr-2 h-5 w-5 ${
                                           active
                                             ? 'text-white'
                                             : 'text-light-blue-500'

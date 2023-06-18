@@ -70,6 +70,7 @@ export default function EditBatch() {
     //   trainee: newTrainee,
     //   instructors: [newTrainer, newCoTrainer],
     // };
+    data.trainees = checked
     console.log(data);
   };
 
@@ -94,19 +95,25 @@ export default function EditBatch() {
     }
     dispatch(getAllTrainersReq());
     dispatch(getAllProgramsReq());
-    dispatch(getAllRecStudentReq(selTechno));
-
-  }, [id,selTechno]);
+  }, [id]);
 
   useEffect(()=>{
     if(batch){
       setSelTechno(batch.batch_entity_id)
+      dispatch(getAllRecStudentReq(selTechno));
       setChecked(batch.trainees)
 
-      // let defaultValue:any = {}
-      // defaultValue.batch_entity_id = batch.batch_entity_id
+      let defaultValue:any = {}
+      defaultValue.batch_name = batch.batch_name
+      defaultValue.batch_entity_id = batch.batch_entity_id
+      defaultValue.batch_type = batch.batch_type
+      defaultValue.batch_start_date = batch.batch_start_date
+      defaultValue.batch_end_date = batch.batch_end_date
+      // defaultValue.trainer = batch.trainers[0].tpro_emp_entity_id
+      // defaultValue.cotrainer = batch?.trainers[1].tpro_emp_entity_id
+      reset({...defaultValue})
     }
-  },[batch,selTechno])
+  },[batch,reset,selTechno])
 
   if (programs.length === 0 && trainers.length === 0) {
     return <div className="bg-black w-full h-screen"> Loading</div>;
@@ -116,8 +123,7 @@ export default function EditBatch() {
     return <div>....</div>
   }
 
-  console.log(batch); 
-  // console.log(recstudents); 
+  // console.log(batch); 
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -135,7 +141,7 @@ export default function EditBatch() {
             <div>
               <Input
                 label="Batch Name"
-                defaultValue={batch?.batch_name}
+                // defaultValue={batch?.batch_name}
                 {...register('batch_name', { required: true })}
                 error={errors.batch_name}
               />
@@ -146,7 +152,7 @@ export default function EditBatch() {
               )}
             </div>
             <div className="flex lg:flex-row flex-col gap-5">
-              <div className="w-1/2">
+              <div className="lg:w-1/2">
                 {/* <Select inputProps={{...register('batch_entity_id',{required:true})}} error={errors.batch_entity_id} onChange={setSelTechno} label="Technology" >
                 {
                   (programs || []).map((item:any)=>(
@@ -157,9 +163,9 @@ export default function EditBatch() {
                 <select
                   className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
                   {...register('batch_entity_id')}
-                  // onChange={(e)=>setSelTechno(e.target.value)}
+                  onChange={(e)=>setSelTechno(e.target.value)}
                   error={errors.batch_entity_id}
-                  // label="Technology"
+                  disabled
                 >
                   {(programs || []).map((item: any) => (
                     <option
@@ -179,7 +185,7 @@ export default function EditBatch() {
                   </span>
                 )}
               </div>
-              <div className="w-1/2">
+              <div className="lg:w-1/2">
                 <select
                   className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
                   {...register('batch_type')}
@@ -241,7 +247,7 @@ export default function EditBatch() {
               <div>
                 <input
                   type="date"
-                  defaultValue={batch?.batch_start_date}
+                  // defaultValue={batch?.batch_start_date}
                   {...register('batch_start_date', { required: true })}
                   className={`appearance-none border ${
                     errors.batch_start_date
@@ -262,7 +268,7 @@ export default function EditBatch() {
               <div>
                 <input
                   type="date"
-                  defaultValue={batch?.batch_end_date}
+                  // defaultValue={batch?.batch_end_date}
                   {...register('batch_end_date', { required: true })}
                   className={`appearance-none border ${
                     errors.batch_start_date
@@ -301,7 +307,7 @@ export default function EditBatch() {
               >
                 {(trainers || []).map((item: any) => (
                   <option
-                    value={item}
+                    value={item.emp_entity_id}
                     selected={
                       batch?.trainers &&
                       batch.trainers[0].tpro_emp_entity_id ===
@@ -328,7 +334,7 @@ export default function EditBatch() {
               >
                 {(trainers || []).map((item: any) => (
                   <option
-                    value={item}
+                    value={item.emp_entity_id}
                     selected={
                       batch?.trainers &&
                       batch.trainers[1].tpro_emp_entity_id ===
@@ -394,7 +400,7 @@ export default function EditBatch() {
                   />
                   {checked.find(
                     (i: any) =>
-                      i.prap_user_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
+                      i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
                   ) ? (
                     <div className="text-xl grid content-center">
                       {' '}
@@ -406,11 +412,6 @@ export default function EditBatch() {
                       <HiPlusSm />{' '}
                     </div>
                   )}
-                  {/* {
-                    checked.map(check=>(
-                      check.
-                    ))
-                  } */}
                 </label>
               </div>
             ))

@@ -277,7 +277,8 @@ join bootcamp.program_apply on prap_prog_entity_id = parog_prog_entity_id
 	and prap_user_entity_id = parog_user_entity_id
 join curriculum.program_entity on prog_entity_id = prap_prog_entity_id
 
-select * from bootcamp.program_apply
+select * from bootcamp.batch
+select * from 
 select * from bootcamp.batch_trainee
 truncate table bootcamp.program_apply cascade
 select user_entity_id,uspo_number,uspo_ponty_code from users.users_phones join users.users on user_entity_id = uspo_entity_id
