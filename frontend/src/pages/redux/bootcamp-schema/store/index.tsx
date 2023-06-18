@@ -7,6 +7,10 @@ import batchReducers from '../reducer/batchReducer';
 import trainerReducers from '../reducer/trainerReducer';
 import programReducers from '../reducer/programReducer';
 import talentsReducers from '../reducer/talentsReducer';
+import studentReducers from '../reducer/studentsReducer';
+import routeReducers from '../reducer/routeReducer';
+import candidateReducers from '../reducer/candidateReducer';
+import traineeReducers from '../reducer/traineeReducer';
 
 const logger = createLogger();
 const saga = createSagaMiddleware();
@@ -15,7 +19,11 @@ const reducer = combineReducers({
   batchReducers,
   trainerReducers,
   programReducers,
-  talentsReducers
+  talentsReducers,
+  studentReducers,
+  routeReducers,
+  candidateReducers,
+  traineeReducers,
 });
 
 const store = configureStore({
