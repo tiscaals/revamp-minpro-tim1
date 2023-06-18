@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import apiMethod from '../apiMethod';
-import { addBatchRes, getAllBatchesReq, getAllBatchesRes, getAllProgramsRes, getAllTrainersRes } from '../action/actionReducer';
+import { UpdateCloseBatchRes, addBatchRes, getAllBatchesReq, getAllBatchesRes, getAllProgramsRes, getAllTalentsRes, getAllTrainersRes } from '../action/actionReducer';
 
 function* handleGetAllBatches():any{
     try {
@@ -31,6 +31,16 @@ function* handleGetAllTrainers():any{
     }
 }
 
+function* handleGetAllTalents():any{
+    try {
+        const result = yield call(apiMethod.findAllTalents)
+        console.log(result)
+        yield put(getAllTalentsRes(result.data))
+    } catch (error) {
+        yield put(getAllTalentsRes({message:error, status:400}))
+    }
+}
+
 function* handleAddBatch(action:any):any{
     try {
         const result = yield call(apiMethod.createBatch, action.payload)
@@ -40,9 +50,21 @@ function* handleAddBatch(action:any):any{
     }
 }
 
+function* handleUpdateCloseBatch(action:any):any{
+    try {
+        const result = yield call(apiMethod.updateCloseBatch,action.payload)
+
+        yield put(UpdateCloseBatchRes(result))
+    } catch (error) {
+        yield put( UpdateCloseBatchRes({message:error,status:400}))
+    }
+}
+
 export {
     handleGetAllBatches,
     handleAddBatch,
     handleGetAllPrograms,
-    handleGetAllTrainers
+    handleGetAllTrainers,
+    handleGetAllTalents,
+    handleUpdateCloseBatch
 }

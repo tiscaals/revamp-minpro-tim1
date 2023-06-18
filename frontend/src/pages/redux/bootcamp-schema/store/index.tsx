@@ -6,6 +6,7 @@ import rootSaga from '../saga/index';
 import batchReducers from '../reducer/batchReducer';
 import trainerReducers from '../reducer/trainerReducer';
 import programReducers from '../reducer/programReducer';
+import talentsReducers from '../reducer/talentsReducer';
 
 const logger = createLogger();
 const saga = createSagaMiddleware();
@@ -13,7 +14,8 @@ const saga = createSagaMiddleware();
 const reducer = combineReducers({
   batchReducers,
   trainerReducers,
-  programReducers
+  programReducers,
+  talentsReducers
 });
 
 const store = configureStore({

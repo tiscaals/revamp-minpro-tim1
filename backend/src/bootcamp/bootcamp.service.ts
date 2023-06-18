@@ -285,12 +285,66 @@ export class BootcampService {
     }
   }
 
-  async closeBatch () {
+  async closeBatch (body: any) {
     try {
-      const data = await this.sequelize.query('select * from selecttalent')
-      return data[0]
+      const dataTalents = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${body.batch_id}`)
+
+      const dataString = `[${JSON.stringify(body)}]`;
+      const talentString = `${JSON.stringify(dataTalents[0])}`;
+      await this.sequelize.query(
+        `call bootcamp.closebatch ('${dataString}','${talentString}')`,
+      );
+
+      return 'jadi'
     } catch (error) {
-      return error
+      return error.message
+    }
+  }
+
+  async changeStatusBatch(dataBody: any) {
+    try {
+      const idBody = await batch.findOne(
+        {
+          where: {batch_id : dataBody.batch_id}
+        }
+      )
+      if (!idBody) throw new Error('Data Batch Tidak diTemukan!!');
+
+      if(dataBody.batch_status === 'running'){
+        const dataString = `[${JSON.stringify(dataBody)}]`;
+        await this.sequelize.query(
+          `call bootcamp.updaterunningbatch ('${dataString}')`,
+        );
+      } else if(dataBody.batch_status === 'pending' || dataBody.batch_status === 'cancelled' || dataBody.batch_status === 'extend'){
+        const result = await batch.update(
+          {
+            batch_status: dataBody.batch_status,
+            batch_reason: dataBody.batch_reason
+          },
+          {
+            where: {
+              batch_id: dataBody.batch_id
+            },
+            returning: true
+          },
+        )
+      }
+
+      return `Status Batch Telah Berubah Menjadi ${dataBody.batch_status.toUpperCase()}`
+
+    } catch (error) {
+      return error.message;
+    }
+  }
+
+  async cobaCoba () {
+    try {
+      const result = await this.sequelize.query('select * from bootcamp.selecttalent')
+      const resultString = `${JSON.stringify(result[0])}`;
+
+      return resultString
+    } catch (error) {
+      return error.message
     }
   }
 
@@ -323,6 +377,7 @@ export class BootcampService {
   }
 
   async updateProgramApply(id: number, body: any) {
+  
     try {
       const idBody = await program_apply.findOne({where: {
         prap_user_entity_id: id,
@@ -350,6 +405,20 @@ export class BootcampService {
 
     } catch (error) {
       return error.message;
+    }
+  }
+
+  async viewaAllTalents() {
+    try {
+      // const result = await this.sequelize.query('select * from bootcamp.selecttalent')
+      const result = await this.sequelize.query('select * from bootcamp.talentspassed')
+      return {
+        result: result[0],
+        status: 201,
+        message: 'sukses',
+      }
+    } catch (error) {
+      
     }
   }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Card,
   CardHeader,
@@ -13,6 +13,8 @@ import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
 } from '@heroicons/react/24/outline';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllTalentsReq } from '../redux/bootcamp-schema/action/actionReducer';
 
 export default function Talents() {
   const TABLE_HEAD = [
@@ -25,9 +27,21 @@ export default function Talents() {
     ''
   ];
 
+  let {talents, message, refresh, status} = useSelector((state:any)=>state.talentsReducers)
+  const dispatch = useDispatch()
+  
+  useEffect(()=>{
+    dispatch(getAllTalentsReq())
+  },[refresh])
+
+  console.log("testtalents",talents);
+
+
+  
+
   const TABLE_BODY = [
     {
-        full_name: 'Abu Zubair',
+        talent_fullname: 'Abu Zubair',
         image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
         technology: 'NodeJS',
         batch: 'Batch#3',
@@ -36,7 +50,7 @@ export default function Talents() {
         status: 'Idle'
     },
     {
-        full_name: 'Boruto',
+        talent_fullname: 'Boruto',
         image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
         technology: 'Java',
         batch: 'Batch#4',
@@ -45,7 +59,7 @@ export default function Talents() {
         status: 'Placement'
     },
     {
-        full_name: 'Luffy',
+        talent_fullname: 'Luffy',
         image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
         technology: '.Net',
         batch: 'Batch#4',
@@ -118,16 +132,16 @@ export default function Talents() {
             </tr>
           </thead>
           <tbody>
-            {TABLE_BODY.map(
+            {talents.map(
               (
                 {
-                  full_name,
-                  image,
-                  technology,
-                  batch,
-                  periode,
-                  trainer,
-                  status,
+                  talent_fullname,
+                  talent_image,
+                  talent_technology,
+                  batch_name,
+                  batch_start_date,
+                  talent_trainer,
+                  talent_status,
                 },
                 index
               ) => {
@@ -137,17 +151,17 @@ export default function Talents() {
                   : 'p-4 border-b border-blue-gray-50';
 
                 return (
-                  <tr key={full_name}>
+                  <tr key={talent_fullname}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
-                      <Avatar src={image} alt={full_name} size="sm" />
+                      <Avatar src={talent_image} alt={talent_fullname} size="sm" />
                       <div className="flex flex-col">
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {full_name}
+                            {talent_fullname}
                           </Typography>
                         </div>
                       </div>
@@ -159,7 +173,7 @@ export default function Talents() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {technology}
+                          {talent_technology}
                         </Typography>
                       </div>
                     </td>
@@ -170,7 +184,7 @@ export default function Talents() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {batch}
+                          {batch_name}
                         </Typography>
                       </div>
                     </td>
@@ -181,7 +195,7 @@ export default function Talents() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {periode}
+                          {batch_start_date}
                         </Typography>
                       </div>
                     </td>
@@ -192,7 +206,7 @@ export default function Talents() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {trainer}
+                          {talent_trainer}
                         </Typography>
                       </div>
                     </td>
@@ -203,7 +217,7 @@ export default function Talents() {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {status}
+                          {talent_status}
                         </Typography>
                       </div>
                     </td>

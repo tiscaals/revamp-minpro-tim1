@@ -37,6 +37,18 @@ const getAllProgramsRes = (payload:any) => {
     }
 }
 
+const getAllTalentsReq = () => {
+    return{
+        type: ActionTypes.REQ_GET_TALENTS
+    }
+}
+const getAllTalentsRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_GET_TALENTS,
+        payload
+    }
+}
+
 const addBatchReq = (payload:any) =>{
     return{
         type: ActionTypes.REQ_CREATE_BATCH,
@@ -51,7 +63,19 @@ const addBatchRes = (payload:any) =>{
     }
 }
 
+const UpdateCloseBatchReq = (payload:any) => {
+    return{
+        type: ActionTypes.REQ_UPDATE_CLOSE_BATCH,
+        payload
+    }
+}
 
+const UpdateCloseBatchRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_UPDATE_CLOSE_BATCH,
+        payload
+    }
+}
 
 export {
     getAllBatchesReq,
@@ -61,7 +85,11 @@ export {
     getAllProgramsReq,
     getAllProgramsRes,
     getAllTrainersReq,
-    getAllTrainersRes
+    getAllTrainersRes,
+    getAllTalentsReq,
+    getAllTalentsRes,
+    UpdateCloseBatchReq,
+    UpdateCloseBatchRes
 }
 
 // const getAllUserRes = (payload:any) => {

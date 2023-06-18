@@ -402,12 +402,12 @@ $$;
 insert into users.users(user_entity_id,user_first_name,user_last_name) values(3,'Jordy','Saputra');
 
 call bootcamp.createProgramApply('[{
-								 	"prap_user_entity_id": 3,
-								 	"prap_prog_entity_id": 3,
+								 	"prap_user_entity_id": 4,
+								 	"prap_prog_entity_id": 4,
 								 	"prap_test_score": 69,
 								 	"prap_gpa": 69,
 								 	"prap_iq_test": 69,
-								 	"prap_review": "a",
+								 	"prap_review": "Naruto Pak Kades",
 								 	"prap_modified_date": "2023-06-06 12:30:00 +00:00",
 								 	"prap_status": "passed"
 								 }]','[{
@@ -421,3 +421,5 @@ call bootcamp.createProgramApply('[{
 
 alter table bootcamp.batch
 alter column batch_modified_date type timestamptz default now()
+
+truncate table bootcamp.talents

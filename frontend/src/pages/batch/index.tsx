@@ -190,9 +190,9 @@ export default function BatchList() {
             </tr>
           </thead>
           <tbody>
-            {filteredBatch.length === 0?<tr>
+            {filteredBatch?.length === 0?<tr>
               <td colSpan={7} className='text-center py-6 text-red-300'>No data found</td>
-            </tr>: filteredBatch.map(
+            </tr>: filteredBatch?.map(
               (
                 {
                   batch_id,
@@ -240,7 +240,7 @@ export default function BatchList() {
                       <div className="items-center">
                         <div className="flex -space-x-4 overflow-hidden">
                         {
-                            trainees.map((poto:string)=>(
+                            trainees?.map((poto:string)=>(
                               <Avatar
                               src={poto.user_photo}
                               size="sm"
@@ -286,14 +286,14 @@ export default function BatchList() {
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {trainers[0].concat}
+                            {trainers[0]?.concat}
                           </Typography>
                           <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal opacity-70"
                         >
-                          (co) {trainers[1].concat}
+                          (co) {trainers[1]?.concat}
                         </Typography>
                         </div>
                       </div>

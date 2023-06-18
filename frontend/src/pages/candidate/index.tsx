@@ -217,7 +217,7 @@ export default function Candidates() {
                   <Menu as="div" className="relative inline-block text-left ">
                     <div>
                       <Menu.Button
-                        className="inline-flex w-full justify-center rounded-md bg-blue-500 
+                        className="inline-flex w-full justify-center rounded-md 
                         bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 
                         focus:outline-none focus-visible:ring-2 focus-visible:ring-white 
                         focus-visible:ring-opacity-75"
@@ -237,7 +237,7 @@ export default function Candidates() {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="z-10 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-blue-500 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="z-10 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none p-4">
                         <div className="px-1 py-1">
                           <h1 className="relative">
                             Switch Status
@@ -247,19 +247,14 @@ export default function Candidates() {
                           <h1>Kadidat {dt.name}</h1>
                           <br />
                           {/* <h1>Score Filtering Test :</h1> */}
-                          <div className="flex justify-end">
+                          <div className="flex justify-center">
                             <div className="w-72">
                               <Input
                                 label="Score Filtering Test"
                                 type="number"
-                                color="black"
                               />
-                            </div>
-                          </div>
-                          <br />
-                          {/* <h3>Set Status</h3> */}
-                          <div className="w-13 text-white">
-                            <Select label="Set Status">
+                              <br />
+                              <Select label="Set Status" >
                               <Option className="text-black">Ready Test</Option>
                               <Option className="text-black">Passed</Option>
                               <Option className="text-black">Contracted</Option>
@@ -267,12 +262,8 @@ export default function Candidates() {
                                 Recommendation
                               </Option>
                             </Select>
-                          </div>
-                          <br />
-                          {/* <h3>Review</h3> */}
-                          <div className="flex justify-end">
-                            <div className="w-72">
-                              <Textarea label="Review" />
+                            <br />
+                            <Textarea label="Review" />
                             </div>
                           </div>
                           <br />

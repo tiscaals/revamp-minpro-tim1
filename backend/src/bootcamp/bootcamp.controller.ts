@@ -59,9 +59,21 @@ export class BootcampController {
     return this.bootcampService.createProgram(createBootcampDto);
   }
 
-  @Get('close')
-  setClose(){
-    return this.bootcampService.closeBatch()
+  @Post('close')
+  setClose(@Body() body:any){
+    return this.bootcampService.closeBatch(body)
+  }
+
+  @Post('change-status-batch')
+  changeStatusBatch(@Body() dataBody:any){
+    return this.bootcampService.changeStatusBatch(
+      dataBody)
+  }
+
+
+  @Get('coba')
+  findCoba() {
+    return this.bootcampService.cobaCoba();
   }
 
   @Patch('program-apply-progress/:id')
@@ -96,4 +108,10 @@ export class BootcampController {
   findAllPrograms(){
     return this.bootcampService.getAllPrograms()
   }
+
+  @Get('talents')
+  findAllTalents(){
+    return this.bootcampService.viewaAllTalents()
+  }
+
 }
