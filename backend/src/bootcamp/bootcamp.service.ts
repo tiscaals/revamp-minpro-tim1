@@ -78,7 +78,7 @@ export class BootcampService {
         `select * from bootcamp.batch where batch_id=${id}`,
       );
 
-      const datatrainee:any = await this.sequelize.query('select batr_trainee_entity_id,batch_id from bootcamp.batch_trainee join bootcamp.batch on batch.batch_id = batch_trainee.batr_batch_id')
+      const datatrainee:any = await this.sequelize.query('select batr_trainee_entity_id as user_id,batch_id from bootcamp.batch_trainee join bootcamp.batch on batch.batch_id = batch_trainee.batr_batch_id')
 
       const datatrainer:any = await this.sequelize.query('select trainer_programs.batch_id,tpro_emp_entity_id from bootcamp.trainer_programs join bootcamp.batch on batch.batch_id = trainer_programs.batch_id')
       if (data[0].length === 0) throw new Error('Id tidak ditemukan');
@@ -108,44 +108,28 @@ export class BootcampService {
       if (!find) throw new Error('data tidak ditemukan');
 
       let dbTrainees: any = await this.sequelize.query(
-        `select batr_trainee_entity_id from bootcamp.batch_trainee where batr_batch_id = ${id}`,
+        `select batr_trainee_entity_id as user_id from bootcamp.batch_trainee where batr_batch_id = ${id}`,
       );
 
       dbTrainees = dbTrainees[0];
 
-      const { batch, trainee, instructors } = body;
+      const { trainee } = body;
+        const toBeAdded = trainee.filter((tr:any)=>{return !dbTrainees.some((dbtr:any)=>tr.user_id === dbtr.user_id)})
+        const toBeDeleted = dbTrainees.filter((dbtr:any)=>{return !trainee.some((tr:any)=>dbtr.user_id === tr.user_id)})
 
-      let toBeDeleted = [];
-      let toBeAdded = [];
-
-      for (let trnee of trainee) {
-        let found = dbTrainees.find(
-          (obj:any) => obj.batr_trainee_entity_id === trnee.batr_trainee_entity_id,
-        );
-        if (!found) {
-          toBeAdded.push(trnee);
-        }
-      }
-
-      for (let dbtr of dbTrainees) {
-        let found = trainee.find(
-          (obj:any) => obj.batr_trainee_entity_id === dbtr.batr_trainee_entity_id,
-        );
-        if (!found) {
-          toBeDeleted.push(dbtr);
-        }
-      }
 
       const data1 = `[${JSON.stringify(body.batch)}]`
       const data2 = `${JSON.stringify(toBeAdded)}`
       const data3 = `${JSON.stringify(toBeDeleted)}`
-      const data4 = `${JSON.stringify(body.trainers)}`
+      const data4 = `${JSON.stringify(body.instructors)}`
 
       await this.sequelize.query(`call bootcamp.updatebatch(${id},'${data1}','${data2}','${data3}','${data4}')`)
       // return {
       //   batch: body.batch,
       //   add: toBeAdded,
-      //   del: toBeDeleted
+      //   del: toBeDeleted,
+      //   dbTrainees: dbTrainees,
+      //   trainee: trainee
       // }
       return {
         status: 201,
@@ -399,7 +383,7 @@ export class BootcampService {
     console.log(id);
     try {
       //batr_trainee_entity_id
-      const data = await this.sequelize.query(`SELECT * FROM bootcamp.program_apply JOIN users.users ON user_entity_id= prap_user_entity_id WHERE (prap_status = 'recommendation' OR prap_status = 'passed') AND prap_prog_entity_id = ${id}`)
+      const data = await this.sequelize.query(`SELECT prap_user_entity_id as user_id,prap_prog_entity_id,user_first_name,user_last_name,user_photo FROM bootcamp.program_apply JOIN users.users ON user_entity_id= prap_user_entity_id WHERE (prap_status = 'recommendation' OR prap_status = 'passed') AND prap_prog_entity_id = ${id}`)
 
       if(data[0].length === 0) throw new Error('data tidak ditemukan')
 

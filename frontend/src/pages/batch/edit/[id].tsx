@@ -13,6 +13,7 @@ import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addBatchReq,
+  editReq,
   getAllProgramsReq,
   getAllRecStudentReq,
   getAllTrainersReq,
@@ -27,13 +28,12 @@ export default function EditBatch() {
   const { recstudents } = useSelector((state: any) => state.studentReducers);
 
   const [checked, setChecked] = useState<any>([]);
-  // const [selectedTrainer, setSelectedTrainer] = useState<any>();
-  // const [selectedCoTrainer, setSelectedCoTrainer] = useState<any>();
   const [selTechno, setSelTechno] = useState<any>();
-  // const [batchType, setBatchType] = useState<string>('');
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const technoRef = useRef();
+  const { id } = router.query;
 
   const {
     register,
@@ -44,34 +44,18 @@ export default function EditBatch() {
   } = useForm();
 
   const onSubmit = (data: any) => {
-    // data.batch_status = 'open';
-
-    // //PIC diambil dari user yang login (recruiter)
-    // data.batch_pic_id = 1;
-    // // console.log(data);
-
-    // let newTrainer = {
-    //   tpro_emp_entity_id: data.trainer.emp_entity_id,
-    // };
-
-    // let newCoTrainer = {
-    //   tpro_emp_entity_id: data.cotrainer.emp_entity_id,
-    // };
-
-    // let newTrainee = [];
-
-    // for (let i in checked) {
-    //   newTrainee.push({
-    //     batr_trainee_entity_id: checked[i].user_entity_id,
-    //   });
-    // }
-    // const newObj = {
-    //   batch: data,
-    //   trainee: newTrainee,
-    //   instructors: [newTrainer, newCoTrainer],
-    // };
-    data.trainees = checked
-    console.log(data);
+    data.batch_id = +id
+    const newObj = {
+      batch: data,
+      trainee: checked,
+      instructors: [
+        {tpro_emp_entity_id: +data.trainer},
+        {tpro_emp_entity_id: +data.cotrainer}
+      ]
+    };
+    console.log(newObj);
+    dispatch(editReq(newObj))
+    router.push('/batch')
   };
 
   const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,14 +64,11 @@ export default function EditBatch() {
     } else {
       setChecked(
         checked.filter(
-          (it: any) => it.batr_trainee_entity_id !== item.prap_user_entity_id &&
-          it.prap_user_entity_id !== item.prap_user_entity_id
+          (it: any) => it.user_id !== item.user_id
         )
       );
     }
   };
-
-  const { id } = router.query;
 
   useEffect(() => {
     if (id) {
@@ -99,8 +80,9 @@ export default function EditBatch() {
 
   useEffect(()=>{
     if(batch){
-      setSelTechno(batch.batch_entity_id)
-      dispatch(getAllRecStudentReq(selTechno));
+      // setSelTechno(batch.batch_entity_id)
+      technoRef.current = batch.batch_entity_id
+      dispatch(getAllRecStudentReq(technoRef.current));
       setChecked(batch.trainees)
 
       let defaultValue:any = {}
@@ -113,7 +95,13 @@ export default function EditBatch() {
       // defaultValue.cotrainer = batch?.trainers[1].tpro_emp_entity_id
       reset({...defaultValue})
     }
-  },[batch,reset,selTechno])
+  },[batch])
+
+  const handleTechnoChange = (e:any) => {
+    const selectedTechno = e.target.value;
+    setSelTechno(selectedTechno);
+    dispatch(getAllRecStudentReq(selectedTechno));
+  };
 
   if (programs.length === 0 && trainers.length === 0) {
     return <div className="bg-black w-full h-screen"> Loading</div>;
@@ -163,9 +151,10 @@ export default function EditBatch() {
                 <select
                   className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
                   {...register('batch_entity_id')}
-                  onChange={(e)=>setSelTechno(e.target.value)}
+                  onChange={handleTechnoChange}
+                  value={selTechno}
                   error={errors.batch_entity_id}
-                  disabled
+                  // disabled
                 >
                   {(programs || []).map((item: any) => (
                     <option
@@ -372,7 +361,7 @@ export default function EditBatch() {
                   className={`flex justify-between content-center w-auto cursor-pointer rounded-lg py-3 px-4 font-semibold text-sm ${
                     checked.find(
                       (i: any) =>
-                        i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
+                        i.user_id === item.user_id
                     )
                       ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-lg shadow-light-blue-200'
                       : 'bg-white border border-gray-`300 text-light-blue-400 hover:scale-105 transition-transform ease-in-out'
@@ -391,7 +380,7 @@ export default function EditBatch() {
                     checked={
                       checked.find(
                         (i: any) =>
-                          i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
+                          i.user_id === item.user_id
                       ) ? true : false
                     }
                     className="hidden"
@@ -400,7 +389,7 @@ export default function EditBatch() {
                   />
                   {checked.find(
                     (i: any) =>
-                      i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
+                      i.user_id === item.user_id
                   ) ? (
                     <div className="text-xl grid content-center">
                       {' '}

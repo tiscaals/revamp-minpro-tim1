@@ -59,7 +59,7 @@ export default function Content() {
 
     for (let i in checked) {
       newTrainee.push({
-        batr_trainee_entity_id: checked[i].user_entity_id,
+        user_id: checked[i].user_id,
       });
     }
     const newObj = {
@@ -79,7 +79,7 @@ export default function Content() {
     } else {
       setChecked(
         checked.filter(
-          (it: any) => it.prap_user_entity_id !== item.prap_user_entity_id
+          (it: any) => it.user_id !== item.user_id
         )
       );
     }
@@ -284,12 +284,12 @@ export default function Content() {
         <div className="flex flex-col lg:flex-row gap-3 justify-start ">
           {recstudents ? (
             recstudents.map((item: any, index: number) => (
-              <div className="my-3" key={item.prap_user_entity_id}>
+              <div className="my-3" key={item.user_id}>
                 <label
                   className={`flex justify-between content-center w-auto cursor-pointer rounded-lg py-3 px-4 font-semibold text-sm ${
                     checked.find(
                       (i: any) =>
-                        i.prap_user_entity_id === item.prap_user_entity_id
+                        i.user_id === item.user_id
                     )
                       ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-lg shadow-light-blue-200'
                       : 'bg-white border border-gray-`300 text-light-blue-400 hover:scale-105 transition-transform ease-in-out'
@@ -311,7 +311,7 @@ export default function Content() {
                   />
                   {checked.find(
                     (i: any) =>
-                      i.prap_user_entity_id === item.prap_user_entity_id
+                      i.user_id === item.user_id
                   ) ? (
                     <div className="text-xl grid content-center">
                       {' '}

@@ -47,11 +47,11 @@ begin
 		batr_batch_id
 	)
 	select 
-		y.batr_trainee_entity_id,
+		y.user_id,
 		batchid
 		
 	from json_to_recordset(data2) as y(
-		batr_trainee_entity_id int
+		user_id int
 	);
 	
 	insert into bootcamp.trainer_programs (
@@ -71,7 +71,7 @@ end;
 $$;
 
 call bootcamp.createBatch('[{
-							"batch_entity_id": 3,
+							"batch_entity_id": 2,
 							"batch_name": "batch#7",
 							"batch_description": "batch#1description",
 							"batch_start_date": "2023-06-06",
@@ -80,17 +80,14 @@ call bootcamp.createBatch('[{
 							"batch_type": "offline",
 							"batch_pic_id": 1
 						  }]','[{
-							"batr_trainee_entity_id": 5
+							"user_id": 5
 						  },{
-							"batr_trainee_entity_id": 4
-						  },{
-							"batr_trainee_entity_id": 3
+							"user_id": 4
 						  }]','[{
 							"tpro_emp_entity_id": 1
 						  },{
 							"tpro_emp_entity_id": 2
 						  }]')
-						  
 						  
 ----- CLOSE BATCH -----
 create or replace procedure bootcamp.closeBatch(in data json, in data2 json)
@@ -303,8 +300,8 @@ end;
 $$;
 
 call bootcamp.createProgramApply('[{
-								 	"prap_user_entity_id": 1,
-								 	"prap_prog_entity_id": 2,
+								 	"prap_user_entity_id": 5,
+								 	"prap_prog_entity_id": 2
 								 }]','[{
 								 	"parog_progress_name": "apply",
 								 	"parog_status": "open"
@@ -342,7 +339,8 @@ begin
 		batch_description = batchdata.batch_description,
 		batch_start_date = batchdata.batch_start_date,
 		batch_end_date = batchdata.batch_end_date,
-		batch_type = batchdata.batch_type;
+		batch_type = batchdata.batch_type
+	where batch_id = batchid;
 	
 	INSERT INTO bootcamp.batch_trainee (
 		batr_batch_id, 
@@ -377,24 +375,27 @@ begin
 end;
 $$;
 
-call bootcamp.updatebatch(57,'[{
-							"batch_entity_id": 1,
-							"batch_name": "batch#99",
+call bootcamp.updatebatch(59,'[{
+							"batch_entity_id": 2,
+							"batch_name": "gajadi",
 							"batch_description": "batch#99_updated desc",
 							"batch_start_date": "2026-06-06",
 							"batch_end_date": "2026-06-06",
 							"batch_type": "online"
 						  }]','[{
-							"batr_trainee_entity_id": 4
+							"user_id": 4
 						  },{
-							"batr_trainee_entity_id": 5
+							"user_id": 5
 						  }]','[{
-							"batr_trainee_entity_id": 1
+							"user_id": 1
 						  },{
-							"batr_trainee_entity_id": 2
+							"user_id": 2
 						  }]','[{
 							"tpro_emp_entity_id": 1   
 						  },{
 							"tpro_emp_entity_id": 2			   			   
 							}]')
-select * from bootcamp.program_apply_progress
+							
+update bootcamp.batch set batch_name = 'anjay' where batch_id = 59
+truncate table bootcamp.batch cascade
+select * from bootcamp.talents

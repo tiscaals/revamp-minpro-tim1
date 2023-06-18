@@ -74,45 +74,6 @@ const TABLE_HEAD = [
   '',
 ];
 
-const TABLE_ROWS = [
-  {
-    batch_name: 'Batch#1',
-    prog_title: 'Node JS ',
-    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-    trainer_names: 'John Michael',
-    cotrainer: 'anu co',
-    email: 'john@creative-tim.com',
-    org: 'Organization',
-    batch_status: 'running',
-    // online: true,
-    batch_start_date: '18 March 2023',
-  },
-  {
-    batch_name: 'Batch#2',
-    prog_title: '.Net Technology',
-    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
-    trainer_names: 'Alexa Liras',
-    cotrainer: 'nganu',
-    email: 'alexa@creative-tim.com',
-    org: 'Developer',
-    batch_status: 'open',
-    // online: false,
-    batch_start_date: '19 April 2023',
-  },
-  {
-    batch_name: 'Batch#3',
-    prog_title: 'Golang',
-    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
-    trainer_names: 'Laurent Perrier',
-    cotrainer: 'dia co',
-    email: 'laurent@creative-tim.com',
-    org: 'Projects',
-    batch_status: 'closed',
-    // online: false,
-    batch_start_date: '20 Mei 2023',
-  },
-];
-
 export default function BatchList() {
   const [buttonSelect, setButtonSelect] = useState('all');
   const { batches, refresh } = useSelector((state: any) => state.batchReducers);
@@ -133,6 +94,7 @@ export default function BatchList() {
   };
 
   useEffect(() => {}, [refresh, buttonSelect]);
+  console.log(batches);
 
   return (
     <Card className="h-full w-full">
@@ -226,7 +188,7 @@ export default function BatchList() {
                   }: any,
                   index: number
                 ) => {
-                  const isLast = index === TABLE_ROWS.length - 1;
+                  const isLast = index === filteredBatch.length - 1;
                   const classes = isLast
                     ? 'p-4'
                     : 'p-4 border-b border-blue-gray-50';

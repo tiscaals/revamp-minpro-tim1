@@ -9,7 +9,7 @@ const createBatch = (data: any) => {
 };
 
 const editBatch = (data: any) => {
-  return axios.put(`/bootcamp/${data.id}`, data);
+  return axios.patch(`/bootcamp/${data.batch.batch_id}`, data);
 };
 
 const findAllPrograms = () => {

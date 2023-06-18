@@ -277,12 +277,21 @@ join bootcamp.program_apply on prap_prog_entity_id = parog_prog_entity_id
 	and prap_user_entity_id = parog_user_entity_id
 join curriculum.program_entity on prog_entity_id = prap_prog_entity_id
 
-select * from bootcamp.batch
-select * from 
-select * from bootcamp.batch_trainee
-truncate table bootcamp.program_apply cascade
-select user_entity_id,uspo_number,uspo_ponty_code from users.users_phones join users.users on user_entity_id = uspo_entity_id
-order by uspo_ponty_code asc
 
-select * from master.route_actions
-select * from users.users_education
+--get rec students
+--prap_user_entity_id
+SELECT 
+	prap_user_entity_id as user_id,
+	prap_prog_entity_id,
+	user_first_name,
+	user_last_name,
+	user_photo
+FROM bootcamp.program_apply 
+JOIN users.users ON user_entity_id= prap_user_entity_id 
+WHERE (prap_status = 'recommendation' OR prap_status = 'passed') 
+	AND prap_prog_entity_id = 2
+	
+--get trainee in all batches
+--batr_trainee_etity_id
+select batr_trainee_entity_id,batch_id from bootcamp.batch_trainee 
+join bootcamp.batch on batch.batch_id = batch_trainee.batr_batch_id

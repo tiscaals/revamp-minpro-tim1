@@ -140,7 +140,7 @@ export default function Candidates() {
                     color="blue-gray"
                     className="opacity-70"
                   >
-                    {dt.emails[0].pmail_address}
+                    {dt.emails[0]?.pmail_address}
                   </Typography>
                 </td>
                 <td className="py-3 text-gray-900">
