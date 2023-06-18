@@ -4,19 +4,43 @@ import {
   doResponseAddJobPost,
   doResponseDeleteJobPost,
   doResponseGetCurnumber,
+  doResponseGetJobById,
+  doResponseGetJobPhoto,
   doResponseGetJobPost,
   doResponseUpdateJobPost,
 } from "../action/actionReducer";
 
 export function* handleGetAllJobPost(): any {
+  // console.log("jopoSaga action", action);
   try {
     const result = yield call(apiMethod.findAllJob);
-    yield put(doResponseGetJobPost(result.data.result[0]));
+    console.log("jopoSaga result",result.data);
+    yield put(doResponseGetJobPost(result.data));
   } catch (error) {
     yield put(doResponseGetJobPost({ message: error, status: 400 }));
   }
 }
 
+export function* handleGetJobById(action:any): any {
+  console.log("jopoSaga action", action);
+  try {
+    const result = yield call(apiMethod.findJobById, action.payload);
+    console.log("jopoSaga result",result.data);
+    yield put(doResponseGetJobById(result.data));
+  } catch (error) {
+    yield put(doResponseGetJobById({ message: error, status: 400 }));
+  }
+}
+
+export function* handleGetJopho(): any {
+  try {
+    const result = yield call(apiMethod.findJopho);
+    // console.log("jopoSaga result",result);
+    yield put(doResponseGetJobPhoto(result.data));
+  } catch (error) {
+    yield put(doResponseGetJobPhoto({ message: error, status: 400 }));
+  }
+}
 
 export function* handleGetCurnumber(): any {
   try {

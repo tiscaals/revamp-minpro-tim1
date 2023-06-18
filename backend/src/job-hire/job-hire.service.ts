@@ -91,96 +91,109 @@ export class JobHireService {
     }
   }
 
-  async findAllJopo(pagination:any, search:any, filter:any, ): Promise<any> { //FIXED
+  //ALL ALLLL
+  async findAllJopo(): Promise<any> { //FIXED
     try {
-      // console.log("PAGINATION", pagination);
-      // console.log("SEARCH", search);
-      // console.log("FILTER", filter);
-      let query = `SELECT * FROM job_hire.job_list_view` 
+      const query = `SELECT * FROM job_hire.job_list_view` 
 
-      //SEARCH
-      if (search.keyword || search.location) {
-        query += ` WHERE`;
-        if (search.keyword) {
-          query += ` jopo_title ILIKE '%${search.keyword}%' OR clit_name ILIKE '%${search.keyword}%'`;
-        }
-        if (search.keyword && search.location) {
-          query += ` AND`;
-        }
-        if (search.location) {
-          query += ` city_name ILIKE '%${search.location}%'`;
-        }
-      } else {
-        query += ` WHERE 1=1`; // Placeholder condition to start the query with WHERE
-      }
-
-      //FILTER
-      //JOB ROLE
-      if (filter.job_role) {
-        query += ` AND job_role = '${filter.job_role}'`;
-      }
-      // WORKING TYPE
-      if (filter.working_type) {
-        query += ` AND jopo_work_code = '${filter.working_type}'`;
-      }
-      //EXPERIENCE
-      if (filter.experience) {
-        const [minExperience, maxExperience] = filter.experience.split('-');
-        query += ` AND (jopo_min_experience BETWEEN ${minExperience} AND ${maxExperience})`;
-      }
-      //JOB TYPE
-      if (filter.remotely == true) {
-        query += ` AND jopo_joty_id = 1`;
-      }
-      //MATCH/NEWEST
-      if (filter.newest) {
-        // Calculate the date for '24 Jam Terakhir'
-        if (filter.newest === '24 Jam Terakhir') {
-          const currentDate = new Date();
-          currentDate.setHours(currentDate.getHours() - 24);
-          query = ` AND jopo_modified_date >= '${currentDate.toISOString()}'`;
-        }
-  
-        // Calculate the date for 'Seminggu Terakhir'
-        if (filter.newest === 'Seminggu Terakhir') {
-          const currentDate = new Date();
-          currentDate.setDate(currentDate.getDate() - 7);
-          query = ` AND jopo_modified_date >= '${currentDate.toISOString()}'`;
-        }
-  
-        // Calculate the date for 'Sebulan Terakhir'
-        if (filter.newest === 'Sebulan Terakhir') {
-          const currentDate = new Date();
-          currentDate.setMonth(currentDate.getMonth() - 1);
-          query = ` AND jopo_modified_date >= '${currentDate.toISOString()}'`;
-        }
-      }
-
-      if (filter.status) {
-        query += ` AND jopo_status = '${filter.status}'`
-      } else {
-        query += ` AND jopo_status = 'publish'`
-      }
-
-      if (filter.open) {
-        query += ` AND jopo_open = '${filter.open}'`
-      } else {
-        query += ` AND jopo_open = '1'`
-      }
-
-      if (filter.newest) {
-        query += ` ORDER BY jopo_modified_date DESC`;
-      }
-
-      //PAGINATION
-      query += ` LIMIT ${+pagination.limit} OFFSET ${+pagination.offset}`
-      console.log(query);
       const result = await this.sequelize.query(query);
       return result;
     } catch (error) {
       return error.message;
     }
   }
+
+  // Paging, search, filter
+  // async findAllJopo(pagination:any, search:any, filter:any, ): Promise<any> { //FIXED
+  //   try {
+  //     // console.log("PAGINATION", pagination);
+  //     // console.log("SEARCH", search);
+  //     // console.log("FILTER", filter);
+  //     let query = `SELECT * FROM job_hire.job_list_view` 
+
+  //     //SEARCH
+  //     if (search.keyword || search.location) {
+  //       query += ` WHERE`;
+  //       if (search.keyword) {
+  //         query += ` jopo_title ILIKE '%${search.keyword}%' OR clit_name ILIKE '%${search.keyword}%'`;
+  //       }
+  //       if (search.keyword && search.location) {
+  //         query += ` AND`;
+  //       }
+  //       if (search.location) {
+  //         query += ` city_name ILIKE '%${search.location}%'`;
+  //       }
+  //     } else {
+  //       query += ` WHERE 1=1`; // Placeholder condition to start the query with WHERE
+  //     }
+
+  //     //FILTER
+  //     //JOB ROLE
+  //     if (filter.job_role) {
+  //       query += ` AND job_role = '${filter.job_role}'`;
+  //     }
+  //     // WORKING TYPE
+  //     if (filter.working_type) {
+  //       query += ` AND jopo_work_code = '${filter.working_type}'`;
+  //     }
+  //     //EXPERIENCE
+  //     if (filter.experience) {
+  //       const [minExperience, maxExperience] = filter.experience.split('-');
+  //       query += ` AND (jopo_min_experience BETWEEN ${minExperience} AND ${maxExperience})`;
+  //     }
+  //     //JOB TYPE
+  //     if (filter.remotely == true) {
+  //       query += ` AND jopo_joty_id = 1`;
+  //     }
+  //     //MATCH/NEWEST
+  //     if (filter.newest) {
+  //       // Calculate the date for '24 Jam Terakhir'
+  //       if (filter.newest === '24 Jam Terakhir') {
+  //         const currentDate = new Date();
+  //         currentDate.setHours(currentDate.getHours() - 24);
+  //         query = ` AND jopo_modified_date >= '${currentDate.toISOString()}'`;
+  //       }
+  
+  //       // Calculate the date for 'Seminggu Terakhir'
+  //       if (filter.newest === 'Seminggu Terakhir') {
+  //         const currentDate = new Date();
+  //         currentDate.setDate(currentDate.getDate() - 7);
+  //         query = ` AND jopo_modified_date >= '${currentDate.toISOString()}'`;
+  //       }
+  
+  //       // Calculate the date for 'Sebulan Terakhir'
+  //       if (filter.newest === 'Sebulan Terakhir') {
+  //         const currentDate = new Date();
+  //         currentDate.setMonth(currentDate.getMonth() - 1);
+  //         query = ` AND jopo_modified_date >= '${currentDate.toISOString()}'`;
+  //       }
+  //     }
+
+  //     if (filter.status) {
+  //       query += ` AND jopo_status = '${filter.status}'`
+  //     } else {
+  //       query += ` AND jopo_status = 'publish'`
+  //     }
+
+  //     if (filter.open) {
+  //       query += ` AND jopo_open = '${filter.open}'`
+  //     } else {
+  //       query += ` AND jopo_open = '1'`
+  //     }
+
+  //     if (filter.newest) {
+  //       query += ` ORDER BY jopo_modified_date DESC`;
+  //     }
+
+  //     //PAGINATION
+  //     query += ` LIMIT ${+pagination.limit} OFFSET ${+pagination.offset}`
+  //     console.log(query);
+  //     const result = await this.sequelize.query(query);
+  //     return result;
+  //   } catch (error) {
+  //     return error.message;
+  //   }
+  // }
 
   async findOneJopo(id: number) { //FIXED
     try {

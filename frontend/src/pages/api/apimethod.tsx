@@ -3,7 +3,18 @@ import axios from "../config/endpoint";
 /*--------------------------- Schema Job Hire ------------------------------*/
 /*-------- CRUD JOB POST --------*/
 const findAllJob =()=>{
-    return axios.get("/")
+    // console.log("apimethod", data);
+    return axios.get("/job-hire")
+}
+
+const findJobById =(data:any)=>{
+    console.log("apimethod", data);
+    const id:number = +data;
+    return axios.get(`/job-hire/jobdetail?id=${id}`)
+}
+
+const findJopho =()=>{
+    return axios.get("/job-hire/photo")
 }
 
 const findCurrentNumber =()=>{
@@ -66,6 +77,8 @@ const findCity =()=>{
 
 export default {
     findAllJob,
+    findJobById,
+    findJopho,
     findCurrentNumber,
     createJobPost,
     updateJobPost,

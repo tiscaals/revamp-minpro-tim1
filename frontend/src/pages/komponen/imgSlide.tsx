@@ -1,108 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { Button } from "@material-tailwind/react";
-import Image from "next/image";
-import Logo from "../../../../public/favicon.ico";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import Logo1 from "../../../public/codexlogo.png";
-import Logo2 from "../../../public/codexlogo.png";
-import Logo3 from "../../../public/codexlogo.png";
-import Logo4 from "../../../public/codexlogo.png";
-import Logo5 from "../../../public/codexlogo.png";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux'
 
-const ImgSlide = () => {
-  const [active, setActive] = useState(1);
+import Slider from "react-slick";
+import { doRequestGetJobPhoto } from "../redux/jobhire-schema/action/actionReducer";
 
-  const next = () => {
-    if (active === 5) return;
+const ImgSlide=()=>{
+  const { job_photo, refresh } = useSelector((state:any) => state.JobPostReducers,);
+  const dispatch = useDispatch();
 
-    setActive(active + 1);
+  useEffect(()=>{
+    dispatch(doRequestGetJobPhoto())
+    console.log('photo',job_photo);
+  },[refresh])
+
+  const settings = {
+    arrows: false,
+    autoplay: true,
+    autoplayspeed: 500,
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 6,
+    slidesToScroll: 1,
   };
-
-  const prev = () => {
-    if (active === 1) return;
-
-    setActive(active - 1);
-  };
-
-  const imgLogo = [
-    { src: Logo1 },
-    { src: Logo2 },
-    { src: Logo3 },
-    { src: Logo4 },
-    { src: Logo5 },
-    { src: Logo1 },
-    { src: Logo2 },
-    { src: Logo3 },
-    { src: Logo4 },
-    { src: Logo5 },
-  ];
-
-  const numVisibleImages = 5;
-const visibleImages = imgLogo.slice(0, numVisibleImages);
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 768) {
-        setActive(1);
-      } else if (window.innerWidth < 1024) {
-        setActive(2);
-      } else {
-        setActive(3);
-      }
-      // Tambahkan logika penyesuaian jumlah gambar yang ditampilkan di sini
-    };
-
-    handleResize();
-
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   return (
-    <div className="flex flex-wrap mt-3 justify-center">
-      <div className="order-first flex items-center">
-        <Button
-          color="blue-gray"
-          className="flex items-center mr-3"
-          onClick={prev}
-          disabled={active === 1}
-        >
-          <AiOutlineLeft className="" />
-        </Button>
-      </div>
-      <div className="flex flex-wrap items-center">
-        {(visibleImages || []).map((mn, index) => (
+    <div>
+      <h2>Our Network</h2>
+      <Slider {...settings}>
+        {(job_photo || []).map((photo:any, index:any) => (
           <div
-            className={`rounded-b-lg shadow-xl hover:scale-110 transition-all duration-500 cursor-pointer ${
-              index >= active ? "hidden" : ""
-            } sm:hidden md:block lg:block xl:block`}
-            key={index}
+          className="p-2"
+          key={index}
           >
-            <Image
-              src={mn.src}
-              className="p-1"
+            <div className="shadow-md bg-white h-28 rounded-md flex items-center justify-center">
+            <img
+              src={`http://localhost:3003/image/${photo.jopho_filename}`}
+              className="object-contain h-28 w-auto"
               alt="profile picture"
-              width={100}
-              height={100}
             />
+            </div>
           </div>
         ))}
-      </div>
-      <div className="order-last flex items-center">
-        <Button
-          color="blue-gray"
-          className="flex items-center ml-3"
-          onClick={next}
-          disabled={active === 5}
-        >
-          <AiOutlineRight className="items-center" />
-        </Button>
-      </div>
+      </Slider>
     </div>
   );
-};
+}
 
-export default ImgSlide;
+export default ImgSlide

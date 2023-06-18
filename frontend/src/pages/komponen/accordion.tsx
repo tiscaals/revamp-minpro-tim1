@@ -1,5 +1,4 @@
 import { AiOutlineDown, AiOutlineUp } from "react-icons/ai";
-
 import {
   Accordion,
   AccordionBody,
@@ -9,11 +8,9 @@ import { Fragment, useEffect, useState } from "react";
 
 function Icon({ id, open }: any) {
   return (
-    <AiOutlineUp
-      className={`${
-        id === open ? "rotate-180" : ""
-      }  h-5 w-5 pt-0.5  transition-transform`}
-    ></AiOutlineUp>
+    <AiOutlineDown
+      className={`${id === open ? "rotate-180" : ""} h-5 w-5 transition-transform`}
+    />
   );
 }
 
@@ -24,13 +21,10 @@ const AccordionTemplate = (props: any) => {
   const [border, setBorder]: any = useState("border-b py-3");
 
   const handleOpen = (value: any) => {
-    setOpen(open === value ? 0 : value);
+    setOpen(open == value ? 0 : value);
   };
 
   useEffect(() => {
-    if (desc === "Filter Pencarianmu") {
-      setIcon("");
-    }
     if (desc === "Remote") {
       setIcon("");
       setOpen(1)

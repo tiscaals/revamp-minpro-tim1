@@ -16,8 +16,6 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe())
 
-  app.use(bodyParser.urlencoded({extended:true}))
-
   await app.listen(port, ()=>{
     console.log(`Listening to port ${port}`);
   });

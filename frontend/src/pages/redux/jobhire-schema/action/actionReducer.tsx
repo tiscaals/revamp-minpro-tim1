@@ -3,71 +3,99 @@ import ActionTypes from "./actionType";
 
 /*------------ JOB POST SECTION -------------*/
 export const doRequestGetJobPost = () => {
-    return {
-      type: ActionTypes.REQ_GET_JOBPOST,
-    };
+  return {
+    type: ActionTypes.REQ_GET_JOBPOST
   };
-  export const doResponseGetJobPost = (payload: any) => {
-    return {
-      type: ActionTypes.RES_GET_JOBPOST,
-      payload,
-    };
+};
+export const doResponseGetJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_JOBPOST,
+    payload
   };
+};
 
-  export const doRequestGetCurnumber = () => {
-    return {
-      type: ActionTypes.REQ_GET_CURNUMBER,
-    };
+export const doRequestGetJobById = (payload: any) => {
+  console.log("actionReducer payload", payload);
+  return {
+    type: ActionTypes.REQ_GET_JOBBYID,
+    payload
   };
-  export const doResponseGetCurnumber = (cur_number: any) => {
-    return {
-      type: ActionTypes.RES_GET_CURNUMBER,
-      cur_number,
-    };
+};
+export const doResponseGetJobById = (payload: any) => {
+  console.log("actionReducer response", payload);
+  return {
+    type: ActionTypes.RES_GET_JOBBYID,
+    payload
   };
+};
 
-  
-  export const doRequestAddJobPost = (payload: any) => {
-    return {
-      type: ActionTypes.REQ_ADD_JOBPOST,
-      payload,
-    };
+export const doRequestGetJobPhoto = () => {
+  return {
+    type: ActionTypes.REQ_GET_JOBPHOTO,
   };
-  
-  export const doResponseAddJobPost = (payload: any) => {
-    return {
-      type: ActionTypes.RES_ADD_JOBPOST,
-      payload,
-    };
+};
+export const doResponseGetJobPhoto = (payload: any) => {
+  // console.log("actionReducer payload", payload);
+  return {
+    type: ActionTypes.RES_GET_JOBPHOTO,
+    payload,
   };
+};
 
-  export const doRequestUpdateJobPost = (payload: any) => {
-    return {
-      type: ActionTypes.REQ_UPDATE_JOBPOST,
-      payload,
-    };
+export const doRequestGetCurnumber = () => {
+  return {
+    type: ActionTypes.REQ_GET_CURNUMBER,
   };
-  
-  export const doResponseUpdateJobPost = (payload: any) => {
-    return {
-      type: ActionTypes.RES_UPDATE_JOBPOST,
-      payload,
-    };
+};
+export const doResponseGetCurnumber = (cur_number: any) => {
+  return {
+    type: ActionTypes.RES_GET_CURNUMBER,
+    cur_number,
   };
+};
 
-  export const doRequestDeleteJobPost = (payload: any) => {
-    return {
-      type: ActionTypes.REQ_DELETE_JOBPOST,
-      payload,
-    };
+
+export const doRequestAddJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_JOBPOST,
+    payload,
   };
-  
-  export const doResponseDeleteJobPost = (payload: any) => {
-    return {
-      type: ActionTypes.RES_DELETE_JOBPOST,
-      payload,
-    };
+};
+
+export const doResponseAddJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_JOBPOST,
+    payload,
   };
+};
+
+export const doRequestUpdateJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_JOBPOST,
+    payload,
+  };
+};
+
+export const doResponseUpdateJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_JOBPOST,
+    payload,
+  };
+};
+
+export const doRequestDeleteJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_JOBPOST,
+    payload,
+  };
+};
+
+export const doResponseDeleteJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_JOBPOST,
+    payload,
+  };
+};
 
   
 /*------------ CLIENT SECTION -------------*/

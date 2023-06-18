@@ -36,9 +36,9 @@ const Pagination = (props: any): any => {
 
 
   return (
-    <div className="py-2 text-center ">
+    <div className="py-2 text-center">
       <nav
-        className="isolate inline-flex -space-x-px  shadow-sm"
+        className="isolate inline-flex -space-x-px  shadow-sm rounded-lg border-2"
         aria-label="Pagination"
       >
         <a

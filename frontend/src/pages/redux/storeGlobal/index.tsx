@@ -1,29 +1,40 @@
-// import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-// import UserReducers from "../jobhire-schema/reducer/userReducer";
-// import ProductReducers from "../jobhire-schema/reducer/productReducer";
-// import CategoryReducers from "../jobhire-schema/reducer/categoryReducer";
-// import { combineReducers } from "redux";
-// import { createLogger } from "redux-logger";
-// import createSagaMiddleware from '@redux-saga/core'
-// import rootSaga from '../saga/index'
-// import LoginReducers from "../jobhire-schema/reducer/loginReducer";
+import { configureStore } from "@reduxjs/toolkit";
+import { createLogger } from "redux-logger";
+import createSagaMiddleware from "@redux-saga/core";
+import { combineReducers } from "redux";
+import rootSaga from "../sagaGlobal";
 
-// const logger = createLogger()
-// const saga = createSagaMiddleware()
+import JobPostReducers from "../jobhire-schema/reducer/jobPostReducer";
+import ClientReducers from "../jobhire-schema/reducer/clientReducer";
+import EducationReducers from "../master-schema/reducer/educationReducer";
+import IndustryReducers from "../master-schema/reducer/industryReducer";
+import JobroleReducers from "../master-schema/reducer/jobroleReducer";
+import WorktypeReducers from "../master-schema/reducer/worktypeReducer";
+import EmprangeReducers from "../jobhire-schema/reducer/emprangeReducer";
+import CityReducers from "../master-schema/reducer/cityReducer";
 
-// const reducer = combineReducers({
-//     UserReducers,
-//     ProductReducers,
-//     CategoryReducers,
-//     LoginReducers
-// })
 
-// const store = configureStore({
-//     reducer,
-//     middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware({serializableCheck: false}).concat(logger).concat(saga)
-// })
+const logger = createLogger();
+const saga = createSagaMiddleware();
 
-// saga.run(rootSaga)
+const reducer = combineReducers({
+    JobPostReducers,
+    ClientReducers,
+    EducationReducers,
+    WorktypeReducers,
+    JobroleReducers,
+    IndustryReducers,
+    EmprangeReducers,
+    CityReducers
+});
 
-// export default store
+const store = configureStore({
+  reducer,
+  middleware: (getDefaultMiddleware:any) =>
+    getDefaultMiddleware({ serializableCheck: false })
+      .concat(logger)
+      .concat(saga),
+});
+
+saga.run(rootSaga);
+export default store;

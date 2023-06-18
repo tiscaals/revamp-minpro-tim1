@@ -2,6 +2,8 @@ import ActionTypes from "../action/actionType";
 
 const initialState = {
     job_post: [],
+    job_detail: [],
+    job_photo: [],
     cur_number:[],
     message: "",
     status: "",
@@ -11,13 +13,19 @@ const initialState = {
   
   function JobPostReducers(state = initialState, action: any) {
     const { type, payload ,cur_number } = action;
+    console.log("jopoReducer payload",payload);
     switch (type) {
       case ActionTypes.RES_GET_JOBPOST:
-        return { state, job_post: payload, refresh: true };
+        return { ...state, job_post: payload[0], refresh: true };
+
+      case ActionTypes.RES_GET_JOBBYID:
+        return { ...state, job_detail: payload[0], refresh: true };
+
+      case ActionTypes.RES_GET_JOBPHOTO:
+        return { ...state, job_photo: payload, refresh: true };
 
       case ActionTypes.RES_GET_CURNUMBER:
-        return { state, cur_number: cur_number, refresh: true };
-
+        return { ...state, cur_number: cur_number, refresh: true };
 
       case ActionTypes.RES_ADD_JOBPOST:
         return {

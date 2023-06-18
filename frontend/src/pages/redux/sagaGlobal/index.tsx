@@ -2,7 +2,7 @@ import ActionTypeJobHire from "../../redux/jobhire-schema/action/actionType";
 import ActionTypeMaster from "../../redux/master-schema/action/actionType";
 
 import { takeEvery, all} from "redux-saga/effects";
-import { handleAddJobPost, handleDeleteJobPost, handleGetAllJobPost, handleGetCurnumber, handleUpdateJobPost } from "../jobhire-schema/saga/jobpostSaga";
+import { handleAddJobPost, handleDeleteJobPost, handleGetAllJobPost, handleGetCurnumber, handleGetJobById, handleGetJopho, handleUpdateJobPost } from "../jobhire-schema/saga/jobpostSaga";
 import { handleAddClient, handleDeleteClient, handleGetAllClient, handleUpdateClient } from "../jobhire-schema/saga/clientsaga";
 import { handleGetEducation } from "../master-schema/saga/educationSaga";
 import { handleGetWorktype } from "../master-schema/saga/worktypeSaga";
@@ -14,6 +14,8 @@ import { handleGetCity } from "../master-schema/saga/citySaga";
 function* watchAll() {
     yield all([
       takeEvery(ActionTypeJobHire.REQ_GET_JOBPOST, handleGetAllJobPost),
+      takeEvery(ActionTypeJobHire.REQ_GET_JOBPHOTO, handleGetJopho),
+      takeEvery(ActionTypeJobHire.REQ_GET_JOBBYID, handleGetJobById),
       takeEvery(ActionTypeJobHire.REQ_GET_CURNUMBER, handleGetCurnumber),
       takeEvery(ActionTypeJobHire.REQ_ADD_JOBPOST, handleAddJobPost),
       takeEvery(ActionTypeJobHire.REQ_UPDATE_JOBPOST, handleUpdateJobPost),
