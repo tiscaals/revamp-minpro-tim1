@@ -74,15 +74,25 @@ export class BootcampService {
 
   async findOneBatch(id: number) {
     try {
-      const data = await this.sequelize.query(
+      const data:any = await this.sequelize.query(
         `select * from bootcamp.batch where batch_id=${id}`,
       );
+
+      const datatrainee:any = await this.sequelize.query('select batr_trainee_entity_id,batch_id from bootcamp.batch_trainee join bootcamp.batch on batch.batch_id = batch_trainee.batr_batch_id')
+
+      const datatrainer:any = await this.sequelize.query('select trainer_programs.batch_id,tpro_emp_entity_id from bootcamp.trainer_programs join bootcamp.batch on batch.batch_id = trainer_programs.batch_id')
       if (data[0].length === 0) throw new Error('Id tidak ditemukan');
+
+      const mergedData = data[0].map((item: any) => {
+        const trainers = datatrainer[0].filter((trainer:any) => trainer.batch_id === item.batch_id);
+        const trainees = datatrainee[0].filter((trainee: any) => trainee.batch_id === item.batch_id);
+        return { ...item,trainers, trainees };
+    });
 
       return {
         status: 200,
         message: 'sukses',
-        data: data[0],
+        dataOne: mergedData
       };
     } catch (error) {
       return { status: 400, message: error.message };
@@ -98,7 +108,7 @@ export class BootcampService {
       if (!find) throw new Error('data tidak ditemukan');
 
       let dbTrainees: any = await this.sequelize.query(
-        `select * from bootcamp.batch_trainee where batr_batch_id = ${id}`,
+        `select batr_trainee_entity_id from bootcamp.batch_trainee where batr_batch_id = ${id}`,
       );
 
       dbTrainees = dbTrainees[0];
@@ -106,31 +116,37 @@ export class BootcampService {
       const { batch, trainee, instructors } = body;
 
       let toBeDeleted = [];
-      let toBeChanged = [];
       let toBeAdded = [];
 
       for (let trnee of trainee) {
         let found = dbTrainees.find(
-          (obj) => obj.batr_trainee_entity_id === trnee.batr_trainee_entity_id,
+          (obj:any) => obj.batr_trainee_entity_id === trnee.batr_trainee_entity_id,
         );
-        if (found) {
-          toBeChanged.push(found);
-        } else {
+        if (!found) {
           toBeAdded.push(trnee);
         }
       }
 
       for (let dbtr of dbTrainees) {
         let found = trainee.find(
-          (obj) => obj.batr_trainee_entity_id === dbtr.batr_trainee_entity_id,
+          (obj:any) => obj.batr_trainee_entity_id === dbtr.batr_trainee_entity_id,
         );
         if (!found) {
           toBeDeleted.push(dbtr);
         }
       }
 
-      // await this.sequelize.query(`call bootcamp.updateBatchWithBatchTrainee2 ('${dataString}','${data2String}','${data3String}')`)
-      return toBeAdded;
+      const data1 = `[${JSON.stringify(body.batch)}]`
+      const data2 = `${JSON.stringify(toBeAdded)}`
+      const data3 = `${JSON.stringify(toBeDeleted)}`
+      const data4 = `${JSON.stringify(body.trainers)}`
+
+      await this.sequelize.query(`call bootcamp.updatebatch(${id},'${data1}','${data2}','${data3}','${data4}')`)
+      // return {
+      //   batch: body.batch,
+      //   add: toBeAdded,
+      //   del: toBeDeleted
+      // }
       return {
         status: 201,
         message: 'sukses',
@@ -169,6 +185,12 @@ export class BootcampService {
         `select * from bootcamp.batch where batch_id=${id}`,
       );
       if (find[0].length === 0) throw new Error('Data tidak ditemukan');
+
+      await this.sequelize.query(`delete from bootcamp.batch where batch_id = ${id}`)
+
+      return {
+        message: "data berhasil dihapus"
+      }
     } catch (error) {}
   }
 
@@ -191,36 +213,43 @@ export class BootcampService {
     }
   }
 
-  async changeProgressName(id: number, name: string) {
+  async changeProgressName(id: number, name: any) {
     try {
       const data = await program_apply_progress.update(
         {
-          parog_progress_name: name,
+          parog_progress_name: name.parog_progress_name,
         },
         {
-          where: { parog_id: id },
-          returning: true,
+          where: { parog_id: id }
         },
       );
       return {
-        data: data,
+        message: 'sukses update'
       };
     } catch (error) {
       return error.message;
     }
   }
-  //Method Tabel Program Apply dan Program Apply Progress
 
   async findAllProgramApply() {
     try {
-      // const data = await this.sequelize.query('select * from bootcamp.program_apply')
-      // const data = await program_apply.findAll()
-      // console.log(data)
-      const data = await program_apply.findAll();
+      const data = await this.sequelize.query(`select * from bootcamp.selectcandidates `)
+      const emailsdata = await this.sequelize.query(`select user_entity_id,pmail_address from users.users join users.users_email on pmail_entity_id = user_entity_id`)
+
+      const phonesdata = await this.sequelize.query(`select user_entity_id,uspo_number,uspo_ponty_code from users.users_phones join users.users on user_entity_id = uspo_entity_id order by uspo_ponty_code asc`)
+
+      const mergedData = data[0].map((item:any)=>{
+
+        const emails = emailsdata[0].filter((em:any)=> em.user_entity_id === item.user_entity_id)
+        const phones = phonesdata[0].filter((ph:any)=> ph.user_entity_id === item.user_entity_id)
+        return {
+          ...item,emails,phones
+        }
+      })
 
       return {
         message: 'sukses',
-        data: data[0],
+        data: mergedData
       };
     } catch (error) {
       return {
@@ -294,42 +323,15 @@ export class BootcampService {
     }
   }
 
-  async updateProgramApplyProgress(id: number, body: any) {
-    try {
-      const idBody = await program_apply_progress.findOne({where: {
-        parog_user_entity_id: id,
-      }})
-      if (!idBody) throw new Error('Data Tidak diTemukan!!');
-
-      const result = await program_apply_progress.update(
-        {
-          parog_progress_name: body.parog_progress_name
-        },
-        {
-        where: {
-          parog_user_entity_id: id,
-        },
-        returning: true
-      }
-      );
-      return {
-        status: 201,
-        message: 'sukses',
-      };
-      
-    } catch (error) {
-      return error.message;
-    }
-  }
-
-  async updateProgramApply(id: number, body: any) {
+  async updateProgramApply(id: number,progid:number, body: any) {
     try {
       const idBody = await program_apply.findOne({where: {
         prap_user_entity_id: id,
+        prap_prog_entity_id: progid
       }})
       if (!idBody) throw new Error('Data Tidak diTemukan!!');
 
-      const result = await program_apply.update(
+      await program_apply.update(
         {
           prap_test_score: body.prap_test_score,
           prap_review: body.prap_review,
@@ -337,15 +339,22 @@ export class BootcampService {
         },
         {
           where: {
-            prap_user_entity_id: id
-          },
-          returning: true
+            prap_user_entity_id: id,
+            prap_prog_entity_id: progid
+          }
         }
       );
+
+      await program_apply_progress.update({
+        parog_progress_name: body.parog_progress_name
+      },{
+        where: {
+          parog_id: body.parog_id
+        }
+      })
       return {
         status: 201,
-        message: 'sukses',
-        body: body
+        message: 'sukses'
       };
 
     } catch (error) {
@@ -379,6 +388,75 @@ export class BootcampService {
         message: 'sukses',
         data: data[0]
       }
+    } catch (error) {
+      return {
+        message: error.message
+      }
+    }
+  }
+
+  async getRecommendedStudents (id:number) {
+    console.log(id);
+    try {
+      //batr_trainee_entity_id
+      const data = await this.sequelize.query(`SELECT * FROM bootcamp.program_apply JOIN users.users ON user_entity_id= prap_user_entity_id WHERE (prap_status = 'recommendation' OR prap_status = 'passed') AND prap_prog_entity_id = ${id}`)
+
+      if(data[0].length === 0) throw new Error('data tidak ditemukan')
+
+      return {
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return {
+        message: error.message
+      }
+    }
+  }
+
+  async getRouteActions () {
+    try {
+      const data = await this.sequelize.query(`select * from master.route_actions 
+      where roac_display = '1' and roac_module_name = 'bootcamp'
+      order by roac_orderby`)
+      return {
+        message: 'sukses',
+        data: data[0]
+      }
+    } catch (error) {
+      return error.message
+    }
+  }
+
+  async getTraineesByBatchId (id:number) {
+    try {
+      const traineesData = await this.sequelize.query(`select * from bootcamp.batchtrainee where batr_batch_id = ${id}`)
+      // const evaluationData = await this.sequelize.query(`select * from bootcamp.batch_trainee_evaluation`)
+      return {
+        message: 'sukses',
+        data: traineesData[0]
+      }
+    } catch (error) {
+      return error.message
+    }
+  }
+
+  async setTraineeResign (batrid:any,body:{batr_review: string, batr_status: string}):Promise<any> {
+    try {
+      const data = await this.sequelize.query(`select * from bootcamp.batch_trainee where batr_id = ${batrid}`)
+      if(data[0].length === 0) throw new Error('data tidak ditemukan')
+
+      await batch_trainee.update({
+        batr_status: body.batr_status,
+        batr_review: body.batr_review
+      },{
+        where:{batr_id : batrid}
+      })
+
+      return {
+        message: 'data has been updated'
+      }
+
     } catch (error) {
       return {
         message: error.message

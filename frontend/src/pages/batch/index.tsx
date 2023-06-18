@@ -17,7 +17,8 @@ import {
   Tabs,
   TabsHeader,
   Tab,
-  Avatar
+  Avatar,
+  button,
 } from '@material-tailwind/react';
 import {
   HiDotsVertical,
@@ -30,7 +31,10 @@ import {
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { getAllBatchesReq } from '../redux/bootcamp-schema/action/actionReducer';
+import {
+  deleteBatchReq,
+  getAllBatchesReq,
+} from '../redux/bootcamp-schema/action/actionReducer';
 import { useSelector } from 'react-redux';
 
 const TABS = [
@@ -110,21 +114,26 @@ const TABLE_ROWS = [
 ];
 
 export default function BatchList() {
-  const [buttonSelect, setButtonSelect] = useState('all')
-  const {batches,refresh} = useSelector((state:any)=>state.batchReducers)
-  const dispatch = useDispatch()
+  const [buttonSelect, setButtonSelect] = useState('all');
+  const { batches, refresh } = useSelector((state: any) => state.batchReducers);
+  const dispatch = useDispatch();
 
-  const filteredBatch =
+  const filteredBatch: any =
     buttonSelect === 'all'
       ? batches
-      : batches.filter((item:any) => item.batch_status == buttonSelect);
+      : batches.filter((item: any) => item.batch_status == buttonSelect);
 
   const router = useRouter();
-  useEffect(()=>{
-    dispatch(getAllBatchesReq())
-  },[buttonSelect])
+  useEffect(() => {
+    dispatch(getAllBatchesReq());
+  }, [buttonSelect]);
 
-  
+  const deleteaction = (batchid: any) => {
+    dispatch(deleteBatchReq(batchid));
+  };
+
+  useEffect(() => {}, [refresh, buttonSelect]);
+
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -152,8 +161,14 @@ export default function BatchList() {
           <Tabs value="all" className="w-full md:w-max">
             <TabsHeader>
               {TABS.map(({ label, value }) => (
-                <Tab key={value} value={value} onClick={()=>setButtonSelect(value)}>
-                  <Typography variant='small' className='px-2'>{label}</Typography>
+                <Tab
+                  key={value}
+                  value={value}
+                  onClick={() => setButtonSelect(value)}
+                >
+                  <Typography variant="small" className="px-2">
+                    {label}
+                  </Typography>
                 </Tab>
               ))}
             </TabsHeader>
@@ -190,65 +205,68 @@ export default function BatchList() {
             </tr>
           </thead>
           <tbody>
-            {filteredBatch.length === 0?<tr>
-              <td colSpan={7} className='text-center py-6 text-red-300'>No data found</td>
-            </tr>: filteredBatch.map(
-              (
-                {
-                  batch_id,
-                  batch_name,
-                  prog_title,
-                  trainees,
-                  trainers,
-                  batch_status,
-                  batch_start_date,
-                  batch_end_date
-                },
-                index
-              ) => {
-                const isLast = index === TABLE_ROWS.length - 1;
-                const classes = isLast
-                  ? 'p-4'
-                  : 'p-4 border-b border-blue-gray-50';
+            {(filteredBatch || []).length === 0 ? (
+              <tr>
+                <td colSpan={7} className="text-center py-6 text-red-300">
+                  No data found
+                </td>
+              </tr>
+            ) : (
+              (filteredBatch || []).map(
+                (
+                  {
+                    batch_id,
+                    batch_name,
+                    prog_title,
+                    trainees,
+                    trainers,
+                    batch_status,
+                    batch_start_date,
+                    batch_end_date,
+                  }: any,
+                  index: number
+                ) => {
+                  const isLast = index === TABLE_ROWS.length - 1;
+                  const classes = isLast
+                    ? 'p-4'
+                    : 'p-4 border-b border-blue-gray-50';
 
-                return (
-                  <tr key={batch_id}>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-bold"
-                        >
-                          {batch_name}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {prog_title}
-                        </Typography>
-                      </div>
-                    </td>
+                  return (
+                    <tr key={batch_id}>
+                      <td className={classes}>
+                        <div className="flex items-center gap-3">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-bold"
+                          >
+                            {batch_name}
+                          </Typography>
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        <div className="flex items-center gap-3">
+                          <Typography
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {prog_title}
+                          </Typography>
+                        </div>
+                      </td>
 
-                    <td className={classes}>
-                      <div className="items-center">
-                        <div className="flex -space-x-4 overflow-hidden">
-                        {
-                            trainees.map((poto:string)=>(
+                      <td className={classes}>
+                        <div className="items-center">
+                          <div className="flex -space-x-4 overflow-hidden">
+                            {trainees.map((poto: any) => (
                               <Avatar
-                              src={poto.user_photo}
-                              size="sm"
-                              className="inline-block rounded-full ring-2 ring-white"
-                            />
-                            ))
-                          }
-                          {/* {
+                                src={poto.user_photo}
+                                size="sm"
+                                className="inline-block rounded-full ring-2 ring-white"
+                              />
+                            ))}
+                            {/* {
                             totaltrainee > 3?
                             <Avatar
                             src={`https://ui-avatars.com/api/?name=%2B${totaltrainee-3}&bold=true&color=757575`}
@@ -257,203 +275,224 @@ export default function BatchList() {
                             className="inline-block rounded-full ring-2 ring-white"
                           />:''
                           } */}
+                          </div>
                         </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex flex-col">
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {batch_start_date}
-                        </Typography>
-                        <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal"
-                        >
-                          {batch_end_date}
-                        </Typography>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="flex items-center gap-3">
+                      </td>
+                      <td className={classes}>
                         <div className="flex flex-col">
                           <Typography
                             variant="small"
                             color="blue-gray"
                             className="font-normal"
                           >
-                            {trainers[0].concat}
+                            {batch_start_date}
                           </Typography>
                           <Typography
-                          variant="small"
-                          color="blue-gray"
-                          className="font-normal opacity-70"
-                        >
-                          (co) {trainers[1].concat}
-                        </Typography>
+                            variant="small"
+                            color="blue-gray"
+                            className="font-normal"
+                          >
+                            {batch_end_date}
+                          </Typography>
                         </div>
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      <div className="w-max">
-                        <Chip
-                          variant="ghost"
-                          size="sm"
-                          value={batch_status ? batch_status : 'offline'}
-                          color={batch_status === 'open'  ? 'green' : batch_status === 'running' ? 'yellow' : batch_status === 'closed' ? 'red': batch_status === 'pending'? 'blue': batch_status === 'cancelled'? 'purple': 'indigo'}
-                          // color='blue'
-                        />
-                      </div>
-                    </td>
-                    <td className={classes}>
-                      {/* <Tooltip content="Edit User">
+                      </td>
+                      <td className={classes}>
+                        <div className="flex items-center gap-3">
+                          <div className="flex flex-col">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal"
+                            >
+                              {trainers[0]?.concat}
+                            </Typography>
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="font-normal opacity-70"
+                            >
+                              (co) {trainers[1]?.concat}
+                            </Typography>
+                          </div>
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        <div className="w-max">
+                          <Chip
+                            variant="ghost"
+                            size="sm"
+                            value={batch_status ? batch_status : 'offline'}
+                            color={
+                              batch_status === 'open'
+                                ? 'green'
+                                : batch_status === 'running'
+                                ? 'yellow'
+                                : batch_status === 'closed'
+                                ? 'red'
+                                : batch_status === 'pending'
+                                ? 'blue'
+                                : batch_status === 'cancelled'
+                                ? 'purple'
+                                : 'indigo'
+                            }
+                            // color='blue'
+                          />
+                        </div>
+                      </td>
+                      <td className={classes}>
+                        {/* <Tooltip content="Edit User">
                       <IconButton variant="text" color="blue-gray">
                         <HiDotsVertical className="h-4 w-4" />
                       </IconButton>
                     </Tooltip> */}
-                      <Menu
-                        as="div"
-                        className="relative inline-block text-left"
-                      >
-                        <div>
-                          <Menu.Button>
-                            <HiDotsVertical
-                              className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
-                              aria-hidden="true"
-                            />
-                          </Menu.Button>
-                        </div>
-                        <Transition
-                          as={Fragment}
-                          enter="transition ease-out duration-100"
-                          enterFrom="transform opacity-0 scale-95"
-                          enterTo="transform opacity-100 scale-100"
-                          leave="transition ease-in duration-75"
-                          leaveFrom="transform opacity-100 scale-100"
-                          leaveTo="transform opacity-0 scale-95"
+                        <Menu
+                          as="div"
+                          className="relative inline-block text-left"
                         >
-                          <Menu.Items className="absolute z-50 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                            <div className="px-1 py-1 ">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    className={`${
-                                      active
-                                        ? 'bg-light-blue-500 text-white'
-                                        : 'text-gray-900'
-                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                  >
-                                    <HiPencil
-                                      className={`mr-2 h-5 w-5 ${
+                          <div>
+                            <Menu.Button>
+                              <HiDotsVertical
+                                className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
+                                aria-hidden="true"
+                              />
+                            </Menu.Button>
+                          </div>
+                          <Transition
+                            as={Fragment}
+                            enter="transition ease-out duration-100"
+                            enterFrom="transform opacity-0 scale-95"
+                            enterTo="transform opacity-100 scale-100"
+                            leave="transition ease-in duration-75"
+                            leaveFrom="transform opacity-100 scale-100"
+                            leaveTo="transform opacity-0 scale-95"
+                          >
+                            <Menu.Items className="absolute z-50 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                              <div className="px-1 py-1 ">
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <button
+                                      onClick={() =>
+                                        router.push(`batch/edit/${batch_id}`)
+                                      }
+                                      className={`${
                                         active
-                                          ? 'text-white'
-                                          : 'text-light-blue-500'
-                                      }`}
-                                      aria-hidden="true"
-                                    />
-                                    Edit
-                                  </button>
-                                )}
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    onClick={() =>
-                                      router.push('/batch/evaluation')
-                                    }
-                                    className={`${
-                                      active
-                                        ? 'bg-light-blue-500 text-white'
-                                        : 'text-gray-900'
-                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                  >
-                                    <HiOutlineAcademicCap
-                                      className={`mr-2 h-5 w-5 ${
+                                          ? 'bg-light-blue-500 text-white'
+                                          : 'text-gray-900'
+                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    >
+                                      <HiPencil
+                                        className={`mr-2 h-5 w-5 ${
+                                          active
+                                            ? 'text-white'
+                                            : 'text-light-blue-500'
+                                        }`}
+                                        aria-hidden="true"
+                                      />
+                                      Edit
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <button
+                                      onClick={() =>
+                                        router.push(
+                                          `/batch/evaluation/${batch_id}`
+                                        )
+                                      }
+                                      className={`${
                                         active
-                                          ? 'text-white'
-                                          : 'text-light-blue-500'
-                                      }`}
-                                      aria-hidden="true"
-                                    />
-                                    Evaluation
-                                  </button>
-                                )}
-                              </Menu.Item>
-                            </div>
-                            <div className="px-1 py-1">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    className={`${
-                                      active
-                                        ? 'bg-light-blue-500 text-white'
-                                        : 'text-gray-900'
-                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                  >
-                                    <HiX
-                                      className={`mr-2 h-5 w-5 ${
+                                          ? 'bg-light-blue-500 text-white'
+                                          : 'text-gray-900'
+                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    >
+                                      <HiOutlineAcademicCap
+                                        className={`mr-2 h-5 w-5 ${
+                                          active
+                                            ? 'text-white'
+                                            : 'text-light-blue-500'
+                                        }`}
+                                        aria-hidden="true"
+                                      />
+                                      Evaluation
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                              </div>
+                              <div className="px-1 py-1">
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <button
+                                      className={`${
                                         active
-                                          ? 'text-white'
-                                          : 'text-orange-600'
-                                      }`}
-                                      aria-hidden="true"
-                                    />
-                                    Close Batch
-                                  </button>
-                                )}
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    className={`${
-                                      active
-                                        ? 'bg-light-blue-500 text-white'
-                                        : 'text-gray-900'
-                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                  >
-                                    <HiFastForward
-                                      className={`mr-2 h-5 w-5 ${
-                                        active ? 'text-white' : 'text-green-500'
-                                      }`}
-                                      aria-hidden="true"
-                                    />
-                                    Run Batch
-                                  </button>
-                                )}
-                              </Menu.Item>
-                            </div>
-                            <div className="px-1 py-1">
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <button
-                                    className={`${
-                                      active
-                                        ? 'bg-light-blue-500 text-white'
-                                        : 'text-gray-900'
-                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                  >
-                                    <HiTrash
-                                      className={`mr-2 h-5 w-5 ${
-                                        active ? 'text-white' : 'text-red-500'
-                                      }`}
-                                      aria-hidden="true"
-                                    />
-                                    Delete
-                                  </button>
-                                )}
-                              </Menu.Item>
-                            </div>
-                          </Menu.Items>
-                        </Transition>
-                      </Menu>
-                    </td>
-                  </tr>
-                );
-              }
+                                          ? 'bg-light-blue-500 text-white'
+                                          : 'text-gray-900'
+                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    >
+                                      <HiX
+                                        className={`mr-2 h-5 w-5 ${
+                                          active
+                                            ? 'text-white'
+                                            : 'text-orange-600'
+                                        }`}
+                                        aria-hidden="true"
+                                      />
+                                      Close Batch
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <button
+                                      className={`${
+                                        active
+                                          ? 'bg-light-blue-500 text-white'
+                                          : 'text-gray-900'
+                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    >
+                                      <HiFastForward
+                                        className={`mr-2 h-5 w-5 ${
+                                          active
+                                            ? 'text-white'
+                                            : 'text-green-500'
+                                        }`}
+                                        aria-hidden="true"
+                                      />
+                                      Run Batch
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                              </div>
+                              <div className="px-1 py-1">
+                                <Menu.Item>
+                                  {({ active }) => (
+                                    <button
+                                      onClick={() => deleteaction(batch_id)}
+                                      className={`${
+                                        active
+                                          ? 'bg-light-blue-500 text-white'
+                                          : 'text-gray-900'
+                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    >
+                                      <HiTrash
+                                        className={`mr-2 h-5 w-5 ${
+                                          active ? 'text-white' : 'text-red-500'
+                                        }`}
+                                        aria-hidden="true"
+                                      />
+                                      Delete
+                                    </button>
+                                  )}
+                                </Menu.Item>
+                              </div>
+                            </Menu.Items>
+                          </Transition>
+                        </Menu>
+                      </td>
+                    </tr>
+                  );
+                }
+              )
             )}
           </tbody>
         </table>

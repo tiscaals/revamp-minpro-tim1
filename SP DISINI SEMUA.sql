@@ -61,7 +61,7 @@ begin
 	)
 	select 
 		batchid,
-		tpro_entity_id,
+		prog_id,
 		z.tpro_emp_entity_id
 	from json_to_recordset(data3) as z(
 		tpro_emp_entity_id int
@@ -87,7 +87,6 @@ call bootcamp.createBatch('[{
 						  },{
 							"batr_trainee_entity_id": 4
 						  },{
-						  	"batr_status": "running",
 							"batr_trainee_entity_id": 3
 						  }]','[{
 							"tpro_emp_entity_id": 1
@@ -97,7 +96,6 @@ call bootcamp.createBatch('[{
 						  
 						  
 ----- CLOSE BATCH -----
-
 create or replace procedure bootcamp.closeBatch(in data json, in data2 json)
 language plpgsql
 as
@@ -142,7 +140,6 @@ begin
 		fullname varchar(100),
 		user_entity_id integer,
 		technology varchar(256),
-		batch_id integer,
 		batch_start_date date,
 		batch_end_date date,
 		trainer varchar(30),
@@ -152,14 +149,13 @@ end;
 $$;
 
 call bootcamp.closeBatch('[{
-						 	"batch_id": 36,
+						 	"batch_id": 40,
 						 	"batch_status": "closed",
 						 	"talent_status": "idle"
 						 }]','[{
 						 	"fullname": "Nama 3",
 						 	"user_entity_id": 3,
 						 	"technology": "PHP ini boss",
-						 	"batch_id": 36,
 						 	"batch_start_date": "2023-06-06",
 						 	"batch_end_date": "2023-07-06",
 						 	"trainer": 1,
@@ -168,12 +164,12 @@ call bootcamp.closeBatch('[{
 						 	"fullname": "Nama 4",
 						 	"user_entity_id": 4,
 						 	"technology": "PHP ini boss",
-						 	"batch_id": 36,
 						 	"batch_start_date": "2023-06-06",
 						 	"batch_end_date": "2023-07-06",
 						 	"trainer": 1,
 						 	"skills": "Javascript, Nestjs, Nextjs"
 						 }]')
+select * from bootcamp.talents
 
 ----- CREATE EVALUATION -----
 create or replace procedure bootcamp.createEvaluation(score int, in data2 json)
@@ -276,33 +272,15 @@ begin
 	with result as(
 	insert into bootcamp.program_apply(
 		prap_user_entity_id,
-		prap_prog_entity_id,
-		prap_test_score,
-		prap_gpa,
-		prap_iq_test,
-		prap_review,
-		prap_modified_date,
-		prap_status
+		prap_prog_entity_id
 	)
 	select
 		x.prap_user_entity_id,
-		x.prap_prog_entity_id,
-		x.prap_test_score,
-		x.prap_gpa,
-		x.prap_iq_test,
-		x.prap_review,
-		x.prap_modified_date,
-		x.prap_status
+		x.prap_prog_entity_id
 	
 	from json_to_recordset(data) as x(
 		prap_user_entity_id int,
-		prap_prog_entity_id int,
-		prap_test_score int,
-		prap_gpa numeric,
-		prap_iq_test numeric,
-		prap_review varchar(256) ,
-		prap_modified_date TIMESTAMPTZ,
-		prap_status VARCHAR(15)
+		prap_prog_entity_id int
 	)
 	returning prap_user_entity_id,prap_prog_entity_id
 	)
@@ -311,29 +289,17 @@ begin
 	insert into bootcamp.program_apply_progress(
 		parog_user_entity_id,
 		parog_prog_entity_id,
-		parog_action_date,
-		parog_modified_date,
-		parog_comment,
 		parog_progress_name,
-		parog_emp_entity_id,
 		parog_status
 	)
 	select
 		userEntityId,
 		progEntityId,
-		y.parog_action_date,
-		y.parog_modified_date,
-		y.parog_comment,
 		y.parog_progress_name,
-		y.parog_emp_entity_id,
 		y.parog_status
 		
 	from json_to_recordset(data2) as y(
-		parog_action_date TIMESTAMPTZ,
-		parog_modified_date TIMESTAMPTZ,
-		parog_comment VARCHAR(512),
 		parog_progress_name VARCHAR(15),
-		parog_emp_entity_id INT,
 		parog_status VARCHAR(15)
 	);
 end;
@@ -341,21 +307,100 @@ $$;
 
 call bootcamp.createProgramApply('[{
 								 	"prap_user_entity_id": 1,
-								 	"prap_prog_entity_id": 1,
-								 	"prap_test_score": 69,
-								 	"prap_gpa": 69,
-								 	"prap_iq_test": 69,
-								 	"prap_review": "a",
-								 	"prap_modified_date": "2023-06-06 12:30:00 +00:00",
-								 	"prap_status": "passed"
+								 	"prap_prog_entity_id": 2,
 								 }]','[{
-								 	"parog_action_date": "2023-06-06 12:30:00 +00:00",
-								 	"parog_modified_date": "2023-06-06 12:30:00 +00:00",
-								 	"parog_comment": "a",
 								 	"parog_progress_name": "apply",
-								 	"parog_emp_entity_id": 1,
 								 	"parog_status": "open"
 								 }]')
 
-alter table bootcamp.batch
-alter column batch_modified_date type timestamptz default now()
+	
+----- UPDATE BATCH -----
+create or replace procedure bootcamp.updatebatch (batchid int,in batch json, in added json, in deleted json, in trainer json)
+language plpgsql
+as 
+$$
+declare 
+	batchdata record;
+	addeddata record;
+	deleteddata record;
+begin
+	select * from json_to_recordset(batch) as x(
+		batch_entity_id int,
+		batch_name varchar(15),
+		batch_description varchar(125),
+		batch_start_date date,
+		batch_end_date date,
+		batch_type varchar(15)
+	)
+	into batchdata;
+	
+	select * from json_to_recordset(deleted) as y(
+		batr_trainee_entity_id int
+	)
+	into deleteddata;
+	
+	update bootcamp.batch
+	set	batch_entity_id = batchdata.batch_entity_id,
+		batch_name = batchdata.batch_name,
+		batch_description = batchdata.batch_description,
+		batch_start_date = batchdata.batch_start_date,
+		batch_end_date = batchdata.batch_end_date,
+		batch_type = batchdata.batch_type;
+	
+	INSERT INTO bootcamp.batch_trainee (
+		batr_batch_id, 
+		batr_trainee_entity_id
+		)
+	select 
+		batchid, 
+		batr_trainee_entity_id
+	from json_to_recordset(added)x (
+		batr_trainee_entity_id integer
+		);
+		
+	delete from bootcamp.batch_trainee
+	where batr_batch_id = batchid and batr_trainee_entity_id IN 
+	(SELECT z.batr_trainee_entity_id FROM json_to_recordset(deleted)as z (batr_trainee_entity_id integer));
+	
+	delete from bootcamp.trainer_programs
+	where batch_id = batchid;
+	
+	insert into bootcamp.trainer_programs(
+		batch_id,
+		tpro_entity_id,
+		tpro_emp_entity_id
+	)
+	select
+		batchid,
+		batchdata.batch_entity_id,
+		z.tpro_emp_entity_id
+	from json_to_recordset(trainer) as z(
+		tpro_emp_entity_id int
+	);
+end;
+$$;
+
+select * from bootcamp.batch_trainee
+
+call bootcamp.updatebatch(57,'[{
+							"batch_entity_id": 1,
+							"batch_name": "batch#99",
+							"batch_description": "batch#99_updated desc",
+							"batch_start_date": "2026-06-06",
+							"batch_end_date": "2026-06-06",
+							"batch_type": "online"
+						  }]','[{
+							"batr_trainee_entity_id": 4
+						  },{
+							"batr_trainee_entity_id": 5
+						  }]','[{
+							"batr_trainee_entity_id": 1
+						  },{
+							"batr_trainee_entity_id": 2
+						  }]','[{
+							"tpro_emp_entity_id": 1   
+						  },{
+							"tpro_emp_entity_id": 2			   			   
+							}]')
+							
+select * from bootcamp.program_apply_progress

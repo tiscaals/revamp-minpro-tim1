@@ -25,7 +25,7 @@ export class BootcampController {
     return this.bootcampService.findAllBatch();
   }
 
-  @Get('batch/:id')
+  @Get('one/:id')
   findOne(@Param('id') id: string) {
     return this.bootcampService.findOneBatch(+id);
   }
@@ -64,25 +64,32 @@ export class BootcampController {
     return this.bootcampService.closeBatch()
   }
 
+  @Delete(':id')
+  deleteBatch(@Param('id') id: number){
+    return this.bootcampService.remove(id)
+  }
+
   @Patch('program-apply-progress/:id')
   updateProgramApplyProgress(
     @Param('id') id: number,
     @Body() body: any,
   ) {
-    return this.bootcampService.updateProgramApplyProgress(
-      +id,
+    return this.bootcampService.changeProgressName(
+      id,
       body
     )
   }
 
-  @Patch('program-apply/:id')
+  @Patch('program-apply/:id/:progid')
   updateProgramApply(
     @Param('id') id: number,
+    @Param('progid') progid: number,
     @Body() body: any,
   ) {
     // return body
     return this.bootcampService.updateProgramApply(
       +id,
+      progid,
       body
     )
   }
@@ -95,5 +102,25 @@ export class BootcampController {
   @Get('programs')
   findAllPrograms(){
     return this.bootcampService.getAllPrograms()
+  }
+
+  @Get('recstudents/:id')
+  findRecommendedStudents(@Param('id') id: number){
+    return this.bootcampService.getRecommendedStudents(id)
+  }
+
+  @Get('routeactions')
+  findAllRoutes(){
+    return this.bootcampService.getRouteActions()
+  }
+
+  @Get('batchtrainees/:id')
+  findAllBatchTrainee(@Param('id') id:number){
+    return this.bootcampService.getTraineesByBatchId(id)
+  }
+
+  @Patch('setresign/:batrid')
+  settraineetoresign(@Param('batrid') batrid: number, @Body() body: any){
+    return this.bootcampService.setTraineeResign(batrid,body)
   }
 }

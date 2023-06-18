@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import {
   Tabs,
   TabsHeader,
@@ -13,6 +13,7 @@ import {
   ButtonGroup,
   Input,
   Textarea,
+  Typography,
 } from '@material-tailwind/react';
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import { Menu, Transition } from '@headlessui/react';
@@ -24,329 +25,347 @@ import {
   BsTrashFill,
 } from 'react-icons/bs';
 import Link from 'next/link';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  editParogReq,
+  editPrapReq,
+  getAllCandidatesReq,
+  getAllRoutesReq,
+} from '../redux/bootcamp-schema/action/actionReducer';
 
 export default function Candidates() {
-  const data = [
-    {
-      label: 'Apply',
-      value: 'html',
-      desc: `Isi dari Apply Candidates`,
-    },
-    {
-      label: 'Filtering Test',
-      value: 'react',
-      desc: `Isi dari Filtering Test Candidates`,
-    },
-    {
-      label: 'Contract',
-      value: 'vue',
-      desc: `Isi dari Contract Candidates`,
-    },
-    {
-      label: 'Disqualified',
-      value: 'angular',
-      desc: `Isi dari Disqualified Candidates`,
-    },
-    {
-      label: 'Not Responding',
-      value: 'svelte',
-      desc: `Isi dari Not Responding Candidates`,
-    },
-  ];
+  const dispatch = useDispatch();
+  const { routes } = useSelector((state: any) => state.routeReducers);
+  const { candidates, refresh } = useSelector(
+    (state: any) => state.candidateReducers
+  );
 
-  const columns = [
-    { name: '#No' },
-    { name: 'image' },
-    { name: 'name' },
-    { name: 'university' },
-    { name: 'tahun lulus' },
-    { name: 'aksi' },
-  ];
+  const [idProgress, setIdProgress] = useState();
+  const [selectRoute, setSelectRoute] = useState('');
+  const [grade, setGrade] = useState(0);
+  const [status, setStatus] = useState('');
+  const [route, setRoute] = useState<string>('apply');
+  const [review, setReview] = useState('');
+  const [prapstatus, setPrapstatus] = useState();
 
-  const trainees = [
-    {
-      image:
-        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-      name: 'John Doe',
-      university: 'Univ Code X Academy',
-      lulus: '2021',
-    },
-    {
-      image:
-        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
-      name: 'Jane Smith',
-      university: 'Univ Code X Academy',
-      lulus: '2021',
-    },
-    {
-      image:
-        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
-      name: 'Michael Johnson',
-      university: 'Univ Code X Academy',
-      lulus: '2021',
-    },
-    // {
-    //   name: 'Emily Davis',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Emily+Davis',
-    //   score: 87,
-    //   status: 'running',
-    // },
-    // {
-    //   name: 'Sarah Brown',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Sarah+Brown',
-    //   score: 65,
-    //   status: 'resign',
-    // },
-    // {
-    //   name: 'David Wilson',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=David+Wilson',
-    //   score: 92,
-    //   status: 'passed',
-    // },
-    // {
-    //   name: 'Olivia Martinez',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Olivia+Martinez',
-    //   score: 78,
-    //   status: 'running',
-    // },
-    // {
-    //   name: 'Daniel Taylor',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Daniel+Taylor',
-    //   score: 83,
-    //   status: 'running',
-    // },
-    // {
-    //   name: 'Sophia Anderson',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Sophia+Anderson',
-    //   score: 91,
-    //   status: 'passed',
-    // },
-    // {
-    //   name: 'Matthew Thomas',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Matthew+Thomas',
-    //   score: 75,
-    //   status: 'running',
-    // },
-    // {
-    //   name: 'Isabella Garcia',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Isabella+Garcia',
-    //   score: 68,
-    //   status: 'resign',
-    // },
-    // {
-    //   name: 'Ethan Martinez',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Ethan+Martinez',
-    //   score: 89,
-    //   status: 'running',
-    // },
-    // {
-    //   name: 'Ava Thompson',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=Ava+Thompson',
-    //   score: 82,
-    //   status: 'passed',
-    // },
-    // {
-    //   name: 'James Rodriguez',
-    //   avatar: 'https://dummyimage.com/200x200/000000/ffffff&text=James+Rodriguez',
-    //   score: 73,
-    //   status: 'running',
-    // },
-  ];
+  useEffect(() => {
+    dispatch(getAllRoutesReq());
+    dispatch(getAllCandidatesReq());
+  }, [route, refresh]);
+
+  useEffect(() => {
+    if (routes) {
+      setSelectRoute(route);
+    }
+  }, [routes]);
+
+  const handleRoute = (routeName: string) => {
+    setSelectRoute(routeName);
+    setRoute(routeName);
+  };
+
+  const filteredData =
+    selectRoute === ''
+      ? candidates
+      : candidates?.filter(
+          (item: any) => item.parog_progress_name === selectRoute
+        );
+
+  if (routes.length === 0 && candidates.length === 0) {
+    return <div>loading...</div>;
+  }
+
+  // console.log(selectRoute);
 
   return (
-    <div>
+    <div className="bg-white px-7 py-3 rounded-md">
       <div className="my-4">
-        <p className="text-gray-700 text-2xl font-bold">Candidates</p>
+        <p className="text-gray-700 text-2xl font-bold ">Candidates</p>
       </div>
-      <Tabs value="html">
-        <div className="flex justify-end">
-          <div className="w-72">
-            <Select label="Select Filtered">
-              <Option>Filter by Year</Option>
-              <Option>Filter by Month</Option>
-              <Option>Filter by Week</Option>
-            </Select>
+      {routes ? (
+        <Tabs value={route}>
+          <div className="flex justify-end">
+            <div className="w-72">
+              <Select label="Select Filtered">
+                <Option>Filter by Year</Option>
+                <Option>Filter by Month</Option>
+                <Option>Filter by Week</Option>
+              </Select>
+            </div>
+            <div className="w-13">
+              <Select label="Select">
+                <Option>Material Tailwind HTML</Option>
+                <Option>Material Tailwind React</Option>
+                <Option>Material Tailwind Vue</Option>
+                <Option>Material Tailwind Angular</Option>
+                <Option>Material Tailwind Svelte</Option>
+              </Select>
+            </div>
           </div>
-          <div className="w-13">
-            <Select label="Select">
-              <Option>Material Tailwind HTML</Option>
-              <Option>Material Tailwind React</Option>
-              <Option>Material Tailwind Vue</Option>
-              <Option>Material Tailwind Angular</Option>
-              <Option>Material Tailwind Svelte</Option>
-            </Select>
-          </div>
-        </div>
-        <TabsHeader>
-          {data.map(({ label, value }) => (
-            <Tab key={value} value={value}>
-              {label}
-            </Tab>
-          ))}
-        </TabsHeader>
-        <TabsBody>
-          {data.map(({ value, desc }) => (
-            <TabPanel key={value} value={value}>
-              {desc}
-            </TabPanel>
-          ))}
-        </TabsBody>
-      </Tabs>
-      <table className="min-w-full table-fixed ">
-        <thead>
-          <tr className="border-t border-gray-200 bg-light-blue-500 ">
-            {(columns || []).map(col => (
-              <th className="pl-3 pr-3 py-2 text-left text-xs font-medium text-black-500 uppercase tracking-winder">
-                <span className="">{col.name}</span>
-              </th>
+          <TabsHeader className="my-5">
+            {routes.map((item: any, index: any) => (
+              <Tab
+                key={item.roac_name}
+                value={item.roac_name}
+                onClick={() => handleRoute(item.roac_name)}
+              >
+                {item.roac_name}
+              </Tab>
             ))}
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y-8 divide-gray-100">
-          {(trainees || []).map((dt: any, index: any) => (
-            <tr key={dt.id}>
-              <td className="pl-3 py-3 text-gray-900">{index + 1}</td>
-              <td className="py-3 text-gray-900">
-                <Avatar src={dt.image} />
+          </TabsHeader>
+        </Tabs>
+      ) : (
+        <div className="bg-red-600">loading...</div>
+      )}
+      <table className="min-w-full table-fixed ">
+        <tbody className="divide-y ">
+          {(filteredData || []).length === 0 ? (
+            <tr>
+              <td colSpan={7} className="text-center py-6 text-red-300">
+                No data found
               </td>
-              <td className="py-3 text-gray-900">{dt.name}</td>
-              <td className="py-3 text-gray-900">{dt.university}</td>
-              <td className="py-3 text-gray-900">{dt.lulus}</td>
-              <td className="py-3 text-gray-900">
-                <div className="w-full">
-                  <Menu as="div" className="relative inline-block text-left ">
-                    <div>
-                      <Menu.Button
-                        className="inline-flex w-full justify-center rounded-md bg-blue-500 
+            </tr>
+          ) : (
+            (filteredData || []).map((dt: any, index: any) => (
+              <tr key={dt.id}>
+                <td className="py-3 text-gray-900">
+                  <Avatar src={dt.user_photo} />
+                </td>
+                <td className="py-3 text-gray-900">
+                  <Typography variant="small" color="blue-gray">
+                    {dt.full_name}
+                  </Typography>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="opacity-70"
+                  >
+                    {dt.emails[0].pmail_address}
+                  </Typography>
+                </td>
+                <td className="py-3 text-gray-900">
+                  <Typography variant="small" color="blue-gray">
+                    {dt.usdu_school}
+                  </Typography>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="opacity-70 italic"
+                  >
+                    {dt.usdu_field_study}
+                  </Typography>
+                </td>
+                <td className="py-3 text-gray-900">
+                  <Typography variant="small" color="blue-gray">
+                    Lulus {dt.usdu_graduate_year}
+                  </Typography>
+                </td>
+                <td className="py-3 text-gray-900">
+                  <Typography variant="small" color="blue-gray">
+                    {dt.phones[0]?.uspo_number}
+                  </Typography>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="opacity-70"
+                  >
+                    {dt.phones[1]?.uspo_number}
+                  </Typography>
+                </td>
+                <td className="py-3 text-gray-900">
+                  <Typography variant="small" color="blue-gray">
+                    {dt.prog_title}
+                  </Typography>
+                </td>
+                <td className="py-3 text-gray-900">
+                  <Typography variant="small" color="blue-gray">
+                    {dt.join_date}
+                  </Typography>
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="opacity-70 italic"
+                  >
+                    {selectRoute === 'contract legal'
+                      ? `${dt.prap_test_score}, ${dt.prap_status}`
+                      : selectRoute === 'disqualified'
+                      ? `${dt.prap_test_score}, failed`
+                      : `${dt.parog_progress_name}`}
+                  </Typography>
+                </td>
+                <td className="py-3 text-gray-900">
+                  <div className="w-full">
+                    <Menu as="div" className="relative inline-block text-left ">
+                      <div>
+                        <Menu.Button
+                          onClick={() => setIdProgress(dt.parog_id)}
+                          className="inline-flex w-full justify-center rounded-md 
                         bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 
                         focus:outline-none focus-visible:ring-2 focus-visible:ring-white 
                         focus-visible:ring-opacity-75"
+                        >
+                          <BsThreeDotsVertical
+                            className="h-5 w-5 text-black hover:text-violet-100"
+                            aria-hidden="true"
+                          />
+                        </Menu.Button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
                       >
-                        <BsThreeDotsVertical
-                          className="h-5 w-5 text-black hover:text-violet-100"
-                          aria-hidden="true"
-                        />
-                      </Menu.Button>
-                    </div>
-                    <Transition
-                      as={Fragment}
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      <Menu.Items className="z-10 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-blue-500 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                        <div className="px-1 py-1">
-                          <h1 className="relative">
-                            Switch Status
-                            <span className="after:content after:block after:h-1 after:bg-black after:absolute after:bottom-0 after:left-0 after:w-full"></span>
-                          </h1>
-                          <br />
-                          <h1>Kadidat {dt.name}</h1>
-                          <br />
-                          {/* <h1>Score Filtering Test :</h1> */}
-                          <div className="flex justify-end">
-                            <div className="w-72">
-                              <Input
-                                label="Score Filtering Test"
-                                type="number"
-                                color="black"
-                              />
-                            </div>
+                        <Menu.Items className="z-30 absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md shadow-lg bg-white p-3 ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="px-1 py-1">
+                            <Typography
+                              variant="small"
+                              color="blue-gray"
+                              className="mb-2"
+                            >
+                              Switch Status
+                            </Typography>
+                            <form>
+                              <div className="flex flex-col gap-3">
+                                {route === 'filtering test' ? (
+                                  <>
+                                    <Input
+                                      label="Score Filtering Test"
+                                      type="number"
+                                      onChange={(e: any) =>
+                                        setGrade(e.target.value)
+                                      }
+                                    />
+                                    <Input
+                                      label={
+                                        grade < 25
+                                          ? 'failed'
+                                          : grade >= 25 && grade < 50
+                                          ? 'recommendation'
+                                          : 'passed'
+                                      }
+                                      className={
+                                        grade < 25
+                                          ? 'disabled:bg-red-100 disabled:text-red-800'
+                                          : grade >= 25 && grade < 50
+                                          ? 'disabled:bg-orange-100 disabled:text-orange-800'
+                                          : 'disabled:bg-green-100 disabled:text-green-800'
+                                      }
+                                      value={
+                                        grade < 25
+                                          ? 'failed'
+                                          : grade >= 25 && grade < 50
+                                          ? 'recommendation'
+                                          : 'passed'
+                                      }
+                                      disabled
+                                    />
+                                    <Textarea
+                                      label="Review"
+                                      onChange={(e: any) =>
+                                        setReview(e.target.value)
+                                      }
+                                    />
+                                    <Button
+                                      size="sm"
+                                      onClick={() =>
+                                        dispatch(
+                                          editPrapReq({
+                                            userid: dt.user_entity_id,
+                                            progid: dt.prog_entity_id,
+                                            prap_test_score: grade,
+                                            prap_review: review,
+                                            prap_status:
+                                              grade < 25
+                                                ? 'failed'
+                                                : grade >= 25 && grade < 50
+                                                ? 'recommendation'
+                                                : 'passed',
+                                            parog_progress_name:
+                                              grade < 25
+                                                ? 'disqualified'
+                                                : 'contract legal',
+                                            parog_id: dt.parog_id,
+                                          })
+                                        )
+                                      }
+                                    >
+                                      Submit
+                                    </Button>
+                                  </>
+                                ) : route === 'disqualified' ||
+                                  route === 'not responding' ? (
+                                  <>
+                                    <Select
+                                      onChange={(e: any) => setPrapstatus(e)}
+                                      label="Set Status"
+                                    >
+                                      <Option value="recommendation">
+                                        Recommendation
+                                      </Option>
+                                    </Select>
+                                    <Button
+                                      size="sm"
+                                      onClick={() =>
+                                        dispatch(
+                                          editPrapReq({
+                                            userid: dt.user_entity_id,
+                                            progid: dt.prog_entity_id,
+                                            prap_test_score: dt.prap_test_score,
+                                            prap_review: dt.prap_review,
+                                            prap_status: prapstatus,
+                                            parog_progress_name:
+                                              'contract legal',
+                                            parog_id: dt.parog_id,
+                                          })
+                                        )
+                                      }
+                                    >
+                                      Submit
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Select
+                                      onChange={(e: any) => setStatus(e)}
+                                      label="Set Status"
+                                      value={route}
+                                    >
+                                      {routes.map((item: any) => (
+                                        <Option value={item.roac_name}>
+                                          {item.roac_name}
+                                        </Option>
+                                      ))}
+                                    </Select>
+                                    <Button
+                                      size="sm"
+                                      onClick={() =>
+                                        dispatch(
+                                          editParogReq({
+                                            id: idProgress,
+                                            parog_progress_name: status,
+                                          })
+                                        )
+                                      }
+                                    >
+                                      Submit
+                                    </Button>
+                                  </>
+                                )}
+                              </div>
+                            </form>
                           </div>
-                          <br />
-                          {/* <h3>Set Status</h3> */}
-                          <div className="w-13 text-white">
-                            <Select label="Set Status">
-                              <Option className="text-black">Ready Test</Option>
-                              <Option className="text-black">Passed</Option>
-                              <Option className="text-black">Contracted</Option>
-                              <Option className="text-black">
-                                Recommendation
-                              </Option>
-                            </Select>
-                          </div>
-                          <br />
-                          {/* <h3>Review</h3> */}
-                          <div className="flex justify-end">
-                            <div className="w-72">
-                              <Textarea label="Review" />
-                            </div>
-                          </div>
-                          <br />
-                          <div className="flex flex-col w-max gap-4">
-                            <ButtonGroup>
-                              <Button className="text-black">Cancel</Button>
-                              <Button className="text-black">Submit</Button>
-                            </ButtonGroup>
-                          </div>
-
-                          {/* <Menu.Item>
-                  {({ active }) => (
-                    <Link
-                    href={{ 
-                      pathname:`user/editUser`,
-                      query: {
-                        id: dt.id,
-                        username: dt.username,
-                        password: dt.password,
-                        firstname: dt.firstname,
-                        lastname: dt.lastname
-                      } 
-                    }}
-                    //  onClick={()=>goToEdit(dt)}
-                      className={`${
-                        active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    >
-                      {active ? (
-                        <BsPencilFill
-                          className="mr-2 h-5 w-5"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <BsPencil
-                          className="mr-2 h-5 w-5"
-                          aria-hidden="true"
-                        />
-                      )}
-                      Edit
-                    </Link>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button 
-                    // onClick={()=>{setIsHapus(dt)}}
-                      className={`${
-                        active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                    >
-                      {active ? (
-                        <BsTrashFill
-                          className="mr-2 h-5 w-5 text-violet-400"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <BsTrash
-                          className="mr-2 h-5 w-5 text-violet-400"
-                          aria-hidden="true"
-                        />
-                      )}
-                      Delete
-                    </button>
-                  )}
-                </Menu.Item> */}
-                        </div>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
-                </div>
-              </td>
-            </tr>
-          ))}
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
       <div className="flex justify-center">

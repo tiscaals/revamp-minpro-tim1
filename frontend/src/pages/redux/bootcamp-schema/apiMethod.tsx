@@ -1,24 +1,72 @@
-import axios from '../../config/endpoint'
+import axios from '../../config/endpoint';
 
 const findAllBatch = () => {
-    return axios.get('/bootcamp')
-}
+  return axios.get('/bootcamp');
+};
 
-const createBatch = (data:any) => {
-    return axios.post('/bootcamp',data)
-}
+const createBatch = (data: any) => {
+  return axios.post('/bootcamp', data);
+};
+
+const editBatch = (data: any) => {
+  return axios.put(`/bootcamp/${data.id}`, data);
+};
 
 const findAllPrograms = () => {
-    return axios.get('/bootcamp/programs')
-}
+  return axios.get('/bootcamp/programs');
+};
 
 const findAllTrainers = () => {
-    return axios.get('/bootcamp/trainers')
-}
+  return axios.get('/bootcamp/trainers');
+};
+
+const findAllRecStudents = (id: any) => {
+  return axios.get(`/bootcamp/recstudents/${id}`);
+};
+
+const deleteBatch = (id: any) => {
+  return axios.delete(`/bootcamp/${id}`);
+};
+
+const findOne = (id: number) => {
+  return axios.get(`/bootcamp/one/${id}`);
+};
+
+const findroutes = () => {
+  return axios.get('/bootcamp/routeactions');
+};
+
+const findAllCandidates = () => {
+  return axios.get('/bootcamp/program-apply');
+};
+
+const updateParog = (data: any) => {
+  return axios.patch(`/bootcamp/program-apply-progress/${data.id}`, data);
+};
+
+const updatePrap = (data: any) => {
+  return axios.patch(
+    `/bootcamp/program-apply/${data.userid}/${data.progid}`,
+    data
+  );
+};
+
+const findAllTraineesBatch = (id: number) => {
+  return axios.get(`/bootcamp/batchtrainees/${id}`);
+};
 
 export default {
-    findAllBatch,
-    createBatch,
-    findAllPrograms,
-    findAllTrainers
-}
+  findAllBatch,
+  createBatch,
+  findAllPrograms,
+  findAllTrainers,
+  findAllRecStudents,
+  deleteBatch,
+  editBatch,
+  findOne,
+  findroutes,
+  findAllCandidates,
+  updateParog,
+  updatePrap,
+  findAllTraineesBatch,
+};

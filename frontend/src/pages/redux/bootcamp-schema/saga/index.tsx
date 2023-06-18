@@ -1,19 +1,37 @@
 import { takeEvery, all } from 'redux-saga/effects';
 import ActionTypes from '../action/actionType';
-import { handleAddBatch, handleGetAllBatches, handleGetAllPrograms, handleGetAllTrainers } from './batchsaga';
-// import { handleAddUser, handleDeleteUser, handleGetAllUser, handleUpdatePassword, handleUpdateUser } from "./userSaga";
-// import { handleAddProduct, handleDeleteProduct, handleGetAllProduct, handleGetProductById, handleUpdateProduct } from "./productSaga";
-// import { handleGetAllCategories } from "./categorySaga";
-// import { handleLogin } from "./loginSaga";
+import {
+  handleAddBatch,
+  handleDelete,
+  handleEditBatch,
+  handleEditParog,
+  handleEditPrap,
+  handleGetAllBatches,
+  handleGetAllCandidates,
+  handleGetAllPrograms,
+  handleGetAllRecStudents,
+  handleGetAllRoutes,
+  handleGetAllTraineesByBatch,
+  handleGetAllTrainers,
+  handleGetOneBatches,
+} from './batchsaga';
 
-function* watchAll(){
-    yield all([
-        takeEvery(ActionTypes.REQ_GET_BATCHES, handleGetAllBatches),
-        takeEvery(ActionTypes.REQ_CREATE_BATCH, handleAddBatch),
-        takeEvery(ActionTypes.REQ_GET_PROGRAMS, handleGetAllPrograms),
-        takeEvery(ActionTypes.REQ_GET_TRAINERS, handleGetAllTrainers),
-
-    ])
+function* watchAll() {
+  yield all([
+    takeEvery(ActionTypes.REQ_GET_BATCHES, handleGetAllBatches),
+    takeEvery(ActionTypes.REQ_GET_BATCH, handleGetOneBatches),
+    takeEvery(ActionTypes.REQ_CREATE_BATCH, handleAddBatch),
+    takeEvery(ActionTypes.REQ_GET_PROGRAMS, handleGetAllPrograms),
+    takeEvery(ActionTypes.REQ_GET_TRAINERS, handleGetAllTrainers),
+    takeEvery(ActionTypes.REQ_GET_RECSTUDENTS, handleGetAllRecStudents),
+    takeEvery(ActionTypes.REQ_DELETE_BATCH, handleDelete),
+    takeEvery(ActionTypes.REQ_EDIT_BATCH, handleEditBatch),
+    takeEvery(ActionTypes.REQ_GET_ROUTES, handleGetAllRoutes),
+    takeEvery(ActionTypes.REQ_GET_CANDIDATES, handleGetAllCandidates),
+    takeEvery(ActionTypes.REQ_UPDATE_PAROG, handleEditParog),
+    takeEvery(ActionTypes.REQ_UPDATE_PRAP, handleEditPrap),
+    takeEvery(ActionTypes.REQ_GET_TRAINEES_BATCH, handleGetAllTraineesByBatch),
+  ]);
 }
 
 export default watchAll;

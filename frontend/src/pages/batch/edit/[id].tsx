@@ -16,61 +16,61 @@ import {
   getAllProgramsReq,
   getAllRecStudentReq,
   getAllTrainersReq,
-} from '../redux/bootcamp-schema/action/actionReducer';
+  getOneBatchesReq,
+} from '../../redux/bootcamp-schema/action/actionReducer';
 import { useRouter } from 'next/router';
 
-export default function Content() {
+export default function EditBatch() {
+  const { batch, refresh } = useSelector((state: any) => state.batchReducers);
   const { programs } = useSelector((state: any) => state.programReducers);
   const { trainers } = useSelector((state: any) => state.trainerReducers);
   const { recstudents } = useSelector((state: any) => state.studentReducers);
 
   const [checked, setChecked] = useState<any>([]);
-  const [selectedTrainer, setSelectedTrainer] = useState<any>();
-  const [selectedCoTrainer, setSelectedCoTrainer] = useState<any>();
+  // const [selectedTrainer, setSelectedTrainer] = useState<any>();
+  // const [selectedCoTrainer, setSelectedCoTrainer] = useState<any>();
   const [selTechno, setSelTechno] = useState<any>();
-  const [batchType, setBatchType] = useState<string>('');
+  // const [batchType, setBatchType] = useState<string>('');
 
   const dispatch = useDispatch();
   const router = useRouter();
 
   const {
     register,
+    reset,
     handleSubmit,
     setValue,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data: any) => {
-    data.batch_status = 'open';
+    // data.batch_status = 'open';
 
-    //PIC diambil dari user yang login (recruiter)
-    data.batch_pic_id = 1;
-    // console.log(data);
+    // //PIC diambil dari user yang login (recruiter)
+    // data.batch_pic_id = 1;
+    // // console.log(data);
 
-    let newTrainer = {
-      tpro_emp_entity_id: data.trainer.emp_entity_id,
-    };
+    // let newTrainer = {
+    //   tpro_emp_entity_id: data.trainer.emp_entity_id,
+    // };
 
-    let newCoTrainer = {
-      tpro_emp_entity_id: data.cotrainer.emp_entity_id,
-    };
+    // let newCoTrainer = {
+    //   tpro_emp_entity_id: data.cotrainer.emp_entity_id,
+    // };
 
-    let newTrainee = [];
+    // let newTrainee = [];
 
-    for (let i in checked) {
-      newTrainee.push({
-        batr_trainee_entity_id: checked[i].user_entity_id,
-      });
-    }
-    const newObj = {
-      batch: data,
-      trainee: newTrainee,
-      instructors: [newTrainer, newCoTrainer],
-    };
-    console.log(newObj);
-    dispatch(addBatchReq(newObj));
-
-    router.push('/batch');
+    // for (let i in checked) {
+    //   newTrainee.push({
+    //     batr_trainee_entity_id: checked[i].user_entity_id,
+    //   });
+    // }
+    // const newObj = {
+    //   batch: data,
+    //   trainee: newTrainee,
+    //   instructors: [newTrainer, newCoTrainer],
+    // };
+    console.log(data);
   };
 
   const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,29 +79,51 @@ export default function Content() {
     } else {
       setChecked(
         checked.filter(
-          (it: any) => it.prap_user_entity_id !== item.prap_user_entity_id
+          (it: any) => it.batr_trainee_entity_id !== item.prap_user_entity_id &&
+          it.prap_user_entity_id !== item.prap_user_entity_id
         )
       );
     }
   };
 
+  const { id } = router.query;
+
   useEffect(() => {
+    if (id) {
+      dispatch(getOneBatchesReq(id));
+    }
     dispatch(getAllTrainersReq());
     dispatch(getAllProgramsReq());
     dispatch(getAllRecStudentReq(selTechno));
 
-    setValue('batch_entity_id', selTechno);
-    setValue('batch_type', batchType);
-    setValue('trainer', selectedTrainer);
-    setValue('cotrainer', selectedCoTrainer);
-  }, [selTechno, batchType, selectedTrainer, selectedCoTrainer]);
+  }, [id,selTechno]);
 
+  useEffect(()=>{
+    if(batch){
+      setSelTechno(batch.batch_entity_id)
+      setChecked(batch.trainees)
+
+      // let defaultValue:any = {}
+      // defaultValue.batch_entity_id = batch.batch_entity_id
+    }
+  },[batch,selTechno])
+
+  if (programs.length === 0 && trainers.length === 0) {
+    return <div className="bg-black w-full h-screen"> Loading</div>;
+  }
+
+  if(!id  && !batch){
+    return <div>....</div>
+  }
+
+  console.log(batch); 
+  // console.log(recstudents); 
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex justify-between">
           <Typography variant="h5" color="blue-gray">
-            Create Batch
+            Edit Batch
           </Typography>
         </div>
         <br />
@@ -113,6 +135,7 @@ export default function Content() {
             <div>
               <Input
                 label="Batch Name"
+                defaultValue={batch?.batch_name}
                 {...register('batch_name', { required: true })}
                 error={errors.batch_name}
               />
@@ -124,23 +147,32 @@ export default function Content() {
             </div>
             <div className="flex lg:flex-row flex-col gap-5">
               <div className="w-1/2">
-                <Select
-                  inputProps={{
-                    ...register('batch_entity_id', { required: true }),
-                  }}
+                {/* <Select inputProps={{...register('batch_entity_id',{required:true})}} error={errors.batch_entity_id} onChange={setSelTechno} label="Technology" >
+                {
+                  (programs || []).map((item:any)=>(
+                    <Option key={item.prog_entity_id} value={item.prog_entity_id} >{item.prog_title}</Option>
+                  ))
+                }
+              </Select> */}
+                <select
+                  className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
+                  {...register('batch_entity_id')}
+                  // onChange={(e)=>setSelTechno(e.target.value)}
                   error={errors.batch_entity_id}
-                  onChange={setSelTechno}
-                  label="Technology"
+                  // label="Technology"
                 >
                   {(programs || []).map((item: any) => (
-                    <Option
+                    <option
                       key={item.prog_entity_id}
                       value={item.prog_entity_id}
+                      selected={
+                        selTechno == item.prog_entity_id
+                      }
                     >
                       {item.prog_title}
-                    </Option>
+                    </option>
                   ))}
-                </Select>
+                </select>
                 {errors.batch_entity_id && (
                   <span className="text-sm text-red-500">
                     This field is required
@@ -148,22 +180,35 @@ export default function Content() {
                 )}
               </div>
               <div className="w-1/2">
-                <Select
-                  inputProps={{ ...register('batch_type', { required: true }) }}
-                  onChange={setBatchType}
-                  label="Type"
+                <select
+                  className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
+                  {...register('batch_type')}
                   error={errors.batch_type}
                 >
-                  <Option key="offline" value="offline">
+                  <option
+                    value="offline"
+                    selected={batch?.batch_status === 'offline'}
+                  >
                     Offline
-                  </Option>
-                  <Option key="online" value="online">
+                  </option>
+                  <option
+                    value="online"
+                    selected={batch?.batch_status === 'online'}
+                  >
                     Online
-                  </Option>
-                  <Option key="corporate" value="corporate">
+                  </option>
+                  <option
+                    value="corporate"
+                    selected={batch?.batch_status === 'corporate'}
+                  >
                     Corporate
-                  </Option>
-                </Select>
+                  </option>
+                </select>
+                {/* <Select {...register('batch_type',{required:true})} onChange={setBatchType} label="Type" error={errors.batch_type} >
+                <Option value='offline'>Offline</Option>
+                <Option value='online'>Online</Option>
+                <Option value='corporate'>Corporate</Option>
+              </Select> */}
                 {errors.batch_type && (
                   <span className="text-sm text-red-500">
                     This field is required
@@ -177,6 +222,7 @@ export default function Content() {
                   label="Description"
                   {...register('batch_description', { required: true })}
                   error={errors.batch_description}
+                  defaultValue={batch?.batch_description}
                 />
                 {errors.batch_description && (
                   <span className="text-sm text-red-500">
@@ -188,13 +234,14 @@ export default function Content() {
           </div>
           <div className="lg:w-1/4">
             <Typography color="gray" className="font-normal mb-5">
-              Estimated Range Date
+              Range Date
             </Typography>
             <div>
               <span className="text-sm mr-2 grid content-center">From</span>
               <div>
                 <input
                   type="date"
+                  defaultValue={batch?.batch_start_date}
                   {...register('batch_start_date', { required: true })}
                   className={`appearance-none border ${
                     errors.batch_start_date
@@ -215,6 +262,7 @@ export default function Content() {
               <div>
                 <input
                   type="date"
+                  defaultValue={batch?.batch_end_date}
                   {...register('batch_end_date', { required: true })}
                   className={`appearance-none border ${
                     errors.batch_start_date
@@ -238,18 +286,32 @@ export default function Content() {
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 mt-5 ">
           <div className="lg:w-1/2">
             <div>
-              <Select
-                onChange={setSelectedTrainer}
-                label="Trainer"
-                inputProps={{ ...register('trainer', { required: true }) }}
+              {/* <Select onChange={setSelectedTrainer} label="Trainer" inputProps={{...register('trainer',{required:true})}} error={errors.trainer}>
+                {
+                  (trainers || []).map((item:any)=> (
+                    <Option value={item}>{item.user_first_name}</Option>
+                  ))
+                }
+            </Select> */}
+              {/* selected={} */}
+              <select
+                className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
+                {...register('trainer')}
                 error={errors.trainer}
               >
                 {(trainers || []).map((item: any) => (
-                  <Option key={item.emp_entity_id} value={item}>
+                  <option
+                    value={item}
+                    selected={
+                      batch?.trainers &&
+                      batch.trainers[0].tpro_emp_entity_id ===
+                        item.emp_entity_id
+                    }
+                  >
                     {item.user_first_name}
-                  </Option>
+                  </option>
                 ))}
-              </Select>
+              </select>
               {errors.trainer && (
                 <span className="text-sm text-red-500">
                   This field is required
@@ -259,16 +321,31 @@ export default function Content() {
           </div>
           <div className="lg:w-1/2">
             <div>
-              <Select
-                onChange={setSelectedCoTrainer}
-                label="Co-Trainer"
-                inputProps={{ ...register('cotrainer', { required: true }) }}
+              <select
+                className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
+                {...register('cotrainer')}
                 error={errors.cotrainer}
               >
                 {(trainers || []).map((item: any) => (
-                  <Option value={item}>{item.user_first_name}</Option>
+                  <option
+                    value={item}
+                    selected={
+                      batch?.trainers &&
+                      batch.trainers[1].tpro_emp_entity_id ===
+                        item.emp_entity_id
+                    }
+                  >
+                    {item.user_first_name}
+                  </option>
                 ))}
-              </Select>
+              </select>
+              {/* <Select onChange={setSelectedCoTrainer} label="Co-Trainer" inputProps={{...register('cotrainer',{required:true})}} error={errors.cotrainer}>
+                {
+                  (trainers || []).map((item:any)=> (
+                    <Option value={item} selected={batch.trainers && batch.trainers[1].tpro_emp_entity_id === item.emp_entity_id}>{item.user_first_name}</Option>
+                  ))
+                }
+            </Select> */}
               {errors.cotrainer && (
                 <span className="text-sm text-red-500">
                   This field is required
@@ -289,13 +366,13 @@ export default function Content() {
                   className={`flex justify-between content-center w-auto cursor-pointer rounded-lg py-3 px-4 font-semibold text-sm ${
                     checked.find(
                       (i: any) =>
-                        i.prap_user_entity_id === item.prap_user_entity_id
+                        i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
                     )
                       ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-lg shadow-light-blue-200'
                       : 'bg-white border border-gray-`300 text-light-blue-400 hover:scale-105 transition-transform ease-in-out'
                   }`}
                 >
-                  <div className="flex gap-4">
+                  <div className="flex gap-4 justify-between">
                     <Avatar className="w-10 h-10" src={item.user_photo} />
                     <div>
                       <div>{item.user_first_name}</div>
@@ -305,13 +382,19 @@ export default function Content() {
                     </div>
                   </div>
                   <input
+                    checked={
+                      checked.find(
+                        (i: any) =>
+                          i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
+                      ) ? true : false
+                    }
                     className="hidden"
                     type="checkbox"
                     onChange={e => activate(item, e)}
                   />
                   {checked.find(
                     (i: any) =>
-                      i.prap_user_entity_id === item.prap_user_entity_id
+                      i.prap_user_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
                   ) ? (
                     <div className="text-xl grid content-center">
                       {' '}

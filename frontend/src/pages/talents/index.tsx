@@ -7,7 +7,7 @@ import {
   Typography,
   Select,
   Option,
-  Avatar
+  Avatar,
 } from '@material-tailwind/react';
 import {
   MagnifyingGlassIcon,
@@ -22,39 +22,41 @@ export default function Talents() {
     'PERIODE',
     'TRAINER',
     'STATUS',
-    ''
+    '',
   ];
 
   const TABLE_BODY = [
     {
-        full_name: 'Abu Zubair',
-        image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-        technology: 'NodeJS',
-        batch: 'Batch#3',
-        periode: 'March 18,2023 until June 18,2023',
-        trainer: 'RinsLet',
-        status: 'Idle'
+      full_name: 'Abu Zubair',
+      image:
+        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
+      technology: 'NodeJS',
+      batch: 'Batch#3',
+      periode: 'March 18,2023 until June 18,2023',
+      trainer: 'RinsLet',
+      status: 'Idle',
     },
     {
-        full_name: 'Boruto',
-        image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-        technology: 'Java',
-        batch: 'Batch#4',
-        periode: 'March 18,2023 until June 18,2023',
-        trainer: 'Naruto',
-        status: 'Placement'
+      full_name: 'Boruto',
+      image:
+        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
+      technology: 'Java',
+      batch: 'Batch#4',
+      periode: 'March 18,2023 until June 18,2023',
+      trainer: 'Naruto',
+      status: 'Placement',
     },
     {
-        full_name: 'Luffy',
-        image: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-        technology: '.Net',
-        batch: 'Batch#4',
-        periode: 'March 18,2023 until June 18,2023',
-        trainer: 'Sanji',
-        status: 'Trial'
-    }
-    
-  ]
+      full_name: 'Luffy',
+      image:
+        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
+      technology: '.Net',
+      batch: 'Batch#4',
+      periode: 'March 18,2023 until June 18,2023',
+      trainer: 'Sanji',
+      status: 'Trial',
+    },
+  ];
 
   return (
     <Card className="h-full w-full">
@@ -140,8 +142,8 @@ export default function Talents() {
                   <tr key={full_name}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
-                      <Avatar src={image} alt={full_name} size="sm" />
-                      <div className="flex flex-col">
+                        <Avatar src={image} alt={full_name} size="sm" />
+                        <div className="flex flex-col">
                           <Typography
                             variant="small"
                             color="blue-gray"
