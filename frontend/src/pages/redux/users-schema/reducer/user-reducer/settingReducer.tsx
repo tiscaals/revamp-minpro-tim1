@@ -129,6 +129,30 @@ function settingReducers(state = initialState, action: any) {
         message: payload.message,
         refresh: false,
       };
+    case ActionTypes.RES_ADD_EXPERIENCES:
+      return {
+        state,
+        profile: payload.result,
+        status: payload.status,
+        message: payload.message,
+        refresh: false,
+      };
+    case ActionTypes.RES_UPDATE_EXPERIENCES:
+      return {
+        state,
+        profile: payload.result,
+        status: payload.status,
+        message: payload.message,
+        refresh: false,
+      };
+    case ActionTypes.RES_DELETE_EXPERIENCES:
+      return {
+        state,
+        profile: payload.result,
+        status: payload.status,
+        message: payload.message,
+        refresh: false,
+      };
     default:
       return state;
   }

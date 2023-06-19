@@ -295,3 +295,48 @@ export const doGetDeleteEducationResponse = (payload: any) => {
     payload,
   };
 };
+
+// Add Experiences
+export const doRequestAddExperiences = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_EXPERIENCES,
+    payload,
+  };
+};
+
+export const doGetAddExperiencesResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_EXPERIENCES,
+    payload,
+  };
+};
+
+//Update Experinces
+export const doRequestUpdateExperiences = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_EXPERIENCES,
+    payload,
+  };
+};
+
+export const doGetUpdateExperiencesResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_EXPERIENCES,
+    payload,
+  };
+};
+
+//Delete Experiences
+export const doRequestDeleteExperiences = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_EXPERIENCES,
+    payload,
+  };
+};
+
+export const doGetDeleteExperiencesResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_EXPERIENCES,
+    payload,
+  };
+};

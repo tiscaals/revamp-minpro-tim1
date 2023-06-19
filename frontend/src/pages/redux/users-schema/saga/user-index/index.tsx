@@ -30,6 +30,11 @@ import {
   handleDeleteEducation,
   handleEditEducation,
 } from '../user-saga/educationSaga';
+import {
+  handleAddExperiences,
+  handleDeleteExperiences,
+  handleEditExperiences,
+} from '../user-saga/experiencesSaga';
 
 function* watchAll() {
   yield all([
@@ -66,6 +71,11 @@ function* watchAll() {
     takeEvery(ActionTypes.REQ_ADD_EDUCATION, handleAddEducation),
     takeEvery(ActionTypes.REQ_UPDATE_EDUCATION, handleEditEducation),
     takeEvery(ActionTypes.REQ_DELETE_EDUCATION, handleDeleteEducation),
+
+    //Experiences
+    takeEvery(ActionTypes.REQ_ADD_EXPERIENCES, handleAddExperiences),
+    takeEvery(ActionTypes.REQ_UPDATE_EXPERIENCES, handleEditExperiences),
+    takeEvery(ActionTypes.REQ_DELETE_EXPERIENCES, handleDeleteExperiences),
   ]);
 }
 

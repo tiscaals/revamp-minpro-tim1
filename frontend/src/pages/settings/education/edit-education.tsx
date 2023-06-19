@@ -104,7 +104,7 @@ const EditEducation = (props: any) => {
                         <div className="grid grid-cols-1 gap-4  m-auto">
                           <div className="col-span-1">
                             <input
-                              type="text"
+                              type="hidden"
                               defaultValue={props.selectedEducation.usdu_id}
                               {...register('usdu_id')}
                             />

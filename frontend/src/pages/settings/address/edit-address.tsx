@@ -41,6 +41,7 @@ const EditAddress = (props: any) => {
   };
 
   const handleUpdateAddress = async (data: any) => {
+    console.log('kwkwkw', data);
     dispatch(doRequestUpdateAddress(data));
     props.closeModal();
   };
@@ -151,7 +152,7 @@ const EditAddress = (props: any) => {
                               <div className="w-full">
                                 <label
                                   htmlFor="city"
-                                  className="block text-xs text-gray-700 mb-1"
+                                  className="block text-sm text-gray-700"
                                 >
                                   City
                                 </label>
@@ -184,8 +185,8 @@ const EditAddress = (props: any) => {
                             </div>
                             <div className="w-50">
                               <label
-                                htmlFor="addrestype"
-                                className="block text-xs text-gray-700 mb-1"
+                                htmlFor="city"
+                                className="block text-sm text-gray-700"
                               >
                                 Address Type
                               </label>

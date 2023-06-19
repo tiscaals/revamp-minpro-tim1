@@ -2,10 +2,13 @@ import image from '../../../public/img/default.jpg';
 import BreadcrumbsSlice from '../shared/breadcrumbs';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { format } from 'date-fns';
+import { id } from 'date-fns/locale';
 import {
   doRequestDeleteAddress,
   doRequestDeleteEducation,
   doRequestDeleteEmail,
+  doRequestDeleteExperiences,
   doRequestDeletePhone,
   doRequestGetProfile,
 } from '../redux/users-schema/action/actionReducer';
@@ -25,6 +28,8 @@ import AddAddress from './address/add-address';
 import EditAddress from './address/edit-address';
 import AddEducation from './education/add-education';
 import EditEducation from './education/edit-education';
+import AddExperiences from './experiences/add-experiences';
+import EditExperiences from './experiences/edit-experience';
 
 const Settings = (props: any) => {
   // Fn Core
@@ -57,6 +62,10 @@ const Settings = (props: any) => {
   const [isAddEducation, setIsAddEducation] = useState(false);
   const [isEditEducation, setIsEditEducation] = useState(false);
   const [selectedEducation, setSelectedEducation] = useState(null);
+
+  const [isAddExperiences, setIsAddExperiences] = useState(false);
+  const [isEditExperiences, setIsEditExperiences] = useState(false);
+  const [selectedExperiences, setSelectedExperiences] = useState(null);
   // End State
 
   // Get Date By Year For Page Education
@@ -177,7 +186,33 @@ const Settings = (props: any) => {
       console.error('Error deleting data:', error);
     }
   };
-  // End Handle Delete Address
+  // End Handle Delete Education
+
+  // Handle Delete Experiences
+  const handleDeleteExperiences = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'experiences delete confirmation',
+        text: `are you sure to delete your experiences information?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      });
+
+      if (result.isConfirmed) {
+        dispatch(doRequestDeleteExperiences(id));
+      }
+
+      if (user_entity_id) {
+        dispatch(doRequestGetProfile(user_entity_id));
+      }
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
+  // End Handle Delete Education
 
   useEffect(() => {
     const storedToken = localStorage.getItem('userData');
@@ -471,6 +506,7 @@ const Settings = (props: any) => {
                           <div className="px-4 py-6 sm:grid sm:grid-cols-1 sm:gap-1 sm:px-0">
                             <dt className="text-sm font-medium leading-6 text-gray-900">
                               {data.address.addr_line1} <br />
+                              {data.address.addr_line2} <br />
                               {data.address.city.city_name} -{' '}
                               {data.address.addr_postal_code}
                             </dt>
@@ -634,121 +670,109 @@ const Settings = (props: any) => {
       {/* Page Experience */}
       <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
         <div className="pl-8 mt-8 uppercase tracking-wide text-lg text-indigo-500 font-semibold">
-          Experience
+          Experiences
           <div className="flex w-full justify-end pr-10 pb-2">
             <Button
               color="blue"
               className="font-bold py-2 px-4 rounded flex items-center"
-              onClick={() => setIsAddAddress(true)}
+              onClick={() => setIsAddExperiences(true)}
             >
               <BsPlusCircleFill />
               <span className="ml-2">Add</span>
             </Button>
           </div>
         </div>
-        <div className="lg:flex">
-          <div className="p-8 flex flex-col lg:w-full">
-            <div>
-              <div className="px-4 sm:px-0">
-                <h3 className="text-base font-semibold leading-7 text-gray-900">
-                  Applicant Information
-                </h3>
-                <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
-                  Personal details and application.
-                </p>
-              </div>
-              <div className="mt-6 border-t border-gray-100">
-                <dl className="divide-y divide-gray-100">
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Full name
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      Margot Foster
-                    </dd>
+        {profile?.users_experiences && profile.users_experiences.length > 0 && (
+          <div className="lg:flex">
+            {profile.users_experiences.map((experiences: any, index: any) => (
+              <div className="p-8 flex flex-col lg:w-full">
+                <div key={index}>
+                  <div className="px-4 sm:px-0">
+                    <h3 className="text-base font-semibold leading-7 text-gray-900">
+                      {experiences.usex_title}
+                    </h3>
+                    <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+                      {experiences.usex_profile_headline}
+                    </p>
+                    <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+                      {format(
+                        new Date(experiences.usex_start_date),
+                        'MMMM yyyy',
+                        { locale: id }
+                      )}
+                      {experiences.usex_end_date !== null &&
+                        ` - ${format(
+                          new Date(experiences.usex_end_date),
+                          'MMMM yyyy',
+                          { locale: id }
+                        )}`}
+
+                      {experiences.usex_is_current != 0 && (
+                        <span> - Until Now</span>
+                      )}
+                    </p>
+
+                    <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">
+                      {experiences.city.city_name}
+                    </p>
                   </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Application for
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      Backend Developer
-                    </dd>
-                  </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Email address
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      margotfoster@example.com
-                    </dd>
-                  </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Salary expectation
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      $120,000
-                    </dd>
-                  </div>
-                  <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">
-                      About
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      Fugiat ipsum ipsum deserunt culpa aute sint do nostrud
-                      anim incididunt cillum culpa consequat. Excepteur qui
-                      ipsum aliquip consequat sint. Sit id mollit nulla mollit
-                      nostrud in ea officia proident. Irure nostrud pariatur
-                      mollit ad adipisicing reprehenderit deserunt qui eu.
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </div>
-            <div className="flex flex-col w-full">
-              {/* For Address*/}
-              {profile?.users_addresses &&
-                profile.users_addresses.length > 0 && (
-                  <div>
-                    {profile.users_addresses.map((data: any, index: any) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-start mt-3"
-                      >
-                        <div className="flex items-center ml-auto">
-                          <div className="flex flex-col lg:flex-row">
-                            <Button
-                              color="amber"
-                              className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
-                              onClick={() => {
-                                setIsEditAddress(true);
-                                setSelectedAddress(data.address);
-                                setSelectedAddressType(data.address_type);
-                              }}
-                            >
-                              <BsPencilFill className="mr-2" />
-                              <span>Edit</span>
-                            </Button>
-                            <Button
-                              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
-                              onClick={() => {
-                                handleDeleteAddress(data.address.addr_id);
-                              }}
-                            >
-                              <BsTrash3Fill className="mr-2" />
-                              <span>Delete</span>
-                            </Button>
-                          </div>
-                        </div>
+                  <div className="mt-6 border-t border-gray-100">
+                    <dl className="divide-y divide-gray-100">
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-1 sm:gap-4 sm:px-0">
+                        <dt className="text-sm font-medium leading-6 text-gray-900">
+                          {experiences.usex_description}
+                        </dt>
                       </div>
-                    ))}
+                    </dl>
                   </div>
-                )}
-              {/* End Address*/}
-            </div>
+                </div>
+                <div className="flex flex-col w-full">
+                  {/* For Button*/}
+                  {profile?.users_experiences &&
+                    profile.users_experiences.length > 0 && (
+                      <div>
+                        {profile.users_experiences.map(
+                          (data: any, index: any) => (
+                            <div
+                              key={index}
+                              className="flex items-center justify-start mt-3"
+                            >
+                              <div className="flex items-center ml-auto">
+                                <div className="flex flex-col lg:flex-row">
+                                  <Button
+                                    color="amber"
+                                    className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                                    onClick={() => {
+                                      setIsEditExperiences(true);
+                                      setSelectedExperiences(data);
+                                      // setSelectedAddressType(data.address_type);
+                                    }}
+                                  >
+                                    <BsPencilFill className="mr-2" />
+                                    <span>Edit</span>
+                                  </Button>
+                                  <Button
+                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                                    onClick={() => {
+                                      handleDeleteExperiences(data.usex_id);
+                                    }}
+                                  >
+                                    <BsTrash3Fill className="mr-2" />
+                                    <span>Delete</span>
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    )}
+                  {/* End Button*/}
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
+        )}
         <div className="flex w-full justify-end pr-10 pb-2"></div>
       </div>
       {/* End Experience */}
@@ -855,6 +879,27 @@ const Settings = (props: any) => {
           profile={profile}
           selectedEducation={selectedEducation}
           closeModal={() => setIsEditEducation(false)}
+        />
+      ) : (
+        ''
+      )}
+
+      {isAddExperiences ? (
+        <AddExperiences
+          show={isAddExperiences}
+          profile={profile}
+          closeModal={() => setIsAddExperiences(false)}
+        />
+      ) : (
+        ''
+      )}
+
+      {isEditExperiences ? (
+        <EditExperiences
+          show={isEditExperiences}
+          profile={profile}
+          selectedExperiences={selectedExperiences}
+          closeModal={() => setIsEditExperiences(false)}
         />
       ) : (
         ''

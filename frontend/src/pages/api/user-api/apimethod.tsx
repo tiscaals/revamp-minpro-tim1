@@ -120,6 +120,19 @@ const removeEducation = (id: any) => {
   return axios.delete(`/education/remove-education/${id}`, id);
 };
 
+//Profile Experiences
+const addExperiences = (data: any) => {
+  return axios.post(`/experiences/add-experiences`, data);
+};
+
+const updateExperiences = (data: any) => {
+  return axios.patch(`/experiences/edit-experiences/${data.usex_id}`, data);
+};
+
+const removeExperiences = (id: any) => {
+  return axios.delete(`/experiences/remove-experiences/${id}`, id);
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -141,4 +154,7 @@ export default {
   addEducation,
   updateEducation,
   removeEducation,
+  addExperiences,
+  updateExperiences,
+  removeExperiences,
 };
