@@ -53,7 +53,6 @@ export default function EditBatch() {
         {tpro_emp_entity_id: +data.cotrainer}
       ]
     };
-    console.log(newObj);
     dispatch(editReq(newObj))
     router.push('/batch')
   };

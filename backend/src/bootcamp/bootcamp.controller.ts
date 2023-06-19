@@ -38,11 +38,6 @@ export class BootcampController {
     return this.bootcampService.updateBatch(+id, updateBootcampDto);
   }
 
-  @Patch('status/:id/:status')
-  changeStatus(@Param('id') id: string, @Param('status') status: string) {
-    return this.bootcampService.changeStatus(+id, status);
-  }
-
   @Post('evaluation')
   createEvaluationWeek(@Body() body: CreateBootcampDto) {
     return this.bootcampService.createEvaluation(body);
@@ -59,9 +54,21 @@ export class BootcampController {
     return this.bootcampService.createProgram(createBootcampDto);
   }
 
-  @Get('close')
-  setClose(){
-    return this.bootcampService.closeBatch()
+  @Post('close')
+  setClose(@Body() body:any){
+    return this.bootcampService.closeBatch(body)
+  }
+
+  @Post('change-status-batch')
+  changeStatusBatch(@Body() dataBody:any){
+    return this.bootcampService.changeStatusBatch(
+      dataBody)
+  }
+
+
+  @Get('coba')
+  findCoba() {
+    return this.bootcampService.cobaCoba();
   }
 
   @Delete(':id')
@@ -102,6 +109,11 @@ export class BootcampController {
   @Get('programs')
   findAllPrograms(){
     return this.bootcampService.getAllPrograms()
+  }
+
+  @Get('talents')
+  findAllTalents(){
+    return this.bootcampService.viewaAllTalents()
   }
 
   @Get('recstudents/:id')

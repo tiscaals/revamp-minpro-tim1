@@ -72,7 +72,7 @@ $$;
 
 call bootcamp.createBatch('[{
 							"batch_entity_id": 2,
-							"batch_name": "batch#7",
+							"batch_name": "batch#1",
 							"batch_description": "batch#1description",
 							"batch_start_date": "2023-06-06",
 							"batch_end_date": "2024-06-06",
@@ -235,8 +235,8 @@ call bootcamp.createEvaluation(80,
       "btev_week": "",
       "btev_skor": 3,
       "btev_note": "",
-      "btev_batch_id": 36,
-      "btev_trainee_entity_id": 3
+      "btev_batch_id": 17,
+      "btev_trainee_entity_id": 1
     },
     {
       "btev_type": "softskill",
@@ -246,8 +246,8 @@ call bootcamp.createEvaluation(80,
       "btev_week": "",
       "btev_skor": 3,
       "btev_note": "",
-      "btev_batch_id": 36,
-      "btev_trainee_entity_id": 3
+      "btev_batch_id": 17,
+      "btev_trainee_entity_id": 1
     }
   ]'
 );
@@ -299,6 +299,8 @@ begin
 end;
 $$;
 
+insert into users.users(user_entity_id,user_first_name,user_last_name) values(3,'Jordy','Saputra');
+
 call bootcamp.createProgramApply('[{
 								 	"prap_user_entity_id": 5,
 								 	"prap_prog_entity_id": 2
@@ -307,6 +309,10 @@ call bootcamp.createProgramApply('[{
 								 	"parog_status": "open"
 								 }]')
 
+alter table bootcamp.batch
+alter column batch_modified_date type timestamptz default now()
+
+truncate table bootcamp.talents
 	
 ----- UPDATE BATCH -----
 create or replace procedure bootcamp.updatebatch (batchid int,in batch json, in added json, in deleted json, in trainer json)
@@ -399,3 +405,46 @@ call bootcamp.updatebatch(59,'[{
 update bootcamp.batch set batch_name = 'anjay' where batch_id = 59
 truncate table bootcamp.batch cascade
 select * from bootcamp.talents
+
+----- RUNNING BATCH -----
+
+CREATE OR REPLACE PROCEDURE bootcamp.updateRunningBatch(
+	IN data json,
+	IN data2 json,
+	IN data3 json
+)
+LANGUAGE 'plpgsql'
+as
+$$
+declare
+	data_store record;
+
+begin
+	select * from json_to_recordset(data) as x(
+		batch_id int,
+		batch_entity_id int
+	)
+	into data_store;
+	
+	update bootcamp.batch set
+		batch_status = 'running',
+		batch_start_date = CURRENT_DATE
+	where batch_id = data_store.batch_id;
+	
+	FOR i IN 0..json_array_length(data2)-1 LOOP	
+	update bootcamp.batch_trainee set
+		batr_status = 'running'
+	where batr_batch_id = data_store.batch_id
+	AND batr_trainee_entity_id = (data2->i->>'batr_trainee_entity_id')::integer  ;
+	END LOOP;
+	
+	FOR i IN 0..json_array_length(data3)-1 LOOP
+	update bootcamp.program_apply_progress set
+		parog_status = 'closed',
+		parog_progress_name = 'contract'
+	where parog_prog_entity_id = data_store.batch_entity_id
+	AND parog_user_entity_id = (data3->i->>'parog_user_entity_id')::integer;
+	END LOOP;
+
+end;
+$$;

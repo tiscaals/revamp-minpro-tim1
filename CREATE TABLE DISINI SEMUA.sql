@@ -109,6 +109,7 @@ CREATE TABLE master.route_actions(
 	roac_name VARCHAR(15) UNIQUE
 );
 
+
 CREATE TABLE bootcamp.talents (
 	talent_id serial primary key,
     talent_fullname varchar(100),
@@ -119,6 +120,25 @@ CREATE TABLE bootcamp.talents (
     talent_end_date date,
     talent_trainer varchar(30),
     talent_skill text,
+	talent_image varchar(255),
+    talent_status varchar(20) check (talent_status IN ('idle', 'placement', 'trial')) references master.status(status)
+);
+
+drop table bootcamp.talents cascade
+
+----- untuk rahmi dan mike (placement) ----- 
+
+Alter table curriculum.program_entity
+add column prog_title varchar(256);
+
+Alter table users.users
+add column user_first_name varchar(50);
+
+Alter table users.users
+add column user_last_name varchar(50);
+
+
+
     talent_status varchar(20) check (talent_status IN ('idle', 'placement', 'trial')) references master.status(status)
 );
 
@@ -241,6 +261,69 @@ join bootcamp.batch on batch_id = batr_batch_id
 join curriculum.program_entity on prog_entity_id = batch_entity_id
 left join users.users_education on usdu_entity_id = user_entity_id
 order by batr_batch_id
+
+
+-- Tambahan Query untuk Menyesuaikan Database Talents dengan MockUp FrontEnd Menu Talents
+
+alter table bootcamp.talents
+add column talent_image varchar(255);
+
+insert into bootcamp.talents(
+	talent_fullname,
+	talent_user_entity_id,
+	talent_technology,
+	talent_batch_id,
+	talent_start_date,
+	talent_end_date,
+	talent_trainer,
+	talent_skill,
+	talent_status,
+	talent_image
+) values(
+	'Ramzi Jumair',
+	1,
+	'Java',
+	10,
+	'2023-06-06',
+	'2023-06-06',
+	'Abu Zubair',
+	'Bisa Hack Data Militer Om Putin',
+	'idle',
+	'Gambar Ramzi Jumair'
+);
+
+update bootcamp.talents
+set talent_image = 'Gambar Raihan Novirma'
+where
+
+CREATE OR REPLACE VIEW bootcamp.talentspassed
+ AS
+ SELECT talents.talent_fullname,
+    talents.talent_user_entity_id,
+    talents.talent_technology,
+    talents.talent_batch_id,
+    talents.talent_start_date,
+    talents.talent_end_date,
+    talents.talent_trainer,
+    talents.talent_skill,
+    talents.talent_status,
+	talents.talent_image,
+    batch.batch_id,
+    batch.batch_entity_id,
+    batch.batch_name,
+    batch.batch_description,
+    batch.batch_start_date,
+    batch.batch_end_date,
+    batch.batch_reason,
+    batch.batch_type,
+    batch.batch_modified_date,
+    batch.batch_status,
+    batch.batch_pic_id,
+    program_entity.prog_entity_id,
+    program_entity.prog_title
+   FROM bootcamp.talents
+     JOIN bootcamp.batch ON batch.batch_id = talents.talent_batch_id
+     JOIN curriculum.program_entity ON program_entity.prog_entity_id = batch.batch_entity_id;
 
 insert into master.status values('resign')
 

@@ -1,10 +1,12 @@
 import { call, put } from 'redux-saga/effects';
 import apiMethod from '../apiMethod';
 import {
+  UpdateCloseBatchRes,
   addBatchRes,
   deleteBatchRes,
   editParogRes,
   editPrapRes,
+  getAllTalentsRes,
   editRes,
   getAllBatchesReq,
   getAllBatchesRes,
@@ -47,6 +49,17 @@ function* handleGetAllPrograms(): any {
     yield put(getAllProgramsRes({ message: error, status: 400 }));
   }
 }
+
+function* handleGetAllTalents():any{
+  try {
+      const result = yield call(apiMethod.findAllTalents)
+      console.log(result)
+      yield put(getAllTalentsRes(result.data))
+  } catch (error) {
+      yield put(getAllTalentsRes({message:error, status:400}))
+  }
+}
+
 
 function* handleGetAllTrainers(): any {
   try {
@@ -138,7 +151,18 @@ function* handleGetAllTraineesByBatch(action: any): any {
   }
 }
 
+function* handleUpdateCloseBatch(action:any):any{
+    try {
+        const result = yield call(apiMethod.updateCloseBatch,action.payload)
+
+        yield put(UpdateCloseBatchRes(result))
+    } catch (error) {
+        yield put( UpdateCloseBatchRes({message:error,status:400}))
+    }
+}
+
 export {
+  handleGetAllTalents,
   handleGetAllBatches,
   handleAddBatch,
   handleGetAllPrograms,
@@ -152,4 +176,5 @@ export {
   handleEditParog,
   handleEditPrap,
   handleGetAllTraineesByBatch,
+  handleUpdateCloseBatch
 };

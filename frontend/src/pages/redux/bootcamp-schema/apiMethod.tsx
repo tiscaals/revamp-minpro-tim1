@@ -55,6 +55,14 @@ const findAllTraineesBatch = (id: number) => {
   return axios.get(`/bootcamp/batchtrainees/${id}`);
 };
 
+const findAllTalents = () => {
+    return axios.get('/bootcamp/talents')
+}
+
+const updateCloseBatch = (data:any) =>{
+    return axios.patch(`/bootcamp/close/${data.batch_id}`,data)
+}
+
 export default {
   findAllBatch,
   createBatch,
@@ -69,4 +77,6 @@ export default {
   updateParog,
   updatePrap,
   findAllTraineesBatch,
+  findAllTalents,
+  updateCloseBatch
 };

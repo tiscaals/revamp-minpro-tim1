@@ -6,6 +6,7 @@ import rootSaga from '../saga/index';
 import batchReducers from '../reducer/batchReducer';
 import trainerReducers from '../reducer/trainerReducer';
 import programReducers from '../reducer/programReducer';
+import talentsReducers from '../reducer/talentsReducer';
 import studentReducers from '../reducer/studentsReducer';
 import routeReducers from '../reducer/routeReducer';
 import candidateReducers from '../reducer/candidateReducer';
@@ -18,6 +19,7 @@ const reducer = combineReducers({
   batchReducers,
   trainerReducers,
   programReducers,
+  talentsReducers,
   studentReducers,
   routeReducers,
   candidateReducers,

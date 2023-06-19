@@ -77,6 +77,18 @@ const getAllProgramsRes = (payload: any) => {
   };
 };
 
+const getAllTalentsReq = () => {
+    return{
+        type: ActionTypes.REQ_GET_TALENTS
+    }
+}
+const getAllTalentsRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_GET_TALENTS,
+        payload
+    }
+}
+
 const getAllRecStudentReq = (payload: any) => {
   return {
     type: ActionTypes.REQ_GET_RECSTUDENTS,
@@ -90,6 +102,21 @@ const getAllRecStudentRes = (payload: any) => {
     payload,
   };
 };
+
+const UpdateCloseBatchReq = (payload:any) => {
+    return{
+        type: ActionTypes.REQ_UPDATE_CLOSE_BATCH,
+        payload
+    }
+}
+
+const UpdateCloseBatchRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_UPDATE_CLOSE_BATCH,
+        payload
+    }
+}
+
 
 const getAllTraineesByBatchReq = (payload: any) => {
   return {
@@ -202,4 +229,8 @@ export {
   editPrapRes,
   getAllTraineesByBatchReq,
   getAllTraineesByBatchRes,
+  getAllTalentsReq,
+  getAllTalentsRes,
+  UpdateCloseBatchReq,
+  UpdateCloseBatchRes
 };
