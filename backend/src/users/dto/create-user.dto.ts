@@ -44,3 +44,18 @@ export class CreateEducationDto {
   usdu_activities: string;
   usdu_description: string;
 }
+
+export class CreateExperiencesDto {
+  usex_entity_id: any;
+  usex_title: string;
+  usex_profile_headline: string;
+  usex_employment_type: string;
+  usex_company_name: string;
+  usex_is_current: any;
+  usex_start_date: any;
+  usex_end_date: any;
+  usex_industry: string;
+  usex_description: string;
+  usex_experience_type: any;
+  usex_city_id: any;
+}

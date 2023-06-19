@@ -52,15 +52,19 @@ export class address
   addr_city_id?: number;
 
   @Column({ allowNull: true, type: DataType.STRING(255) })
-  @Index({ name: 'address_addr_line1_key', using: 'btree' })
+  @Index({ name: 'address_addr_line1_key', using: 'btree', unique: false })
   addr_line1?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(255) })
-  @Index({ name: 'address_addr_line2_key', using: 'btree' })
+  @Index({ name: 'address_addr_line2_key', using: 'btree', unique: false })
   addr_line2?: string;
 
   @Column({ allowNull: true, type: DataType.STRING(10) })
-  @Index({ name: 'address_addr_postal_code_key', using: 'btree' })
+  @Index({
+    name: 'address_addr_postal_code_key',
+    using: 'btree',
+    unique: false,
+  })
   addr_postal_code?: string;
 
   @BelongsTo(() => users_address)

@@ -106,7 +106,7 @@ export class AuthService {
         { user_entity_id: res.user_entity_id, user_name: res.user_name },
         process.env.SECRET_KEY,
         {
-          expiresIn: '4h',
+          expiresIn: '9h',
         },
       );
 
@@ -117,7 +117,7 @@ export class AuthService {
         result: result,
       };
     } catch (error) {
-      return {message: error.message, status: 400};
+      return { message: error.message, status: 400 };
     }
   }
 
@@ -160,9 +160,8 @@ export class AuthService {
         status: 200,
         result: result,
       };
-
     } catch (error) {
-      return {message: error.message,status: 400};
+      return { message: error.message, status: 400 };
     }
   }
 }

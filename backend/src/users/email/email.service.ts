@@ -83,7 +83,6 @@ export class EmailService {
         status: 200,
         result: result,
       };
-
     } catch (error) {
       return {
         message: error.message,

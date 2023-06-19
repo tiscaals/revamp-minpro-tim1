@@ -9,6 +9,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { address } from './address';
+import { users_experiences } from 'models/users';
 
 export interface cityAttributes {
   city_id?: number;
@@ -49,4 +50,7 @@ export class city
 
   @HasMany(() => address, { sourceKey: 'city_id' })
   addresses?: address[];
+
+  @HasMany(() => users_experiences, { sourceKey: 'city_id' })
+  users_experiences?: users_experiences[];
 }

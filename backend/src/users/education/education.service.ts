@@ -40,7 +40,7 @@ export class EducationServices {
       return {
         message: 'add education successfully',
         status: 200,
-        result: result
+        result: result,
       };
     } catch (error) {
       return { message: error.message, status: 400 };
@@ -64,11 +64,11 @@ export class EducationServices {
           usdu_description: updateEducationDto.usdu_description,
           usdu_modified_data: currentTimeID,
         },
-        { where: { usdu_id: id }, returning: true }
+        { where: { usdu_id: id }, returning: true },
       );
 
       return {
-        messagge: 'update education successfully',
+        message: 'update education successfully',
         status: 200,
         result: result,
       };

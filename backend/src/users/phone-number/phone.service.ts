@@ -107,7 +107,7 @@ export class PhoneService {
         status: 200,
       };
     } catch (error) {
-      return {message: error.message, status:400};
+      return { message: error.message, status: 400 };
     }
   }
 }

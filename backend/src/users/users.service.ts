@@ -9,6 +9,7 @@ import {
   users_address,
   users_education,
   users_email,
+  users_experiences,
   users_phones,
   users_roles,
 } from 'models/users';
@@ -65,7 +66,7 @@ export class UsersService {
         result: result,
       };
     } catch (error) {
-      return {message: error.message, status:400};
+      return { message: error.message, status: 400 };
     }
   }
 
@@ -134,6 +135,14 @@ export class UsersService {
           {
             model: users_education,
           },
+          {
+            model: users_experiences,
+            include: [
+              {
+                model: city,
+              },
+            ],
+          },
         ],
         where: { user_entity_id: id },
       });
@@ -144,7 +153,7 @@ export class UsersService {
         result: result,
       };
     } catch (error) {
-      return {message: error.message, status:400};
+      return { message: error.message, status: 400 };
     }
   }
 
@@ -180,7 +189,7 @@ export class UsersService {
         status: 200,
       };
     } catch (error) {
-      return {message: error.message, status:400};
+      return { message: error.message, status: 400 };
     }
   }
 }

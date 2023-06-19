@@ -15,13 +15,13 @@ export class AddressServices {
         'SELECT city.city_id, city.city_name FROM master.city',
       );
 
-      return  {
+      return {
         message: 'success',
         status: 200,
         result: result[0],
       };
     } catch (error) {
-      return {message: error.message, status:400};
+      return { message: error.message, status: 400 };
     }
   }
 
@@ -37,7 +37,7 @@ export class AddressServices {
         result: result[0],
       };
     } catch (error) {
-      return {message: error.message, status:400};
+      return { message: error.message, status: 400 };
     }
   }
 
@@ -62,7 +62,7 @@ export class AddressServices {
         result: result,
       };
     } catch (error) {
-      return {message: error.message, status: 400};
+      return { message: error.message, status: 400 };
     }
   }
 
@@ -91,7 +91,7 @@ export class AddressServices {
 
       return success;
     } catch (error) {
-      return {message: error.message, status: 400};
+      return { message: error.message, status: 400 };
     }
   }
 
@@ -107,7 +107,7 @@ export class AddressServices {
 
       return { message: 'delete address successfully', status: 200 };
     } catch (error) {
-      return {message: error.message, status: 400};
+      return { message: error.message, status: 400 };
     }
   }
 }
