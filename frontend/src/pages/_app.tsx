@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 export default function App({ Component, pageProps }: AppProps) {
 
   const router = useRouter()
-  if (router.pathname.startsWith(`/checkout`) || router.pathname.startsWith(`/sales/checkout`) || router.pathname.startsWith(`/sales/createorder`)) {
+  if (router.pathname.startsWith(`/checkout`) || router.pathname.startsWith(`/sales/checkout`) || router.pathname.startsWith(`/sales/createorder`) || router.pathname.startsWith(`/sales/receipt`)) {
     return (
       <Provider store={store}>
       <Component {...pageProps} />

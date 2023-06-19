@@ -18,6 +18,8 @@ import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import { delCartReq, getAllCartReq } from '../redux/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ApplyButton = styled(Button)(({ theme }) => ({
   backgroundColor: '#3f51b5',
@@ -34,6 +36,14 @@ const CartPage: React.FC = () => {
   const [isAccountValid, setIsAccountValid] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const [selectedFintech, setSelectedFintech] = useState('');
+  const handleAccountFintechClick = (fintech: string) => {
+    setSelectedFintech(fintech);
+  };
+
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
+  const [removeItemId, setRemoveItemId] = useState(0);
+
   const router = useRouter();
 
   const handleCheckOut = () => {
@@ -42,23 +52,19 @@ const CartPage: React.FC = () => {
     }
   };
 
-  const handleAccountFintechClick = () => {
-    setIsAccountValid(true);
-  };
-
   const handleSearch = (event: any) => {
     const searchTerm = event.target.value;
-    // Lakukan operasi pencarian berdasarkan searchTerm
+    // Perform search operation based on searchTerm
   };
 
   useEffect(() => {
     dispatch(getAllCartReq());
   }, [dispatch]);
-  
+
   useEffect(() => {
     calculateTotalPrice();
   }, [items]);
-  
+
   const calculateTotalPrice = () => {
     if (items && items.length > 0) {
       const total = items.reduce((accumulator: number, course: any) => {
@@ -67,19 +73,31 @@ const CartPage: React.FC = () => {
       }, 0);
       setTotalPrice(total);
     } else {
-      setTotalPrice(0); // Atur total harga ke 0 jika tidak ada item
+      setTotalPrice(0); // Set total price to 0 if there are no items
     }
   };
 
   const handleRemoveCartItem = (id: number) => {
-      dispatch(delCartReq(id));
+    setRemoveItemId(id);
+    setShowRemoveModal(true);
+  };
+
+  const confirmRemoveCartItem = () => {
+    dispatch(delCartReq(removeItemId));
+    toast.success('Item removed from cart'); // Display success message
+    setShowRemoveModal(false);
+  };
+
+  const cancelRemoveCartItem = () => {
+    setShowRemoveModal(false);
   };
 
   return (
     <>
       <Navbar />
-
+      <ToastContainer />
       <div className="container mx-auto p-4">
+      <p className="text-lg font-bold text-red-600">{items.length} Course in cart</p>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
@@ -103,14 +121,14 @@ const CartPage: React.FC = () => {
                           </div>
                           <div className="flex gap-4">
                             <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
-                              Simpan untuk nanti
+                              Save for later
                               <BookmarkAddIcon className="ml-2" />
                             </button>
                             <button
                               className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
                               onClick={() => handleRemoveCartItem(course.cait_id)}
                             >
-                              Hapus
+                              Remove
                               <DeleteForeverIcon className="ml-2" />
                             </button>
                           </div>
@@ -118,7 +136,7 @@ const CartPage: React.FC = () => {
                       </div>
                     );
                   } else {
-                    return null; // Jika cait_id tidak valid, item kursus tidak akan dirender
+                    return null; // If cait_id is not valid, the course item won't be rendered
                   }
                 })}
               <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
@@ -145,7 +163,7 @@ const CartPage: React.FC = () => {
                   <div className="mt-4 flex items-center">
                     <TextField
                       id="search"
-                      label="Search"
+                      label="Discount"
                       variant="outlined"
                       size="small"
                       onChange={handleSearch}
@@ -162,49 +180,80 @@ const CartPage: React.FC = () => {
             </div>
           </div>
         </div>
+        <div className='flex grid-cols-2'>
 
-        <div className="flex items-center justify-between mt-4 sm:justify-start">
-          <div>
+          <div className="flex items-center justify-between mt-4 sm:justify-start">
             <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                  Fintech
-                  <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-500" aria-hidden="true" />
-                </Menu.Button>
-              </div>
-              <Transition
-                as={React.Fragment}
-                enter="transition ease-out duration-200"
-                enterFrom="opacity-0 translate-y-1"
-                enterTo="opacity-100 translate-y-0"
-                leave="transition ease-in duration-150"
-                leaveFrom="opacity-100 translate-y-0"
-                leaveTo="opacity-0 translate-y-1"
-              >
-                <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                  <div className="py-1">
-                    <Menu.Item>
-                      {({ active }) => (
-                        <button
-                          className={`${
-                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                          onClick={handleAccountFintechClick}
-                        >
-                          Fintech Account
-                        </button>
-                      )}
-                    </Menu.Item>
-                  </div>
-                </Menu.Items>
-              </Transition>
+              <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                {selectedFintech || 'Fintech'}
+                <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-500" aria-hidden="true" />
+              </Menu.Button>
+
+              <Menu.Items className="origin-top-right absolute right-0 left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 max-h-[20rem] overflow-y-auto">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                      onClick={() => handleAccountFintechClick('GoTo')}
+                    >
+                      GoTo
+                    </button>
+                  )}
+                </Menu.Item>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                      onClick={() => handleAccountFintechClick('OVO')}
+                    >
+                      OVO
+                    </button>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+
             </Menu>
+            <IconButton>
+              <FontAwesomeIcon icon={faArrowRight} className="text-gray-600" />
+            </IconButton>
           </div>
-          <IconButton>
-            <FontAwesomeIcon icon={faArrowRight} className="text-gray-600" />
-          </IconButton>
+
+          <div>
+            <div className="mt-4 flex items-center">
+              <TextField
+                id="search"
+                label="Fintech Account"
+                variant="outlined"
+                size="small"
+                onChange={handleSearch}
+                fullWidth
+                className="mr-2"
+              />
+            </div>
+          </div>
         </div>
+
       </div>
+
+      {showRemoveModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8">
+            <h2 className="text-lg font-bold">Remove Item</h2>
+            <p>Are you sure you want to remove this item?</p>
+            <div className="mt-4 flex justify-end">
+              <Button variant="outlined" className="mr-2" onClick={cancelRemoveCartItem}>
+                Cancel
+              </Button>
+              <Button variant="contained" color="secondary" className="bg-red-500" onClick={confirmRemoveCartItem}>
+                Remove
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </>
   );
 };

@@ -13,7 +13,7 @@ function* handleGetAllCart(): any {
 
 function* handleDelCart(action:any):any {
   try {
-    const result = yield call(apimethod.deleteCartItems, action)
+    const result = yield call(apimethod.deleteCartItems, action.payload)
     yield put(delCartRes(result.data))
   } catch (error) {
     yield put(delCartRes({ message: error, status:400 }))
