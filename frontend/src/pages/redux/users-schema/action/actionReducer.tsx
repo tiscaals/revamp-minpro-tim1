@@ -340,3 +340,47 @@ export const doGetDeleteExperiencesResponse = (payload: any) => {
     payload,
   };
 };
+
+//Get Skill
+export const doReqGetSkills = () => {
+  return {
+    type: ActionTypes.REQ_GET_SKILL,
+  };
+};
+
+export const doGetReqSkillsResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_SKILL,
+    payload,
+  };
+};
+
+//Add Skill
+export const doRequestAddSkills = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_SKILL,
+    payload,
+  };
+};
+
+export const doGetAddSkillsResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_SKILL,
+    payload,
+  };
+};
+
+//Delete Skill
+export const doRequestDeleteSkills = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_DELETE_SKILL,
+    payload,
+  };
+};
+
+export const doGetDeleteSkillsResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_DELETE_SKILL,
+    payload,
+  };
+};

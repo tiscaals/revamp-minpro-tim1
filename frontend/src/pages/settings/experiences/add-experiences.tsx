@@ -34,11 +34,9 @@ const AddExperiences = (props: any) => {
   const { city }: any = useSelector((state: any) => state.cityReducers);
 
   const [isChecked, setIsChecked] = useState(false);
-  const [checkboxValue, setCheckboxValue] = useState(0);
 
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
-    setCheckboxValue(event.target.checked ? 1 : 0);
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
   };
 
   const handleValidation = {
@@ -54,7 +52,28 @@ const AddExperiences = (props: any) => {
   };
 
   const handleAddExperiences = async (data: any) => {
-    dispatch(doRequestAddExperiences(data));
+    let usex_is_current;
+    if (data.usex_is_current) {
+      usex_is_current = 1;
+    } else {
+      usex_is_current = 0;
+    }
+    const add = {
+      usex_entity_id: data.usex_entity_id,
+      usex_title: data.usex_title,
+      usex_profile_headline: data.usex_profile_headline,
+      usex_employment_type: data.usex_employment_type,
+      usex_company_name: data.usex_company_name,
+      usex_is_current: usex_is_current,
+      usex_start_date: data.usex_start_date,
+      usex_end_date: data.usex_end_date,
+      usex_industry: data.usex_industry,
+      usex_description: data.usex_description,
+      usex_experience_type: data.usex_experience_type,
+      usex_city_id: data.usex_city_id,
+    };
+
+    dispatch(doRequestAddExperiences(add));
     props.closeModal();
   };
 
@@ -214,11 +233,6 @@ const AddExperiences = (props: any) => {
                                   {...register('usex_is_current')}
                                   checked={isChecked}
                                   onChange={handleCheckboxChange}
-                                />
-                                <input
-                                  type="hidden"
-                                  {...register('usex_is_current')}
-                                  value={checkboxValue}
                                 />
                               </div>
                             </div>

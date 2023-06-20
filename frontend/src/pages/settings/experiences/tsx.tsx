@@ -9,7 +9,6 @@ import {
 } from '../../redux/users-schema/action/actionReducer';
 
 const EditExperiences = (props: any) => {
-  const [isnilai, setIsNilai] = useState(1);
   type FormValue = {
     usex_id: any;
     usex_entity_id: any;
@@ -17,7 +16,7 @@ const EditExperiences = (props: any) => {
     usex_profile_headline: string;
     usex_employment_type: string;
     usex_company_name: string;
-    usex_is_current: any;
+    usex_is_current: string;
     usex_start_date: Date;
     usex_end_date: Date | null;
     usex_industry: string;
@@ -35,9 +34,10 @@ const EditExperiences = (props: any) => {
   const dispatch = useDispatch();
   const { city }: any = useSelector((state: any) => state.cityReducers);
 
-  const [isChecked, setIsChecked] = useState(false);
+  const [checkboxValue, setCheckboxValue] = useState(true);
+
   const handleCheckboxChange = () => {
-    setIsChecked(!isChecked);
+    setCheckboxValue(!checkboxValue);
   };
 
   const handleValidation = {
@@ -53,27 +53,21 @@ const EditExperiences = (props: any) => {
   };
 
   const handleUpdateExperiences = async (data: any) => {
-    let usex_is_current;
-    if (data.usex_is_current) {
-      usex_is_current = 1;
-    } else {
-      usex_is_current = 0;
-    }
-    const update = {
-      usex_id: data.usex_id,
-      usex_title: data.usex_title,
-      usex_profile_headline: data.usex_profile_headline,
-      usex_employment_type: data.usex_employment_type,
-      usex_company_name: data.usex_company_name,
-      usex_is_current: usex_is_current,
-      usex_start_date: data.usex_start_date,
-      usex_end_date: data.usex_end_date,
-      usex_industry: data.usex_industry,
-      usex_description: data.usex_description,
-      usex_experience_type: data.usex_experience_type,
-      usex_city_id: data.usex_city_id,
-    };
-    dispatch(doRequestUpdateExperiences(update));
+    const formData: any = new FormData();
+
+    formData.append('usex_city_id', data.usex_city_id);
+    formData.append('usex_company_name', data.usex_company_name);
+    formData.append('usex_description', data.usex_description);
+    formData.append('usex_employment_type', data.usex_employment_type);
+    formData.append('usex_end_date', data.usex_end_date);
+    formData.append('usex_experience_type', data.usex_experience_type);
+    formData.append('usex_id', data.usex_id);
+    formData.append('usex_is_current', data.usex_is_current ? 1 : 0);
+    formData.append('usex_profile_headline', data.usex_profile_headline);
+    formData.append('usex_start_date', data.usex_start_date);
+    formData.append('usex_title', data.usex_title);
+    dispatch(doRequestUpdateExperiences(formData));
+    console.log('Test Update', ...formData);
     props.closeModal();
   };
 
@@ -251,6 +245,38 @@ const EditExperiences = (props: any) => {
                               </div>
 
                               <div className="w-full text-sm">
+                                {/* <Checkbox
+                                  label="Until Now"
+                                  {...register('usex_is_current')}
+                                  defaultChecked={
+                                    props.selectedExperiences.usex_is_current ==
+                                      1
+                                  }
+                                />
+                                {props.selectedExperiences.usex_is_current !=
+                                  1 && (
+                                  <input
+                                    type="hidden"
+                                    {...register('usex_is_current')}
+                                    value={'0'}
+                                  /> */}
+                                {/* <Checkbox
+                                  label="Until Now"
+                                  {...register('usex_is_current')}
+                                  defaultChecked={
+                                    props.selectedExperiences.usex_is_current ==
+                                    1
+                                  }
+                                />
+                                {props.selectedExperiences.usex_is_current !=
+                                  1 && (
+                                  <input
+                                    type="hidden"
+                                    {...register('usex_is_current')}
+                                    value={'0'}
+                                  />
+                                )} */}
+
                                 <Checkbox
                                   label="Until Now"
                                   {...register('usex_is_current')}

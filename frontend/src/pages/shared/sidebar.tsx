@@ -19,17 +19,28 @@ import {
   MdGroupAdd,
 } from 'react-icons/md';
 import { useEffect } from 'react';
+import Cookies from 'js-cookie';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
 
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   const [listMenu, setListMenu] = useState([
     { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
   ]);
-  let token: any;
   useEffect(() => {
-    token = localStorage.getItem('AuthToken');
-    // const decoded:any = jwt.verify(token, `SECRETKEY`);
-    const decoded = { role_id: 5, username: 'Tamariska' }; //INI DUMMY NTAR HAPUS AJA AKTIFIN YG ATAS
-    switch (decoded.role_id) {
+    let decoded:any;
+    const token = Cookies.get('access_token');
+    if (token) {
+      try {
+        decoded = jwt.decode(token) as JwtPayload;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log('tokens not found');
+    }
+    
+    switch (decoded.user_current_role) {
       //admin
       case 1:
         setListMenu([
@@ -66,7 +77,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         setListMenu([
           //MENU BLM TAU
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/user', path: '/user', icon: <MdGroup />, name: 'User' },
+          { to: '/users', path: '/users', icon: <MdGroup />, name: 'User' },
           {
             to: '/category',
             path: '/category',

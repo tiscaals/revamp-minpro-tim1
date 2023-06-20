@@ -10,8 +10,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@headlessui/react": "^1.7.15",
     "@material-tailwind/react": "^2.0.1",
+    "@mui/material": "^5.13.5",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/js-cookie": "^3.0.3",
     "@types/node": "20.2.5",
@@ -22,6 +25,7 @@
     "date-fns": "^2.30.0",
     "fs": "^0.0.1-security",
     "js-cookie": "^3.0.5",
+    "jsonwebtoken": "^9.0.0",
     "moment": "^2.29.4",
     "next": "13.4.4",
     "postcss": "8.4.24",
@@ -41,6 +45,7 @@
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/redux-logger": "^3.0.9"
   }
 }

@@ -14,14 +14,34 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { UserPlusIcon } from '@heroicons/react/24/solid';
 import BreadcrumbsSlice from '../shared/breadcrumbs';
 import { doRequestGetUser } from '../redux/users-schema/action/actionReducer';
+import Cookies from 'js-cookie';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const UserIndex = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-
   const { users } = useSelector((state: any) => state.userReducers);
 
   useEffect(() => {
+    const token = Cookies.get('access_token');
+    if (token) {
+      try {
+        const decoded: JwtPayload | null = jwt.decode(token) as JwtPayload;
+        
+        if (decoded && decoded.user_current_role) {
+          if (decoded.user_current_role !== 1) {
+            router.push('/error-page/error-403');
+          }
+        } else {
+          console.log('invalid token');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log('tokens not found');
+    }
+
     dispatch(doRequestGetUser());
   }, []);
 

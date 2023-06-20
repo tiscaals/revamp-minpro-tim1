@@ -133,6 +133,19 @@ const removeExperiences = (id: any) => {
   return axios.delete(`/experiences/remove-experiences/${id}`, id);
 };
 
+//Profile Skill
+const getSkill = () => {
+  return axios.get(`/skills/get-skills`);
+};
+
+const addSkill = (data: any) => {
+  return axios.post(`/skills/add-skills`, data);
+};
+
+const removeSkill = (id: any) => {
+  return axios.delete(`skills/remove-skills/${id}`, id);
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -157,4 +170,7 @@ export default {
   addExperiences,
   updateExperiences,
   removeExperiences,
+  getSkill,
+  addSkill,
+  removeSkill,
 };

@@ -157,6 +157,7 @@ const EditProfile = (props: any) => {
                                 label="Birthdate"
                                 type="date"
                                 {...register('user_birth_date')}
+                                defaultValue={props.profile?.user_birth_date}
                               />
                             </div>
                             <div className="lg:mt-3 sm:mt-8">

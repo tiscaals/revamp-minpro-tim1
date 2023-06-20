@@ -10,6 +10,7 @@ import {
   doRequestDeleteEmail,
   doRequestDeleteExperiences,
   doRequestDeletePhone,
+  doRequestDeleteSkills,
   doRequestGetProfile,
 } from '../redux/users-schema/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,15 +31,16 @@ import AddEducation from './education/add-education';
 import EditEducation from './education/edit-education';
 import AddExperiences from './experiences/add-experiences';
 import EditExperiences from './experiences/edit-experience';
+import AddSkills from './skills/add-skills';
 
 const Settings = (props: any) => {
-  // Fn Core
+  // Var Core
   const router = useRouter();
   const dispatch = useDispatch();
   const { profile, token, refresh, status, message }: any = useSelector(
     (state: any) => state.settingReducers
   );
-  // End Core
+  // End Var Core
 
   //Start State
   const [user_entity_id, setUserId]: any = useState('');
@@ -66,6 +68,8 @@ const Settings = (props: any) => {
   const [isAddExperiences, setIsAddExperiences] = useState(false);
   const [isEditExperiences, setIsEditExperiences] = useState(false);
   const [selectedExperiences, setSelectedExperiences] = useState(null);
+
+  const [isAddSkills, setIsAddSkills] = useState(false);
   // End State
 
   // Get Date By Year For Page Education
@@ -212,7 +216,33 @@ const Settings = (props: any) => {
       console.error('Error deleting data:', error);
     }
   };
-  // End Handle Delete Education
+  // End Handle Delete Experiences
+
+  // Handle Delete Skills
+  const handleDeleteSkills = async (id: any) => {
+    try {
+      const result = await Swal.fire({
+        title: 'skills delete confirmation',
+        text: `are you sure to delete your skills?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      });
+
+      if (result.isConfirmed) {
+        dispatch(doRequestDeleteSkills(id));
+      }
+
+      if (user_entity_id) {
+        dispatch(doRequestGetProfile(user_entity_id));
+      }
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+  };
+  // End Handle Delete Skill
 
   useEffect(() => {
     const storedToken = localStorage.getItem('userData');
@@ -277,8 +307,8 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-2">
           <Button
-            color="amber"
-            className="font-bold py-2 px-4 rounded flex items-center"
+            variant="outlined"
+            className="font-bold py-2 px-4 rounded flex items-center hover:bg-blue-500 hover:text-white"
             onClick={() => setIsEditProfile(true)}
           >
             <BsPencilFill className="mr-2" />
@@ -287,11 +317,12 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-10"></div>
       </div>
+      {/* End Page Profile */}
 
       {/* Page Edit Password */}
       <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
         <div className="pl-8 mt-8 uppercase tracking-wide text-lg text-indigo-500 font-semibold">
-          Login
+          Edit Password
         </div>
         <div className="md:flex">
           <div className="p-8 flex flex-col">
@@ -304,8 +335,8 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-2">
           <Button
-            color="amber"
-            className="font-bold py-2 px-4 rounded flex items-center"
+            variant="outlined"
+            className="font-bold py-2 px-4 rounded flex items-center hover:bg-blue-500 hover:text-white"
             onClick={() => setIsEditPassword(true)}
           >
             <BsPencilFill className="mr-2" />
@@ -314,6 +345,7 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-10"></div>
       </div>
+      {/* End Page Edit Password */}
 
       {/* Page Email */}
       <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
@@ -356,8 +388,8 @@ const Settings = (props: any) => {
                     <div className="flex items-center ml-auto mt-4">
                       <div className="flex flex-col lg:flex-row">
                         <Button
-                          color="amber"
-                          className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                          variant="outlined"
+                          className="font-bold py-2 px-4 rounded flex items-center hover:bg-blue-500 hover:text-white mr-2"
                           onClick={() => {
                             setSelectedEmail(email);
                             setIsEditEmail(true);
@@ -367,7 +399,8 @@ const Settings = (props: any) => {
                           <span>Edit</span>
                         </Button>
                         <Button
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                          variant="outlined"
+                          className="hover:bg-red-700 text-red-700 border-red-500 hover:text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
                           onClick={() => {
                             handleDeleteEmail(
                               email.pmail_id,
@@ -387,6 +420,7 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-2"></div>
       </div>
+      {/* End Page Email */}
 
       {/* Page Phone */}
       <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
@@ -426,9 +460,12 @@ const Settings = (props: any) => {
                                 '$1-$2-$3'
                               )}
                             </span>
-                            <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white">
-                              {phone.uspo_ponty_code}
-                            </span>
+                            {phone.uspo_ponty_code &&
+                              phone.uspo_ponty_code.length > 0 && (
+                                <span className="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-500 text-white">
+                                  {phone.uspo_ponty_code}
+                                </span>
+                              )}
                           </div>
                         </dt>
                       </div>
@@ -437,8 +474,8 @@ const Settings = (props: any) => {
                       <div className="flex flex-col lg:flex-row">
                         {/* Tombol Edit */}
                         <Button
-                          color="amber"
-                          className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                          variant="outlined"
+                          className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2 hover:text-white hover:bg-blue-500"
                           onClick={() => {
                             setSelectedPhone(phone);
                             setSelectedPontyCode(phone.uspo_ponty_code);
@@ -450,7 +487,8 @@ const Settings = (props: any) => {
                         </Button>
                         {/* Tombol Hapus */}
                         <Button
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                          variant="outlined"
+                          className="hover:bg-red-500 text-red-500 border-red-500 hover:text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
                           onClick={() => {
                             handleDeletePhone(phone.uspo_number);
                           }}
@@ -468,6 +506,7 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-2"></div>
       </div>
+      {/* End Page Phone */}
 
       {/* Page Address */}
       <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
@@ -516,8 +555,8 @@ const Settings = (props: any) => {
                         <div className="flex items-center ml-auto">
                           <div className="flex flex-col lg:flex-row">
                             <Button
-                              color="amber"
-                              className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                              variant="outlined"
+                              className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2 hover:bg-blue-500 hover:text-white"
                               onClick={() => {
                                 setIsEditAddress(true);
                                 setSelectedAddress(data.address);
@@ -528,7 +567,8 @@ const Settings = (props: any) => {
                               <span>Edit</span>
                             </Button>
                             <Button
-                              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                              variant="outlined"
+                              className="hover:bg-red-500 text-red-500 border-red-500 hover:text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
                               onClick={() => {
                                 handleDeleteAddress(data.address.addr_id);
                               }}
@@ -548,6 +588,7 @@ const Settings = (props: any) => {
         </div>
         <div className="flex w-full justify-end pr-10 pb-2"></div>
       </div>
+      {/* End Page Address */}
 
       {/* Page Education */}
       <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
@@ -636,8 +677,8 @@ const Settings = (props: any) => {
                     <div className="flex items-center ml-auto">
                       <div className="flex flex-col lg:flex-row">
                         <Button
-                          color="amber"
-                          className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                          variant="outlined"
+                          className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2 hover:bg-blue-500 hover:text-white"
                           onClick={() => {
                             setIsEditEducation(true);
                             setSelectedEducation(education);
@@ -647,7 +688,8 @@ const Settings = (props: any) => {
                           <span>Edit</span>
                         </Button>
                         <Button
-                          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                          variant="outlined"
+                          className="text-red-500 border-red-500 hover:bg-red-500 hover:text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
                           onClick={() => {
                             handleDeleteEducation(education.usdu_id);
                           }}
@@ -673,7 +715,6 @@ const Settings = (props: any) => {
           Experiences
           <div className="flex w-full justify-end pr-10 pb-2">
             <Button
-              color="blue"
               className="font-bold py-2 px-4 rounded flex items-center"
               onClick={() => setIsAddExperiences(true)}
             >
@@ -740,8 +781,8 @@ const Settings = (props: any) => {
                               <div className="flex items-center ml-auto">
                                 <div className="flex flex-col lg:flex-row">
                                   <Button
-                                    color="amber"
-                                    className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2"
+                                    variant="outlined"
+                                    className="font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0 md:mr-2 hover:text-white hover:bg-blue-500"
                                     onClick={() => {
                                       setIsEditExperiences(true);
                                       setSelectedExperiences(data);
@@ -752,7 +793,8 @@ const Settings = (props: any) => {
                                     <span>Edit</span>
                                   </Button>
                                   <Button
-                                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                                    variant="outlined"
+                                    className="border-red-500 hover:bg-red-500 text-red-500 hover:text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
                                     onClick={() => {
                                       handleDeleteExperiences(data.usex_id);
                                     }}
@@ -777,133 +819,213 @@ const Settings = (props: any) => {
       </div>
       {/* End Experience */}
 
-      {/* Function Open Modal */}
-      {isEditProfile ? (
-        <EditProfile
-          show={isEditProfile}
-          profile={profile}
-          closeModal={() => setIsEditProfile(false)}
-        />
-      ) : (
-        ''
-      )}
+      {/* Page Skill */}
+      <div className="mx-auto bg-white border-b-2 shadow-md overflow-hidden lg:max-w-6xl">
+        <div className="pl-8 mt-8 uppercase tracking-wide text-lg text-indigo-500 font-semibold">
+          Skill
+          <div className="flex w-full justify-end pr-10 pb-2">
+            <Button
+              color="blue"
+              className="font-bold py-2 px-4 rounded flex items-center"
+              onClick={() => setIsAddSkills(true)}
+            >
+              <BsPlusCircleFill />
+              <span className="ml-2">Add</span>
+            </Button>
+          </div>
+        </div>
+        <div className="lg:flex">
+          <div className="p-8 flex flex-col lg:w-full">
+            <div className="mb-5">
+              <Typography variant="h6" className="uppercase">
+                Your Skill :
+              </Typography>
+            </div>
+            <div className="flex flex-col">
+              {profile?.users_skills &&
+                profile.users_skills.length > 0 &&
+                profile.users_skills.map((skills: any, index: any) => (
+                  <div
+                    className="flex items-center justify-start"
+                    key={skills.uski_id}
+                  >
+                    <div className="mt-3 border-t border-gray-400 w-1/2">
+                      <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                        <dt className="text-sm font-medium leading-6 text-gray-900">
+                          <span className="font-bold uppercase">
+                            {index + 1}
+                          </span>
+                        </dt>
+                        <dt className="text-sm font-medium leading-6 text-gray-900">
+                          <span className="text-sm">
+                            {skills.uski_skty_name}
+                          </span>
+                        </dt>
+                      </div>
+                    </div>
+                    <div className="flex items-center ml-auto mt-4">
+                      <div className="flex flex-col lg:flex-row">
+                        <Button
+                          variant="outlined"
+                          className="border-red-500 hover:bg-red-500 hover:text-white text-red-500 font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
+                          onClick={() => {
+                            handleDeleteSkills(skills.uski_id);
+                          }}
+                        >
+                          <BsTrash3Fill className="mr-2" />
+                          <span>Delete</span>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </div>
+        </div>
+        <div className="flex w-full justify-end pr-10 pb-2"></div>
+      </div>
+      {/* End Page Skill */}
 
-      {isEditPassword ? (
-        <EditPassword
-          show={isEditPassword}
-          profile={profile}
-          closeModal={() => setIsEditPassword(false)}
-        />
-      ) : (
-        ''
-      )}
+      {/* Fn Open Modal */}
+      <div>
+        {isEditProfile ? (
+          <EditProfile
+            show={isEditProfile}
+            profile={profile}
+            closeModal={() => setIsEditProfile(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isAddEmail ? (
-        <AddEmail
-          show={isAddEmail}
-          profile={profile}
-          closeModal={() => setIsAddEmail(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isEditPassword ? (
+          <EditPassword
+            show={isEditPassword}
+            profile={profile}
+            closeModal={() => setIsEditPassword(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isEditEmail ? (
-        <EditEmail
-          show={isEditEmail}
-          profile={profile}
-          selectedEmail={selectedEmail}
-          closeModal={() => setIsEditEmail(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isAddEmail ? (
+          <AddEmail
+            show={isAddEmail}
+            profile={profile}
+            closeModal={() => setIsAddEmail(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isAddPhoneNumber ? (
-        <AddPhoneNumber
-          show={isAddPhoneNumber}
-          profile={profile}
-          closeModal={() => setIsAddPhoneNumber(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isEditEmail ? (
+          <EditEmail
+            show={isEditEmail}
+            profile={profile}
+            selectedEmail={selectedEmail}
+            closeModal={() => setIsEditEmail(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isEditPhoneNumber ? (
-        <EditPhoneNumber
-          show={isEditPhoneNumber}
-          profile={profile}
-          selectedPhone={selectedPhone}
-          selectedPontyCode={selectedPontyCode}
-          closeModal={() => setIsEditPhoneNumber(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isAddPhoneNumber ? (
+          <AddPhoneNumber
+            show={isAddPhoneNumber}
+            profile={profile}
+            closeModal={() => setIsAddPhoneNumber(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isAddAddress ? (
-        <AddAddress
-          show={isAddAddress}
-          profile={profile}
-          closeModal={() => setIsAddAddress(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isEditPhoneNumber ? (
+          <EditPhoneNumber
+            show={isEditPhoneNumber}
+            profile={profile}
+            selectedPhone={selectedPhone}
+            selectedPontyCode={selectedPontyCode}
+            closeModal={() => setIsEditPhoneNumber(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isEditAddress ? (
-        <EditAddress
-          show={isEditAddress}
-          profile={profile}
-          selectedAddress={selectedAddress}
-          selectedAddressType={selectedAddressType}
-          closeModal={() => setIsEditAddress(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isAddAddress ? (
+          <AddAddress
+            show={isAddAddress}
+            profile={profile}
+            closeModal={() => setIsAddAddress(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isAddEducation ? (
-        <AddEducation
-          show={isAddEducation}
-          profile={profile}
-          closeModal={() => setIsAddEducation(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isEditAddress ? (
+          <EditAddress
+            show={isEditAddress}
+            profile={profile}
+            selectedAddress={selectedAddress}
+            selectedAddressType={selectedAddressType}
+            closeModal={() => setIsEditAddress(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isEditEducation ? (
-        <EditEducation
-          show={isEditEducation}
-          profile={profile}
-          selectedEducation={selectedEducation}
-          closeModal={() => setIsEditEducation(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isAddEducation ? (
+          <AddEducation
+            show={isAddEducation}
+            profile={profile}
+            closeModal={() => setIsAddEducation(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isAddExperiences ? (
-        <AddExperiences
-          show={isAddExperiences}
-          profile={profile}
-          closeModal={() => setIsAddExperiences(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isEditEducation ? (
+          <EditEducation
+            show={isEditEducation}
+            profile={profile}
+            selectedEducation={selectedEducation}
+            closeModal={() => setIsEditEducation(false)}
+          />
+        ) : (
+          ''
+        )}
 
-      {isEditExperiences ? (
-        <EditExperiences
-          show={isEditExperiences}
-          profile={profile}
-          selectedExperiences={selectedExperiences}
-          closeModal={() => setIsEditExperiences(false)}
-        />
-      ) : (
-        ''
-      )}
+        {isAddExperiences ? (
+          <AddExperiences
+            show={isAddExperiences}
+            profile={profile}
+            closeModal={() => setIsAddExperiences(false)}
+          />
+        ) : (
+          ''
+        )}
+
+        {isAddSkills ? (
+          <AddSkills
+            show={isAddSkills}
+            profile={profile}
+            closeModal={() => setIsAddSkills(false)}
+          />
+        ) : (
+          ''
+        )}
+
+        {isEditExperiences ? (
+          <EditExperiences
+            show={isEditExperiences}
+            profile={profile}
+            selectedExperiences={selectedExperiences}
+            closeModal={() => setIsEditExperiences(false)}
+          />
+        ) : (
+          ''
+        )}
+      </div>
+      {/* End Fn Open Modal */}
     </>
   );
 };
