@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { users } from './users';
 
 export interface users_skillAttributes {
   uski_id?: number;
@@ -31,6 +33,7 @@ export class users_skill
   @Index({ name: 'users_skill_uski_id_key', using: 'btree', unique: true })
   uski_id?: number;
 
+  @ForeignKey(() => users)
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'users_skill_pkey', using: 'btree', unique: true })
   uski_entity_id!: number;
@@ -44,4 +47,7 @@ export class users_skill
 
   @Column({ allowNull: true, type: DataType.STRING(15) })
   uski_skty_name?: string;
+
+  @BelongsTo(() => users)
+  user?: users;
 }

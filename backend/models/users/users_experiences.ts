@@ -64,7 +64,7 @@ export class users_experiences
   @Column({ allowNull: true, type: DataType.STRING(255) })
   usex_company_name?: string;
 
-  @Column({ allowNull: true, type: DataType.STRING(1) })
+  @Column({ allowNull: true, type: DataType.STRING(10) })
   usex_is_current?: string;
 
   @Column({ allowNull: true, type: DataType.STRING })

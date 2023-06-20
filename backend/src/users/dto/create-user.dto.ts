@@ -59,3 +59,8 @@ export class CreateExperiencesDto {
   usex_experience_type: any;
   usex_city_id: any;
 }
+
+export class CreateSkillsDto {
+  uski_entity_id: any;
+  uski_skty_name: string;
+}

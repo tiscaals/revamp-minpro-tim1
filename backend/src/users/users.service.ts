@@ -12,6 +12,7 @@ import {
   users_experiences,
   users_phones,
   users_roles,
+  users_skill,
 } from 'models/users';
 import { address, address_type, city } from 'models/master';
 
@@ -142,6 +143,9 @@ export class UsersService {
                 model: city,
               },
             ],
+          },
+          {
+            model: users_skill,
           },
         ],
         where: { user_entity_id: id },

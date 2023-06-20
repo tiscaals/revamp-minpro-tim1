@@ -12,6 +12,7 @@ import {
   users_address,
   users_education,
   users_experiences,
+  users_skill,
 } from 'models/users';
 import { address, address_type, city } from 'models/master';
 @Module({
@@ -24,6 +25,7 @@ import { address, address_type, city } from 'models/master';
       users_phones,
       users_education,
       users_experiences,
+      users_skill,
       phone_number_type,
       users_address,
       address,

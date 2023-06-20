@@ -103,7 +103,11 @@ export class AuthService {
 
       if (!matchPassword) throw new Error('wrong password');
       const token = jwt.sign(
-        { user_entity_id: res.user_entity_id, user_name: res.user_name },
+        {
+          user_entity_id: res.user_entity_id,
+          user_name: res.user_name,
+          user_current_role: res.user_current_role,
+        },
         process.env.SECRET_KEY,
         {
           expiresIn: '9h',

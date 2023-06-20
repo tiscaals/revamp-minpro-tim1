@@ -10,5 +10,5 @@ export * from './phone_number_type';
 export * from './business_entity';
 export * from './users_license';
 export * from './users_email';
-export * from './users_experiences';
 export * from './users_media';
+export * from './users_experiences';

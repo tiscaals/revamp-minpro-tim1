@@ -14,6 +14,7 @@ import { users_phones } from './users_phones';
 import { users_address } from './users_address';
 import { users_education } from './users_education';
 import { users_experiences } from './users_experiences';
+import { users_skill } from './users_skill';
 
 export interface usersAttributes {
   user_entity_id: number;
@@ -94,4 +95,7 @@ export class users
 
   @HasMany(() => users_experiences, { sourceKey: 'user_entity_id' })
   users_experiences?: users_experiences[];
+
+  @HasMany(() => users_skill, { sourceKey: 'user_entity_id' })
+  users_skills?: users_skill[];
 }

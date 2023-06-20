@@ -17,6 +17,8 @@ export class ProfileService {
   //Service Update Profile
   async updateProfile(id: number, updateUserDto: UpdateUserDto): Promise<any> {
     try {
+      const birthDate = updateUserDto.user_birth_date || null;
+
       const checkUsername = await users.findAll({
         where: {
           user_name: updateUserDto.user_name,
@@ -40,7 +42,7 @@ export class ProfileService {
         user_name: updateUserDto.user_name,
         user_first_name: updateUserDto.user_first_name,
         user_last_name: updateUserDto.user_last_name,
-        user_birth_date: updateUserDto.user_birth_date,
+        user_birth_date: birthDate,
         user_modified_date: currentTimeID,
       };
 
@@ -58,23 +60,20 @@ export class ProfileService {
         fs.unlinkSync(oldImagePath);
       }
 
-      const success = {
+      return {
         message: 'update profile success',
         status: 200,
         result: result[1],
       };
-
-      return success;
     } catch (error) {
       // const oldImagePath = './public/user-image/' + updateUserDto.user_photo;
       // if (fs.existsSync(oldImagePath)) {
       //   fs.unlinkSync(oldImagePath);
       // }
-      const errorMsg = {
+      return {
         status: 400,
         message: error.message,
       };
-      return errorMsg;
     }
   }
 }

@@ -10,14 +10,14 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdatePasswordDto } from './dto/update-user.dto';
-import { AuthGuard } from 'src/midleware/auth-guard';
+import { AdminGuard, AuthGuard } from 'src/midleware/auth-guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   //Controller Get Users
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminGuard)
   @Get()
   GetUsers() {
     return this.usersService.getUsers();
