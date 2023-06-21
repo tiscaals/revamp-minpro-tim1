@@ -47,6 +47,7 @@ const fileUploadInterceptor = FileInterceptor('user_photo', {
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
+
   // Controller Update Profile
   @UseGuards(AuthGuard)
   @Patch('/update-profile/:id')

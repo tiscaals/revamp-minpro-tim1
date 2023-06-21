@@ -1,6 +1,6 @@
 import * as bcrypt from 'bcrypt';
 import { Injectable } from '@nestjs/common';
-import { UpdatePasswordDto } from './dto/update-user.dto';
+import { UpdatePasswordDto, UpdateRoleDto } from './dto/update-user.dto';
 import { Sequelize } from 'sequelize-typescript';
 import {
   phone_number_type,
@@ -50,7 +50,7 @@ export class UsersService {
             include: [
               {
                 model: roles,
-                attributes: ['role_name'],
+                attributes: ['role_id', 'role_name'],
               },
             ],
           },
@@ -192,6 +192,37 @@ export class UsersService {
         message: 'password updated successfully',
         status: 200,
       };
+    } catch (error) {
+      return { message: error.message, status: 400 };
+    }
+  }
+
+  //Service Get Role Data
+  async getRole(): Promise<any> {
+    try {
+      const result = await this.sequelize.query(`SELECT * FROM users.roles`);
+      return { message: 'success', status: 200, result: result[0] };
+    } catch (error) {
+      return { message: error.message, status: 400 };
+    }
+  }
+
+  //Service Update Role
+  async updateRole(id: number, updateRoleDto: UpdateRoleDto): Promise<any> {
+    try {
+      await users_roles.update(
+        {
+          usro_role_id: updateRoleDto.role_id,
+        },
+        { where: { usro_entity_id: id } },
+      );
+
+      await users.update(
+        { user_current_role: updateRoleDto.role_id },
+        { where: { user_entity_id: id } },
+      );
+
+      return { message: 'update role successfully', status: 200 };
     } catch (error) {
       return { message: error.message, status: 400 };
     }

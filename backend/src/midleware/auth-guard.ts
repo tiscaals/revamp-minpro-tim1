@@ -42,7 +42,7 @@ export class AdminGuard implements CanActivate {
 
     try {
       const dataJWT = jwt.verify(token, process.env.SECRET_KEY);
-      if (dataJWT.user_current_role !== 1) {
+      if (dataJWT.user_current_role != 1) {
         res.send('Access can only be operated by admin');
       }
     } catch (error) {

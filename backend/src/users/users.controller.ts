@@ -9,7 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { UpdatePasswordDto } from './dto/update-user.dto';
+import { UpdatePasswordDto, UpdateRoleDto } from './dto/update-user.dto';
 import { AdminGuard, AuthGuard } from 'src/midleware/auth-guard';
 
 @Controller('users')
@@ -21,6 +21,12 @@ export class UsersController {
   @Get()
   GetUsers() {
     return this.usersService.getUsers();
+  }
+
+  @UseGuards(AdminGuard)
+  @Get('/get-role')
+  getRole() {
+    return this.usersService.getRole();
   }
 
   @UseGuards(AuthGuard)
@@ -37,5 +43,12 @@ export class UsersController {
     @Body() updatePasswordDto: UpdatePasswordDto,
   ) {
     return this.usersService.updatePassword(+id, updatePasswordDto);
+  }
+
+  //Controller For Update
+  @UseGuards(AdminGuard)
+  @Patch('/update-role/:id')
+  UpdateRole(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
+    return this.usersService.updateRole(+id, updateRoleDto);
   }
 }
