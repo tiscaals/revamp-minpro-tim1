@@ -59,6 +59,7 @@ export class UsersService {
             attributes: ['uspo_number'],
           },
         ],
+        order: [['user_entity_id', 'DESC']],
       });
 
       return {
@@ -218,7 +219,10 @@ export class UsersService {
       );
 
       await users.update(
-        { user_current_role: updateRoleDto.role_id },
+        {
+          user_current_role: updateRoleDto.role_id,
+          user_modified_date: currentTimeID,
+        },
         { where: { user_entity_id: id } },
       );
 

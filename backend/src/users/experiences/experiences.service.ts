@@ -27,7 +27,7 @@ export class ExperiencesService {
 
       const endDate = createExperiencesDto.usex_end_date || null;
       const result = await users_experiences.create({
-        usex_entity_id: createExperiencesDto.usex_city_id,
+        usex_entity_id: createExperiencesDto.usex_entity_id,
         usex_title: createExperiencesDto.usex_title,
         usex_profile_headline: createExperiencesDto.usex_profile_headline,
         usex_employment_type: createExperiencesDto.usex_employment_type,
