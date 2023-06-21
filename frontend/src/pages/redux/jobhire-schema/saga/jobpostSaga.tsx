@@ -11,10 +11,8 @@ import {
 } from "../action/actionReducer";
 
 export function* handleGetAllJobPost(): any {
-  // console.log("jopoSaga action", action);
   try {
     const result = yield call(apiMethod.findAllJob);
-    console.log("jopoSaga result",result.data);
     yield put(doResponseGetJobPost(result.data));
   } catch (error) {
     yield put(doResponseGetJobPost({ message: error, status: 400 }));
@@ -22,11 +20,11 @@ export function* handleGetAllJobPost(): any {
 }
 
 export function* handleGetJobById(action:any): any {
-  console.log("jopoSaga action", action);
+  // console.log("jopoSaga action", action);
   try {
     const result = yield call(apiMethod.findJobById, action.payload);
-    console.log("jopoSaga result",result.data);
-    yield put(doResponseGetJobById(result.data));
+    // console.log("jopoSaga result",result.data[0]);
+    yield put(doResponseGetJobById(result.data[0]));
   } catch (error) {
     yield put(doResponseGetJobById({ message: error, status: 400 }));
   }
@@ -65,6 +63,7 @@ export function* handleAddJobPost(action: any): any {
 export function* handleUpdateJobPost(action: any): any {
   try {
     const result = yield call(apiMethod.updateJobPost, action.payload);
+    console.log('jopoSaga result',result.data)
     yield put(doResponseUpdateJobPost(result.data));
   } catch (error) {
     yield put(doResponseUpdateJobPost({ message: error, status: 400 }));

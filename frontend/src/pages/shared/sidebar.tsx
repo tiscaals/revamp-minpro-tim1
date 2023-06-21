@@ -136,6 +136,12 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             icon: <MdGroupAdd />,
             name: 'Candidate',
           },
+          {
+            to: '/pro-candidate',
+            path: '/pro-candidate',
+            icon: <MdGroupAdd />,
+            name: 'Pro Candidate',
+          },
           { to: '/batch', path: '/batch', icon: <MdCategory />, name: 'Batch' },
           {
             to: '/talents',
@@ -156,8 +162,8 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             name: 'Assignment',
           },
           {
-            to: 'app/jobs',
-            path: 'app/jobs',
+            to: '/app/jobs',
+            path: '/app/jobs',
             icon: <MdPostAdd />,
             name: 'Posting Hiring',
           },

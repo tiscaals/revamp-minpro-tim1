@@ -13,7 +13,7 @@ const initialState = {
   
   function JobPostReducers(state = initialState, action: any) {
     const { type, payload ,cur_number } = action;
-    console.log("jopoReducer payload",payload);
+    // console.log("jopoReducer payload",payload);
     switch (type) {
       case ActionTypes.RES_GET_JOBPOST:
         return { ...state, job_post: payload[0], refresh: true };
@@ -45,6 +45,11 @@ const initialState = {
           message: payload.message,
           status: payload.status,
           refresh: false,
+        };
+
+      case ActionTypes.RESET_STATE:
+        return {
+          initialState
         };
   
       default:

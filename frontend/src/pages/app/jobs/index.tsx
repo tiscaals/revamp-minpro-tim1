@@ -1,61 +1,66 @@
 import ContentLink from "@/pages/contentlink";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import Pagination from "../../../../src/pages/komponen/pagination";
 
-import IconButton from "@mui/material/IconButton";
-import MenuItem from "@mui/material/MenuItem";
-import { useRouter } from "next/router";
 import Link from "next/link";
-
+import { Switch } from "@material-tailwind/react"
 import { Menu, Transition } from "@headlessui/react";
+import { useDispatch, useSelector } from "react-redux";
+import { doRequestGetJobPost } from "@/pages/redux/jobhire-schema/action/actionReducer";
+import { doRequestGetIndustry, doRequestGetJobrole } from "@/pages/redux/master-schema/action/actionReducer";
 
-const dummyDataTable = [
-  {
-    id: 1,
-    title: "Full StackDeveloper",
-    start_date: "March 18,2020",
-    end_date: "June 18,2020",
-    salary: "10000000",
-    expe: "5",
-    industry: "Retail",
-    spec_role: "Software Engineer",
-  },
-  {
-    id: 2,
-    title: "Java Fundamental",
-    start_date: "March 18,2020",
-    end_date: "June 18,2020",
-    salary: "10000000",
-    expe: "5",
-    industry: "Information Tech",
-    spec_role: "Engineer",
-  },
-];
+const columns = [
+  {name:'TITLE'},
+  {name:'START END DATE'},
+  {name:'UP TO SALARY'},
+  {name:'EXPERIENCE'},
+  {name:'INDUSTRY'},
+  {name:'PUBLISH'},
+  {name:''},
+]
 
 const Jobs = () => {
+  const { job_post, refresh } = useSelector((state:any) => state.JobPostReducers,);
+  const dispatch = useDispatch();
+
+  const { industry } = useSelector((state: any) => state.IndustryReducers);
+  const { job_role } = useSelector((state: any) => state.JobroleReducers);
+  
   const [searchValue, setSearchValue] = useState("");
+  const [searchFilter, setSearchFilter] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const [filteredData, setFilteredData]: any = useState([]);
 
   const handleSearchChange = () => {
     setIsSearching(true);
-    const filtered = dummyDataTable.filter(
-      (item) =>
-        item.title.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.expe.toLowerCase().includes(searchValue.toLowerCase()) ||
-        item.industry.toLowerCase().includes(searchValue.toLowerCase())
-    );
+    const searched = job_post.filter((item: any) => {
+      const jopoTitle = item.jopo_title?.toLowerCase() ?? '';
+      const jopoMinExperience = typeof item.jopo_min_experience === 'string' ? item.jopo_min_experience.toLowerCase() : '';
+      const clitInduCode = item.clit_indu_code?.toLowerCase() ?? '';
+    
+      return (
+        jopoTitle.includes(searchValue.toLowerCase()) ||
+        jopoMinExperience.includes(searchValue.toLowerCase()) ||
+        clitInduCode.includes(searchValue.toLowerCase())
+      );
+    });
+
+    const filtered = searchFilter
+    ? searched.filter((item: any) => item.jopo_open === searchFilter)
+    : searched;
+
     setFilteredData(filtered);
   };
-  const displayData = isSearching ? filteredData : dummyDataTable;
+
+  const displayData = isSearching ? filteredData : job_post;
 
   {
     /* UNTUK PAGING START */
   }
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const totalPages = Math.ceil(displayData?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -68,10 +73,21 @@ const Jobs = () => {
     /* UNTUK PAGING START END*/
   }
 
+  useEffect(()=>{
+    dispatch(doRequestGetJobPost())
+    setTimeout(()=>{console.log('post',job_post); console.log("CURRENT ITEMS",currentItems);},2000)
+
+  },[currentPage, itemsPerPage, refresh])
+
+  useEffect(()=>{
+    dispatch(doRequestGetIndustry())
+    dispatch(doRequestGetJobrole())
+  },[job_post])
+
   return (
     <div>
-      <ContentLink title="jobs posting" isilink="jobs/new" button="Posting Job">
-        <div className="container">
+      <ContentLink title="JOB POSTING" isilink="jobs/new" button="Posting Job">
+        {/* <div className="container"> */}
           <div className="w-full lg:pb-6">
             <div className="pt-6 lg:flex lg:flex-wrap items-center lg:justify-center">
               <div className="pb-2 lg:pb-0">
@@ -87,7 +103,7 @@ const Jobs = () => {
                     type="text"
                     id="simple-search"
                     className=" text-sm rounded-lg block w-full pl-8 p-2.5 ring-1 lg:w-[17rem] "
-                    placeholder="Title, Experience, Industry, Category"
+                    placeholder="Title, Experience, Industry"
                     value={searchValue}
                     onChange={(e) => setSearchValue(e.target.value)}
                   />
@@ -95,9 +111,10 @@ const Jobs = () => {
               </div>
 
               <div className="pb-4 lg:pb-0 lg:pl-4">
-                <select className="text-sm rounded-lg ring-1 block w-full p-2.5">
-                  <option value="US">Open</option>
-                  <option value="CA">Closed</option>
+                <select className="text-sm rounded-lg ring-1 block w-full p-2.5" onChange={(e) => setSearchFilter(e.target.value)}>
+                  <option value="">All</option>
+                  <option value="1">Open</option>
+                  <option value="0">Closed</option>
                 </select>
               </div>
 
@@ -113,63 +130,71 @@ const Jobs = () => {
           </div>
 
           {/* TABEL */}
-          <div className=" relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-sm text-center text-gray-900">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-200">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    TITLE
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    START END DATE
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    UP TO SALARY
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    EXPERIENCE
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    INDUSTRY
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    PUBLISH
-                  </th>
-                  <th scope="col" className="px-6 py-3"></th>
+          <div className="min-w-full flex justify-center shadow-md sm:rounded-lg">
+            <table className="w-full table-fixed mx-auto">
+              {/* TABLE HEADER */}
+              <thead>
+                <tr className='border-t border-gray-200'>
+                    {(columns || []).map((col) =>
+                    <th scope="col" className='px-6 py-3 text-center border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider'>
+                        <span className='lg:pl-2'>{col.name}</span>
+                    </th>
+                    )}
                 </tr>
               </thead>
 
+              {/* TABLE BODY */}
               <tbody>
                 {(currentItems || []).map((dt: any, index: any) => (
                   <tr className="bg-white border-b ">
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      className="px-6 py-4 font-medium text-gray-900 text-center"
                     >
-                      {dt.title}
+                      {dt.jopo_title}
                     </th>
-                    <td className="px-6 py-4">
-                      {dt.start_date}
+                    <td className="px-6 py-4 text-center">
+                      {dt.jopo_start_date}
                       <br></br>
-                      {dt.end_date}
+                      {dt.jopo_end_date}
                     </td>
-                    <td className="px-6 py-4">IDR {dt.salary}</td>
-                    <td className="px-6 py-4">{dt.expe} Tahun</td>
-                    <td className="px-6 py-4">
-                      {dt.industry}
-                      <br></br>
-                      {dt.spec_role}
+                    <td className="px-6 py-4 text-center">IDR {dt.jopo_min_salary}</td>
+                    <td className="px-6 py-4 text-center">{dt.jopo_min_experience} Tahun</td>
+                    <td className="px-6 py-4 text-center">
+
+                      {/* Industry */}
+                      {industry.map((option:any) =>
+                      dt.clit_indu_code === option.indu_code ? (
+                          <h2 key={option.indu_code}>
+                          {option.indu_name}
+                          </h2>
+                      ) : null
+                      )}
+
+                      {/* Job Role */}
+                      {job_role.map((option:any) =>
+                      dt.jopo_joro_id === option.joro_id ? (
+                          <h2 key={option.joro_id}>
+                          {option.joro_name}
+                          </h2>
+                      ) : null
+                      )}
                     </td>
-                    <td className="px-6 py-4">
-                      <label className="relative inline-flex items-center  cursor-pointer">
+                    <td className="flex justify-center">
+                      <div className="px-6 py-4">
+                        {dt.jopo_status === "publish" ?
+                        <Switch checked={true}/> :
+                        <Switch checked={false}/>}
+                      </div>
+                      {/* <label className="relative inline-flex items-center  cursor-pointer">
                         <input
                           type="checkbox"
-                          className="sr-only peer"
+                          className="sr-only"
                           // checked={isPublishChecked}
                           // onChange={handlePublishToggle}
                         />
                         <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                      </label>
+                      </label> */}
                     </td>
                     <td className="px-6 py-4">
                       <div className="w-full text-right">
@@ -202,7 +227,7 @@ const Jobs = () => {
                                       href={{
                                         pathname: "jobs/edit",
                                         query: {
-                                          id: dt.id,
+                                          id: dt.jopo_entity_id,
                                         },
                                       }}
                                       className={`${
@@ -246,14 +271,11 @@ const Jobs = () => {
               </tbody>
             </table>
           </div>
-        </div>
-        <footer className="fixed bottom-0 left-1/2 transform -translate-x-1/2">
-            <Pagination 
-              totalPages={totalPages}
-              currentPage={currentPage}
-              handlePageChange={handlePageChange}
-            ></Pagination>
-          </footer>
+          <Pagination 
+            totalPages={totalPages}
+            currentPage={currentPage}
+            handlePageChange={handlePageChange}
+          />
       </ContentLink>
 
     </div>

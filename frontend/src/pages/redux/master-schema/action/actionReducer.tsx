@@ -60,3 +60,16 @@ export const doRequestGetEducation = () => {
       payload,
     };
   };
+
+  export const doRequestGetRoac = () => {
+    return {
+      type: ActionTypes.REQ_GET_ROAC,
+    };
+  };
+  export const doResponseGetRoac = (payload: any) => {
+    console.log("actionReducer response", payload);
+    return {
+      type: ActionTypes.RES_GET_ROAC,
+      payload,
+    };
+  };

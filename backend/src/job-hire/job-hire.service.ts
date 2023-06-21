@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { client, job_photo, job_post } from 'models/job_hire';
+import { client, employee_range, job_photo, job_post } from 'models/job_hire';
 import { Sequelize } from 'sequelize-typescript';
 import messageHelper from 'messegeHelper';
 import { promises as fsPromises} from 'fs';
@@ -376,24 +376,49 @@ export class JobHireService {
     }
   }
 
-  async findAllClient(pagination:any, search:any) { //FIXED
+  //CLIENT ALL ALLLLLL
+  async findAllClient() { //FIXED
     try {
       let query = `SELECT * FROM job_hire.client_view`
 
-      //SEARCH
-      if (search) {
-        query += ` WHERE clit_name ILIKE '%${search}%' OR clit_indu_code ILIKE '%${search}%'`
-      }
-
-      //PAGINATION
-      query += ` LIMIT ${+pagination.limit} OFFSET ${+pagination.offset}`
       console.log(query);
       const result = await this.sequelize.query(query);
-      return result;
+      return result[0];
     } catch (error) {
       return error.message;
     }
   }
+
+  async findOneClient(id: number) {
+    try {
+      const result = await this.sequelize.query(
+        `SELECT * FROM job_hire.client_view where clit_id = ${id}`,
+      );
+      return result[0]
+    } catch (error) {
+      return messageHelper(error.message, 'Gagal', 400);
+    }
+  }
+
+  // LIMIT + PAGINATION
+  // async findAllClient(pagination:any, search:any) { //FIXED
+  //   try {
+  //     let query = `SELECT * FROM job_hire.client_view`
+
+  //     //SEARCH
+  //     if (search) {
+  //       query += ` WHERE clit_name ILIKE '%${search}%' OR clit_indu_code ILIKE '%${search}%'`
+  //     }
+
+  //     //PAGINATION
+  //     query += ` LIMIT ${+pagination.limit} OFFSET ${+pagination.offset}`
+  //     console.log(query);
+  //     const result = await this.sequelize.query(query);
+  //     return result;
+  //   } catch (error) {
+  //     return error.message;
+  //   }
+  // }
 
   async updateClient(id:number, fields:any): Promise <any> { //FIXED
     try {
@@ -433,6 +458,18 @@ export class JobHireService {
     }
   }
 
+  // EMPLOYEE RANGE
+  async findAllEmprange() {
+    try {
+      // const query = 'SELECT * FROM job_hire.employee_range';
+      const result = await employee_range.findAll();
+
+      return result;
+    } catch (error) {
+      return error.message;
+    }
+  }
+
   // TALENT APPLY
   async createTalent(fields:any): Promise <any> {
     try {
@@ -448,6 +485,16 @@ export class JobHireService {
       return messageHelper(result, 200, "Berhasil daftar")
     } catch (error) {
       return messageHelper(error.message, 400, "Tidak bisa daftar")
+    }
+  }
+
+  async findProCandidate() {
+    try {
+      const query = `SELECT * FROM job_hire.pro_candidate_view`;
+      const result = await this.sequelize.query(query);
+      return result[0];
+    } catch (error) {
+      return error.message;
     }
   }
 }

@@ -1,7 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseInterceptors, UploadedFiles, UploadedFile, Query } from '@nestjs/common';
 import { JobHireService } from './job-hire.service';
-import { CreateJobHireDto } from './dto/create-job-hire.dto';
-import { UpdateJobHireDto } from './dto/update-job-hire.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage , Multer } from 'multer'
 import { client, job_post } from 'models/job_hire';
@@ -26,6 +24,7 @@ const uploadGambar =  FileInterceptor('image', {
         const randomName = Array(8).fill(null).map(() => (Math.round(Math.random() * 16)).toString(16)).join('');
 
         const fileName = `${clit.clit_name}-${randomName}-${file.originalname}`;
+        console.log("fileName", fileName);
         cb(null, fileName);
       } catch (error) {
         cb(error);
@@ -125,21 +124,44 @@ export class JobHireController {
     return this.jobHireService.findClient();
   }
 
+  // CLIENT ALL ALLLLL
   @Get('client')
-  findAllClient(@Body() show:any) {
-    const pagination = show.pagination;
-    const search = show.search;
-    return this.jobHireService.findAllClient(pagination, search);
+  findAllClient() {
+    return this.jobHireService.findAllClient();
   }
+
+  @Get('client/:id')
+  findOne(@Param('id') id: string) {
+    return this.jobHireService.findOneClient(+id);
+  }
+
+  // LIMIT + PAGINATION
+  // @Get('client')
+  // findAllClient(@Body() show:any) {
+  //   const pagination = show.pagination;
+  //   const search = show.search;
+  //   return this.jobHireService.findAllClient(pagination, search);
+  // }
 
   @Patch('client/:id')
   updateClient(@Param('id') id: string, @Body() updateJobHireDto: any) {
     return this.jobHireService.updateClient(+id, updateJobHireDto);
   }
 
+  // EMPLOYEE RANGE
+  @Get('emprange')
+  findEmpRange() {
+    return this.jobHireService.findAllEmprange();
+  }
+
   // TALENT
   @Post('talent')
   createTalent(@Body() createClient: any) {
     return this.jobHireService.createTalent(createClient)
+  }
+
+  @Get('talent')
+  findProCandidate() {
+    return this.jobHireService.findProCandidate()
   }
 }

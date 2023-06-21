@@ -3,13 +3,15 @@ import ActionTypeMaster from "../../redux/master-schema/action/actionType";
 
 import { takeEvery, all} from "redux-saga/effects";
 import { handleAddJobPost, handleDeleteJobPost, handleGetAllJobPost, handleGetCurnumber, handleGetJobById, handleGetJopho, handleUpdateJobPost } from "../jobhire-schema/saga/jobpostSaga";
-import { handleAddClient, handleDeleteClient, handleGetAllClient, handleUpdateClient } from "../jobhire-schema/saga/clientsaga";
+import { handleAddClient, handleGetAllClient, handleGetClientById, handleUpdateClient } from "../jobhire-schema/saga/clientsaga";
 import { handleGetEducation } from "../master-schema/saga/educationSaga";
 import { handleGetWorktype } from "../master-schema/saga/worktypeSaga";
 import { handleGetJobrole } from "../master-schema/saga/jobroleSaga";
 import { handleGetIndustry } from "../master-schema/saga/industrySaga";
 import { handleGetEmprange } from "../jobhire-schema/saga/emprangeSaga";
 import { handleGetCity } from "../master-schema/saga/citySaga";
+import { handleGetRoac } from "../master-schema/saga/routeactionSaga";
+import { handleGetProCandidate } from "../jobhire-schema/saga/talentSaga";
 
 function* watchAll() {
     yield all([
@@ -22,17 +24,20 @@ function* watchAll() {
       takeEvery(ActionTypeJobHire.REQ_DELETE_JOBPOST, handleDeleteJobPost),
 
       takeEvery(ActionTypeJobHire.REQ_GET_EMPRANGE, handleGetEmprange),
+
+      takeEvery(ActionTypeJobHire.REQ_GET_CANDIDATE, handleGetProCandidate),
   
       takeEvery(ActionTypeJobHire.REQ_GET_CLIENT, handleGetAllClient),
+      takeEvery(ActionTypeJobHire.REQ_GET_CLIENTBYID, handleGetClientById),
       takeEvery(ActionTypeJobHire.REQ_ADD_CLIENT, handleAddClient),
       takeEvery(ActionTypeJobHire.REQ_UPDATE_CLIENT, handleUpdateClient),
-      takeEvery(ActionTypeJobHire.REQ_DELETE_CLIENT, handleDeleteClient),
 
       takeEvery(ActionTypeMaster.REQ_GET_EDUCATION, handleGetEducation),
       takeEvery(ActionTypeMaster.REQ_GET_WORKTYPE, handleGetWorktype),
       takeEvery(ActionTypeMaster.REQ_GET_JOBROLE, handleGetJobrole),
       takeEvery(ActionTypeMaster.REQ_GET_INDUSTRY, handleGetIndustry),
       takeEvery(ActionTypeMaster.REQ_GET_CITY, handleGetCity),
+      takeEvery(ActionTypeMaster.REQ_GET_ROAC, handleGetRoac),
     
 
     ]);

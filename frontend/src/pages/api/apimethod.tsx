@@ -8,7 +8,7 @@ const findAllJob =()=>{
 }
 
 const findJobById =(data:any)=>{
-    console.log("apimethod", data);
+    // console.log("apimethod", data);
     const id:number = +data;
     return axios.get(`/job-hire/jobdetail?id=${id}`)
 }
@@ -22,34 +22,43 @@ const findCurrentNumber =()=>{
 }
 
 const createJobPost =(data:any)=>{
-    return axios.post("/",data)
+    return axios.post("/job-hire",data, {headers:{"Content-Type":"multipart/form-data"}})
 }
 
 const updateJobPost =(data:any)=>{
-    return axios.patch(`/`,data)
+    // console.log("API DATA UPDATE", ...data);
+    return axios.patch(`/job-hire/${data.get("jopo_entity_id")}`,data,{headers:{"Content-Type":"multipart/form-data"}})
 }
 
 const deleteJobPost =(data:any)=>{
-    return axios.delete(`/`,data)
+    const id:number = +data;
+    return axios.patch(`/job-hire/delete/${id}`)
+}
+
+/*-------- TALENT APPLY ---------*/
+
+const findProCandidate =()=>{
+    return axios.get("/job-hire/talent")
 }
 
 /*-------- CRUD CLIENT ---------*/
 
 const findAllClient =()=>{
-    return axios.get("/job-hire/clientall")
+    return axios.get("/job-hire/client")
+}
+
+const findOneClient =(data:any)=>{
+    const id:number = +data;
+    return axios.get(`/job-hire/client/${id}`)
 }
 
 const createClient =(data:any)=>{
-    return axios.post("/",data)
+    return axios.post("/job-hire/client",data)
 }
 
 const updateClient =(data:any)=>{
-    return axios.patch(`/`,data)
-}
-
-const deleteClient =(data:any)=>{
-    return axios.delete(`/`,data)
-    
+    // console.log("API DATA UPDATE", data);
+    return axios.patch(`/job-hire/client/${data.clit_id}`,data)
 }
 
 /*-------------- EMPLOYEE RANGE --------------*/
@@ -74,6 +83,9 @@ const findIndustry =()=>{
 const findCity =()=>{
     return axios.get('/master/city')
 }
+const findRouteaction =()=>{
+    return axios.get('/master/roac')
+}
 
 export default {
     findAllJob,
@@ -84,16 +96,19 @@ export default {
     updateJobPost,
     deleteJobPost,
 
+    findProCandidate,
+
     findAllEmprange,
 
     findAllClient,
+    findOneClient,
     createClient,
     updateClient,
-    deleteClient,
 
     findEducation,
     findWorktype,
     findJobrole,
     findIndustry,
     findCity,
+    findRouteaction
 }

@@ -15,5 +15,8 @@ const ActionType = {
     REQ_GET_CITY : "REQ_GET_CITY",
     RES_GET_CITY : "RES_GET_CITY",
 
+    REQ_GET_ROAC : "REQ_GET_ROAC",
+    RES_GET_ROAC : "RES_GET_ROAC",
+
 }
 export default ActionType

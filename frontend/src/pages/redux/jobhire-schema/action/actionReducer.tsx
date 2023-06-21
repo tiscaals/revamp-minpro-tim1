@@ -77,6 +77,7 @@ export const doRequestUpdateJobPost = (payload: any) => {
 };
 
 export const doResponseUpdateJobPost = (payload: any) => {
+  // console.log("RESPONSE JOBPOST", payload);
   return {
     type: ActionTypes.RES_UPDATE_JOBPOST,
     payload,
@@ -97,6 +98,18 @@ export const doResponseDeleteJobPost = (payload: any) => {
   };
 };
 
+/*------------ TALENT APPLY SECTION -------------*/
+export const doRequestGetCandidate = () => {
+  return {
+    type: ActionTypes.REQ_GET_CANDIDATE
+  };
+};
+export const doResponseGetCandidate = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_CANDIDATE,
+    payload
+  };
+};
   
 /*------------ CLIENT SECTION -------------*/
 
@@ -109,6 +122,19 @@ export const doResponseGetClient = (payload: any) => {
   return {
     type: ActionTypes.RES_GET_CLIENT,
     payload,
+  };
+};
+
+export const doRequestGetClientById = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_GET_CLIENTBYID,
+    payload
+  };
+};
+export const doResponseGetClientById = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_CLIENTBYID,
+    payload
   };
 };
 

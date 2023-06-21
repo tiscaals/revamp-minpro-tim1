@@ -21,9 +21,11 @@ export default function App({ Component, pageProps }: AppProps) {
   }
   return (
     <ThemeProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <Provider store={store}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </Provider>
     </ThemeProvider>
   );
 }

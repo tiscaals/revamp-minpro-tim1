@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MasterService } from './master.service';
 import { CreateMasterDto } from './dto/create-master.dto';
 import { UpdateMasterDto } from './dto/update-master.dto';
@@ -12,23 +20,33 @@ export class MasterController {
     return this.masterService.create(createMasterDto);
   }
 
-  @Get()
-  findAll() {
-    return this.masterService.findAll();
+  @Get('edu')
+  findEducation() {
+    return this.masterService.findEducation();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.masterService.findOne(+id);
+  @Get('worktype')
+  findWorktype() {
+    return this.masterService.findWorktype();
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMasterDto: UpdateMasterDto) {
-    return this.masterService.update(+id, updateMasterDto);
+  @Get('jobrole')
+  findJobrole() {
+    return this.masterService.findJobrole();
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.masterService.remove(+id);
+  @Get('industry')
+  findIndustry() {
+    return this.masterService.findIndustry();
+  }
+
+  @Get('city')
+  findCity() {
+    return this.masterService.findCity();
+  }
+
+  @Get('roac')
+  findRouteAction() {
+    return this.masterService.findRouteAction();
   }
 }
