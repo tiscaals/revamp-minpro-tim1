@@ -5,14 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import {
-  doReqGetSkills,
-  doRequestAddSkills,
-} from '../../redux/users-schema/action/actionReducer';
+  doRequestGetRole,
+  doRequestUpdateRole,
+} from '../redux/users-schema/action/actionReducer';
 
-const AddSkills = (props: any) => {
+const EditUsers = (props: any) => {
   type FormValue = {
-    uski_entity_id: string;
-    uski_skty_name: string;
+    user_entity_id: any;
+    role_id: string;
   };
 
   const {
@@ -23,28 +23,33 @@ const AddSkills = (props: any) => {
   } = useForm<FormValue>();
 
   const dispatch = useDispatch();
-  const { skills }: any = useSelector((state: any) => state.skillsReducers);
+  const { roles, refresh } = useSelector((state: any) => state.rolesReducers);
 
-  const handleValidation = {
-    uski_entity_id: { required: 'id is required' },
-    uski_skty_name: { required: 'choose your skills' },
-  };
+  const handleUpdate = async (data: any) => {
+    const update = {
+      user_entity_id: data.user_entity_id,
+      role_id: data.role_id?.role_id,
+    };
 
-  const handleAddSkilss = async (data: any) => {
-    if (data.uski_skty_name === undefined) {
-      setError('uski_skty_name', {
+    if (data.role_id === undefined || data.role_id === null) {
+      setError('role_id', {
         type: 'validate',
-        message: 'choose your skills',
+        message: 'please choose role before submit',
       });
     } else {
-      dispatch(doRequestAddSkills(data));
+      dispatch(doRequestUpdateRole(update));
       props.closeModal();
     }
   };
 
+  const propsData = {
+    options: roles,
+    getOptionLabel: (option: any) => option.role_name,
+  };
+
   useEffect(() => {
-    dispatch(doReqGetSkills());
-  }, []);
+    dispatch(doRequestGetRole());
+  }, [refresh]);
 
   return (
     <div>
@@ -78,48 +83,42 @@ const AddSkills = (props: any) => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Add Skills
+                    Edit User
                   </Dialog.Title>
 
                   <div className="border-t-1 border border-black-900 mt-3"></div>
                   <div className="">
-                    <form onSubmit={handleSubmit(handleAddSkilss)}>
+                    <form onSubmit={handleSubmit(handleUpdate)}>
                       <div className=" bg-white py-6  m-auto w-full">
                         <div className="grid grid-cols-1 gap-4  m-auto">
                           <div className="col-span-1">
                             <input
                               type="hidden"
-                              defaultValue={props.profile?.user_entity_id}
-                              {...register(
-                                'uski_entity_id',
-                                handleValidation.uski_entity_id
-                              )}
+                              defaultValue={props.userId}
+                              {...register('user_entity_id')}
                             />
                             <div className="w-full">
                               <Autocomplete
-                                disablePortal
+                                {...propsData}
+                                autoComplete
                                 id="combo-box-demo"
-                                options={skills}
-                                getOptionLabel={(option: any) =>
-                                  option.skty_name
-                                }
+                                size="small"
+                                includeInputInList
                                 onChange={(event: any, value: any) => {
-                                  register('uski_skty_name', {
-                                    value: value?.skty_name || value,
-                                  });
+                                  register('role_id', { value: value });
                                 }}
-                                sx={{ width: 300 }}
                                 renderInput={params => (
                                   <TextField
                                     {...params}
-                                    label="Choose Skills"
+                                    label="Choose Role"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                    }}
                                   />
                                 )}
                               />
-                              <br />
                               <span className="text-sm text-red-600">
-                                {errors?.uski_skty_name &&
-                                  errors.uski_skty_name.message}
+                                {errors?.role_id && errors.role_id.message}
                               </span>
                             </div>
                             <div className="border-t-1 border border-black-900 mt-5"></div>
@@ -152,4 +151,4 @@ const AddSkills = (props: any) => {
   );
 };
 
-export default AddSkills;
+export default EditUsers;

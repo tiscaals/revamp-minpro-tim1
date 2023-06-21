@@ -40,6 +40,7 @@ import {
   handleDeleteSkills,
   handleGetSkill,
 } from '../user-saga/skillsSaga';
+import { handleGetRole, handleUpdateRole } from '../user-saga/roleSaga';
 
 function* watchAll() {
   yield all([
@@ -49,6 +50,10 @@ function* watchAll() {
 
     //User
     takeEvery(ActionTypes.REQ_GET_USER, handleGetAllUser),
+
+    //Role
+    takeEvery(ActionTypes.REQ_GET_ROLE, handleGetRole),
+    takeEvery(ActionTypes.REQ_UPDATE_ROLE, handleUpdateRole),
 
     //Profile-Setting
     takeEvery(ActionTypes.REQ_GET_PROFILE, handleGetProfile),

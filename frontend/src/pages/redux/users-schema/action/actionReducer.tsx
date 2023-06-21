@@ -44,6 +44,34 @@ export const doGetUserResponse = (payload: any) => {
   };
 };
 
+// Role
+export const doRequestGetRole = () => {
+  return {
+    type: ActionTypes.REQ_GET_ROLE,
+  };
+};
+
+export const doGetRoleResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_ROLE,
+    payload,
+  };
+};
+
+export const doRequestUpdateRole = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_ROLE,
+    payload,
+  };
+};
+
+export const doGetUpdateRoleResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_ROLE,
+    payload,
+  };
+};
+
 // Get Profile
 export const doRequestGetProfile = (payload: any) => {
   return {

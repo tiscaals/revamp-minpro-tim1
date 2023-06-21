@@ -16,6 +16,15 @@ function userReducers(state = initialState, action: any) {
         users: payload,
         refresh: true,
       };
+
+    case ActionTypes.RES_UPDATE_ROLE:
+      return {
+        state,
+        users: payload,
+        message: payload.message,
+        status: payload.status,
+        refresh: false,
+      };
     default:
       return state;
   }

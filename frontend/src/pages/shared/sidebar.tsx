@@ -22,13 +22,12 @@ import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   const [listMenu, setListMenu] = useState([
     { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
   ]);
   useEffect(() => {
-    let decoded:any;
+    let decoded: any;
     const token = Cookies.get('access_token');
     if (token) {
       try {
@@ -39,12 +38,13 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
     } else {
       console.log('tokens not found');
     }
-    
+
     switch (decoded.user_current_role) {
       //admin
       case 1:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
+          { to: '/users', path: '/users', icon: <MdGroup />, name: 'User' },
           {
             to: '/category',
             path: '/category',

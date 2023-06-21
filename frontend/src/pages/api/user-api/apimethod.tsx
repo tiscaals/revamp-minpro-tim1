@@ -42,6 +42,15 @@ const getUsersById = (id: any) => {
   return axios.get(`/users/${id}`);
 };
 
+//Role
+const getRole = () => {
+  return axios.get(`/users/get-role`);
+};
+
+const updateRole = (data: any) => {
+  return axios.patch(`/users/update-role/${data.user_entity_id}`, data);
+};
+
 //Settings
 const updateProfile = (data: any) => {
   return axios.patch(
@@ -151,6 +160,8 @@ export default {
   authSignUp,
   getAllUsers,
   getUsersById,
+  getRole,
+  updateRole,
   updateProfile,
   updatePassword,
   addEmail,

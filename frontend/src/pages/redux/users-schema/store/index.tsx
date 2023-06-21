@@ -10,6 +10,7 @@ import userReducers from '../reducer/user-reducer/userReducer';
 import addressTypeReducers from '../reducer/user-reducer/addressTypeReducer';
 import cityReducers from '../reducer/user-reducer/cityReducers';
 import skillsReducers from '../reducer/user-reducer/skillsReducers';
+import rolesReducers from '../reducer/user-reducer/roleReducer';
 
 const logger = createLogger();
 const saga = createSagaMiddleware();
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   addressTypeReducers,
   cityReducers,
   skillsReducers,
+  rolesReducers,
 });
 
 const store = configureStore({

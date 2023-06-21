@@ -178,8 +178,10 @@ const EditExperiences = (props: any) => {
                                     'usex_city_id',
                                     handleValidation.usex_city_id
                                   )}
+                                  defaultValue={
+                                    props.selectedExperiences?.city.city_id
+                                  }
                                 >
-                                  <option value="">Select City</option>
                                   {Array.isArray(city) &&
                                     city.map((dt: any, index: any) => (
                                       <option
@@ -187,7 +189,7 @@ const EditExperiences = (props: any) => {
                                         value={dt.city_id}
                                         selected={
                                           props.selectedExperiences?.city
-                                            .city_name === dt.city_name
+                                            .city_id === dt.city_id
                                         }
                                       >
                                         {dt.city_name}
