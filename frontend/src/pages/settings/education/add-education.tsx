@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Input, Textarea } from '@material-tailwind/react';
+import { Button, Input, Textarea } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
@@ -33,7 +33,10 @@ const AddEducation = (props: any) => {
     usdu_field_study: { required: 'field study is required' },
     usdu_start_date: { required: 'start date required' },
     usdu_end_date: { required: 'end data required' },
-    usdu_grade: { required: 'grade data required' },
+    usdu_grade: {
+      required: 'grade data required',
+      maxLength: { value: 5, message: 'grade maximum length is 5 characters' },
+    },
     usdu_activities: {
       maxLength: {
         value: 512,
@@ -237,18 +240,20 @@ const AddEducation = (props: any) => {
                             </div>
                             <div className="border-t-1 border border-black-900 mt-5"></div>
                             <div className="flex-row space-x-4 mt-4 text-right">
-                              <button
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              <Button
+                                variant="outlined"
+                                className="inline-flex justify-center rounded-md border bg-white border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 text-sm font-medium text-red-900"
                                 onClick={props.closeModal}
                               >
                                 Cancel
-                              </button>
-                              <button
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                className="inline-flex justify-center rounded-md border bg-white text-blue-500 hover:bg-blue-400 hover:text-white px-4 py-2 text-sm font-medium"
                                 type="submit"
                               >
                                 Save
-                              </button>
+                              </Button>
                             </div>
                           </div>
                         </div>

@@ -4,6 +4,9 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
+import Cookies from 'js-cookie';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+
 import {
   doRequestDeleteAddress,
   doRequestDeleteEducation,
@@ -37,13 +40,12 @@ const Settings = (props: any) => {
   // Var Core
   const router = useRouter();
   const dispatch = useDispatch();
-  const { profile, token, refresh, status, message }: any = useSelector(
+  const { profile, refresh, status, message }: any = useSelector(
     (state: any) => state.settingReducers
   );
   // End Var Core
 
   //Start State
-  const [user_entity_id, setUserId]: any = useState('');
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isEditPassword, setIsEditPassword] = useState(false);
 
@@ -104,10 +106,6 @@ const Settings = (props: any) => {
       if (result.isConfirmed) {
         dispatch(doRequestDeleteEmail(id));
       }
-
-      if (user_entity_id) {
-        dispatch(doRequestGetProfile(user_entity_id));
-      }
     } catch (error) {
       console.error('Error deleting data:', error);
     }
@@ -129,10 +127,6 @@ const Settings = (props: any) => {
 
       if (result.isConfirmed) {
         dispatch(doRequestDeletePhone(phone_number));
-      }
-
-      if (user_entity_id) {
-        dispatch(doRequestGetProfile(user_entity_id));
       }
     } catch (error) {
       console.error('Error deleting data:', error);
@@ -156,10 +150,6 @@ const Settings = (props: any) => {
       if (result.isConfirmed) {
         dispatch(doRequestDeleteAddress(id));
       }
-
-      if (user_entity_id) {
-        dispatch(doRequestGetProfile(user_entity_id));
-      }
     } catch (error) {
       console.error('Error deleting data:', error);
     }
@@ -181,10 +171,6 @@ const Settings = (props: any) => {
 
       if (result.isConfirmed) {
         dispatch(doRequestDeleteEducation(id));
-      }
-
-      if (user_entity_id) {
-        dispatch(doRequestGetProfile(user_entity_id));
       }
     } catch (error) {
       console.error('Error deleting data:', error);
@@ -208,10 +194,6 @@ const Settings = (props: any) => {
       if (result.isConfirmed) {
         dispatch(doRequestDeleteExperiences(id));
       }
-
-      if (user_entity_id) {
-        dispatch(doRequestGetProfile(user_entity_id));
-      }
     } catch (error) {
       console.error('Error deleting data:', error);
     }
@@ -234,25 +216,27 @@ const Settings = (props: any) => {
       if (result.isConfirmed) {
         dispatch(doRequestDeleteSkills(id));
       }
-
-      if (user_entity_id) {
-        dispatch(doRequestGetProfile(user_entity_id));
-      }
     } catch (error) {
       console.error('Error deleting data:', error);
     }
   };
   // End Handle Delete Skill
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem('userData');
-    if (storedToken) {
-      const userData = JSON.parse(storedToken);
-      setUserId(userData.user_entity_id);
-    }
+  //Decode Token
+  let decoded: any;
+  const token = Cookies.get('access_token');
+  // End
 
-    if (user_entity_id) {
-      dispatch(doRequestGetProfile(user_entity_id));
+  useEffect(() => {
+    if (token) {
+      try {
+        decoded = jwt.decode(token) as JwtPayload;
+        dispatch(doRequestGetProfile(decoded.user_entity_id));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log('tokens not found');
     }
 
     if (message) {
@@ -264,7 +248,7 @@ const Settings = (props: any) => {
         }
       }, 500);
     }
-  }, [user_entity_id, refresh]);
+  }, [refresh]);
 
   const port = 'http://localhost:7300/';
 

@@ -5,17 +5,16 @@ import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
 import { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
-import Cookies from 'js-cookie';
 import { useDispatch, useSelector } from 'react-redux';
 import defaultImage from '../../../public/img/default.jpg';
 import { doRequestGetProfile } from '../redux/users-schema/action/actionReducer';
+import Cookies from 'js-cookie';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export default function TopBar({ showNav, setShowNav }: any) {
   const router = useRouter();
   const dispatch = useDispatch();
   const port = 'http://localhost:7300/';
-  const [user_entity_id, setUserId] = useState('');
-  const [user_name, setUserName] = useState('');
   const { profile }: any = useSelector((state: any) => state.settingReducers);
   const [profileImage, setProfileImage] = useState('');
 
@@ -33,7 +32,6 @@ export default function TopBar({ showNav, setShowNav }: any) {
 
       if (result.isConfirmed) {
         Cookies.remove('access_token');
-        localStorage.removeItem('userData');
         router.push('/signin');
       }
     } catch (error) {
@@ -41,16 +39,21 @@ export default function TopBar({ showNav, setShowNav }: any) {
     }
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem('userData');
-    if (token) {
-      const userData = JSON.parse(token);
-      setUserId(userData.user_entity_id);
-      setUserName(userData.user_name);
-    }
+  //Decode Token
+  let decoded: any;
+  const token = Cookies.get('access_token');
+  //End
 
-    if (user_entity_id) {
-      dispatch(doRequestGetProfile(user_entity_id));
+  useEffect(() => {
+    if (token) {
+      try {
+        decoded = jwt.decode(token) as JwtPayload;
+        dispatch(doRequestGetProfile(decoded.user_entity_id));
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log('tokens not found');
     }
 
     if (profile && profile.user_photo) {
@@ -58,8 +61,7 @@ export default function TopBar({ showNav, setShowNav }: any) {
     } else {
       setProfileImage(defaultImage.src);
     }
-  }, [user_entity_id, profile?.user_photo]);
-
+  }, [profile?.user_photo]);
   return (
     <div
       className={`bg-white fixed z-10 w-full h-16 flex justify-between items-center transition-all duration-[400ms] ${
@@ -73,7 +75,7 @@ export default function TopBar({ showNav, setShowNav }: any) {
         />
       </div>
       <div className="flex items-center pr-4 md:pr-16 ">
-        <span className="tetx-sm"> {user_name} </span>
+        <span className="tetx-sm"> {profile?.user_name} </span>
         <Menu as="div" className="relative inline-block text-left">
           <div className="flex items-center">
             <Menu.Button className="group flex items-center rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 md:mr-4">
@@ -105,7 +107,6 @@ export default function TopBar({ showNav, setShowNav }: any) {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        // onClick={()=>{setIsDelete(true); setDataUser(dt)}}
                         onClick={() => router.push('/settings')}
                         className={`${
                           active ? 'bg-blue-500 text-white' : 'text-gray-900'

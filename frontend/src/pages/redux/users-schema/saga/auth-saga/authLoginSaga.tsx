@@ -8,13 +8,14 @@ export function* handleAuthLogin(action: any): any {
     const result = yield call(apiMethod.authLogin, action.payload);
     if (result.data.token) {
       Cookies.set('access_token', result.data.token);
-      localStorage.setItem(
-        'userData',
-        JSON.stringify({
-          user_entity_id: result.data.result.user_entity_id,
-          user_name: result.data.result.user_name,
-        })
-      );
+
+      // localStorage.setItem(
+      //   'userData',
+      //   JSON.stringify({
+      //     user_entity_id: result.data.result.user_entity_id,
+      //     user_name: result.data.result.user_name,
+      //   })
+      // );
 
       yield put(doReqLoginResponse(result.data));
     } else {

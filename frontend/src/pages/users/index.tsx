@@ -8,16 +8,18 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import EditUsers from './edit-users';
 import { notifySuccess } from '../alert';
 import { ToastContainer, toast } from 'react-toastify';
+import Cookies from 'js-cookie';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { useRouter } from 'next/router';
 
 const IndexUsers = () => {
   //Fn Untuk Reducer
   const port = 'http://localhost:7300/';
   const dispatch = useDispatch();
+  const router = useRouter();
   const { users, refresh, message, status } = useSelector(
     (state: any) => state.userReducers
   );
-  // const {roles, message, status} = useSelector((state:any)=> state.rolesReducers);
-  //End
 
   //State Untuk Dapat Id User
   const [isEdit, setIsEdit] = useState(false);
@@ -30,30 +32,51 @@ const IndexUsers = () => {
     setSearchTerm(e.target.value);
   };
 
+  const isNotAdmin = () => {
+    let decoded: any;
+    const token = Cookies.get('access_token');
+
+    if (token) {
+      try {
+        decoded = jwt.decode(token) as JwtPayload;
+
+        if (decoded.user_current_role !== 1) {
+          router.push('/error-page/error-403');
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log('tokens not found');
+    }
+  };
+
   useEffect(() => {
     dispatch(doRequestGetUser());
+    isNotAdmin();
+
+    if (message && status === 200) {
+      setTimeout(() => {
+        notifySuccess('success', message);
+      }, 200);
+    }
+  }, [dispatch, refresh]);
+
+  useEffect(() => {
     if (Array.isArray(users)) {
       const filteredData: any = users.filter(
         (data: any) =>
-          data.user_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          data.users_emails[0].pmail_address
+          data?.user_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          data?.users_emails[0].pmail_address
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-          data.users_roles[0].role.role_name
+          data?.users_roles[0].role.role_name
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
       );
       setFilteredUsers(filteredData);
     }
-
-    if (message) {
-      setTimeout(() => {
-        if (status == 200) {
-          notifySuccess('success', message);
-        }
-      }, 200);
-    }
-  }, [searchTerm, refresh]);
+  }, [users, searchTerm]);
 
   return (
     <>
@@ -112,16 +135,16 @@ const IndexUsers = () => {
                         <td className="p-2 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="w-10 h-10 flex-shrink-0 mr-2 sm:mr-3">
-                              {data && data.user_photo ? (
+                              {data && data?.user_photo ? (
                                 <img
                                   src={`${port}${data.user_photo}`}
-                                  alt={data.user_photo}
+                                  alt={data?.user_photo}
                                   className="rounded-full"
                                 />
                               ) : (
                                 <img
                                   src={image.src}
-                                  alt={data && data.user_photo}
+                                  alt={data && data?.user_photo}
                                   className="rounded-full"
                                 />
                               )}

@@ -36,9 +36,19 @@ const AuthSignUpInternal = () => {
   const SignUpValidation = {
     user_name: { required: 'username is required' },
     pmail_address: { required: 'email is required' },
-    user_password: { required: 'password is required' },
+    user_password: {
+      required: 'password is required',
+      minLength: {
+        value: 8,
+        message: 'password minimum 8 characters',
+      },
+    },
     confirm_password: {
       required: 'confirm password is required',
+      minLength: {
+        value: 8,
+        message: 'password minimum 8 characters',
+      },
       validate: (value: string) =>
         value === watch('user_password') || 'passwords do not match',
     },

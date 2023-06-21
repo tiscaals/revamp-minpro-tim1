@@ -26,9 +26,13 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   const [listMenu, setListMenu] = useState([
     { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
   ]);
+
+  //Decode Token
+  let decoded: any;
+  const token = Cookies.get('access_token');
+  //End
+
   useEffect(() => {
-    let decoded: any;
-    const token = Cookies.get('access_token');
     if (token) {
       try {
         decoded = jwt.decode(token) as JwtPayload;
@@ -39,7 +43,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       console.log('tokens not found');
     }
 
-    switch (decoded.user_current_role) {
+    switch (decoded?.user_current_role) {
       //admin
       case 1:
         setListMenu([

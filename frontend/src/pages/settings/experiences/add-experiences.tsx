@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react';
-import { Checkbox, Input, Textarea } from '@material-tailwind/react';
+import { Button, Checkbox, Input, Textarea } from '@material-tailwind/react';
 import React, { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,12 +41,36 @@ const AddExperiences = (props: any) => {
 
   const handleValidation = {
     usdu_entity_id: { required: 'id required' },
-    usex_title: { required: 'title is required' },
-    usex_profile_headline: { required: 'profile headline required' },
+    usex_title: {
+      required: 'title is required',
+      maxLength: {
+        value: 512,
+        message: 'title maximum length is 255 characters',
+      },
+    },
+    usex_profile_headline: {
+      required: 'profile headline required',
+      maxLength: {
+        value: 512,
+        message: 'profile headline maximum length is 512 characters',
+      },
+    },
     usex_employment_type: { required: 'employment type required' },
-    usex_company_name: { required: 'company name required' },
+    usex_company_name: {
+      required: 'company name required',
+      maxLength: {
+        value: 255,
+        message: 'company name maximum length is 512 characters',
+      },
+    },
     usex_start_date: { required: 'start date is required' },
-    usex_description: { required: 'description is required' },
+    usex_description: {
+      required: 'description is required',
+      maxLength: {
+        value: 512,
+        message: 'description maximum length is 512 characters',
+      },
+    },
     usex_experience_type: { required: 'experiences type is required' },
     usex_city_id: { required: 'city id required' },
   };
@@ -73,6 +97,7 @@ const AddExperiences = (props: any) => {
       usex_city_id: data.usex_city_id,
     };
 
+    console.log('add', add);
     dispatch(doRequestAddExperiences(add));
     props.closeModal();
   };
@@ -319,18 +344,20 @@ const AddExperiences = (props: any) => {
                             </div>
                             <div className="border-t-1 border border-black-900 mt-5"></div>
                             <div className="flex-row space-x-4 mt-4 text-right">
-                              <button
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              <Button
+                                variant="outlined"
+                                className="inline-flex justify-center rounded-md border bg-white border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 text-sm font-medium text-red-900"
                                 onClick={props.closeModal}
                               >
                                 Cancel
-                              </button>
-                              <button
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                className="inline-flex justify-center rounded-md border bg-white text-blue-500 hover:bg-blue-400 hover:text-white px-4 py-2 text-sm font-medium"
                                 type="submit"
                               >
                                 Save
-                              </button>
+                              </Button>
                             </div>
                           </div>
                         </div>

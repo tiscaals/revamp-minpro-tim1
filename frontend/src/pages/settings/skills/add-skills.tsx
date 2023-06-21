@@ -8,6 +8,7 @@ import {
   doReqGetSkills,
   doRequestAddSkills,
 } from '../../redux/users-schema/action/actionReducer';
+import { Button } from '@material-tailwind/react';
 
 const AddSkills = (props: any) => {
   type FormValue = {
@@ -97,26 +98,29 @@ const AddSkills = (props: any) => {
                             />
                             <div className="w-full">
                               <Autocomplete
-                                disablePortal
-                                id="combo-box-demo"
                                 options={skills}
                                 getOptionLabel={(option: any) =>
                                   option.skty_name
                                 }
+                                autoComplete
+                                id="combo-box-demo"
+                                size="small"
+                                includeInputInList
                                 onChange={(event: any, value: any) => {
                                   register('uski_skty_name', {
                                     value: value?.skty_name || value,
                                   });
                                 }}
-                                sx={{ width: 300 }}
                                 renderInput={params => (
                                   <TextField
                                     {...params}
                                     label="Choose Skills"
+                                    InputProps={{
+                                      ...params.InputProps,
+                                    }}
                                   />
                                 )}
                               />
-                              <br />
                               <span className="text-sm text-red-600">
                                 {errors?.uski_skty_name &&
                                   errors.uski_skty_name.message}
@@ -124,18 +128,20 @@ const AddSkills = (props: any) => {
                             </div>
                             <div className="border-t-1 border border-black-900 mt-5"></div>
                             <div className="flex-row space-x-4 mt-4 text-right">
-                              <button
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              <Button
+                                variant="outlined"
+                                className="inline-flex justify-center rounded-md border bg-white border-red-500 hover:bg-red-500 hover:text-white px-4 py-2 text-sm font-medium text-red-900"
                                 onClick={props.closeModal}
                               >
                                 Cancel
-                              </button>
-                              <button
-                                className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                              </Button>
+                              <Button
+                                variant="outlined"
+                                className="inline-flex justify-center rounded-md border bg-white text-blue-500 hover:bg-blue-400 hover:text-white px-4 py-2 text-sm font-medium"
                                 type="submit"
                               >
                                 Save
-                              </button>
+                              </Button>
                             </div>
                           </div>
                         </div>
