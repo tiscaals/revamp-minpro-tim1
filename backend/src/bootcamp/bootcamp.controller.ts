@@ -59,10 +59,10 @@ export class BootcampController {
     return this.bootcampService.createProgram(createBootcampDto);
   }
 
-  @Post('close')
-  setClose(@Body() body:any){
-    return this.bootcampService.closeBatch(body)
-  }
+  // @Post('close')
+  // setClose(@Body() body:any){
+  //   return this.bootcampService.closeBatch(body)
+  // }
 
   @Post('change-status-batch')
   changeStatusBatch(@Body() dataBody:any){

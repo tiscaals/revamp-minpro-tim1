@@ -103,16 +103,16 @@ const getAllRecStudentRes = (payload: any) => {
   };
 };
 
-const UpdateCloseBatchReq = (payload:any) => {
+const UpdateChangeStatusBatchReq = (payload:any) => {
     return{
-        type: ActionTypes.REQ_UPDATE_CLOSE_BATCH,
+        type: ActionTypes.REQ_UPDATE_CHANGE_STATUS_BATCH,
         payload
     }
 }
 
-const UpdateCloseBatchRes = (payload:any) => {
+const UpdateChangeStatusBatchRes = (payload:any) => {
     return{
-        type: ActionTypes.RES_UPDATE_CLOSE_BATCH,
+        type: ActionTypes.RES_UPDATE_CHANGE_STATUS_BATCH,
         payload
     }
 }
@@ -231,6 +231,6 @@ export {
   getAllTraineesByBatchRes,
   getAllTalentsReq,
   getAllTalentsRes,
-  UpdateCloseBatchReq,
-  UpdateCloseBatchRes
+  UpdateChangeStatusBatchReq,
+  UpdateChangeStatusBatchRes
 };

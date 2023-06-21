@@ -3,6 +3,7 @@ import { CreateBootcampDto } from './dto/create-bootcamp.dto';
 import { UpdateBootcampDto } from './dto/update-bootcamp.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { batch, batch_trainee, program_apply, program_apply_progress } from 'models/bootcamp';
+import { log } from 'console';
 
 @Injectable()
 export class BootcampService {
@@ -10,7 +11,18 @@ export class BootcampService {
 
   async createBatch(body: any) {
     try {
-      //cek dulu
+      const trainees = body.trainee;
+      const idSet = new Set();
+
+      for (let i = 0; i < trainees.length; i++) {
+        const trainee = trainees[i];
+        const traineeId = trainee.batr_trainee_entity_id;
+        
+        if (idSet.has(traineeId)) {
+          throw new Error('Terdapat Peserta dengan ID yang sama');
+        }
+        idSet.add(traineeId);
+      }
       const dataString = `[${JSON.stringify(body.batch)}]`;
       const data2String = `${JSON.stringify(body.trainee)}`;
       const data3String = `${JSON.stringify(body.instructors)}`;
@@ -314,21 +326,21 @@ export class BootcampService {
     }
   }
 
-  async closeBatch (body: any) {
-    try {
-      const dataTalents = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${body.batch_id}`)
+  // async closeBatch (body: any) {
+  //   try {
+  //     const dataTalents = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${body.batch_id}`)
 
-      const dataString = `[${JSON.stringify(body)}]`;
-      const talentString = `${JSON.stringify(dataTalents[0])}`;
-      await this.sequelize.query(
-        `call bootcamp.closebatch ('${dataString}','${talentString}')`,
-      );
+  //     const dataString = `[${JSON.stringify(body)}]`;
+  //     const talentString = `${JSON.stringify(dataTalents[0])}`;
+  //     await this.sequelize.query(
+  //       `call bootcamp.closebatch ('${dataString}','${talentString}')`,
+  //     );
 
-      return 'jadi'
-    } catch (error) {
-      return error.message
-    }
-  }
+  //     return 'jadi'
+  //   } catch (error) {
+  //     return error.message
+  //   }
+  // }
 
   async changeStatusBatch(dataBody: any) {
     try {
@@ -340,6 +352,10 @@ export class BootcampService {
       if (!idBody) throw new Error('Data Batch Tidak diTemukan!!');
 
       if(dataBody.batch_status === 'running'){
+        const dataBatch:any = await this.sequelize.query(`select batch_status from bootcamp.batch where batch_id = ${dataBody.batch_id}`)
+        const batchStatus = dataBatch[0][0].batch_status;
+        if (dataBody.batch_status === batchStatus) throw new Error('Batch Sudah di Running');
+
         const trainee = await this.sequelize.query(`select * from bootcamp.batch_trainee where batr_batch_id = ${dataBody.batch_id}`);
         const traineeProgramApply = await this.sequelize.query(`select * from bootcamp.program_apply_progress where parog_prog_entity_id = ${dataBody.batch_entity_id}`);
 
@@ -363,9 +379,24 @@ export class BootcampService {
             returning: true
           },
         )
-      }
+      } else if(dataBody.batch_status === 'closed'){
+        const dataBatch:any = await this.sequelize.query(`select batch_status from bootcamp.batch where batch_id = ${dataBody.batch_id}`)
+        const batchStatus = dataBatch[0][0].batch_status
+        if (dataBody.batch_status === batchStatus) throw new Error('Batch Sudah di Closed');
 
-      return `Status Batch Telah Berubah Menjadi ${dataBody.batch_status.toUpperCase()}`
+        const dataTalents = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${dataBody.batch_id}`)
+
+        const dataString = `[${JSON.stringify(dataBody)}]`;
+        const talentString = `${JSON.stringify(dataTalents[0])}`;
+        await this.sequelize.query(
+          `call bootcamp.closebatch ('${dataString}','${talentString}')`,
+        );
+
+      }
+      return {
+        status: 201,
+        message: `Status Batch Telah Berubah Menjadi ${dataBody.batch_status.toUpperCase()}`
+      };
 
     } catch (error) {
       return error.message;
@@ -374,10 +405,12 @@ export class BootcampService {
 
   async cobaCoba () {
     try {
-      const result = await this.sequelize.query('select * from bootcamp.program_apply_progress where parog_prog_entity_id = 5')
-      const resultString = `${JSON.stringify(result[0])}`;
-
-      return resultString
+      const result:any = await this.sequelize.query('select batch_status from bootcamp.batch where batch_id = 24')
+      // const resultString = `${JSON.stringify(result[0])}`;
+      // console.log(result[0])
+      // if (result[0].batch_status === 'closed') throw new Error('Data Batch Sudah di Closed!!')
+      // return resultString
+      return result[0][0].batch_status
     } catch (error) {
       return error.message
     }

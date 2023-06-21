@@ -1,7 +1,6 @@
 import { call, put } from 'redux-saga/effects';
 import apiMethod from '../apiMethod';
 import {
-  UpdateCloseBatchRes,
   addBatchRes,
   deleteBatchRes,
   editParogRes,
@@ -18,6 +17,7 @@ import {
   getAllTrainersRes,
   getOneBatchesReq,
   getOneBatchesRes,
+  UpdateChangeStatusBatchRes,
 } from '../action/actionReducer';
 
 function* handleGetAllBatches(): any {
@@ -151,13 +151,12 @@ function* handleGetAllTraineesByBatch(action: any): any {
   }
 }
 
-function* handleUpdateCloseBatch(action:any):any{
+function* handleUpdateChangeStatusBatch(action:any):any{
     try {
-        const result = yield call(apiMethod.updateCloseBatch,action.payload)
-
-        yield put(UpdateCloseBatchRes(result))
+        const result = yield call(apiMethod.updateChangeStatusBatch,action.payload)
+        yield put(UpdateChangeStatusBatchRes(result))
     } catch (error) {
-        yield put( UpdateCloseBatchRes({message:error,status:400}))
+        yield put( UpdateChangeStatusBatchRes({message:error,status:400}))
     }
 }
 
@@ -176,5 +175,5 @@ export {
   handleEditParog,
   handleEditPrap,
   handleGetAllTraineesByBatch,
-  handleUpdateCloseBatch
+  handleUpdateChangeStatusBatch
 };

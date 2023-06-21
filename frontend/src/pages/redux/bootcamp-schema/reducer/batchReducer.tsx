@@ -47,6 +47,14 @@ function batchReducers(state = initialState, action: any) {
         refresh: false,
       };
 
+    case ActionTypes.RES_UPDATE_CHANGE_STATUS_BATCH:
+      return {
+        state,
+        message: payload.message,
+        status: payload.status,
+        refresh: false,
+      };
+
     default:
       return state;
   }

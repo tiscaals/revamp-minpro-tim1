@@ -15,7 +15,7 @@ import {
   handleGetAllTraineesByBatch,
   handleGetAllTrainers,
   handleGetOneBatches,
-  handleUpdateCloseBatch,
+  handleUpdateChangeStatusBatch,
 } from './batchsaga';
 
 function* watchAll() {
@@ -34,7 +34,7 @@ function* watchAll() {
     takeEvery(ActionTypes.REQ_UPDATE_PRAP, handleEditPrap),
     takeEvery(ActionTypes.REQ_GET_TRAINEES_BATCH, handleGetAllTraineesByBatch),
     takeEvery(ActionTypes.REQ_GET_TALENTS, handleGetAllTalents),
-    takeEvery(ActionTypes.REQ_UPDATE_CLOSE_BATCH, handleUpdateCloseBatch)
+    takeEvery(ActionTypes.REQ_UPDATE_CHANGE_STATUS_BATCH, handleUpdateChangeStatusBatch)
   ]);
 }
 
