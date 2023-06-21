@@ -12,7 +12,7 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import { MdRemoveShoppingCart, MdShoppingCart } from 'react-icons/md';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import { delCartReq, getAllCartReq } from '../redux/action/actionReducer';
+import { addOrderReq, delCartReq, getAllCartReq } from '../redux/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -27,10 +27,12 @@ const ApplyButton = styled(Button)(({ theme }) => ({
 
 const CreateOrder: React.FC = () => {
   const { items, message, refresh } = useSelector((state: any) => state.salesReducers);
+  const { order, messagee, refreshh } = useSelector((state: any) => state.orderReducers);
+
   const dispatch = useDispatch();
 
   const [isAccountValid, setIsAccountValid] = useState(false);
-  const [totalPrice, setTotalPrice] = useState(0);
+  // const [totalPrice, setTotalPrice] = useState(0);
 
   const [selectedFintech, setSelectedFintech] = useState('');
   const handleAccountFintechClick = (fintech: string) => {
@@ -41,37 +43,68 @@ const CreateOrder: React.FC = () => {
   const [removeItemId, setRemoveItemId] = useState(0);
 
   const router = useRouter();
-
-  const handleCheckOut = () => {
-    if (isAccountValid) {
-      router.push('/sales/createorder');
-    }
-  };
-
-  const handleSearch = (event: any) => {
-    const searchTerm = event.target.value;
-    // Perform search operation based on searchTerm
-  };
+  const { totalPrice, accountNumber, fintechName, userName } = router.query;
+  const totalPriceString = Array.isArray(totalPrice) ? totalPrice[0] : totalPrice;
+  const totalPriceNumber = parseInt(totalPriceString || "0");
 
   useEffect(() => {
     dispatch(getAllCartReq());
   }, [dispatch]);
 
-  useEffect(() => {
-    calculateTotalPrice();
-  }, [items]);
+  const handleCreateOrder = async () => {
+    const dummyData = [
+      {
+        p_cait_id: 150,
+        p_cait_quantity: 1,
+        p_cait_unit_price: 4000000,
+        p_cait_user_entity_id: 2,
+        p_cait_prog_entity_id: 2,
+        p_sode_unit_discount: 0.2,
+        p_sode_soco_id: 4,
+        p_sohe_order_date: '2023-06-20',
+        p_sohe_due_date: '2023-06-27',
+        p_sohe_ship_date: '2023-06-25',
+        p_sohe_order_number: 'ORDER009',
+        p_sohe_account_number: 'ACCT009',
+        p_sohe_trpa_code_number: 'TRPA009',
+        p_sohe_license_code: 'LICENSE009',
+        p_sohe_user_entity_id: 2,
+        p_sohe_status: 'open',
+      }
+    ];
 
-  const calculateTotalPrice = () => {
-    if (items && items.length > 0) {
-      const total = items.reduce((accumulator: number, course: any) => {
-        const price = parseFloat(course.prog_price.replace(/[^0-9.-]+/g, ""));
-        return accumulator + price;
-      }, 0);
-      setTotalPrice(total);
-    } else {
-      setTotalPrice(0); // Set total price to 0 if there are no items
+    try {
+      await dispatch(addOrderReq(dummyData));
+      // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
+      router.push({
+        pathname: '/sales/receipt',
+        query: { totalPrice, accountNumber, fintechName, userName }
+      });
+    } catch (error) {
+      // Handle error jika terjadi kegagalan
+      console.error('Gagal memasukkan data:', error);
     }
   };
+
+
+
+
+
+  // useEffect(() => {
+  //   calculateTotalPrice();
+  // }, [items]);
+
+  // const calculateTotalPrice = () => {
+  //   if (items && items.length > 0) {
+  //     const total = items.reduce((accumulator: number, course: any) => {
+  //       const price = parseFloat(course.prog_price.replace(/[^0-9.-]+/g, ""));
+  //       return accumulator + price;
+  //     }, 0);
+  //     setTotalPrice(total);
+  //   } else {
+  //     setTotalPrice(0); // Set total price to 0 if there are no items
+  //   }
+  // };
 
   const handleRemoveCartItem = (id: number) => {
     setRemoveItemId(id);
@@ -80,7 +113,7 @@ const CreateOrder: React.FC = () => {
 
   const confirmRemoveCartItem = () => {
     dispatch(delCartReq(removeItemId));
-    toast.success('Item removed from cart'); // Display success message
+    toast.success('Item removed from cart'); // Menampilkan pesan berhasil
     setShowRemoveModal(false);
   };
 
@@ -97,7 +130,7 @@ const CreateOrder: React.FC = () => {
       <Navbar />
       <ToastContainer />
       <div className="container mx-auto p-4">
-      <p className="text-lg font-bold text-red-600">{items.length} Course in cart</p>
+        <p className="text-lg font-bold text-red-600">{items.length} Course in cart</p>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
@@ -150,15 +183,17 @@ const CreateOrder: React.FC = () => {
             <div className="grid grid-cols-1 gap-4 h-full">
               <div className="p-5 y-1 bg-white rounded-lg shadow-lg flex flex-col">
                 <p className="text-lg font-bold text-gray-800">Total:</p>
-                <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-gray-800">Rp. {totalPriceNumber.toLocaleString()}</p>
 
-                <button className="bg-blue-600 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4 flex items-center justify-center flex-row-reverse">
+                <button className="bg-red-600 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4 flex items-center justify-center flex-row-reverse"
+                  onClick={handleCreateOrder}
+                >
                   <MdShoppingCart className="ml-2" />
                   Create Order
                 </button>
 
                 <button
-                  className="bg-blue-600 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4 flex items-center justify-center flex-row-reverse"
+                  className="bg-red-600 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4 flex items-center justify-center flex-row-reverse"
                   onClick={handleCancelOrder}
                 >
                   <MdRemoveShoppingCart className="ml-2" />
@@ -171,11 +206,16 @@ const CreateOrder: React.FC = () => {
 
         <div>
           <div className="items-center p-4 bg-white mt-2">
-            <p className="text-lg font-semi-bold text-gray-800">Payment via Fintech GoTo</p>
-            <p className="text-lg font-semi-bold text-gray-800">Account Number : 081360089190</p>
-            <p className="text-lg font-semi-bold text-gray-800">Account Name : Vendy Gulo</p>
-            <p className="text-lg font-semi-bold text-gray-800">Credit : Rp. 3.500.000</p>
+            <p className="text-2xl font-bold bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Payment via {fintechName}</p>
+            <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Number: {accountNumber}</p>
+            <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Name: {userName}</p>
+            <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Credit: Rp. {totalPriceNumber.toLocaleString()}</p>
           </div>
+
+
+
+
+
         </div>
 
 

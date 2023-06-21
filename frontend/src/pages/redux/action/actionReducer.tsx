@@ -27,11 +27,57 @@ const delCartRes = (payload:any) => {
     }
 }
 
+const getDiskonReq = () => {
+    return {
+        type: ActionTypes.GET_DISKON,
+    }
+}
+
+const getDiskonRes = (payload:any) => {
+    return {
+        type: ActionTypes.GET_DISKON_RES,
+        payload
+    }
+}
+
+const addOrderReq = (payload:any) => {
+    return {
+        type: ActionTypes.ADD_ORDER,
+        payload
+    }
+}
+
+const addOrderRes = (payload:any) => {
+    return {
+        type: ActionTypes.ADD_ORDER_RES,
+        payload
+    }
+}
+
+const getPaymentReq = () => {
+    return {
+        type: ActionTypes.GET_PAYMENT,
+    }
+}
+
+const getPaymentRes = (payload:any) => {
+    return {
+        type: ActionTypes.GET_PAYMENT_RES,
+        payload
+    }
+}
+
 export {
     getAllCartReq, 
     getAllCartRes,
     delCartReq, 
     delCartRes,
+    getDiskonReq,
+    getDiskonRes,
+    addOrderReq,
+    addOrderRes,
+    getPaymentReq,
+    getPaymentRes
 }
 
 

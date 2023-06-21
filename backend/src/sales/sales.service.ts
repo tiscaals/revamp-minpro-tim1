@@ -9,6 +9,22 @@ import { cart_items } from 'models/sales';
 export class SalesService {
   constructor(private sequelize : Sequelize){}
 
+  //-------------------- View Payment ----------------------------
+
+  async viewPayment():Promise<any> {
+    const query = 'select * from sales.payment_users_view';
+    const result = await this.sequelize.query(query);
+    return result[0];
+  }
+
+  //-------------------- View Diskon ----------------------------
+
+  async viewDiskon():Promise<any> {
+    const query = 'select * from sales.diskon_view';
+    const result = await this.sequelize.query(query);
+    return result[0];
+  }
+
   //------------------ View Cart Items ---------------------------
 
   async viewCartItems():Promise<any> {
@@ -104,7 +120,47 @@ export class SalesService {
 
   //------------------ Insert Order Header dan Order Detail -------------------------
 
+  async insertSalesOrderDetail(createSaleDto: CreateSaleDto): Promise<any> {
+    try {
+      const query = `
+        CALL sales.sales_place_order(
+          $1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
+          $11, $12, $13, $14, $15, $16
+        )
+      `;
+      const replacements = [
+        createSaleDto.p_cait_id,
+        createSaleDto.p_cait_quantity,
+        createSaleDto.p_cait_unit_price,
+        createSaleDto.p_cait_user_entity_id,
+        createSaleDto.p_cait_prog_entity_id,
+        createSaleDto.p_sode_unit_discount,
+        createSaleDto.p_sode_soco_id,
+        createSaleDto.p_sohe_order_date,
+        createSaleDto.p_sohe_due_date,
+        createSaleDto.p_sohe_ship_date,
+        createSaleDto.p_sohe_order_number,
+        createSaleDto.p_sohe_account_number,
+        createSaleDto.p_sohe_trpa_code_number,
+        createSaleDto.p_sohe_license_code,
+        createSaleDto.p_sohe_user_entity_id,
+        createSaleDto.p_sohe_status,
+      ];
+  
+      await this.sequelize.query(query, { bind: replacements });
+  
+      const successMessage = 'Pemesanan berhasil ditempatkan.';
+      this.sendMessage2(successMessage);
+    } catch (error) {
+      const errorMessage = `Terjadi kesalahan saat menempatkan pesanan: ${error.message}`;
+      this.sendMessage2(errorMessage);
+    }
+  }
+
+  //------------------ Insert Order Header dan Order Detail -------------------------
+
   async insertSalesOrder(createSaleDto: CreateSaleDto): Promise<any> {
+    console.log(createSaleDto);
     try {
       await this.sequelize.query(
         `CALL sales.sales_place_order(
@@ -147,14 +203,14 @@ export class SalesService {
         }
       );
   
-      const successMessage = 'Sales order placed successfully.';
+      const successMessage = 'Pemesanan berhasil ditempatkan.';
       this.sendMessage2(successMessage);
     } catch (error) {
-      const errorMessage = `Error placing sales order: ${error.message}`;
+      const errorMessage = `Terjadi kesalahan saat menempatkan pesanan: ${error.message}`;
       this.sendMessage2(errorMessage);
     }
   }
-
+  
   private sendMessage2(message: string) {
     console.log(message);
   }

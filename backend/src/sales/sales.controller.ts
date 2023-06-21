@@ -22,6 +22,11 @@ export class SalesController {
     return this.salesService.insertSalesOrder(createSaleDto);
   }
 
+  @Post('insert-order')
+  createOrder(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSalesOrderDetail(createSaleDto);
+  }
+
   @Get('order-detail')
   findAll() {
     return this.salesService.findAllOrderDetail();
@@ -30,6 +35,16 @@ export class SalesController {
   @Get('view-cart')
   findAllCart() {
     return this.salesService.viewCartItems();
+  }
+  
+  @Get('view-diskon')
+  findAllDiskon() {
+    return this.salesService.viewDiskon();
+  }
+
+  @Get('view-payment')
+  findAllPayment() {
+    return this.salesService.viewPayment();
   }
 
   @Get('order-header')

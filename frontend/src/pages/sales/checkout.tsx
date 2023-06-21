@@ -3,7 +3,7 @@ import Image from 'next/image';
 import courseImage from '../../images/logokecil.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faHome, faWallet } from '@fortawesome/free-solid-svg-icons';
-import { Menu, Transition } from '@headlessui/react';
+import { Dialog, Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { IconButton, InputAdornment } from '@mui/material';
 import { TextField, Button } from '@mui/material';
@@ -16,7 +16,8 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import { delCartReq, getAllCartReq } from '../redux/action/actionReducer';
+import { MdCancel } from 'react-icons/md';
+import { delCartReq, getAllCartReq, getDiskonReq, getPaymentReq } from '../redux/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -31,15 +32,24 @@ const ApplyButton = styled(Button)(({ theme }) => ({
 
 const CartPage: React.FC = () => {
   const { items, message, refresh } = useSelector((state: any) => state.salesReducers);
+  const { diskon, pesan } = useSelector((state: any) => state.diskonReducers)
+  const { payment, pesan1 } = useSelector((state: any) => state.paymentReducers);
   const dispatch = useDispatch();
 
   const [isAccountValid, setIsAccountValid] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
-
+  const [originalPrice, setOriginalPrice] = useState(0);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [discountApplied, setDiscountApplied] = useState(false);
   const [selectedFintech, setSelectedFintech] = useState('');
+  const [selectedAccountNumber, setSelectedAccountNumber] = useState('');
+  const [selectedUserName, setSelectedUserName] = useState('');
+
   const handleAccountFintechClick = (fintech: string) => {
     setSelectedFintech(fintech);
+    setSelectedAccountNumber(''); // Reset nomor akun saat fintech dipilih ulang
   };
+
 
   const [showRemoveModal, setShowRemoveModal] = useState(false);
   const [removeItemId, setRemoveItemId] = useState(0);
@@ -47,15 +57,120 @@ const CartPage: React.FC = () => {
   const router = useRouter();
 
   const handleCheckOut = () => {
-    if (isAccountValid) {
-      router.push('/sales/createorder');
+    if (selectedAccountNumber) {
+      router.push({
+        pathname: '/sales/createorder',
+        query: { totalPrice: totalPrice, accountNumber: selectedAccountNumber, fintechName: selectedFintech, userName: selectedUserName }
+      });
+    } else {
+      toast.error('No account number found');
     }
   };
 
+
   const handleSearch = (event: any) => {
     const searchTerm = event.target.value;
-    // Perform search operation based on searchTerm
+    setSearchTerm(searchTerm);
   };
+
+  // const handleSearchFintech = (event: any) => {
+  //   const searchTerm = event.target.value;
+  //   setSearchTerm(searchTerm);
+  // };
+
+  // const handleSearchAccountNumber = () => {
+  //   const matchingAccount = payment.find(
+  //     (account: any) =>
+  //       account.fint_name.toLowerCase() === selectedFintech.toLowerCase()
+  //   );
+
+  //   if (matchingAccount) {
+  //     // Account number found based on selected fintech
+  //     // You can perform further search logic based on the account number here
+  //     const accountNumber = matchingAccount.usac_account_number;
+  //     console.log('Account Number:', accountNumber);
+  //     // Perform additional search logic using the account number
+
+  //     setSelectedAccountNumber(accountNumber); // Set nomor akun yang ditemukan
+  //   } else {
+  //     toast.error('No matching fintech account found');
+  //     setSelectedAccountNumber(''); // Reset nomor akun jika tidak ditemukan
+  //   }
+  // };
+
+  // const handleSearchAccount = () => {
+  //   const matchingAccount = payment.find(
+  //     (account: any) =>
+  //       account.usac_account_number.toLowerCase() === searchTerm.toLowerCase()
+  //   );
+
+  //   if (matchingAccount) {
+  //     // Account found based on account number
+  //     // You can perform further search logic here
+  //     const accountNumber = matchingAccount.usac_account_number;
+  //     console.log('Account Number:', accountNumber);
+  //     // Perform additional search logic using the account number
+
+  //     setSelectedAccountNumber(accountNumber); // Set nomor akun yang ditemukan
+  //   } else {
+  //     toast.error('No matching account found');
+  //     setSelectedAccountNumber(''); // Reset nomor akun jika tidak ditemukan
+  //   }
+  // };
+
+  const handleSearchFintech = (event: any) => {
+    const searchTerm = event.target.value;
+    setSearchTerm(searchTerm);
+  };
+
+  const handleSearchAccountNumber = () => {
+    const matchingAccount = payment.find(
+      (account: any) =>
+        account.usac_account_number.toLowerCase() === searchTerm.toLowerCase()
+    );
+
+    if (matchingAccount) {
+      const matchingFintech = payment.find(
+        (account: any) =>
+          account.fint_name.toLowerCase() === selectedFintech.toLowerCase()
+      );
+
+      if (
+        matchingFintech &&
+        matchingFintech.usac_account_number === matchingAccount.usac_account_number
+      ) {
+        const accountNumber = matchingAccount.usac_account_number;
+        const userName = matchingAccount.user_name; // Menyimpan user_name yang ditemukan
+        console.log('Account Number:', accountNumber);
+        console.log('User Name:', userName); // Menampilkan user_name
+        setSelectedAccountNumber(accountNumber);
+        setSelectedUserName(userName); // Menyimpan user_name pada state
+        toast.success('Account found: ' + userName + ' ' + accountNumber); // Pesan sukses jika account number ditemukan
+      } else {
+        toast.error('No matching fintech account found');
+        setSelectedAccountNumber('');
+        setSelectedUserName(''); // Mengosongkan user_name pada state
+      }
+    } else {
+      toast.error('No matching account found');
+      setSelectedAccountNumber('');
+      setSelectedUserName(''); // Mengosongkan user_name pada state
+    }
+  };
+
+
+
+  // Contoh penggunaan handleSearchFintech
+  // Misalkan ada komponen input dengan event onChange yang memanggil handleSearchFintech
+  // <input type="text" onChange={handleSearchFintech} />
+
+  // Contoh penggunaan handleSearchAccountNumber
+  // Misalkan ada tombol atau peristiwa lain yang memanggil handleSearchAccountNumber
+  // <button onClick={handleSearchAccountNumber}>Search</button>
+
+
+
+
 
   useEffect(() => {
     dispatch(getAllCartReq());
@@ -65,15 +180,32 @@ const CartPage: React.FC = () => {
     calculateTotalPrice();
   }, [items]);
 
+  useEffect(() => {
+    dispatch(getDiskonReq());
+  }, [dispatch])
+
+  useEffect(() => {
+    dispatch(getPaymentReq());
+  }, [dispatch])
+
   const calculateTotalPrice = () => {
     if (items && items.length > 0) {
       const total = items.reduce((accumulator: number, course: any) => {
         const price = parseFloat(course.prog_price.replace(/[^0-9.-]+/g, ""));
-        return accumulator + price;
+        const matchingDiscount = diskon.find((d: any) => d.prog_entity_id === course.prog_entity_id);
+        if (matchingDiscount) {
+          const discount = parseFloat(matchingDiscount.spof_discount);
+          const discountedPrice = price - (price * discount) / 100;
+          return accumulator + discountedPrice;
+        } else {
+          return accumulator + price;
+        }
       }, 0);
       setTotalPrice(total);
+      setOriginalPrice(total);
     } else {
-      setTotalPrice(0); // Set total price to 0 if there are no items
+      setTotalPrice(0);
+      setOriginalPrice(0);
     }
   };
 
@@ -92,12 +224,34 @@ const CartPage: React.FC = () => {
     setShowRemoveModal(false);
   };
 
+  const handleApplyDiscount = () => {
+    const matchingDiscount = diskon.find((d: any) =>
+      d.spof_description.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (matchingDiscount) {
+      const discount = parseFloat(matchingDiscount.spof_discount);
+      const discountedPrice = totalPrice - (totalPrice * discount) / 100;
+      setTotalPrice(discountedPrice);
+      setDiscountApplied(true);
+      toast.success('Discount applied');
+    } else {
+      toast.error('No matching discount found');
+    }
+  };
+
+  const handleCancelDiscount = () => {
+    setTotalPrice(originalPrice);
+    setDiscountApplied(false);
+    toast.success('Discount cancelled');
+  };
+
   return (
     <>
       <Navbar />
       <ToastContainer />
       <div className="container mx-auto p-4">
-      <p className="text-lg font-bold text-red-600">{items.length} Course in cart</p>
+        <p className="text-lg font-bold text-red-600">{items.length} Course in cart</p>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
@@ -126,11 +280,12 @@ const CartPage: React.FC = () => {
                             </button>
                             <button
                               className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
-                              onClick={() => handleRemoveCartItem(course.cait_id)}
+                              onClick={() => handleRemoveCartItem(course.cait_id)} // Memastikan parameter yang diteruskan adalah cait_id
                             >
                               Remove
                               <DeleteForeverIcon className="ml-2" />
                             </button>
+
                           </div>
                         </div>
                       </div>
@@ -161,27 +316,51 @@ const CartPage: React.FC = () => {
                 </button>
                 <div>
                   <div className="mt-4 flex items-center">
-                    <TextField
-                      id="search"
-                      label="Discount"
-                      variant="outlined"
-                      size="small"
-                      onChange={handleSearch}
-                      fullWidth
-                      className="mr-2"
-                    />
 
-                    <ApplyButton variant="contained" color="primary" startIcon={<ThumbUpAltIcon />} style={{ backgroundColor: '#3f51b5' }} className="mr-2">
-                      Apply
-                    </ApplyButton>
+                    {discountApplied ? (
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        startIcon={<MdCancel />}
+                        style={{ backgroundColor: '#f44336' }}
+                        className="mr-2"
+                        onClick={handleCancelDiscount}
+                      >
+                        Cancel Discount
+                      </Button>
+                    ) : (
+                      <div>
+                        <div className="mt-4 flex items-center">
+                          <TextField
+                            id="search"
+                            label="Discount"
+                            variant="outlined"
+                            size="small"
+                            onChange={handleSearch}
+                            fullWidth
+                            className="mr-2"
+                          />
+
+                          <ApplyButton
+                            variant="contained"
+                            color="primary"
+                            startIcon={<ThumbUpAltIcon />}
+                            style={{ backgroundColor: '#3f51b5' }}
+                            className="mr-2"
+                            onClick={handleApplyDiscount}
+                          >
+                            Apply
+                          </ApplyButton>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className='flex grid-cols-2'>
-
+        <div className="flex grid-cols-2">
           <div className="flex items-center justify-between mt-4 sm:justify-start">
             <Menu as="div" className="relative inline-block text-left">
               <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
@@ -213,7 +392,6 @@ const CartPage: React.FC = () => {
                   )}
                 </Menu.Item>
               </Menu.Items>
-
             </Menu>
             <IconButton>
               <FontAwesomeIcon icon={faArrowRight} className="text-gray-600" />
@@ -227,14 +405,24 @@ const CartPage: React.FC = () => {
                 label="Fintech Account"
                 variant="outlined"
                 size="small"
-                onChange={handleSearch}
+                onChange={handleSearchFintech}
                 fullWidth
                 className="mr-2"
               />
+
+
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<SearchIcon />}
+                style={{ backgroundColor: '#3f51b5' }}
+                onClick={handleSearchAccountNumber}
+              >
+                Search
+              </Button>
             </div>
           </div>
         </div>
-
       </div>
 
       {showRemoveModal && (
@@ -253,7 +441,6 @@ const CartPage: React.FC = () => {
           </div>
         </div>
       )}
-
     </>
   );
 };
