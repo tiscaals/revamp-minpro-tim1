@@ -19,6 +19,7 @@ import {
   Tab,
   Avatar,
   button,
+  Textarea,
 } from '@material-tailwind/react';
 import {
   HiDotsVertical,
@@ -32,6 +33,7 @@ import { useRouter } from 'next/router';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
+  UpdateChangeStatusBatchReq,
   deleteBatchReq,
   getAllBatchesReq,
 } from '../redux/bootcamp-schema/action/actionReducer';
@@ -79,8 +81,15 @@ export default function BatchList() {
   // const [isSearching, setIsSearching] = useState(false)
   const [query, setQuery] = useState('');
   const { batches, refresh } = useSelector((state: any) => state.batchReducers);
+  const [selectedBatch, setSelectedBatch] = useState<any>({
+    batch_id: 0,
+    batch_entity_id : 0,
+    batch_reason: ''
+  })
   const dispatch = useDispatch();
   const [buttonSelect, setButtonSelect] = useState('');
+
+  console.log(selectedBatch)
 
   const filteredBatch: any =
     buttonSelect === 'all' && query === ''
@@ -120,15 +129,17 @@ export default function BatchList() {
   useEffect(() => {
     setButtonSelect('all');
   }, []);
-
-  if (
-    !batches &&
-    batches?.length === 0 &&
-    !filteredBatch &&
-    filteredBatch.length === 0
-  ) {
-    return <div>loading...</div>;
+  
+  const changeStatusBatch = (status:string)=> {
+    dispatch(UpdateChangeStatusBatchReq({
+      batch_id: selectedBatch.batch_id,
+      batch_entity_id: selectedBatch.batch_entity_id,
+      batch_reason: filteredBatch.batch_status,
+      batch_status: status,
+      talent_status: 'idle'
+    }))
   }
+  
 
   return (
     <Card className="h-full w-full">
@@ -213,6 +224,7 @@ export default function BatchList() {
                 (
                   {
                     batch_id,
+                    batch_entity_id,
                     batch_name,
                     prog_title,
                     trainees,
@@ -347,7 +359,9 @@ export default function BatchList() {
                           className="relative inline-block text-left"
                         >
                           <div>
-                            <Menu.Button>
+                            <Menu.Button
+                            onClick={()=>setSelectedBatch({...selectedBatch,batch_id: batch_id, batch_entity_id: batch_entity_id })}
+                            >
                               <HiDotsVertical
                                 className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
                                 aria-hidden="true"
@@ -389,6 +403,17 @@ export default function BatchList() {
                                     </button>
                                   )}
                                 </Menu.Item>
+                                {/* <Transition
+                                  as={Fragment}
+                                  enter="transition ease-out duration-100"
+                                  enterFrom="transform opacity-0 scale-95"
+                                  enterTo="transform opacity-100 scale-100"
+                                  leave="transition ease-in duration-75"
+                                  leaveFrom="transform opacity-100 scale-100"
+                                  leaveTo="transform opacity-0 scale-95"
+                                >
+
+                                </Transition> */}
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
@@ -429,6 +454,7 @@ export default function BatchList() {
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
+                                    onClick={()=>changeStatusBatch('closed')}
                                       className={`${
                                         active
                                           ? 'bg-light-blue-500 text-white'
@@ -468,6 +494,9 @@ export default function BatchList() {
                                     </button>
                                   )}
                                 </Menu.Item>
+                              </div>
+                              <div className="px-1 py-1">
+                                <Textarea label='reason' onChange={(e:any)=>setSelectedBatch({...selectedBatch,batch_reason: e.target.value })}></Textarea>
                               </div>
                               <div className="px-1 py-1">
                                 <Menu.Item>

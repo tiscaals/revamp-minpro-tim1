@@ -59,9 +59,9 @@ const findAllTalents = () => {
   return axios.get('/bootcamp/talents');
 };
 
-const updateCloseBatch = (data: any) => {
-  return axios.patch(`/bootcamp/close/${data.batch_id}`, data);
-};
+const updateChangeStatusBatch = (data:any) =>{
+    return axios.post(`/bootcamp/change-status-batch`,data)
+}
 
 const createEvals = (data: any) => {
   return axios.post('/bootcamp/evaluation', data);
@@ -81,6 +81,6 @@ export default {
   updatePrap,
   findAllTraineesBatch,
   findAllTalents,
-  updateCloseBatch,
   createEvals,
+  updateChangeStatusBatch
 };

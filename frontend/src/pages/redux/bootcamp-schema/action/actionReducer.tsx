@@ -103,19 +103,20 @@ const getAllRecStudentRes = (payload: any) => {
   };
 };
 
-const UpdateCloseBatchReq = (payload: any) => {
-  return {
-    type: ActionTypes.REQ_UPDATE_CLOSE_BATCH,
-    payload,
-  };
-};
+const UpdateCloseBatchReq = (payload:any) => {
+    return{
+        type: ActionTypes.REQ_UPDATE_CLOSE_BATCH,
+        payload
+    }
+}
 
-const UpdateCloseBatchRes = (payload: any) => {
-  return {
-    type: ActionTypes.RES_UPDATE_CLOSE_BATCH,
-    payload,
-  };
-};
+const UpdateCloseBatchRes = (payload:any) => {
+    return{
+        type: ActionTypes.RES_UPDATE_CLOSE_BATCH,
+        payload
+    }
+}
+
 
 const getAllTraineesByBatchReq = (payload: any) => {
   return {
@@ -246,5 +247,5 @@ export {
   UpdateCloseBatchReq,
   UpdateCloseBatchRes,
   addEvalsReq,
-  addEvalsRes,
+  addEvalsRes
 };
