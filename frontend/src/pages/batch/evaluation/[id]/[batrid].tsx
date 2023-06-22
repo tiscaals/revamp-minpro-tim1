@@ -40,25 +40,25 @@ export default function DetailEvals() {
     {
       section: 'Technical',
       skills: [
-        {name: "Fundamental", tags: "fundamental"},
-        {name: "Object Oriented Programming", tags: "oop"},
-        {name: "Database", tags: "database"},
+        { name: 'Fundamental', tags: 'fundamental' },
+        { name: 'Object Oriented Programming', tags: 'oop' },
+        { name: 'Database', tags: 'database' },
       ],
     },
     {
       section: 'Softskill',
       skills: [
-        {name: "Communication", tags: "communication"},
-        {name: "Team Work", tags: "teamwork"},
-        {name: "Selft Learning", tags: "selft_learning"},
+        { name: 'Communication', tags: 'communication' },
+        { name: 'Team Work', tags: 'teamwork' },
+        { name: 'Selft Learning', tags: 'selft_learning' },
       ],
     },
     {
       section: 'Presentation',
       skills: [
-        {name: "Public Speaking", tags: "public_speaking"},
-        {name: "Self Confident", tags: "self_confident"},
-        {name: "Adaptation", tags: "adaptation"},
+        { name: 'Public Speaking', tags: 'public_speaking' },
+        { name: 'Self Confident', tags: 'self_confident' },
+        { name: 'Adaptation', tags: 'adaptation' },
       ],
     },
   ];
@@ -101,7 +101,7 @@ export default function DetailEvals() {
             <Typography variant="h5">Score</Typography>
           </div>
         </div>
-        <SkillAccordion skills={skills}/>
+        <SkillAccordion skills={skills} />
       </div>
     </div>
   );

@@ -212,9 +212,11 @@ join curriculum.program_entity on program_entity.prog_entity_id = bootcamp.batch
 
 select * from bootcamp.batch
 
+
 create or replace view bootcamp.batchonly as
 select
 	batch_id,
+	batch_entity_id,
 	batch_name,
 	prog_title,
 	batch_status,

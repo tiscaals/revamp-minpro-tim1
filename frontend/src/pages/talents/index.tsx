@@ -27,17 +27,16 @@ export default function Talents() {
     '',
   ];
 
-  let {talents, message, refresh, status} = useSelector((state:any)=>state.talentsReducers)
-  const dispatch = useDispatch()
-  
-  useEffect(()=>{
-    dispatch(getAllTalentsReq())
-  },[refresh])
+  let { talents, message, refresh, status } = useSelector(
+    (state: any) => state.talentsReducers
+  );
+  const dispatch = useDispatch();
 
-  console.log("testtalents",talents);
+  useEffect(() => {
+    dispatch(getAllTalentsReq());
+  }, [refresh]);
 
-
-  
+  console.log('testtalents', talents);
 
   const TABLE_BODY = [
     {
@@ -144,8 +143,8 @@ export default function Talents() {
                   batch_start_date,
                   talent_trainer,
                   talent_status,
-                }:any,
-                index:number
+                }: any,
+                index: number
               ) => {
                 const isLast = index === TABLE_BODY.length - 1;
                 const classes = isLast
@@ -156,7 +155,11 @@ export default function Talents() {
                   <tr key={talent_fullname}>
                     <td className={classes}>
                       <div className="flex items-center gap-3">
-                        <Avatar src={talent_image} alt={talent_fullname} size="sm" />
+                        <Avatar
+                          src={talent_image}
+                          alt={talent_fullname}
+                          size="sm"
+                        />
                         <div className="flex flex-col">
                           <Typography
                             variant="small"

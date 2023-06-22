@@ -79,8 +79,9 @@ export default function EditBatch() {
     } else {
       setChecked(
         checked.filter(
-          (it: any) => it.batr_trainee_entity_id !== item.prap_user_entity_id &&
-          it.prap_user_entity_id !== item.prap_user_entity_id
+          (it: any) =>
+            it.batr_trainee_entity_id !== item.prap_user_entity_id &&
+            it.prap_user_entity_id !== item.prap_user_entity_id
         )
       );
     }
@@ -95,29 +96,28 @@ export default function EditBatch() {
     dispatch(getAllTrainersReq());
     dispatch(getAllProgramsReq());
     dispatch(getAllRecStudentReq(selTechno));
+  }, [id, selTechno]);
 
-  }, [id,selTechno]);
-
-  useEffect(()=>{
-    if(batch){
-      setSelTechno(batch.batch_entity_id)
-      setChecked(batch.trainees)
+  useEffect(() => {
+    if (batch) {
+      setSelTechno(batch.batch_entity_id);
+      setChecked(batch.trainees);
 
       // let defaultValue:any = {}
       // defaultValue.batch_entity_id = batch.batch_entity_id
     }
-  },[batch,selTechno])
+  }, [batch, selTechno]);
 
   if (programs.length === 0 && trainers.length === 0) {
     return <div className="bg-black w-full h-screen"> Loading</div>;
   }
 
-  if(!id  && !batch){
-    return <div>....</div>
+  if (!id && !batch) {
+    return <div>....</div>;
   }
 
-  console.log(batch); 
-  // console.log(recstudents); 
+  console.log(batch);
+  // console.log(recstudents);
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -165,9 +165,7 @@ export default function EditBatch() {
                     <option
                       key={item.prog_entity_id}
                       value={item.prog_entity_id}
-                      selected={
-                        selTechno == item.prog_entity_id
-                      }
+                      selected={selTechno == item.prog_entity_id}
                     >
                       {item.prog_title}
                     </option>
@@ -366,7 +364,8 @@ export default function EditBatch() {
                   className={`flex justify-between content-center w-auto cursor-pointer rounded-lg py-3 px-4 font-semibold text-sm ${
                     checked.find(
                       (i: any) =>
-                        i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
+                        i.batr_trainee_entity_id === item.prap_user_entity_id ||
+                        i.prap_user_entity_id === item.prap_user_entity_id
                     )
                       ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-lg shadow-light-blue-200'
                       : 'bg-white border border-gray-`300 text-light-blue-400 hover:scale-105 transition-transform ease-in-out'
@@ -385,8 +384,12 @@ export default function EditBatch() {
                     checked={
                       checked.find(
                         (i: any) =>
-                          i.batr_trainee_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
-                      ) ? true : false
+                          i.batr_trainee_entity_id ===
+                            item.prap_user_entity_id ||
+                          i.prap_user_entity_id === item.prap_user_entity_id
+                      )
+                        ? true
+                        : false
                     }
                     className="hidden"
                     type="checkbox"
@@ -394,7 +397,8 @@ export default function EditBatch() {
                   />
                   {checked.find(
                     (i: any) =>
-                      i.prap_user_entity_id === item.prap_user_entity_id || i.prap_user_entity_id === item.prap_user_entity_id
+                      i.prap_user_entity_id === item.prap_user_entity_id ||
+                      i.prap_user_entity_id === item.prap_user_entity_id
                   ) ? (
                     <div className="text-xl grid content-center">
                       {' '}

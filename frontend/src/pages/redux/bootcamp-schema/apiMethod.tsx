@@ -56,12 +56,12 @@ const findAllTraineesBatch = (id: number) => {
 };
 
 const findAllTalents = () => {
-    return axios.get('/bootcamp/talents')
-}
+  return axios.get('/bootcamp/talents');
+};
 
-const updateChangeStatusBatch = (data:any) =>{
-    return axios.post(`/bootcamp/change-status-batch`,data)
-}
+const updateChangeStatusBatch = (data: any) => {
+  return axios.post(`/bootcamp/change-status-batch`, data);
+};
 
 export default {
   findAllBatch,
@@ -78,5 +78,5 @@ export default {
   updatePrap,
   findAllTraineesBatch,
   findAllTalents,
-  updateChangeStatusBatch
+  updateChangeStatusBatch,
 };

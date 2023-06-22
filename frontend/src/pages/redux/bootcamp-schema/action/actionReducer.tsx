@@ -78,16 +78,16 @@ const getAllProgramsRes = (payload: any) => {
 };
 
 const getAllTalentsReq = () => {
-    return{
-        type: ActionTypes.REQ_GET_TALENTS
-    }
-}
-const getAllTalentsRes = (payload:any) => {
-    return{
-        type: ActionTypes.RES_GET_TALENTS,
-        payload
-    }
-}
+  return {
+    type: ActionTypes.REQ_GET_TALENTS,
+  };
+};
+const getAllTalentsRes = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_TALENTS,
+    payload,
+  };
+};
 
 const getAllRecStudentReq = (payload: any) => {
   return {
@@ -103,20 +103,19 @@ const getAllRecStudentRes = (payload: any) => {
   };
 };
 
-const UpdateChangeStatusBatchReq = (payload:any) => {
-    return{
-        type: ActionTypes.REQ_UPDATE_CHANGE_STATUS_BATCH,
-        payload
-    }
-}
+const UpdateChangeStatusBatchReq = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_CHANGE_STATUS_BATCH,
+    payload,
+  };
+};
 
-const UpdateChangeStatusBatchRes = (payload:any) => {
-    return{
-        type: ActionTypes.RES_UPDATE_CHANGE_STATUS_BATCH,
-        payload
-    }
-}
-
+const UpdateChangeStatusBatchRes = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_CHANGE_STATUS_BATCH,
+    payload,
+  };
+};
 
 const getAllTraineesByBatchReq = (payload: any) => {
   return {
@@ -232,5 +231,5 @@ export {
   getAllTalentsReq,
   getAllTalentsRes,
   UpdateChangeStatusBatchReq,
-  UpdateChangeStatusBatchRes
+  UpdateChangeStatusBatchRes,
 };
