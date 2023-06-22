@@ -71,12 +71,8 @@ $$ LANGUAGE PLPGSQL;
 |---------------------------- Insert Order Detail dan Order Header Sales ----------------------------|
 ------------------------------------------------------------------------------------------------------
 
-CREATE OR REPLACE PROCEDURE sales.sales_place_order(
-    IN p_cait_id integer,
-    IN p_cait_quantity integer,
-    IN p_cait_unit_price numeric,
-    IN p_cait_user_entity_id integer,
-    IN p_cait_prog_entity_id integer,
+CREATE OR REPLACE PROCEDURE sales.sales_place_order_json(
+    IN p_cart_items json,
     IN p_sohe_order_number character varying(25),
     IN p_sohe_account_number character varying(25),
     IN p_sohe_trpa_code_number character varying(55),
@@ -89,16 +85,25 @@ CREATE OR REPLACE PROCEDURE sales.sales_place_order(
 AS $$
 DECLARE
     v_sode_id integer;
-    v_sode_line_total numeric;
     v_sohe_subtotal numeric;
     v_sohe_tax numeric;
     v_sohe_total_due numeric;
+    v_cart_item record;
 BEGIN
-    -- Calculate line total
-    v_sode_line_total := p_cait_quantity * p_cait_unit_price;
-
     -- Calculate subtotal, tax, and total due
-    v_sohe_subtotal := v_sode_line_total;
+    v_sohe_subtotal := 0;
+    FOR v_cart_item IN SELECT * FROM json_to_recordset(p_cart_items) AS x(
+        cait_id integer,
+        cait_quantity integer,
+        cait_unit_price numeric,
+        cait_user_entity_id integer,
+        cait_prog_entity_id integer
+    )
+    LOOP
+        -- Calculate line total for each cart item
+        v_sohe_subtotal := v_sohe_subtotal + (v_cart_item.cait_quantity * v_cart_item.cait_unit_price);
+    END LOOP;
+
     v_sohe_tax := v_sohe_subtotal * 0.1; -- Assuming 10% tax rate
     v_sohe_total_due := v_sohe_subtotal + v_sohe_tax;
 
@@ -137,38 +142,40 @@ BEGIN
     )
     RETURNING sohe_id INTO v_sode_id;
 
-    -- Insert into sales_order_detail table if p_sode_unit_discount and p_sode_soco_id are provided
-    IF p_sode_unit_discount IS NOT NULL AND p_sode_soco_id IS NOT NULL THEN
-        INSERT INTO sales.sales_order_detail (
-            sode_id,
-            sode_qty,
-            sode_unit_price,
-            sode_unit_discount,
-            sode_line_total,
-            sode_modified_date,
-            sode_sohe_id,
-            sode_soco_id,
-            sode_prog_entity_id
-        )
-        VALUES (
-            DEFAULT,
-            p_cait_quantity,
-            p_cait_unit_price,
-            p_sode_unit_discount,
-            v_sode_line_total,
-            CURRENT_TIMESTAMP,
-            v_sode_id,
-            p_sode_soco_id,
-            p_cait_prog_entity_id
-        );
-    END IF;
-
-    -- Update cart_items table
-    UPDATE sales.cart_items
-    SET cait_modified_date = CURRENT_TIMESTAMP,
-        cait_user_entity_id = p_cait_user_entity_id,
-        cait_prog_entity_id = p_cait_prog_entity_id
-    WHERE cait_id = p_cait_id;
+    -- Insert into sales_order_detail table for each cart item
+    FOR v_cart_item IN SELECT * FROM json_to_recordset(p_cart_items) AS x(
+        cait_id integer,
+        cait_quantity integer,
+        cait_unit_price numeric,
+        cait_user_entity_id integer,
+        cait_prog_entity_id integer
+    )
+    LOOP
+        IF p_sode_unit_discount IS NOT NULL AND p_sode_soco_id IS NOT NULL THEN
+            INSERT INTO sales.sales_order_detail (
+                sode_id,
+                sode_qty,
+                sode_unit_price,
+                sode_unit_discount,
+                sode_line_total,
+                sode_modified_date,
+                sode_sohe_id,
+                sode_soco_id,
+                sode_prog_entity_id
+            )
+            VALUES (
+                DEFAULT,
+                v_cart_item.cait_quantity,
+                v_cart_item.cait_unit_price,
+                p_sode_unit_discount,
+                v_cart_item.cait_quantity * v_cart_item.cait_unit_price,
+                CURRENT_TIMESTAMP,
+                v_sode_id,
+                p_sode_soco_id,
+                v_cart_item.cait_prog_entity_id
+            );
+        END IF;
+    END LOOP;
 
     -- Commit the transaction
     COMMIT;

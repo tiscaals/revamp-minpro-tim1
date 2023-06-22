@@ -89,39 +89,43 @@ const generateLicenseCode = () => {
 
 // Menggunakan generator untuk mendapatkan nilai acak
 const handleCreateOrder = async () => {
-
   const trpaCodeNumber = generateTrpaCodeNumber();
 
-  const dummyData = [
-    {
-      p_cait_id: items[0].cait_id,
-      p_cait_quantity: items[0].cait_quantity,
-      p_cait_unit_price: totalPrice,
-      p_cait_user_entity_id: items[0].cait_user_entity_id,
-      p_cait_prog_entity_id: items[0].cait_prog_entity_id,
-      p_sode_unit_discount: parseFloat(spof_discount),
-      p_sode_soco_id: parseInt(spof_id),
-      p_sohe_order_number: generateOrderNumber(),
-      p_sohe_account_number: accountNumber,
-      p_sohe_trpa_code_number: trpaCodeNumber,
-      p_sohe_license_code: generateLicenseCode(),
-      p_sohe_user_entity_id: items[0].cait_user_entity_id,
-      p_sohe_status: 'open',
-    }
-  ];
+  const cartItems = items.map((item:any) => {
+    return {
+      cait_id: item.cait_id,
+      cait_quantity: item.cait_quantity,
+      cait_unit_price: totalPrice,
+      cait_user_entity_id: item.cait_user_entity_id,
+      cait_prog_entity_id: item.cait_prog_entity_id,
+    };
+  });
+
+  const dummyData = {
+    cartItems,
+    p_sohe_order_number: generateOrderNumber(),
+    p_sohe_account_number: accountNumber,
+    p_sohe_trpa_code_number: trpaCodeNumber,
+    p_sohe_license_code: generateLicenseCode(),
+    p_sohe_user_entity_id: items[0].cait_user_entity_id,
+    p_sohe_status: 'open',
+    p_sode_unit_discount: parseFloat(spof_discount),
+    p_sode_soco_id: parseInt(spof_id),
+  };
 
   try {
     await dispatch(addOrderReq(dummyData));
     // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
     router.push({
       pathname: '/sales/receipt',
-      query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber }
+      query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber },
     });
   } catch (error) {
     // Handle error jika terjadi kegagalan
     console.error('Gagal memasukkan data:', error);
   }
 };
+
 
 
 

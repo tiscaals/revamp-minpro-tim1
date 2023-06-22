@@ -27,6 +27,11 @@ export class SalesController {
     return this.salesService.insertSalesOrderDetail(createSaleDto);
   }
 
+  @Post('insert-order-json')
+  createOrderJson(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSalesOrderJson(createSaleDto);
+  }
+
   @Post('insert-sales-order')
   createSalesOrder(@Body() createSaleDto: CreateSaleDto) {
     return this.salesService.insertOrder(createSaleDto);

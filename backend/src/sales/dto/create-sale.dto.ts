@@ -7,6 +7,8 @@ export class CreateSaleDto {
  p_cait_user_entity_id: any
  p_cait_prog_entity_id: any
 
+ cartItems: any
+
  //---------------------------//
 
  p_spof_id: any

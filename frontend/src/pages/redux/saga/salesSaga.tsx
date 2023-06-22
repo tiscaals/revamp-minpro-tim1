@@ -32,7 +32,7 @@ function* handleGetDiskon():any {
 function* handleAddOrder(action:any):any {
   try {
     console.log(action.payload);
-    const result = yield call(apimethod.insertOrder, action.payload)
+    const result = yield call(apimethod.insertOrderJson, action.payload)
     yield put(addOrderRes(result.data))
   } catch (error) {
     yield put(addOrderRes({ message: error, status:400 }))

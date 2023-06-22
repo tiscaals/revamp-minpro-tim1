@@ -210,6 +210,47 @@ export class SalesService {
     console.log(message);
   }
 
+  //------------------ Insert Order Header dan Order Detail IN JSON -------------------------
+
+  async insertSalesOrderJson(createSaleDto: CreateSaleDto): Promise<any> {
+    console.log(createSaleDto);
+    try {
+      await this.sequelize.query(
+        `CALL sales.sales_place_order_json(
+          :p_cart_items,
+          :p_sohe_order_number,
+          :p_sohe_account_number,
+          :p_sohe_trpa_code_number,
+          :p_sohe_license_code,
+          :p_sohe_user_entity_id,
+          :p_sohe_status,
+          :p_sode_unit_discount,
+          :p_sode_soco_id
+        )`,
+        {
+          replacements: {
+            p_cart_items: JSON.stringify(createSaleDto.cartItems),
+            p_sohe_order_number: createSaleDto.p_sohe_order_number,
+            p_sohe_account_number: createSaleDto.p_sohe_account_number,
+            p_sohe_trpa_code_number: createSaleDto.p_sohe_trpa_code_number,
+            p_sohe_license_code: createSaleDto.p_sohe_license_code,
+            p_sohe_user_entity_id: createSaleDto.p_sohe_user_entity_id,
+            p_sohe_status: createSaleDto.p_sohe_status,
+            p_sode_unit_discount: createSaleDto.p_sode_unit_discount,
+            p_sode_soco_id: createSaleDto.p_sode_soco_id,
+          },
+        }
+      );
+  
+      const successMessage = 'Order berhasil';
+      this.sendMessage2(successMessage);
+    } catch (error) {
+      const errorMessage = `Terjadi kesalahan saat melakukan order: ${error.message}`;
+      this.sendMessage2(errorMessage);
+    }
+  }
+  
+
   //------------------ Insert Order -------------------------
   
   async insertOrder(createSaleDto: CreateSaleDto): Promise<any> {

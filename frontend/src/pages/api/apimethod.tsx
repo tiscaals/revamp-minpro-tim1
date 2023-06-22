@@ -16,6 +16,10 @@ const insertOrder=(data:any)=>{
     return axios.post('/sales/insert-order-detail',data)
 }
 
+const insertOrderJson=(data:any)=>{
+    return axios.post('/sales/insert-order-json',data)
+}
+
 const getPayment=()=>{
     return axios.get('/sales/view-payment')
 }
@@ -25,7 +29,8 @@ export default {
     deleteCartItems,
     getDiskon,
     insertOrder,
-    getPayment
+    getPayment,
+    insertOrderJson
 }
 
 // axios.interceptors.request.use(
