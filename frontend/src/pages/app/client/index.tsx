@@ -5,7 +5,7 @@ import Pagination from "@/pages/komponen/pagination";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { doRequestGetClient } from "../redux/jobhire-schema/action/actionReducer";
+import { doRequestGetClient } from "../../redux/jobhire-schema/action/actionReducer";
 import { Button } from "@material-tailwind/react";
 
 const Jobs = () => {
@@ -31,7 +31,11 @@ const Jobs = () => {
   const [isSearching, setIsSearching] = useState(false);
   const [filteredData, setFilteredData]: any = useState([]);
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+
   const handleSearchChange = () => {
+    setCurrentPage(1)
     setIsSearching(true);
   
     const filtered = client.filter((item: any) => {
@@ -52,8 +56,6 @@ const Jobs = () => {
   {
     /* UNTUK PAGING START */
   }
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
   const totalPages = Math.ceil(displayData?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;

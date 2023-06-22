@@ -140,7 +140,7 @@ const JobDetail = () => {
                                             </>
                                         ) : (
                                             <>
-                                            <h3 className="text-sm">Dibuat 1 hari lalu</h3>
+                                            <h3 className="text-sm">Baru saja dibuat</h3>
                                             </>
                                         )}</h3>
                                     </div>
@@ -247,7 +247,7 @@ const JobDetail = () => {
                 <div className="xl:pl-48 lg:pl-10 md:pl-0 py-6 md:pt-28">
                     <h1 className="text-lg font-semibold pb-3">Similar jobs for you</h1>
                     <div className="grid grid-cols-1 gap-4">
-                        <CardJob currentPage={currentPage} itemsPerPage={itemsPerPage}/>
+                        <CardJob currentPage={currentPage} itemsPerPage={itemsPerPage} filtering={title}/>
                     </div>
                 </div>
             </div>

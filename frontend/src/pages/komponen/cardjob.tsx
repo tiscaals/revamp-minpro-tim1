@@ -5,73 +5,60 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { doRequestGetJobPost } from "../redux/jobhire-schema/action/actionReducer";
 
-const CardJob = ({ currentPage, itemsPerPage, ...other }: { currentPage: number; itemsPerPage: number }) => {
-  const { job_post, refresh } = useSelector((state:any) => state.JobPostReducers,);
+function calculateSimilarityScore(a:any, b:any) {
+  const matrix = [];
+  // Initialize matrix
+  for (let i = 0; i <= b.length; i++) {
+    matrix[i] = [i];
+  }
+
+  for (let j = 0; j <= a.length; j++) {
+    matrix[0][j] = j;
+  }
+
+  // Calculate distances
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substitution
+          matrix[i][j - 1] + 1,     // insertion
+          matrix[i - 1][j] + 1      // deletion
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
+
+const CardJob = ({ currentPage, itemsPerPage, filtering }: { currentPage: number; itemsPerPage: number, filtering?:any }) => {
+  let { job_post, refresh } = useSelector((state:any) => state.JobPostReducers,);
   const dispatch = useDispatch();
+
+  // console.log("FILTERING", filtering);
+
+  if (filtering) {
+    const itemSimilarityScore = job_post.map((post: { jopo_title: any; })=>{
+      const similarityScore = calculateSimilarityScore(filtering, post.jopo_title);
+      // console.log(`Similarity score`, similarityScore, post.jopo_title);
+      return {
+        ...post,
+        similarityScore: similarityScore,
+      }
+    })
+    const filteredItems = itemSimilarityScore.filter((item: any) => item.similarityScore !== 0);
+    job_post = filteredItems.sort((a: any, b: any) => a.similarityScore - b.similarityScore);
+  }
+
+  // console.log("SORTED JOBS", job_post);
   
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = job_post?.slice(startIndex, endIndex);
-
-  // const filtering = {
-  //   "pagination":{
-  //       "limit":100,
-  //       "offset":0
-  //   },
-  //   "search":{
-  //       "keyword":null,
-  //       "location":null //jakarta, bogor, dll
-  //   },
-  //   "filter":{
-  //       "job_role":null, // id nya (1,2,3,...)
-  //       "newest":false, // kalo match false, kalo newest true
-  //       "working_type":null, // FT, PT, CONT, FL, INTR
-  //       "experience":null, // 0, 1-3, 
-  //       "remotely":false, // job_type(true, false)
-  //       "updated":null, // 24 Jam Terakhir, Seminggu Terakhir, Sebulan Terakhir
-  //       "status":null, //publish, draft, remove
-  //       "open":null // 0,1
-  //   }
-  // }
-
-  const [filters, setFilters] = useState({
-    keyword: null,
-    location: null,
-    job_role: null,
-    newest: false,
-    working_type: null,
-    experience: null,
-    remotely: false,
-    updated: null,
-    status: null,
-    open: null,
-  });
-
-  const handleFilterChange = (filterName: string, value: any) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [filterName]: value,
-    }));
-  };
-
-  // Apply filters to the job_post array
-  // const filteredItems = job_post?.filter((data: any) => {
-  //   // Check if data matches the filter conditions
-  //   if (filters.keyword && !data.jopo_title.toLowerCase().includes(filters.keyword.toLowerCase())) {
-  //     return false; // Skip if keyword filter doesn't match
-  //   }
-  //   if (filters.location && data.city_name !== filters.location) {
-  //     return false; // Skip if location filter doesn't match
-  //   }
-  //   if (filters.job_role && data.job_role !== filters.job_role) {
-  //     return false; // Skip if job role filter doesn't match
-  //   }
-  //   // Add more filter conditions as per your requirements
-  //   // ...
-
-  //   return true; // Include data if it matches all the filter conditions
-  // });
-
+  
   useEffect(()=>{
     dispatch(doRequestGetJobPost())
     setTimeout(()=>{console.log('post',job_post); console.log("CURRENT ITEMS",currentItems);},2000)
@@ -134,7 +121,7 @@ const CardJob = ({ currentPage, itemsPerPage, ...other }: { currentPage: number;
                         const currentDate = new Date();
                         const timeDiff: number = Math.abs(currentDate.getTime() - publishedDate.getTime());
                         const daysDiff: number = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-                        const createdDaysAgo: string = `Dibuat ${daysDiff} hari lalu`;
+                        const createdDaysAgo: string = `Diperbarui ${daysDiff} hari lalu`;
                         return (
                           <>
                             <AiOutlineHistory className="pt-1" />
@@ -146,7 +133,7 @@ const CardJob = ({ currentPage, itemsPerPage, ...other }: { currentPage: number;
                   ) : (
                     <>
                       <AiOutlineHistory className="pt-1" />
-                      <h3 className="text-sm">Dibuat 1 hari lalu</h3>
+                      <h3 className="text-sm">Diperbarui 1 hari lalu</h3>
                     </>
                   )}
                   </div>

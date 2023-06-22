@@ -26,9 +26,9 @@ import {
 } from 'react-icons/bs';
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
-import { doRequestGetRoac } from '../redux/master-schema/action/actionReducer';
-import { doRequestGetCandidate } from '../redux/jobhire-schema/action/actionReducer';
-import Pagination from '../komponen/pagination';
+import { doRequestGetRoac } from '../../redux/master-schema/action/actionReducer';
+import { doRequestGetCandidate, doRequestUpdateCandidate } from '../../redux/jobhire-schema/action/actionReducer';
+import Pagination from '../../komponen/pagination';
 // import {
 //   editParogReq,
 //   editPrapReq,
@@ -43,11 +43,11 @@ export default function Candidates() {
 
   const [idProgress, setIdProgress] = useState();
   const [selectRoute, setSelectRoute] = useState('Apply');
-  const [score, setScore] = useState(0);
+  const [score, setScore] = useState();
   const [status, setStatus] = useState('');
   const [route, setRoute] = useState<string>('Apply');
+  const [nextRoute, setNextRoute] = useState('');
   const [comment, setComment] = useState('');
-  const [prapstatus, setPrapstatus] = useState();
 
   useEffect(() => {
     dispatch(doRequestGetRoac());
@@ -62,9 +62,21 @@ export default function Candidates() {
   }, [routes]);
 
   const handleRoute = (routeName: string) => {
-    console.log("routeName", routeName);
     setSelectRoute(routeName);
     setRoute(routeName);
+
+    const currentIndex = routes.findIndex((r: any) => r.roac_name === routeName);
+    console.log("CURRENT INDEX", currentIndex);
+
+    const nextIndex = currentIndex + 1;
+
+    if (nextIndex < routes.length) {
+      const nextRoute = routes[nextIndex].roac_name;
+      setNextRoute(nextRoute);
+      console.log("NEXT ROUTE", nextRoute);
+    } else {
+      setNextRoute('');
+    }
   };
 
   const filteredData =
@@ -72,9 +84,6 @@ export default function Candidates() {
     candidates?.filter(
       (item: any) => item.tapr_progress_name === selectRoute)
     : candidates;
-
-  // const filteredData = candidates?.filter(
-  //     (item: any) => item.tapr_progress_name === selectRoute);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -85,14 +94,11 @@ export default function Candidates() {
 
   const handlePageChange = (page: any) => {
     setCurrentPage(page);
-    // console.log("CURRENT", currentPage, itemsPerPage);
   };
 
   if (routes.length === 0 && candidates.length === 0) {
     return <div>loading...</div>;
   }
-
-  // console.log(selectRoute);
 
   return (
     <div className="bg-white px-7 py-3 rounded-md">
@@ -205,6 +211,7 @@ export default function Candidates() {
                   <div className="w-full text-right">
                     <Menu as="div" className="relative inline-block text-left ">
                       <div>
+                        {route === 'Failed' || route === 'Succeed' ? null :
                         <Menu.Button
                           onClick={() => setIdProgress(dt.taap_entity_id)}
                           className="inline-flex w-full justify-center rounded-md 
@@ -217,7 +224,10 @@ export default function Candidates() {
                             aria-hidden="true"
                           />
                         </Menu.Button>
+                        }
                       </div>
+
+                      {/* ------ Switch Status ------ */}
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-100"
@@ -243,34 +253,29 @@ export default function Candidates() {
                                     <Input
                                       label="Score Filtering Test"
                                       type="number"
-                                      onChange={(e: any) =>
+                                      onChange={(e: any) => 
                                         setScore(e.target.value)
                                       }
                                     />
-                                    <Input
-                                      label={
-                                        score < 25
-                                          ? 'failed'
-                                          : score >= 25 && score < 50
-                                          ? 'recommendation'
-                                          : 'passed'
-                                      }
+                                    {score?
+                                      <>
+                                      <Input
+                                      labelProps={{
+                                        className: "hidden" 
+                                      }}
                                       className={
-                                        score < 25
-                                          ? 'disabled:bg-red-100 disabled:text-red-800'
-                                          : score >= 25 && score < 50
-                                          ? 'disabled:bg-orange-100 disabled:text-orange-800'
-                                          : 'disabled:bg-green-100 disabled:text-green-800'
+                                        score < 50
+                                        ? 'bg-red-100 text-red-800'
+                                        : 'bg-green-100 text-green-800'
                                       }
                                       value={
-                                        score < 25
-                                          ? 'failed'
-                                          : score >= 25 && score < 50
-                                          ? 'recommendation'
-                                          : 'passed'
+                                        score < 50
+                                        ? 'Failed'
+                                        : 'Passed'
                                       }
-                                      disabled
-                                    />
+                                      />
+                                      </>
+                                    : null}
                                     <Textarea
                                       label="Review"
                                       onChange={(e: any) =>
@@ -279,57 +284,22 @@ export default function Candidates() {
                                     />
                                     <Button
                                       size="sm"
-                                      onClick={() =>{}
-                                        // dispatch(
-                                        //   editPrapReq({
-                                        //     userid: dt.user_entity_id,
-                                        //     progid: dt.prog_entity_id,
-                                        //     prap_test_score: grade,
-                                        //     prap_review: review,
-                                        //     prap_status:
-                                        //       grade < 25
-                                        //         ? 'failed'
-                                        //         : grade >= 25 && grade < 50
-                                        //         ? 'recommendation'
-                                        //         : 'passed',
-                                        //     parog_progress_name:
-                                        //       grade < 25
-                                        //         ? 'disqualified'
-                                        //         : 'contract legal',
-                                        //     parog_id: dt.parog_id,
-                                        //   })
-                                        // )
-                                      }
-                                    >
-                                      Submit
-                                    </Button>
-                                  </>
-                                ) : route === 'Failed' ? (
-                                  <>
-                                    <Select
-                                      onChange={(e: any) => setPrapstatus(e)}
-                                      label="Set Status"
-                                    >
-                                      <Option value="recommendation">
-                                        Recommendation
-                                      </Option>
-                                    </Select>
-                                    <Button
-                                      size="sm"
-                                      onClick={() =>{}
-                                        // dispatch(
-                                        //   editPrapReq({
-                                        //     userid: dt.user_entity_id,
-                                        //     progid: dt.prog_entity_id,
-                                        //     prap_test_score: dt.prap_test_score,
-                                        //     prap_review: dt.prap_review,
-                                        //     prap_status: prapstatus,
-                                        //     parog_progress_name:
-                                        //       'contract legal',
-                                        //     parog_id: dt.parog_id,
-                                        //   })
-                                        // )
-                                      }
+                                      onClick={() =>{
+                                        {score ? 
+                                          score < 50 ? setStatus('Failed') : setStatus(nextRoute)
+                                        : ''};
+                                        console.log("STATUS AT BUTTON",status);
+                                        dispatch(
+                                          doRequestUpdateCandidate({
+                                            id: dt.taap_user_entity_id,
+                                            taap_status: status.toLowerCase(),
+                                            tapr_progress_name: status,
+                                            taap_scoring: score,
+                                            tapr_comment: comment
+                                          })
+                                        );
+                                        console.log("STATUS",status);
+                                      }}
                                     >
                                       Submit
                                     </Button>
@@ -349,14 +319,16 @@ export default function Candidates() {
                                     </Select>
                                     <Button
                                       size="sm"
-                                      onClick={() =>{}
-                                        // dispatch(
-                                        //   editParogReq({
-                                        //     id: taap_entity_id,
-                                        //     tapr_progress_name: status,
-                                        //   })
-                                        // )
-                                      }
+                                      onClick={() => {
+                                        dispatch(
+                                          doRequestUpdateCandidate({
+                                            id: dt.taap_user_entity_id,
+                                            taap_status: status.toLowerCase(),
+                                            tapr_progress_name: status,
+                                          })
+                                        );
+                                        // console.log("STATUS",status);
+                                      }}
                                     >
                                       Submit
                                     </Button>

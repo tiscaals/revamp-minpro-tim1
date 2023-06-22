@@ -48,7 +48,6 @@ const JobEdit = () => {
   let { job_role } = useSelector((state: any) => state.JobroleReducers);
 
   let { client } = useSelector((state: any) => state.ClientReducers);
-
   // console.log('client',client[0])
   // console.log('JOB',job_post_id)
   // console.log('work',work_type)
@@ -700,6 +699,7 @@ const JobEdit = () => {
               </div>
             </div>
           </section>
+
         </form>
       </div>
     </ContentLink>

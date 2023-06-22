@@ -14,6 +14,8 @@ const initialState = {
     switch (type) {
       case ActionTypes.RES_GET_CANDIDATE:
         return { ...state, candidates: payload, refresh: true };  
+      case ActionTypes.RES_UPDATE_CANDIDATE:
+        return { message: payload.message, status: payload.status, refresh: false };  
       default:
         return state;
     }

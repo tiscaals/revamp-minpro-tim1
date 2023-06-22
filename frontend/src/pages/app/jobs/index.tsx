@@ -5,11 +5,12 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import Pagination from "../../../../src/pages/komponen/pagination";
 
 import Link from "next/link";
-import { Switch } from "@material-tailwind/react"
+import { Input, Option, Select, Switch } from "@material-tailwind/react"
 import { Menu, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
 import { doRequestGetJobPost } from "@/pages/redux/jobhire-schema/action/actionReducer";
 import { doRequestGetIndustry, doRequestGetJobrole } from "@/pages/redux/master-schema/action/actionReducer";
+import DeleteJobPost from "./delete";
 
 const columns = [
   {name:'TITLE'},
@@ -31,9 +32,17 @@ const Jobs = () => {
   const [searchValue, setSearchValue] = useState("");
   const [searchFilter, setSearchFilter] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
   const [filteredData, setFilteredData]: any = useState([]);
 
+  const [dataJoopo, setDataJopo] = useState("")
+
+  {/* Current & Items per page */}
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
   const handleSearchChange = () => {
+    setCurrentPage(1)
     setIsSearching(true);
     const searched = job_post.filter((item: any) => {
       const jopoTitle = item.jopo_title?.toLowerCase() ?? '';
@@ -59,8 +68,6 @@ const Jobs = () => {
   {
     /* UNTUK PAGING START */
   }
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10);
   const totalPages = Math.ceil(displayData?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -95,27 +102,21 @@ const Jobs = () => {
               </div>
 
               <div className="pb-2 lg:pb-0 lg:pl-4">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <AiOutlineSearch className="h-4 w-4" />
-                  </div>
-                  <input
-                    type="text"
-                    id="simple-search"
-                    className=" text-sm rounded-lg block w-full pl-8 p-2.5 ring-1 lg:w-[17rem] "
-                    placeholder="Title, Experience, Industry"
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                  />
-                </div>
+                <Input
+                label="Title, Experience, Industry"
+                type="text"
+                id="simple-search"
+                icon={<AiOutlineSearch className="h-4 w-4" />}
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}/>
               </div>
 
               <div className="pb-4 lg:pb-0 lg:pl-4">
-                <select className="text-sm rounded-lg ring-1 block w-full p-2.5" onChange={(e) => setSearchFilter(e.target.value)}>
-                  <option value="">All</option>
-                  <option value="1">Open</option>
-                  <option value="0">Closed</option>
-                </select>
+                <Select label="Pilih Filter" onChange={(value) => setSearchFilter(value || "")}>
+                  <Option value="">All</Option>
+                  <Option value="1">Open</Option>
+                  <Option value="0">Closed</Option>
+                </Select>
               </div>
 
               <div className="pb-2 lg:pb-0 lg:pl-4">
@@ -186,15 +187,6 @@ const Jobs = () => {
                         <Switch checked={true}/> :
                         <Switch checked={false}/>}
                       </div>
-                      {/* <label className="relative inline-flex items-center  cursor-pointer">
-                        <input
-                          type="checkbox"
-                          className="sr-only"
-                          // checked={isPublishChecked}
-                          // onChange={handlePublishToggle}
-                        />
-                        <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
-                      </label> */}
                     </td>
                     <td className="px-6 py-4">
                       <div className="w-full text-right">
@@ -247,8 +239,8 @@ const Jobs = () => {
                                   {({ active }) => (
                                     <button
                                       onClick={() => {
-                                        // setProdCatById(data);
-                                        // setIsDelete(true);
+                                        setDataJopo(dt);
+                                        setIsDelete(true);
                                       }}
                                       className={`${
                                         active
@@ -277,7 +269,7 @@ const Jobs = () => {
             handlePageChange={handlePageChange}
           />
       </ContentLink>
-
+      {isDelete?<DeleteJobPost show={isDelete} closeModal={()=>setIsDelete(false)} data={dataJoopo}/>:''}
     </div>
   );
 };

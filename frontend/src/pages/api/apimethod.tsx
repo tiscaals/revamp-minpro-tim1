@@ -31,7 +31,8 @@ const updateJobPost =(data:any)=>{
 }
 
 const deleteJobPost =(data:any)=>{
-    const id:number = +data;
+    console.log("apiMethod",data);
+    const id:number = +data.id;
     return axios.patch(`/job-hire/delete/${id}`)
 }
 
@@ -39,6 +40,11 @@ const deleteJobPost =(data:any)=>{
 
 const findProCandidate =()=>{
     return axios.get("/job-hire/talent")
+}
+
+const updateCandidate =(data:any)=>{
+    console.log("API DATA UPDATE", data);
+    return axios.patch(`/job-hire/talent/${data.id}`,data)
 }
 
 /*-------- CRUD CLIENT ---------*/
@@ -97,6 +103,7 @@ export default {
     deleteJobPost,
 
     findProCandidate,
+    updateCandidate,
 
     findAllEmprange,
 

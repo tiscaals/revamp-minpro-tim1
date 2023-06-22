@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MenuItem, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
-import ContentLink from "../contentlink";
+import ContentLink from "../../contentlink";
 import { useDispatch, useSelector } from "react-redux";
-import { doRequestGetCity, doRequestGetIndustry } from "../redux/master-schema/action/actionReducer";
-import { doRequestGetClientById, doRequestGetEmprange, doRequestUpdateClient } from "../redux/jobhire-schema/action/actionReducer";
+import { doRequestGetCity, doRequestGetIndustry } from "../../redux/master-schema/action/actionReducer";
+import { doRequestGetClientById, doRequestGetEmprange, doRequestUpdateClient } from "../../redux/jobhire-schema/action/actionReducer";
 import { useRouter } from "next/router";
 import { Button } from "@material-tailwind/react";
 

@@ -3,7 +3,8 @@ import { Fragment } from "react";
 import { Transition, Dialog } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { doRequestDeleteJobPost } from "@/pages/redux/JobhireSchema/action/actionreducer";
+import { doRequestDeleteJobPost } from "@/pages/redux/jobhire-schema/action/actionReducer";
+import { Button } from "@material-tailwind/react";
 
 const DeleteJobPost = (props: any) => {
   const {
@@ -59,25 +60,22 @@ const DeleteJobPost = (props: any) => {
                       <div className="max-w-xl bg-white py-6 px-3 m-auto w-full mt-6">
                         <div className="grid grid-cols-1 gap-4 max-w-xl m-auto">
                           <p className="pb-10 text-center text-md font-medium leading-6 text-gray-900">
-                            Apakah anda yakin ?
+                            Apakah anda yakin ingin menghapus?
                           </p>
                           <input
                             type="hidden"
-                            defaultValue={props.postById}
+                            defaultValue={props.data.jopo_entity_id}
                             {...register("id")}
                             className="px-2 py-2 border w-full rounded-lg text-gray-800"
                           />
                         </div>
                         <div className=" flex-row space-x-4 mt-0 text-center">
-                          <button className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2">
-                            Submit
-                          </button>
-                          <button
-                            className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                            onClick={props.closeModal}
-                          >
+                          <Button onClick={props.closeModal}>
                             Cancel
-                          </button>
+                          </Button>
+                          <Button type="submit">
+                            Submit
+                          </Button>
                         </div>
                       </div>
                     </form>

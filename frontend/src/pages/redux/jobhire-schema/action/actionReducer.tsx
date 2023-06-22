@@ -111,6 +111,20 @@ export const doResponseGetCandidate = (payload: any) => {
   };
 };
   
+export const doRequestUpdateCandidate = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_CANDIDATE,
+    payload,
+  };
+};
+
+export const doResponseUpdateCandidate = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_CANDIDATE,
+    payload,
+  };
+};
+
 /*------------ CLIENT SECTION -------------*/
 
 export const doRequestGetClient = () => {
