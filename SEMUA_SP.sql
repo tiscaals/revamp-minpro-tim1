@@ -262,6 +262,7 @@ CALL hr.createdataemployee('{
 
 
 --SP create employee dari bootcamp(talents)
+
 CREATE OR REPLACE PROCEDURE hr.CCFromBootcamp (IN data JSON)
 LANGUAGE plpgsql
 AS $$
@@ -368,3 +369,4 @@ BEGIN
 	WHERE talent_user_entity_id = emp_row.emp_entity_id;
 END;
 $$;
+
