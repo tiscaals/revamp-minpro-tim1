@@ -161,9 +161,81 @@ export class SalesService {
 
   async insertSalesOrder(createSaleDto: CreateSaleDto): Promise<any> {
     console.log(createSaleDto);
+    createSaleDto = createSaleDto[0]
     try {
       await this.sequelize.query(
         `CALL sales.sales_place_order(
+          :p_cait_id,
+          :p_cait_quantity,
+          :p_cait_unit_price,
+          :p_cait_user_entity_id,
+          :p_cait_prog_entity_id,
+          :p_sode_unit_discount,
+          :p_sode_soco_id,
+          :p_sohe_order_number,
+          :p_sohe_account_number,
+          :p_sohe_trpa_code_number,
+          :p_sohe_license_code,
+          :p_sohe_user_entity_id,
+          :p_sohe_status
+        )`,
+        {
+          replacements: {
+            p_cait_id: createSaleDto.p_cait_id,
+            p_cait_quantity: createSaleDto.p_cait_quantity,
+            p_cait_unit_price: createSaleDto.p_cait_unit_price,
+            p_cait_user_entity_id: createSaleDto.p_cait_user_entity_id,
+            p_cait_prog_entity_id: createSaleDto.p_cait_prog_entity_id,
+            p_sode_unit_discount: createSaleDto.p_sode_unit_discount,
+            p_sode_soco_id: createSaleDto.p_sode_soco_id,
+            p_sohe_order_number: createSaleDto.p_sohe_order_number,
+            p_sohe_account_number: createSaleDto.p_sohe_account_number,
+            p_sohe_trpa_code_number: createSaleDto.p_sohe_trpa_code_number,
+            p_sohe_license_code: createSaleDto.p_sohe_license_code,
+            p_sohe_user_entity_id: createSaleDto.p_sohe_user_entity_id,
+            p_sohe_status: createSaleDto.p_sohe_status,
+          },
+        }
+      );
+  
+      const successMessage = 'Order berhasil';
+      this.sendMessage2(successMessage);
+    } catch (error) {
+      const errorMessage = `Terjadi kesalahan saat melakukan order: ${error.message}`;
+      this.sendMessage2(errorMessage);
+    }
+  }
+  
+  private sendMessage2(message: string) {
+    console.log(message);
+  }
+
+  //------------------ Insert Order -------------------------
+  
+  async insertOrder(createSaleDto: CreateSaleDto): Promise<any> {
+    console.log(createSaleDto);
+    try {
+      const {
+        p_cait_id,
+        p_cait_quantity,
+        p_cait_unit_price,
+        p_cait_user_entity_id,
+        p_cait_prog_entity_id,
+        p_sode_unit_discount,
+        p_sode_soco_id,
+        p_sohe_order_date,
+        p_sohe_due_date,
+        p_sohe_ship_date,
+        p_sohe_order_number,
+        p_sohe_account_number,
+        p_sohe_trpa_code_number,
+        p_sohe_license_code,
+        p_sohe_user_entity_id,
+        p_sohe_status,
+      } = createSaleDto;
+  
+      await this.sequelize.query(
+        `CALL sales.insert_order(
           :p_cait_id,
           :p_cait_quantity,
           :p_cait_unit_price,
@@ -183,22 +255,22 @@ export class SalesService {
         )`,
         {
           replacements: {
-            p_cait_id: createSaleDto.p_cait_id,
-            p_cait_quantity: createSaleDto.p_cait_quantity,
-            p_cait_unit_price: createSaleDto.p_cait_unit_price,
-            p_cait_user_entity_id: createSaleDto.p_cait_user_entity_id,
-            p_cait_prog_entity_id: createSaleDto.p_cait_prog_entity_id,
-            p_sode_unit_discount: createSaleDto.p_sode_unit_discount,
-            p_sode_soco_id: createSaleDto.p_sode_soco_id,
-            p_sohe_order_date: createSaleDto.p_sohe_order_date,
-            p_sohe_due_date: createSaleDto.p_sohe_due_date,
-            p_sohe_ship_date: createSaleDto.p_sohe_ship_date,
-            p_sohe_order_number: createSaleDto.p_sohe_order_number,
-            p_sohe_account_number: createSaleDto.p_sohe_account_number,
-            p_sohe_trpa_code_number: createSaleDto.p_sohe_trpa_code_number,
-            p_sohe_license_code: createSaleDto.p_sohe_license_code,
-            p_sohe_user_entity_id: createSaleDto.p_sohe_user_entity_id,
-            p_sohe_status: createSaleDto.p_sohe_status,
+            p_cait_id,
+            p_cait_quantity,
+            p_cait_unit_price,
+            p_cait_user_entity_id,
+            p_cait_prog_entity_id,
+            p_sode_unit_discount,
+            p_sode_soco_id,
+            p_sohe_order_date,
+            p_sohe_due_date,
+            p_sohe_ship_date,
+            p_sohe_order_number,
+            p_sohe_account_number,
+            p_sohe_trpa_code_number,
+            p_sohe_license_code,
+            p_sohe_user_entity_id,
+            p_sohe_status,
           },
         }
       );
@@ -211,10 +283,7 @@ export class SalesService {
     }
   }
   
-  private sendMessage2(message: string) {
-    console.log(message);
-  }
-  
+
   //------------------ Update Cart Items -------------------------
 
   async updateCartItemById(id: number, updateSaleDto: UpdateSaleDto): Promise<any> {

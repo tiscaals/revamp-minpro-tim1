@@ -24,7 +24,7 @@ const Invoice: React.FC = () => {
     //   const [totalPrice, setTotalPrice] = useState(0);
 
     const router = useRouter();
-    const { totalPrice, accountNumber, fintechName, userName } = router.query;
+    const { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber } = router.query;
     const totalPriceString = Array.isArray(totalPrice) ? totalPrice[0] : totalPrice;
     const totalPriceNumber = parseInt(totalPriceString || "0");
 
@@ -107,7 +107,7 @@ const Invoice: React.FC = () => {
                         <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Number: {accountNumber}</p>
                         <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Name: {userName}</p>
                         <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Credit: Rp. {totalPriceNumber.toLocaleString()}</p>
-                        <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Transaction Number: TRX-20232206-001</p>
+                        <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Transaction Number: {trpaCodeNumber}</p>
                     </div>
                 </div>
 

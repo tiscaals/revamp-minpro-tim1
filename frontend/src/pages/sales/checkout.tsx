@@ -21,6 +21,7 @@ import { delCartReq, getAllCartReq, getDiskonReq, getPaymentReq } from '../redux
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BiCartDownload } from 'react-icons/bi';
 
 const ApplyButton = styled(Button)(({ theme }) => ({
   backgroundColor: '#3f51b5',
@@ -40,10 +41,11 @@ const CartPage: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [originalPrice, setOriginalPrice] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
-  const [discountApplied, setDiscountApplied] = useState(false);
+  const [isDiscountApplied, isSetDiscountApplied] = useState(false);
   const [selectedFintech, setSelectedFintech] = useState('');
   const [selectedAccountNumber, setSelectedAccountNumber] = useState('');
   const [selectedUserName, setSelectedUserName] = useState('');
+  const [discountApply, setDiscountApply] = useState<any>()
 
   const handleAccountFintechClick = (fintech: string) => {
     setSelectedFintech(fintech);
@@ -60,7 +62,7 @@ const CartPage: React.FC = () => {
     if (selectedAccountNumber) {
       router.push({
         pathname: '/sales/createorder',
-        query: { totalPrice: totalPrice, accountNumber: selectedAccountNumber, fintechName: selectedFintech, userName: selectedUserName }
+        query: { totalPrice: totalPrice, accountNumber: selectedAccountNumber, fintechName: selectedFintech, userName: selectedUserName, spof_id: discountApply.spof_id, spof_discount: discountApply.spof_discount }
       });
     } else {
       toast.error('No account number found');
@@ -230,19 +232,21 @@ const CartPage: React.FC = () => {
     );
 
     if (matchingDiscount) {
+      setDiscountApply(matchingDiscount)
       const discount = parseFloat(matchingDiscount.spof_discount);
       const discountedPrice = totalPrice - (totalPrice * discount) / 100;
       setTotalPrice(discountedPrice);
-      setDiscountApplied(true);
+      isSetDiscountApplied(true);
       toast.success('Discount applied');
     } else {
       toast.error('No matching discount found');
     }
   };
-
+  console.log(discountApply);
+  
   const handleCancelDiscount = () => {
     setTotalPrice(originalPrice);
-    setDiscountApplied(false);
+    isSetDiscountApplied(false);
     toast.success('Discount cancelled');
   };
 
@@ -251,7 +255,13 @@ const CartPage: React.FC = () => {
       <Navbar />
       <ToastContainer />
       <div className="container mx-auto p-4">
-        <p className="text-lg font-bold text-red-600">{items.length} Course in cart</p>
+      <p className="text-lg font-bold text-red-600">
+  <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
+    {items.length}
+  </span>
+  Course in cart
+  <BiCartDownload className="inline-block ml-2" />
+</p>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
@@ -317,7 +327,7 @@ const CartPage: React.FC = () => {
                 <div>
                   <div className="mt-4 flex items-center">
 
-                    {discountApplied ? (
+                    {isDiscountApplied ? (
                       <Button
                         variant="contained"
                         color="secondary"

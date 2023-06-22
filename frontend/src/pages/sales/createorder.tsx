@@ -3,8 +3,6 @@ import Image from 'next/image';
 import courseImage from '../../images/logokecil.png';
 import { TextField, Button } from '@mui/material';
 import { styled } from '@mui/system';
-import { Search as SearchIcon } from '@mui/icons-material';
-import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import Navbar from '../components/navbar';
 import { useRouter } from 'next/router';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -16,6 +14,7 @@ import { addOrderReq, delCartReq, getAllCartReq } from '../redux/action/actionRe
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BiCartDownload } from 'react-icons/bi';
 
 const ApplyButton = styled(Button)(({ theme }) => ({
   backgroundColor: '#3f51b5',
@@ -43,49 +42,87 @@ const CreateOrder: React.FC = () => {
   const [removeItemId, setRemoveItemId] = useState(0);
 
   const router = useRouter();
-  const { totalPrice, accountNumber, fintechName, userName } = router.query;
+  const { totalPrice, accountNumber, fintechName, userName, spof_id, spof_discount } = router.query;
   const totalPriceString = Array.isArray(totalPrice) ? totalPrice[0] : totalPrice;
   const totalPriceNumber = parseInt(totalPriceString || "0");
 
   useEffect(() => {
     dispatch(getAllCartReq());
   }, [dispatch]);
+  console.log(items);
 
-  const handleCreateOrder = async () => {
-    const dummyData = [
-      {
-        p_cait_id: 150,
-        p_cait_quantity: 1,
-        p_cait_unit_price: 4000000,
-        p_cait_user_entity_id: 2,
-        p_cait_prog_entity_id: 2,
-        p_sode_unit_discount: 0.2,
-        p_sode_soco_id: 4,
-        p_sohe_order_date: '2023-06-20',
-        p_sohe_due_date: '2023-06-27',
-        p_sohe_ship_date: '2023-06-25',
-        p_sohe_order_number: 'ORDER009',
-        p_sohe_account_number: 'ACCT009',
-        p_sohe_trpa_code_number: 'TRPA009',
-        p_sohe_license_code: 'LICENSE009',
-        p_sohe_user_entity_id: 2,
-        p_sohe_status: 'open',
-      }
-    ];
+// Fungsi untuk menghasilkan nomor pesanan acak
+const generateOrderNumber = () => {
+  const prefix = 'ORDER';
+  const characters = '0123456789';
+  let randomNumber = '';
+  for (let i = 0; i < 6; i++) {
+    randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return `${prefix}${randomNumber}`;
+};
 
-    try {
-      await dispatch(addOrderReq(dummyData));
-      // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
-      router.push({
-        pathname: '/sales/receipt',
-        query: { totalPrice, accountNumber, fintechName, userName }
-      });
-    } catch (error) {
-      // Handle error jika terjadi kegagalan
-      console.error('Gagal memasukkan data:', error);
+
+// Fungsi untuk menghasilkan kode nomor TRPA acak
+const generateTrpaCodeNumber = () => {
+  const prefix = 'TRPA';
+  const characters = '0123456789';
+  let randomNumber = '';
+  for (let i = 0; i < 6; i++) {
+    randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return `${prefix}${randomNumber}`;
+};
+
+
+// Fungsi untuk menghasilkan kode lisensi acak
+const generateLicenseCode = () => {
+  const prefix = 'LICENSE';
+  const characters = '0123456789';
+  let randomNumber = '';
+  for (let i = 0; i < 5; i++) {
+    randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return `${prefix}${randomNumber}`;
+};
+
+
+// Menggunakan generator untuk mendapatkan nilai acak
+const handleCreateOrder = async () => {
+
+  const trpaCodeNumber = generateTrpaCodeNumber();
+
+  const dummyData = [
+    {
+      p_cait_id: items[0].cait_id,
+      p_cait_quantity: items[0].cait_quantity,
+      p_cait_unit_price: totalPrice,
+      p_cait_user_entity_id: items[0].cait_user_entity_id,
+      p_cait_prog_entity_id: items[0].cait_prog_entity_id,
+
+      p_sode_unit_discount: spof_discount,
+      p_sode_soco_id: spof_id,
+      p_sohe_order_number: generateOrderNumber(),
+      p_sohe_account_number: accountNumber,
+      p_sohe_trpa_code_number: trpaCodeNumber,
+      p_sohe_license_code: generateLicenseCode(),
+      p_sohe_user_entity_id: items[0].cait_user_entity_id,
+      p_sohe_status: 'open',
     }
-  };
+  ];
 
+  try {
+    await dispatch(addOrderReq(dummyData));
+    // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
+    router.push({
+      pathname: '/sales/receipt',
+      query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber }
+    });
+  } catch (error) {
+    // Handle error jika terjadi kegagalan
+    console.error('Gagal memasukkan data:', error);
+  }
+};
 
 
 
@@ -130,7 +167,13 @@ const CreateOrder: React.FC = () => {
       <Navbar />
       <ToastContainer />
       <div className="container mx-auto p-4">
-        <p className="text-lg font-bold text-red-600">{items.length} Course in cart</p>
+      <p className="text-lg font-bold text-red-600">
+  <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
+    {items.length}
+  </span>
+  Course in cart
+  <BiCartDownload className="inline-block ml-2" />
+</p>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">

@@ -42,7 +42,7 @@ const ActionTypes = {
         ADD_ORDER_RES: 'ADD_ORDER_RES',
 
         GET_PAYMENT: 'GET_PAYMENT',
-        GET_PAYMENT_RES: 'GET_PAYMENT_RES'
+        GET_PAYMENT_RES: 'GET_PAYMENT_RES',
 
 
 }

@@ -77,7 +77,7 @@ export {
     addOrderReq,
     addOrderRes,
     getPaymentReq,
-    getPaymentRes
+    getPaymentRes,
 }
 
 
