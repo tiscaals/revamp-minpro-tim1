@@ -36,6 +36,7 @@ import {
   getAllBatchesReq,
 } from '../redux/bootcamp-schema/action/actionReducer';
 import { useSelector } from 'react-redux';
+import MyPaginate from '../bootcamp/components/pagination';
 
 const TABS = [
   {
@@ -75,26 +76,59 @@ const TABLE_HEAD = [
 ];
 
 export default function BatchList() {
-  const [buttonSelect, setButtonSelect] = useState('all');
+  // const [isSearching, setIsSearching] = useState(false)
+  const [query, setQuery] = useState('');
   const { batches, refresh } = useSelector((state: any) => state.batchReducers);
   const dispatch = useDispatch();
+  const [buttonSelect, setButtonSelect] = useState('');
 
   const filteredBatch: any =
-    buttonSelect === 'all'
+    buttonSelect === 'all' && query === ''
       ? batches
-      : batches.filter((item: any) => item.batch_status == buttonSelect);
+      : buttonSelect === 'all'
+      ? batches?.filter((item: any) =>
+          item.batch_name
+            .toLowerCase()
+            .replace(/\s/g, '')
+            .includes(query.toLowerCase().replace(/\s/g, ''))
+        )
+      : batches?.filter(
+          (item: any) =>
+            item.batch_name
+              .toLowerCase()
+              .replace(/\s/g, '')
+              .includes(query.toLowerCase().replace(/\s/g, '')) &&
+            item.batch_status === buttonSelect
+        );
+
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPage = Math.ceil(filteredBatch.length / itemPerPage);
+  const startIndex = (currentPage - 1) * itemPerPage;
+  const endIndex = startIndex + itemPerPage;
+  const currentItems = filteredBatch.slice(startIndex, endIndex);
 
   const router = useRouter();
   useEffect(() => {
     dispatch(getAllBatchesReq());
-  }, [buttonSelect]);
+  }, [buttonSelect, refresh]);
 
   const deleteaction = (batchid: any) => {
     dispatch(deleteBatchReq(batchid));
   };
 
-  useEffect(() => {}, [refresh, buttonSelect]);
-  console.log(batches);
+  useEffect(() => {
+    setButtonSelect('all');
+  }, []);
+
+  if (
+    !batches &&
+    batches?.length === 0 &&
+    !filteredBatch &&
+    filteredBatch.length === 0
+  ) {
+    return <div>loading...</div>;
+  }
 
   return (
     <Card className="h-full w-full">
@@ -120,7 +154,7 @@ export default function BatchList() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Tabs value="all" className="w-full md:w-max">
+          <Tabs value="all" className="w-full md:w-max z-0">
             <TabsHeader>
               {TABS.map(({ label, value }) => (
                 <Tab
@@ -137,6 +171,7 @@ export default function BatchList() {
           </Tabs>
           <div className="w-full md:w-72">
             <Input
+              onChange={(e: any) => setQuery(e.target.value)}
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
             />
@@ -167,14 +202,14 @@ export default function BatchList() {
             </tr>
           </thead>
           <tbody>
-            {(filteredBatch || []).length === 0 ? (
+            {currentItems?.length === 0 ? (
               <tr>
                 <td colSpan={7} className="text-center py-6 text-red-300">
                   No data found
                 </td>
               </tr>
             ) : (
-              (filteredBatch || []).map(
+              (currentItems || []).map(
                 (
                   {
                     batch_id,
@@ -357,7 +392,11 @@ export default function BatchList() {
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
-                                    disabled={batch_status !== 'running'? true: false}
+                                      disabled={
+                                        batch_status !== 'running'
+                                          ? true
+                                          : false
+                                      }
                                       onClick={() =>
                                         router.push(
                                           `/batch/evaluation/${batch_id}`
@@ -370,7 +409,11 @@ export default function BatchList() {
                                       } disabled:bg-gray-200 disabled:text-gray-400 group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                     >
                                       <HiOutlineAcademicCap
-                                        className={`${batch_status !== 'running'? 'text-gray-400': ''} mr-2 h-5 w-5 ${
+                                        className={`${
+                                          batch_status !== 'running'
+                                            ? 'text-gray-400'
+                                            : ''
+                                        } mr-2 h-5 w-5 ${
                                           active
                                             ? 'text-white'
                                             : 'text-light-blue-500'
@@ -460,18 +503,13 @@ export default function BatchList() {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
-        </Typography>
-        <div className="flex gap-2">
-          <Button variant="outlined" color="blue-gray" size="sm">
-            Previous
-          </Button>
-          <Button variant="outlined" color="blue-gray" size="sm">
-            Next
-          </Button>
-        </div>
+      <CardFooter>
+        <MyPaginate
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          variant="simple"
+        />
       </CardFooter>
     </Card>
   );

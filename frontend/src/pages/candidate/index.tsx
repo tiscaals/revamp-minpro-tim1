@@ -32,9 +32,11 @@ import {
   getAllCandidatesReq,
   getAllRoutesReq,
 } from '../redux/bootcamp-schema/action/actionReducer';
+import MyPaginate from '../bootcamp/components/pagination';
 
 export default function Candidates() {
   const dispatch = useDispatch();
+  const date = new Date();
   const { routes } = useSelector((state: any) => state.routeReducers);
   const { candidates, refresh } = useSelector(
     (state: any) => state.candidateReducers
@@ -47,6 +49,12 @@ export default function Candidates() {
   const [route, setRoute] = useState<string>('apply');
   const [review, setReview] = useState('');
   const [prapstatus, setPrapstatus] = useState();
+  const [filterStudents, setFilterStudents] = useState<any>({
+    month_number: date.getMonth(),
+    year: date.getFullYear().toString(),
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(2);
 
   useEffect(() => {
     dispatch(getAllRoutesReq());
@@ -64,18 +72,45 @@ export default function Candidates() {
     setRoute(routeName);
   };
 
+  console.log(filterStudents);
+
   const filteredData =
     selectRoute === ''
       ? candidates
-      : candidates?.filter(
-          (item: any) => item.parog_progress_name === selectRoute
-        );
+      : candidates?.filter((candidate: any) => {
+          const dateObj = new Date(candidate.join_date);
+
+          const month: any = dateObj.getMonth();
+          const year: any = dateObj.getFullYear();
+
+          return (
+            candidate.parog_progress_name === selectRoute &&
+            month == filterStudents.month_number &&
+            year == filterStudents.year
+          );
+        });
+
+  const totalPage = Math.ceil(filteredData.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredData.slice(startIndex, endIndex);
+
+  const years: number[] = [];
+  const months: any = [];
+
+  for (let i = 0; i < 12; i++) {
+    years.push(date.getFullYear() + i);
+
+    const dateMonth = new Date(2000, i, 1);
+    const monthName = dateMonth.toLocaleString('default', { month: 'long' });
+    const monthNumber = i;
+
+    months.push({ monthName, monthNumber });
+  }
 
   if (routes.length === 0 && candidates.length === 0) {
     return <div>loading...</div>;
   }
-
-  // console.log(selectRoute);
 
   return (
     <div className="bg-white px-7 py-3 rounded-md">
@@ -84,23 +119,44 @@ export default function Candidates() {
       </div>
       {routes ? (
         <Tabs value={route}>
-          <div className="flex justify-end">
-            <div className="w-72">
-              <Select label="Select Filtered">
-                <Option>Filter by Year</Option>
-                <Option>Filter by Month</Option>
-                <Option>Filter by Week</Option>
-              </Select>
-            </div>
-            <div className="w-13">
-              <Select label="Select">
-                <Option>Material Tailwind HTML</Option>
-                <Option>Material Tailwind React</Option>
-                <Option>Material Tailwind Vue</Option>
-                <Option>Material Tailwind Angular</Option>
-                <Option>Material Tailwind Svelte</Option>
-              </Select>
-            </div>
+          <div className="flex justify-end my-2 gap-7 text-gray-800">
+            <select
+              onChange={e =>
+                setFilterStudents({
+                  ...filterStudents,
+                  month_number: e.target.value,
+                })
+              }
+              className="pr-2"
+            >
+              {months.map((month: any) => (
+                <option
+                  selected={month.monthNumber === filterStudents.month_number}
+                  key={month.monthNumber}
+                  value={month.monthNumber}
+                >
+                  {' '}
+                  {month.monthName}{' '}
+                </option>
+              ))}
+            </select>
+            <select
+              onChange={e =>
+                setFilterStudents({ ...filterStudents, year: e.target.value })
+              }
+              className="pr-2"
+            >
+              {years.map((year: string | number) => (
+                <option
+                  selected={year === filterStudents.year}
+                  key={year}
+                  value={year}
+                >
+                  {' '}
+                  {year}{' '}
+                </option>
+              ))}
+            </select>
           </div>
           <TabsHeader className="my-5">
             {routes.map((item: any, index: any) => (
@@ -119,14 +175,14 @@ export default function Candidates() {
       )}
       <table className="min-w-full table-fixed ">
         <tbody className="divide-y ">
-          {(filteredData || []).length === 0 ? (
+          {(currentItems || []).length === 0 ? (
             <tr>
               <td colSpan={7} className="text-center py-6 text-red-300">
                 No data found
               </td>
             </tr>
           ) : (
-            (filteredData || []).map((dt: any, index: any) => (
+            (currentItems || []).map((dt: any, index: any) => (
               <tr key={dt.id}>
                 <td className="py-3 text-gray-900">
                   <Avatar src={dt.user_photo} />
@@ -368,36 +424,12 @@ export default function Candidates() {
           )}
         </tbody>
       </table>
-      <div className="flex justify-center">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="text"
-            color="blue-gray"
-            className="flex items-center gap-2"
-            // onClick={prev}
-            // disabled={active === 1}
-          >
-            <AiOutlineArrowLeft strokeWidth={2} className="h-4 w-4" /> Previous
-          </Button>
-          <div className="flex items-center gap-5">
-            <IconButton>1</IconButton>
-            <IconButton>2</IconButton>
-            <IconButton>3</IconButton>
-            <IconButton>4</IconButton>
-            <IconButton>5</IconButton>
-          </div>
-          <Button
-            variant="text"
-            color="blue-gray"
-            className="flex items-center gap-2"
-            // onClick={next}
-            // disabled={active === 5}
-          >
-            Next
-            <AiOutlineArrowRight strokeWidth={2} className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
+              <MyPaginate
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          variant="standard"
+        />
     </div>
   );
 }

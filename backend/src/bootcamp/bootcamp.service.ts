@@ -15,12 +15,13 @@ export class BootcampService {
       const data2String = `${JSON.stringify(body.trainee)}`;
       const data3String = `${JSON.stringify(body.instructors)}`;
 
-      await this.sequelize.query(
+      const data = await this.sequelize.query(
         `call bootcamp.createBatch ('${dataString}','${data2String}','${data3String}')`,
       );
       return {
         status: 201,
         message: 'sukses',
+        data: data
       };
     } catch (error) {
       return { status: 400, message: error.message };
@@ -157,9 +158,10 @@ export class BootcampService {
 
   async createEvaluation(body: any): Promise<any> {
     try {
-      const dataString = `${JSON.stringify(body.weekly_data)}`;
+      const dataString = `${JSON.stringify(body.data)}`;
+      const status = body.batr_total_score > 50 ? 'passed': 'failed'
       await this.sequelize.query(
-        `call bootcamp.createEvaluation(${body.batr_total_score},'${dataString}')`,
+        `call bootcamp.createEvaluation(${body.batr_total_score},'${status}','${dataString}')`,
       );
 
       return {
@@ -434,7 +436,7 @@ export class BootcampService {
     console.log(id);
     try {
       //batr_trainee_entity_id
-      const data = await this.sequelize.query(`SELECT prap_user_entity_id as user_id,prap_prog_entity_id,user_first_name,user_last_name,user_photo FROM bootcamp.program_apply JOIN users.users ON user_entity_id= prap_user_entity_id WHERE (prap_status = 'recommendation' OR prap_status = 'passed') AND prap_prog_entity_id = ${id}`)
+      const data = await this.sequelize.query(`SELECT prap_user_entity_id as user_id,prap_prog_entity_id,user_first_name,user_last_name,user_photo,TO_CHAR(parog_action_date, 'FMMonth DD, YYYY') join_date FROM bootcamp.program_apply JOIN bootcamp.program_apply_progress on prap_user_entity_id=parog_user_entity_id and prap_prog_entity_id = parog_prog_entity_id left JOIN users.users ON user_entity_id= prap_user_entity_id WHERE (prap_status = 'recommendation' OR prap_status = 'passed') AND prap_prog_entity_id = ${id}`)
 
       if(data[0].length === 0) throw new Error('data tidak ditemukan')
 

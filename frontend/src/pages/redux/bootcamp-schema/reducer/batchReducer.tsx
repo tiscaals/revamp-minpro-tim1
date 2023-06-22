@@ -20,7 +20,7 @@ function batchReducers(state = initialState, action: any) {
         batch: payload.dataOne[0],
         message: payload.message,
         status: payload.status,
-        refresh: false,
+        refresh: true,
       };
 
     case ActionTypes.RES_CREATE_BATCH:

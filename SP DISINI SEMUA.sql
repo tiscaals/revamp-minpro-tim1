@@ -72,7 +72,7 @@ $$;
 
 call bootcamp.createBatch('[{
 							"batch_entity_id": 2,
-							"batch_name": "batch#1",
+							"batch_name": "batch#24",
 							"batch_description": "batch#1description",
 							"batch_start_date": "2023-06-06",
 							"batch_end_date": "2024-06-06",
@@ -141,9 +141,10 @@ begin
 	);
 end;
 $$;
-
+select * from bootcamp.talents
+insert into master.status values('trial') 
 call bootcamp.closeBatch('[{
-						 	"batch_id": 40,
+						 	"batch_id": 82,
 						 	"batch_status": "closed",
 						 	"talent_status": "idle"
 						 }]','[{
@@ -165,8 +166,9 @@ call bootcamp.closeBatch('[{
 						 }]')
 select * from bootcamp.talents
 
+drop procedure bootcamp.createEvaluation(score int,status varchar(15), in data2 json)
 ----- CREATE EVALUATION -----
-create or replace procedure bootcamp.createEvaluation(score int, in data2 json)
+create or replace procedure bootcamp.createEvaluation(score int,status varchar(15), in data2 json)
 language plpgsql
 as 
 $$
@@ -213,29 +215,27 @@ begin
 	select btev_batch_id,btev_trainee_entity_id 
 	into batch_id,trainee_entity_id from result;
 	
-	SELECT batr_total_score INTO total_score
-    FROM bootcamp.batch_trainee WHERE batr_trainee_entity_id = trainee_entity_id
-  	AND batr_batch_id = batch_id;
-	
 	UPDATE bootcamp.batch_trainee
-	SET batr_total_score = (total_score + score)/2
+	SET batr_total_score = score,batr_status = status,batr_modified_date = now()
 	WHERE batr_trainee_entity_id = trainee_entity_id
   	AND batr_batch_id = batch_id;
-
 end;
 $$;
 
-call bootcamp.createEvaluation(80,
+select * from bootcamp.batch_trainee_evaluation
+truncate table bootcamp.batch_trainee_evaluation
+
+call bootcamp.createEvaluation(80,'passed',
   '[
     {
       "btev_type": "hardskill",
       "btev_header": "batch#3 anu",
       "btev_section": "technical",
       "btev_skill": "fundamental javascript",
-      "btev_week": "",
+      "btev_week": 1,
       "btev_skor": 3,
       "btev_note": "",
-      "btev_batch_id": 17,
+      "btev_batch_id": 71,
       "btev_trainee_entity_id": 1
     },
     {
@@ -243,10 +243,10 @@ call bootcamp.createEvaluation(80,
       "btev_header": "batch#3 anu",
       "btev_section": "softskill",
       "btev_skill": "komunikasi",
-      "btev_week": "",
+      "btev_week": 1,
       "btev_skor": 3,
       "btev_note": "",
-      "btev_batch_id": 17,
+      "btev_batch_id": 71,
       "btev_trainee_entity_id": 1
     }
   ]'
@@ -302,12 +302,14 @@ $$;
 insert into users.users(user_entity_id,user_first_name,user_last_name) values(3,'Jordy','Saputra');
 
 call bootcamp.createProgramApply('[{
-								 	"prap_user_entity_id": 5,
-								 	"prap_prog_entity_id": 2
+								 	"prap_user_entity_id": 7,
+								 	"prap_prog_entity_id": 3
 								 }]','[{
 								 	"parog_progress_name": "apply",
 								 	"parog_status": "open"
 								 }]')
+								 
+insert into users.users values(7)
 
 alter table bootcamp.batch
 alter column batch_modified_date type timestamptz default now()
