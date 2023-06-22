@@ -42,7 +42,7 @@ const CreateOrder: React.FC = () => {
   const [removeItemId, setRemoveItemId] = useState(0);
 
   const router = useRouter();
-  const { totalPrice, accountNumber, fintechName, userName, spof_id, spof_discount } = router.query;
+  const { totalPrice, accountNumber, fintechName, userName, spof_id, spof_discount }:any = router.query;
   const totalPriceString = Array.isArray(totalPrice) ? totalPrice[0] : totalPrice;
   const totalPriceNumber = parseInt(totalPriceString || "0");
 
@@ -99,9 +99,8 @@ const handleCreateOrder = async () => {
       p_cait_unit_price: totalPrice,
       p_cait_user_entity_id: items[0].cait_user_entity_id,
       p_cait_prog_entity_id: items[0].cait_prog_entity_id,
-
-      p_sode_unit_discount: spof_discount,
-      p_sode_soco_id: spof_id,
+      p_sode_unit_discount: parseFloat(spof_discount),
+      p_sode_soco_id: parseInt(spof_id),
       p_sohe_order_number: generateOrderNumber(),
       p_sohe_account_number: accountNumber,
       p_sohe_trpa_code_number: trpaCodeNumber,

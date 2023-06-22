@@ -62,7 +62,7 @@ const CartPage: React.FC = () => {
     if (selectedAccountNumber) {
       router.push({
         pathname: '/sales/createorder',
-        query: { totalPrice: totalPrice, accountNumber: selectedAccountNumber, fintechName: selectedFintech, userName: selectedUserName, spof_id: discountApply.spof_id, spof_discount: discountApply.spof_discount }
+        query: { totalPrice: totalPrice, accountNumber: selectedAccountNumber, fintechName: selectedFintech, userName: selectedUserName, spof_id: discountApply?.spof_id, spof_discount: discountApply?.spof_discount }
       });
     } else {
       toast.error('No account number found');

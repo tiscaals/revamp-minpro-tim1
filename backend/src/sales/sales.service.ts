@@ -170,14 +170,14 @@ export class SalesService {
           :p_cait_unit_price,
           :p_cait_user_entity_id,
           :p_cait_prog_entity_id,
-          :p_sode_unit_discount,
-          :p_sode_soco_id,
           :p_sohe_order_number,
           :p_sohe_account_number,
           :p_sohe_trpa_code_number,
           :p_sohe_license_code,
           :p_sohe_user_entity_id,
-          :p_sohe_status
+          :p_sohe_status,
+          :p_sode_unit_discount,
+          :p_sode_soco_id
         )`,
         {
           replacements: {
@@ -186,14 +186,14 @@ export class SalesService {
             p_cait_unit_price: createSaleDto.p_cait_unit_price,
             p_cait_user_entity_id: createSaleDto.p_cait_user_entity_id,
             p_cait_prog_entity_id: createSaleDto.p_cait_prog_entity_id,
-            p_sode_unit_discount: createSaleDto.p_sode_unit_discount,
-            p_sode_soco_id: createSaleDto.p_sode_soco_id,
             p_sohe_order_number: createSaleDto.p_sohe_order_number,
             p_sohe_account_number: createSaleDto.p_sohe_account_number,
             p_sohe_trpa_code_number: createSaleDto.p_sohe_trpa_code_number,
             p_sohe_license_code: createSaleDto.p_sohe_license_code,
             p_sohe_user_entity_id: createSaleDto.p_sohe_user_entity_id,
             p_sohe_status: createSaleDto.p_sohe_status,
+            p_sode_unit_discount: createSaleDto.p_sode_unit_discount,
+            p_sode_soco_id: createSaleDto.p_sode_soco_id,
           },
         }
       );
