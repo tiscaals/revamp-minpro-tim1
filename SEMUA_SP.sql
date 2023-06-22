@@ -370,3 +370,113 @@ BEGIN
 END;
 $$;
 
+
+--SP create employee dari jobHire(talents)
+CREATE OR REPLACE PROCEDURE hr.CCFromJobHire (IN data JSON)
+LANGUAGE plpgsql
+AS $$
+DECLARE
+    emp_row hr.employee%ROWTYPE;
+    ecco_row hr.employee_client_contract%ROWTYPE;
+BEGIN
+	INSERT INTO hr.employee (
+		emp_entity_id,
+		emp_emp_number,
+		emp_birth_date,
+		emp_type,
+		emp_joro_id,
+		emp_emp_entity_id
+	) 
+	SELECT 
+		x.emp_entity_id,
+		x.emp_emp_number,
+		x.emp_birth_date,
+		x.emp_type,
+		x.emp_joro_id,
+		x.emp_emp_entity_id
+	FROM json_to_recordset(data) AS x (
+		emp_entity_id INT,
+		emp_emp_number varchar(25),
+		emp_birth_date date,
+		emp_type varchar(15),
+		emp_joro_id int,
+		emp_emp_entity_id int
+	)
+	RETURNING * INTO emp_row;
+        
+	-- update user roles in users table
+	UPDATE users.users_roles
+	--5 karna dia outsource
+	SET usro_role_id = 5
+	WHERE usro_entity_id = emp_row.emp_entity_id;
+	
+	-- insert contract into employee_client_contract
+	INSERT INTO hr.employee_client_contract (
+		ecco_entity_id,
+		ecco_contract_no,
+		ecco_contract_date,
+		ecco_start_date,
+		ecco_end_date,
+		ecco_notes,
+		ecco_media_link,
+		ecco_joty_id,
+		ecco_account_manager,
+		ecco_clit_id,
+		ecco_status
+	) 
+	SELECT 
+		emp_row.emp_entity_id,
+		x.ecco_contract_no,
+		x.ecco_contract_date,
+		x.ecco_start_date,
+		x.ecco_end_date,
+		x.ecco_notes,
+		x.ecco_media_link,
+		x.ecco_joty_id,
+		x.ecco_account_manager,
+		x.ecco_clit_id,
+		x.ecco_status
+	FROM json_to_recordset(data) AS x (
+		ecco_entity_id int,
+		ecco_contract_no varchar(55),
+		ecco_contract_date date,
+		ecco_start_date date,
+		ecco_end_date date,
+		ecco_notes varchar(512),
+		ecco_media_link varchar(255),
+		ecco_joty_id int,
+		ecco_account_manager int,
+		ecco_clit_id int,
+		ecco_status varchar(15)
+	)
+	RETURNING * INTO ecco_row;
+
+	-- insert department history
+	INSERT INTO hr.employee_department_history (
+		edhi_entity_id, 
+		edhi_start_date, 
+		edhi_end_date, 
+		edhi_dept_id
+	)
+	SELECT
+		emp_row.emp_entity_id, 
+		ecco_row.ecco_start_date, 
+		ecco_row.ecco_end_date, 
+		x.edhi_dept_id
+	FROM json_to_recordset(data) AS x (
+		edhi_entity_id int, 
+		edhi_start_date date, 
+		edhi_end_date date, 
+		edhi_dept_id int
+	);
+
+	-- update talent status
+	UPDATE job_hire.talent_apply
+	SET taap_status = x.talent_status
+	FROM json_to_recordset(data) AS x (
+		talent_status varchar(15)
+	)
+	WHERE taap_user_entity_id = emp_row.emp_entity_id;
+END;
+$$;
+
