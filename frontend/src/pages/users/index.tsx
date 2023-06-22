@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { useRouter } from 'next/router';
+import Pagination from './pagination';
 
 const IndexUsers = () => {
   //Fn Untuk Reducer
@@ -21,17 +22,12 @@ const IndexUsers = () => {
     (state: any) => state.userReducers
   );
 
-  //State Untuk Dapat Id User
+  //State For Open Edit Modal And Get Id User
   const [isEdit, setIsEdit] = useState(false);
   const [userId, setUserId] = useState(null);
   // End
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = (e: any) => {
-    setSearchTerm(e.target.value);
-  };
-
+  // Cek If Is Not Admin//
   const isNotAdmin = () => {
     let decoded: any;
     const token = Cookies.get('access_token');
@@ -50,6 +46,29 @@ const IndexUsers = () => {
       console.log('tokens not found');
     }
   };
+  //End
+  
+  // Fn Filter Data
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [isSearch, setIsSearch] = useState('');
+
+  const handleSearch = (e: any) => {
+    setIsSearch(e.target.value);
+  };
+  //End
+  
+  // Fn Pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const totalPages = Math.ceil(filteredUsers?.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredUsers?.slice(startIndex, endIndex);
+
+  const handlePageChange = (page: any) => {
+    setCurrentPage(page);
+  };
+  //End Fn Pagination
 
   useEffect(() => {
     dispatch(doRequestGetUser());
@@ -66,17 +85,17 @@ const IndexUsers = () => {
     if (Array.isArray(users)) {
       const filteredData: any = users.filter(
         (data: any) =>
-          data?.user_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          data?.user_name.toLowerCase().includes(isSearch.toLowerCase()) ||
           data?.users_emails[0].pmail_address
             .toLowerCase()
-            .includes(searchTerm.toLowerCase()) ||
+            .includes(isSearch.toLowerCase()) ||
           data?.users_roles[0].role.role_name
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+            .includes(isSearch.toLowerCase())
       );
       setFilteredUsers(filteredData);
     }
-  }, [users, searchTerm]);
+  }, [users, isSearch]);
 
   return (
     <>
@@ -97,7 +116,7 @@ const IndexUsers = () => {
                   type="text"
                   id="simple-search"
                   className="text-sm rounded-lg block w-full pl-8 p-2.5 ring-1 lg:w-[17rem]"
-                  value={searchTerm}
+                  value={isSearch}
                   onChange={handleSearch}
                   autoComplete="off"
                 />
@@ -129,8 +148,7 @@ const IndexUsers = () => {
                     </tr>
                   </thead>
                   <tbody className="text-sm divide-y divide-gray-100">
-                    {/* {users.map((data: any, index: any) => (  */}
-                    {filteredUsers?.map((data: any, index: any) => (
+                    {currentItems?.map((data: any, index: any) => (
                       <tr key={index}>
                         <td className="p-2 whitespace-nowrap">
                           <div className="flex items-center">
@@ -183,6 +201,11 @@ const IndexUsers = () => {
                   </tbody>
                 </table>
               </div>
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                handlePageChange={handlePageChange}
+              />
             </div>
           </div>
         </div>

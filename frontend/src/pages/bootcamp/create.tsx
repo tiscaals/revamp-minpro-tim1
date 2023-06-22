@@ -7,7 +7,7 @@ import {
   Select,
   Option,
 } from '@material-tailwind/react';
-import SearchList from '../components/searchlist';
+import SearchList from '../../components/searchlist';
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from 'react-icons/md';
 import { Combobox } from '@headlessui/react';
 
