@@ -33,10 +33,10 @@ const ImgSlide=()=>{
           className="p-2"
           key={index}
           >
-            <div className="shadow-md bg-white h-28 rounded-md flex items-center justify-center">
+            <div className="shadow-md bg-white h-28 rounded-md flex items-center justify-center p-2">
             <img
               src={`http://localhost:3003/image/${photo.jopho_filename}`}
-              className="object-contain h-28 w-auto"
+              className="object-contain h-28 w-auto m-4"
               alt="profile picture"
             />
             </div>

@@ -2,7 +2,7 @@ import ActionTypeJobHire from "../../redux/jobhire-schema/action/actionType";
 import ActionTypeMaster from "../../redux/master-schema/action/actionType";
 
 import { takeEvery, all} from "redux-saga/effects";
-import { handleAddJobPost, handleDeleteJobPost, handleGetAllJobPost, handleGetCurnumber, handleGetJobById, handleGetJopho, handleUpdateJobPost } from "../jobhire-schema/saga/jobpostSaga";
+import { handleAddJobPost, handleDeleteJobPost, handleGetAllJobPost, handleGetCurnumber, handleGetJobById, handleGetJopho, handleGetSearchJobPost, handleUpdateJobPost, handleUpdateStatus } from "../jobhire-schema/saga/jobpostSaga";
 import { handleAddClient, handleGetAllClient, handleGetClientById, handleUpdateClient } from "../jobhire-schema/saga/clientsaga";
 import { handleGetProCandidate, handleUpdateCandidate } from "../jobhire-schema/saga/talentSaga";
 import { handleGetEducation } from "../master-schema/saga/educationSaga";
@@ -22,6 +22,8 @@ function* watchAll() {
       takeEvery(ActionTypeJobHire.REQ_ADD_JOBPOST, handleAddJobPost),
       takeEvery(ActionTypeJobHire.REQ_UPDATE_JOBPOST, handleUpdateJobPost),
       takeEvery(ActionTypeJobHire.REQ_DELETE_JOBPOST, handleDeleteJobPost),
+      takeEvery(ActionTypeJobHire.REQ_UPDATE_STATUS, handleUpdateStatus),
+      takeEvery(ActionTypeJobHire.REQ_SEARCH_JOBPOST, handleGetSearchJobPost),
 
       takeEvery(ActionTypeJobHire.REQ_GET_EMPRANGE, handleGetEmprange),
 
@@ -39,8 +41,6 @@ function* watchAll() {
       takeEvery(ActionTypeMaster.REQ_GET_INDUSTRY, handleGetIndustry),
       takeEvery(ActionTypeMaster.REQ_GET_CITY, handleGetCity),
       takeEvery(ActionTypeMaster.REQ_GET_ROAC, handleGetRoac),
-    
-
     ]);
   }
   

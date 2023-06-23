@@ -29,24 +29,17 @@ import {
   doRequestGetWorktype,
 } from "@/pages/redux/master-schema/action/actionReducer";
 import { Router, useRouter } from "next/router";
+import { Button } from "@material-tailwind/react";
 
 const JobCreate = () => {
   /*`````````` koneksi ke backend  ``````````````*/
   const dispatch = useDispatch();
   const router = useRouter();
 
-  let { cur_number, job_post, message, status, refresh } = useSelector(
-    (state: any) => state.JobPostReducers
-  );
-
-  let { education, refreshEdu } = useSelector(
-    (state: any) => state.EducationReducers
-  );
-
+  let { cur_number, job_post, message, status, refresh } = useSelector((state: any) => state.JobPostReducers);
+  let { education, refreshEdu } = useSelector((state: any) => state.EducationReducers);
   let { work_type } = useSelector((state: any) => state.WorktypeReducers);
-
   let { job_role } = useSelector((state: any) => state.JobroleReducers);
-
   let { client } = useSelector((state: any) => state.ClientReducers);
 
   // console.log('client',client[0])
@@ -352,7 +345,7 @@ const JobCreate = () => {
                             shrink: true,
                           }}
                           inputProps={{
-                            min: 1,
+                            min: 0,
                           }}
                         />
                         {/* <p className="px-2 text-red-800">
@@ -648,14 +641,17 @@ const JobCreate = () => {
           <section>
             <div className="flex flex-wrap">
               <div className="w-full">
-                <div className="bg-white h-[60px] border-t-2 shadow-gray-200 shadow-inner">
-                  <div className=" flex pt-3.5 justify-center lg:justify-start">
-                    <button type="submit" className="button-foot">
+                <div className="bg-white border-t-2 shadow-gray-200 shadow-inner">
+                  <div className="text-right p-4">
+                    <Button type="submit" >
                       Save
-                    </button>
-                    <button type="button" className="button-foot">
+                    </Button>
+                    {/* <button type="submit" className="button-foot">
+                      Save
+                    </button> */}
+                    {/* <button type="button" className="button-foot">
                       Cancel
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               </div>

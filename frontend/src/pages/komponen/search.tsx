@@ -4,22 +4,25 @@ import { AiOutlineSearch } from 'react-icons/ai'
 import { doRequestGetJobrole } from "../redux/master-schema/action/actionReducer";
 import { useDispatch, useSelector } from "react-redux";
 
-const handleFormSubmit = (event: any) => {
-  event.preventDefault();
-  // Tambahkan logika untuk menghandle submit form di sini
-};
 
-const SearchBar = () => {
-  const [isClicked, setIsClicked] = useState(false);
+const SearchBar = (props:any) => {
   const dispatch = useDispatch();
 
-  const { job_role } = useSelector((state: any) => state.JobroleReducers);
+  const { job_role, refresh } = useSelector((state: any) => state.JobroleReducers);
 
   useEffect(() => {
-    setIsClicked(false)
     dispatch(doRequestGetJobrole())
-    // setTimeout(()=>console.log("JOB ROLE CLG",job_role), 3000)
-  }, [Event]);
+  }, [refresh]);
+
+  const {
+    searchValue,
+    setSearchValue,
+    buttonClick,
+    searchLocation,
+    setSearchLocation,
+    selectedValue,
+    handleChange
+  } = props;
 
   return (
     <div className="p-4">
@@ -32,7 +35,8 @@ const SearchBar = () => {
             type="text"
             id="simple-search"
             icon={<AiOutlineSearch className="h-4 w-4" />}
-            onClick={()=>setIsClicked(true)}/>
+            value={searchValue}
+            onChange={setSearchValue}/>
           </div>
         </div>
 
@@ -43,14 +47,15 @@ const SearchBar = () => {
             type="text"
             id="simple-search"
             icon={<AiOutlineSearch className="h-4 w-4" />}
-            onClick={()=>setIsClicked(true)}/>
+            value={searchLocation}
+            onChange={setSearchLocation}/>
           </div>
         </div>
 
 
         <div className="pb-4 lg:pb-0 lg:pl-4">
           <div className="w-auto">
-            <Select label="Pilih Posisi" className="bg-white">
+            <Select label="Pilih Posisi" className="bg-white" value={selectedValue} onChange={handleChange}>
               {job_role.map((option:any) =>
                 <Option key={option.joro_id} value={option.joro_id}>{option.joro_name}</Option>
               )}
@@ -60,16 +65,10 @@ const SearchBar = () => {
 
         <div className="pb-2 lg:pb-0 lg:pl-4">
           <Button className="lg:w-52 w-full" 
-          // onClick={handleSearchChange}
+          onClick={buttonClick}
           >
             SEARCH
           </Button>
-          {/* <button
-            className="w-full text-center text-white order-0  px-4 py-2  border rounded-md bg-blue-400 text-sm font-medium focus:ring-blue-500  uppercase hover:bg-blue-500 lg:w-[10rem]"
-            // onClick={handleSearchChange}
-          >
-            SEARCH
-          </button> */}
         </div>
       </div>
     </div>

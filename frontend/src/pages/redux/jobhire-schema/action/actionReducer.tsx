@@ -98,6 +98,34 @@ export const doResponseDeleteJobPost = (payload: any) => {
   };
 };
 
+export const doRequestUpdateStatus = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_STATUS,
+    payload,
+  };
+};
+
+export const doResponseUpdateStatus = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_STATUS,
+    payload,
+  };
+};
+
+export const doRequestSearchJobPost = (payload:any) => {
+  return {
+    type: ActionTypes.REQ_SEARCH_JOBPOST,
+    payload,
+  };
+};
+
+export const doResponseSearchJobPost = (payload: any) => {
+  return {
+    type: ActionTypes.RES_SEARCH_JOBPOST,
+    payload,
+  };
+};
+
 /*------------ TALENT APPLY SECTION -------------*/
 export const doRequestGetCandidate = () => {
   return {

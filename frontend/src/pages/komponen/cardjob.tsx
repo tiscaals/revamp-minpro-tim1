@@ -34,36 +34,44 @@ function calculateSimilarityScore(a:any, b:any) {
   return matrix[b.length][a.length];
 }
 
-const CardJob = ({ currentPage, itemsPerPage, filtering }: { currentPage: number; itemsPerPage: number, filtering?:any }) => {
-  let { job_post, refresh } = useSelector((state:any) => state.JobPostReducers,);
+const CardJob = ({ currentPage, itemsPerPage, data, filtering }: { currentPage: number; itemsPerPage: number, data:any, filtering?:any }) => {
+  let { job_post } = useSelector((state:any) => state.JobPostReducers,);
   const dispatch = useDispatch();
+  const router = useRouter()
+  const {id,title,name}:any=router.query
 
-  // console.log("FILTERING", filtering);
+  console.log("ID", id);
 
+  let job_data:any;
   if (filtering) {
+    console.log(job_post);
     const itemSimilarityScore = job_post.map((post: { jopo_title: any; })=>{
-      const similarityScore = calculateSimilarityScore(filtering, post.jopo_title);
-      // console.log(`Similarity score`, similarityScore, post.jopo_title);
+      const similarityScore = calculateSimilarityScore(title, post.jopo_title);
       return {
         ...post,
         similarityScore: similarityScore,
       }
     })
-    const filteredItems = itemSimilarityScore.filter((item: any) => item.similarityScore !== 0);
-    job_post = filteredItems.sort((a: any, b: any) => a.similarityScore - b.similarityScore);
+    // console.log("itemSimilarityScore", itemSimilarityScore);
+    const filteredItems = itemSimilarityScore.filter((item: any) => item.jopo_entity_id != id);
+    // console.log("filteredItems", filteredItems);
+    job_data = filteredItems.sort((a: any, b: any) => a.similarityScore - b.similarityScore);
+    // console.log("job_data", job_data);
+  } else {
+    job_data = data;
   }
 
-  // console.log("SORTED JOBS", job_post);
+  // console.log("SORTED JOBS", job_data);
   
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = job_post?.slice(startIndex, endIndex);
+  const currentItems = job_data?.slice(startIndex, endIndex);
   
   useEffect(()=>{
     dispatch(doRequestGetJobPost())
     setTimeout(()=>{console.log('post',job_post); console.log("CURRENT ITEMS",currentItems);},2000)
 
-  },[currentPage, itemsPerPage, refresh])
+  },[currentPage, itemsPerPage])
   
   return (
     <>
@@ -117,7 +125,7 @@ const CardJob = ({ currentPage, itemsPerPage, filtering }: { currentPage: number
                   {data.jopo_publish_date ? (
                     <>
                       {(() => {
-                        const publishedDate = new Date(data.jopo_publish_date);
+                        const publishedDate = new Date(data.jopo_modified_date);
                         const currentDate = new Date();
                         const timeDiff: number = Math.abs(currentDate.getTime() - publishedDate.getTime());
                         const daysDiff: number = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));

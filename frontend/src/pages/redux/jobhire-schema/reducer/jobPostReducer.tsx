@@ -5,6 +5,7 @@ const initialState = {
     job_detail: [],
     job_photo: [],
     cur_number:[],
+    search_jobpost:[],
     message: "",
     status: "",
     refresh: "",
@@ -27,6 +28,9 @@ const initialState = {
       case ActionTypes.RES_GET_CURNUMBER:
         return { ...state, cur_number: cur_number, refresh: true };
 
+      case ActionTypes.RES_SEARCH_JOBPOST:
+        return { ...state, search_jobpost: payload, refresh: true };
+
       case ActionTypes.RES_ADD_JOBPOST:
         return {
           message: payload.message,
@@ -35,6 +39,12 @@ const initialState = {
           refresh: false,
         };
       case ActionTypes.RES_UPDATE_JOBPOST:
+        return {
+          message: payload.message,
+          status: payload.status,
+          refresh: false,
+        };
+      case ActionTypes.RES_UPDATE_STATUS:
         return {
           message: payload.message,
           status: payload.status,

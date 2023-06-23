@@ -7,7 +7,9 @@ import {
   doResponseGetJobById,
   doResponseGetJobPhoto,
   doResponseGetJobPost,
+  doResponseSearchJobPost,
   doResponseUpdateJobPost,
+  doResponseUpdateStatus,
 } from "../action/actionReducer";
 
 export function* handleGetAllJobPost(): any {
@@ -77,5 +79,24 @@ export function* handleDeleteJobPost(action: any): any {
     yield put(doResponseDeleteJobPost(result.data));
   } catch (error) {
     yield put(doResponseDeleteJobPost({ message: error, status: 400 }));
+  }
+}
+
+export function* handleUpdateStatus(action: any): any {
+  try {
+    const result = yield call(apiMethod.updateStatus, action.payload);
+    yield put(doResponseUpdateStatus(result.data));
+  } catch (error) {
+    yield put(doResponseUpdateStatus({ message: error, status: 400 }));
+  }
+}
+
+export function* handleGetSearchJobPost(action:any): any {
+  try {
+    const result = yield call(apiMethod.searchPostJob,action.payload);
+    // console.log('SAGA',result)
+    yield put(doResponseSearchJobPost(result.data));
+  } catch (error) {
+    yield put(doResponseSearchJobPost({ message: error, status: 400 }));
   }
 }

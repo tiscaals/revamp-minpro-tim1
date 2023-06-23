@@ -234,7 +234,7 @@ const JobDetail = () => {
                                 </div>
                                 <p className="text-sm max-w-xl pb-6 md:text-lg">{job_detail?.clit_about}</p>
                                 <h1 className="text-lg md:text-xl lg:text-2xl pb-3">Address</h1>
-                                <p className="text-sm max-w-xl pb-6 md:text-lg">{job_detail?.addr_line1}, {job_detail.addr_line2?`${job_detail?.addr_line2},`:''} {job_detail?.city_name}</p>
+                                <p className="text-sm max-w-xl pb-6 md:text-lg">{job_detail?.addr_line1}, {job_detail?.addr_line2?`${job_detail?.addr_line2},`:''} {job_detail?.city_name}</p>
                             </div>
                         </div>
                     </div>
@@ -247,7 +247,7 @@ const JobDetail = () => {
                 <div className="xl:pl-48 lg:pl-10 md:pl-0 py-6 md:pt-28">
                     <h1 className="text-lg font-semibold pb-3">Similar jobs for you</h1>
                     <div className="grid grid-cols-1 gap-4">
-                        <CardJob currentPage={currentPage} itemsPerPage={itemsPerPage} filtering={title}/>
+                        <CardJob currentPage={currentPage} itemsPerPage={itemsPerPage} data={job_post} filtering={{ title, id }}/>
                     </div>
                 </div>
             </div>

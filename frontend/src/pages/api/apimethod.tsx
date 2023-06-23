@@ -36,6 +36,26 @@ const deleteJobPost =(data:any)=>{
     return axios.patch(`/job-hire/delete/${id}`)
 }
 
+const searchPostJob =(data:any)=>{
+    return axios.get(`/job-hire/search`, {
+        params: {
+          key: data.search.keyword,
+          loc: data.search.location,
+          job : data.search.job,
+          type: data.search.type,
+          jobType: data.search.jobType.join(","),
+          expe : data.search.expe.join(","),
+          terupdate : data.search.terupdate,
+          newest : data.search.newest,
+        },
+      })
+}
+
+const updateStatus =(data:any)=>{  
+    // console.log('api update',data)
+    return axios.patch(`/job-hire/status`,data)
+}
+
 /*-------- TALENT APPLY ---------*/
 
 const findProCandidate =()=>{
@@ -101,6 +121,8 @@ export default {
     createJobPost,
     updateJobPost,
     deleteJobPost,
+    searchPostJob,
+    updateStatus,
 
     findProCandidate,
     updateCandidate,
