@@ -1,9 +1,5 @@
-// import CheckBox from "./checkBox";
 import AccordionTemplate from "./accordion";
-import ToggleSwitch from "./switch";
-// import Button from "./button";
 import { BsFilterLeft, BsXLg } from 'react-icons/bs'
-import RadioButton from "./radioButton";
 import { Switch, Button, Checkbox, Radio } from "@material-tailwind/react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";

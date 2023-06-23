@@ -14,6 +14,15 @@ import WorktypeReducers from "../master-schema/reducer/worktypeReducer";
 import EmprangeReducers from "../jobhire-schema/reducer/emprangeReducer";
 import CityReducers from "../master-schema/reducer/cityReducer";
 import RouteactionReducers from "../master-schema/reducer/routeactionReducer";
+import batchReducers from "../bootcamp-schema/reducer/batchReducer";
+import trainerReducers from "../bootcamp-schema/reducer/trainerReducer";
+import programReducers from "../bootcamp-schema/reducer/programReducer";
+import talentsReducers from "../bootcamp-schema/reducer/talentsReducer";
+import studentReducers from "../bootcamp-schema/reducer/studentsReducer";
+import routeReducers from "../bootcamp-schema/reducer/routeReducer";
+import candidateReducers from "../bootcamp-schema/reducer/candidateReducer";
+import traineeReducers from "../bootcamp-schema/reducer/traineeReducer";
+import evalReducers from "../bootcamp-schema/reducer/evaluationReducer";
 
 const logger = createLogger();
 const saga = createSagaMiddleware();
@@ -28,7 +37,18 @@ const reducer = combineReducers({
     IndustryReducers,
     EmprangeReducers,
     CityReducers,
-    RouteactionReducers
+    RouteactionReducers,
+
+    //BOOTCAMP
+    batchReducers,
+    trainerReducers,
+    programReducers,
+    talentsReducers,
+    studentReducers,
+    routeReducers,
+    candidateReducers,
+    traineeReducers,
+    evalReducers,
 });
 
 const store = configureStore({

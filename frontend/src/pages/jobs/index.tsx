@@ -26,7 +26,7 @@ export default function Home() {
   const [filteredData, setFilteredData]: any = useState([]);
 
   const handleChange = (event: any) => {
-    setCurrentPage(event);
+    setSelectedValue(event.target.value);
   };
 
   const handleSearchChange = () => {

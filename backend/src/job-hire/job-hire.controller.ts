@@ -6,7 +6,7 @@ import { client, job_post } from 'models/job_hire';
 
 const uploadGambar =  FileInterceptor('image', {
   storage: diskStorage({
-    destination: './images',
+    destination: './images/job_photo',
     filename: async (req, file, cb) => {
       try {
         const clitId = req.body.jopo_clit_id;
@@ -50,40 +50,43 @@ export class JobHireController {
     return this.jobHireService.createJopo(createJopo, image);
   }
 
-  //QUERY
-  // @Get()
-  // findAllJopo(
-  //   @Query('limit') limit: number,
-  //   @Query('offset') offset: number,
-  //   @Query('keyword') keyword: string,
-  //   @Query('location') location: string,
-  //   @Query('job_role') job_role: string,
-  // ) {
-  //   const pagination = { limit, offset };
-  //   const search = { keyword, location };
-  //   const filter = { job_role }
-  //   // console.log(show);
-  //   console.log(pagination, search, filter);
-  //   // console.log("limit",+show.pagination.limit, "offset", +show.pagination.offset);
-  //   return this.jobHireService.findAllJopo(pagination, search, filter);
-  // }
-
-  // BODY
-  // @Get()
-  // findAllJopo(@Body() show:any) {
-  //   const pagination = show.pagination;
-  //   const search = show.search;
-  //   const filter = show.filter;
-  //   console.log(show);
-  //   console.log(pagination, search, filter);
-  //   // console.log("limit",+show.pagination.limit, "offset", +show.pagination.offset);
-  //   return this.jobHireService.findAllJopo(pagination, search, filter);
-  // }
-
-  // ALL ALLLL
   @Get()
   findAllJopo() {
     return this.jobHireService.findAllJopo();
+  }
+
+  @Get('search')
+  searchJobPost(
+    @Query('key') key?: string,
+    @Query('loc') loc?: string,
+    @Query('job') job?: string,
+    @Query('type') type?: any,
+    @Query('jobType') jobtype?: any,
+    @Query('expe') expe?: any,
+    @Query('terupdate') terupdate?: any,
+    @Query('newest') newest?: any,
+  ) {
+    console.log(
+      'SEARCH & FILTER',
+      key,
+      loc,
+      job,
+      type,
+      jobtype,
+      expe,
+      terupdate,
+      newest,
+    );
+    return this.jobHireService.searchJobPost(
+      key || '',
+      loc || '',
+      job || '',
+      type || '',
+      jobtype || '',
+      expe || '',
+      terupdate || '',
+      newest || '',
+    );
   }
 
   @Get('photo')
@@ -113,6 +116,11 @@ export class JobHireController {
     return this.jobHireService.removeJopoSoft(+id);
   }
 
+  @Patch('status')
+  updateStatus(@Body() status: any) {
+    return this.jobHireService.updateStatus(status);
+  }
+
   // CLIENT
   @Post('client')
   createClient(@Body() createClient: any) {
@@ -135,14 +143,6 @@ export class JobHireController {
     return this.jobHireService.findOneClient(+id);
   }
 
-  // LIMIT + PAGINATION
-  // @Get('client')
-  // findAllClient(@Body() show:any) {
-  //   const pagination = show.pagination;
-  //   const search = show.search;
-  //   return this.jobHireService.findAllClient(pagination, search);
-  // }
-
   @Patch('client/:id')
   updateClient(@Param('id') id: string, @Body() updateJobHireDto: any) {
     return this.jobHireService.updateClient(+id, updateJobHireDto);
@@ -156,12 +156,17 @@ export class JobHireController {
 
   // TALENT
   @Post('talent')
-  createTalent(@Body() createClient: any) {
-    return this.jobHireService.createTalent(createClient)
+  createTalent(@Body() createTalent: any) {
+    return this.jobHireService.createTalent(createTalent)
   }
 
   @Get('talent')
   findProCandidate() {
     return this.jobHireService.findProCandidate()
+  }
+
+  @Patch('talent/:id')
+  updateTalent(@Param('id') id:string, @Body() updateTalent: any) {
+    return this.jobHireService.updateTalent(+id, updateTalent)
   }
 }

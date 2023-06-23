@@ -131,8 +131,8 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
           {
-            to: '/candidate',
-            path: '/candidate',
+            to: '/app/candidate',
+            path: '/app/candidate',
             icon: <MdGroupAdd />,
             name: 'Candidate',
           },
@@ -142,10 +142,10 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             icon: <MdGroupAdd />,
             name: 'Pro Candidate',
           },
-          { to: '/batch', path: '/batch', icon: <MdCategory />, name: 'Batch' },
+          { to: '/app/batch', path: '/app/batch', icon: <MdCategory />, name: 'Batch' },
           {
-            to: '/talents',
-            path: '/talents',
+            to: '/app/talents',
+            path: '/app/talents',
             icon: <MdGroups />,
             name: 'Talents',
           },

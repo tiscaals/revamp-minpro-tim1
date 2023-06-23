@@ -12,7 +12,7 @@ async function bootstrap() {
 
   app.enableCors()
 
-  app.use('/image', express.static('images'));
+  app.use('/image', express.static('images/job_photo'));
 
   app.useGlobalPipes(new ValidationPipe())
 

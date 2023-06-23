@@ -64,8 +64,8 @@ export default function Content() {
   const filteredPeople =
     query === ''
       ? trainerData
-      : trainerData.filter((trainer) => {
-        return trainer.toLowerCase().includes(query.toLowerCase());
+      : trainerData.filter(trainer => {
+          return trainer.toLowerCase().includes(query.toLowerCase());
         });
 
   const {
@@ -130,7 +130,7 @@ export default function Content() {
                 onChange={event => setQuery(event.target.value)}
               />
               <Combobox.Options>
-                {filteredPeople.map((trainer:any) => (
+                {filteredPeople.map((trainer: any) => (
                   <Combobox.Option key={trainer.id} value={trainer.id}>
                     {trainer.name}
                   </Combobox.Option>

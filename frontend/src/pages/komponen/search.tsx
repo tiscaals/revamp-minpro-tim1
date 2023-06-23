@@ -24,6 +24,8 @@ const SearchBar = (props:any) => {
     handleChange
   } = props;
 
+  // console.log("selectedValue", selectedValue);
+
   return (
     <div className="p-4">
       <div className="relative lg:flex lg:flex-wrap justify-between items-center lg:justify-center mx-auto">
@@ -55,11 +57,12 @@ const SearchBar = (props:any) => {
 
         <div className="pb-4 lg:pb-0 lg:pl-4">
           <div className="w-auto">
-            <Select label="Pilih Posisi" className="bg-white" value={selectedValue} onChange={handleChange}>
+          <select className="bg-white p-2.5 border-gray-400 border-[1px] rounded-lg" value={selectedValue} onChange={handleChange}>
+            <option value=''>All</option>
               {job_role.map((option:any) =>
-                <Option key={option.joro_id} value={option.joro_id}>{option.joro_name}</Option>
+                <option key={option.joro_id} value={option.joro_name}>{option.joro_name}</option>
               )}
-            </Select>
+            </select>
           </div>
         </div>
 

@@ -1,34 +1,54 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdatePasswordDto, UpdateRoleDto } from './dto/update-user.dto';
+import { AdminGuard, AuthGuard } from 'src/midleware/auth-guard';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
-  }
-
+  //Controller Get Users
+  @UseGuards(AdminGuard)
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  GetUsers() {
+    return this.usersService.getUsers();
   }
 
+  @UseGuards(AdminGuard)
+  @Get('/get-role')
+  getRole() {
+    return this.usersService.getRole();
+  }
+
+  @UseGuards(AuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  GetUsersById(@Param('id') id: string) {
+    return this.usersService.getUsersById(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  //Controller Profile Edit Password
+  @UseGuards(AuthGuard)
+  @Patch('/update-password/:id')
+  UpdatePassword(
+    @Param('id') id: string,
+    @Body() updatePasswordDto: UpdatePasswordDto,
+  ) {
+    return this.usersService.updatePassword(+id, updatePasswordDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  //Controller For Update
+  @UseGuards(AdminGuard)
+  @Patch('/update-role/:id')
+  UpdateRole(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
+    return this.usersService.updateRole(+id, updateRoleDto);
   }
 }
