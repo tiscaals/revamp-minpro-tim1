@@ -100,6 +100,7 @@ CREATE OR REPLACE PROCEDURE users.apply_jobs (
     IN user_id INT,
     IN firstname VARCHAR,
     IN lastname VARCHAR,
+	IN userphoto VARCHAR,
     IN user_school VARCHAR,
     IN user_degree VARCHAR,
     IN user_field_study VARCHAR,
@@ -137,10 +138,13 @@ BEGIN
 	UPDATE users.users
     SET user_first_name = firstname,
         user_last_name = lastname,
+		user_photo = userphoto,
 		user_current_role = update_role
     WHERE user_entity_id = user_id;
+    
 END;
 $$;
 
+
 -- contoh call untuk aplly jobs
-call users.apply_jobs(9, 'hendri', 'prasmono', 'codex academy university', 'Diploma', 'd3 informatika', '08127', 'mycv.pdf', 'pdf', 7 )
+call users.apply_jobs(9, 'hendri', 'prasmono', 'test-photo.jpg','codex academy university', 'Diploma', 'd3 informatika', '08127', 'mycv.pdf', 'pdf', 7 )
