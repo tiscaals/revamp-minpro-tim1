@@ -37,7 +37,6 @@ const CartPage: React.FC = () => {
   const { payment, pesan1 } = useSelector((state: any) => state.paymentReducers);
   const dispatch = useDispatch();
 
-  const [isAccountValid, setIsAccountValid] = useState(false);
   const [totalPrice, setTotalPrice] = useState(0);
   const [originalPrice, setOriginalPrice] = useState(0);
   const [searchTerm, setSearchTerm] = useState('');
@@ -169,9 +168,9 @@ const CartPage: React.FC = () => {
   //   setShowRemoveModal(false);
   //   toast.success('Item removed from cart');
   // };
-  
-  
-  
+
+
+
 
   const cancelRemoveCartItem = () => {
     setShowRemoveModal(false);
@@ -197,6 +196,7 @@ const CartPage: React.FC = () => {
 
 
 
+
   const handleCancelDiscount = () => {
     setTotalPrice(originalPrice);
     isSetDiscountApplied(false);
@@ -208,13 +208,16 @@ const CartPage: React.FC = () => {
       <Navbar />
       <ToastContainer />
       <div className="container mx-auto p-4">
-        <p className="text-lg font-bold text-red-600">
-          <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
-            {items?.length}
-          </span>
-          Course in cart
-          <BiCartDownload className="inline-block ml-2" />
-        </p>
+        <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+
+          <p className="text-lg font-bold text-red-600">
+            <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
+              {items?.length}
+            </span>
+            Course in cart
+            <BiCartDownload className="inline-block ml-2" />
+          </p>
+        </div>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
@@ -237,12 +240,12 @@ const CartPage: React.FC = () => {
                             </div>
                           </div>
                           <div className="flex gap-4">
-                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
+                            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border-b-4 border-gray-800 hover:border-gray-900 rounded-full transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
                               Save for later
                               <BookmarkAddIcon className="ml-2" />
                             </button>
                             <button
-                              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
+                              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 border-b-4 border-gray-800 hover:border-gray-900 rounded-full flex items-center transform hover:scale-105"
                               onClick={() => handleRemoveCartItem(course?.cait_id)} // Memastikan parameter yang diteruskan adalah cait_id
                             >
                               Remove
@@ -271,14 +274,16 @@ const CartPage: React.FC = () => {
                 <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice?.toLocaleString()}</p>
 
                 <button
-                  className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-900 rounded-full mt-4"
                   onClick={handleCheckOut}
                 >
                   Checkout
                   <ShoppingCartCheckoutIcon className="ml-2" />
                 </button>
+
+
                 <div>
-                  <div className="mt-4 flex items-center">
+                  <div className="mt-1 flex items-center">
 
                     {isDiscountApplied ? (
                       <Button
@@ -323,69 +328,74 @@ const CartPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex grid-cols-2">
-          <div className="flex items-center justify-between mt-4 sm:justify-start">
-            <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                {selectedFintech || 'Fintech'}
-                <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-500" aria-hidden="true" />
-              </Menu.Button>
 
-              <Menu.Items className="origin-top-right absolute right-0 left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 max-h-[20rem] overflow-y-auto">
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                      onClick={() => handleAccountFintechClick('GoTo')}
-                    >
-                      GoTo
-                    </button>
-                  )}
-                </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
-                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                      onClick={() => handleAccountFintechClick('OVO')}
-                    >
-                      OVO
-                    </button>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Menu>
-            <IconButton>
-              <FontAwesomeIcon icon={faArrowRight} className="text-gray-600" />
-            </IconButton>
-          </div>
+        <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
 
-          <div>
-            <div className="mt-4 flex items-center">
-              <TextField
-                id="search"
-                label="Fintech Account"
-                variant="outlined"
-                size="small"
-                onChange={handleSearchFintech}
-                fullWidth
-                className="mr-2"
-              />
+          <div className="flex grid-cols-2">
+            <div className="flex items-center justify-between mt-4 sm:justify-start">
+              <Menu as="div" className="relative inline-block text-left">
+                <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                  {selectedFintech || 'Fintech'}
+                  <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-500" aria-hidden="true" />
+                </Menu.Button>
+
+                <Menu.Items className="origin-top-right absolute right-0 left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-10 max-h-[20rem] overflow-y-auto">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('GoTo')}
+                      >
+                        GoTo
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('OVO')}
+                      >
+                        OVO
+                      </button>
+                    )}
+                  </Menu.Item>
+                </Menu.Items>
+              </Menu>
+              <IconButton>
+                <FontAwesomeIcon icon={faArrowRight} className="text-gray-600" />
+              </IconButton>
+            </div>
+
+            <div>
+              <div className="mt-4 flex items-center">
+                <TextField
+                  id="search"
+                  label="Fintech Account"
+                  variant="outlined"
+                  size="small"
+                  onChange={handleSearchFintech}
+                  fullWidth
+                  className="mr-2"
+                />
 
 
-              <Button
-                variant="contained"
-                color="primary"
-                startIcon={<SearchIcon />}
-                style={{ backgroundColor: '#3f51b5' }}
-                onClick={handleSearchAccountNumber}
-              >
-                Search
-              </Button>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  startIcon={<SearchIcon />}
+                  style={{ backgroundColor: '#3f51b5' }}
+                  onClick={handleSearchAccountNumber}
+                >
+                  Search
+                </Button>
+              </div>
             </div>
           </div>
         </div>
+
       </div>
 
       {showRemoveModal && (

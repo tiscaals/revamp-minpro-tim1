@@ -42,7 +42,7 @@ const CreateOrder: React.FC = () => {
   const [removeItemId, setRemoveItemId] = useState(0);
 
   const router = useRouter();
-  const { totalPrice, accountNumber, fintechName, userName, spof_id, spof_discount }:any = router.query;
+  const { totalPrice, accountNumber, fintechName, userName, spof_id, spof_discount }: any = router.query;
   const totalPriceString = Array.isArray(totalPrice) ? totalPrice[0] : totalPrice;
   const totalPriceNumber = parseInt(totalPriceString || "0");
 
@@ -51,80 +51,80 @@ const CreateOrder: React.FC = () => {
   }, [refresh]);
   console.log(items);
 
-// Fungsi untuk menghasilkan nomor pesanan acak
-const generateOrderNumber = () => {
-  const prefix = 'ORDER';
-  const characters = '0123456789';
-  let randomNumber = '';
-  for (let i = 0; i < 6; i++) {
-    randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return `${prefix}${randomNumber}`;
-};
-
-
-// Fungsi untuk menghasilkan kode nomor TRPA acak
-const generateTrpaCodeNumber = () => {
-  const prefix = 'TRPA';
-  const characters = '0123456789';
-  let randomNumber = '';
-  for (let i = 0; i < 6; i++) {
-    randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return `${prefix}${randomNumber}`;
-};
-
-
-// Fungsi untuk menghasilkan kode lisensi acak
-const generateLicenseCode = () => {
-  const prefix = 'LICENSE';
-  const characters = '0123456789';
-  let randomNumber = '';
-  for (let i = 0; i < 5; i++) {
-    randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
-  }
-  return `${prefix}${randomNumber}`;
-};
-
-
-// Menggunakan generator untuk mendapatkan nilai acak
-const handleCreateOrder = async () => {
-  const trpaCodeNumber = generateTrpaCodeNumber();
-
-  const cartItems = items.map((item:any) => {
-    return {
-      cait_id: item.cait_id,
-      cait_quantity: item.cait_quantity,
-      cait_unit_price: totalPrice,
-      cait_user_entity_id: item.cait_user_entity_id,
-      cait_prog_entity_id: item.cait_prog_entity_id,
-    };
-  });
-
-  const dummyData = {
-    cartItems,
-    p_sohe_order_number: generateOrderNumber(),
-    p_sohe_account_number: accountNumber,
-    p_sohe_trpa_code_number: trpaCodeNumber,
-    p_sohe_license_code: generateLicenseCode(),
-    p_sohe_user_entity_id: items[0].cait_user_entity_id,
-    p_sohe_status: 'open',
-    p_sode_unit_discount: parseFloat(spof_discount),
-    p_sode_soco_id: parseInt(spof_id),
+  // Fungsi untuk menghasilkan nomor pesanan acak
+  const generateOrderNumber = () => {
+    const prefix = 'ORDER';
+    const characters = '0123456789';
+    let randomNumber = '';
+    for (let i = 0; i < 6; i++) {
+      randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return `${prefix}${randomNumber}`;
   };
 
-  try {
-    await dispatch(addOrderReq(dummyData));
-    // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
-    router.push({
-      pathname: '/sales/receipt',
-      query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber },
+
+  // Fungsi untuk menghasilkan kode nomor TRPA acak
+  const generateTrpaCodeNumber = () => {
+    const prefix = 'TRPA';
+    const characters = '0123456789';
+    let randomNumber = '';
+    for (let i = 0; i < 6; i++) {
+      randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return `${prefix}${randomNumber}`;
+  };
+
+
+  // Fungsi untuk menghasilkan kode lisensi acak
+  const generateLicenseCode = () => {
+    const prefix = 'LICENSE';
+    const characters = '0123456789';
+    let randomNumber = '';
+    for (let i = 0; i < 5; i++) {
+      randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return `${prefix}${randomNumber}`;
+  };
+
+
+  // Menggunakan generator untuk mendapatkan nilai acak
+  const handleCreateOrder = async () => {
+    const trpaCodeNumber = generateTrpaCodeNumber();
+
+    const cartItems = items.map((item: any) => {
+      return {
+        cait_id: item.cait_id,
+        cait_quantity: item.cait_quantity,
+        cait_unit_price: totalPrice,
+        cait_user_entity_id: item.cait_user_entity_id,
+        cait_prog_entity_id: item.cait_prog_entity_id,
+      };
     });
-  } catch (error) {
-    // Handle error jika terjadi kegagalan
-    console.error('Gagal memasukkan data:', error);
-  }
-};
+
+    const dummyData = {
+      cartItems,
+      p_sohe_order_number: generateOrderNumber(),
+      p_sohe_account_number: accountNumber,
+      p_sohe_trpa_code_number: trpaCodeNumber,
+      p_sohe_license_code: generateLicenseCode(),
+      p_sohe_user_entity_id: items[0].cait_user_entity_id,
+      p_sohe_status: 'open',
+      p_sode_unit_discount: parseFloat(spof_discount),
+      p_sode_soco_id: parseInt(spof_id),
+    };
+
+    try {
+      await dispatch(addOrderReq(dummyData));
+      // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
+      router.push({
+        pathname: '/sales/receipt',
+        query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber },
+      });
+    } catch (error) {
+      // Handle error jika terjadi kegagalan
+      console.error('Gagal memasukkan data:', error);
+    }
+  };
 
 
 
@@ -170,13 +170,16 @@ const handleCreateOrder = async () => {
       <Navbar />
       <ToastContainer />
       <div className="container mx-auto p-4">
-      <p className="text-lg font-bold text-red-600">
-  <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
-    {items.length}
-  </span>
-  Course in cart
-  <BiCartDownload className="inline-block ml-2" />
-</p>
+        <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+
+          <p className="text-lg font-bold text-red-600">
+            <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
+              {items.length}
+            </span>
+            Course in cart
+            <BiCartDownload className="inline-block ml-2" />
+          </p>
+        </div>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
@@ -199,12 +202,12 @@ const handleCreateOrder = async () => {
                             </div>
                           </div>
                           <div className="flex gap-4">
-                            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105">
+                            <button className="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-gray-800 hover:border-gray-900 rounded-full flex items-center transform hover:scale-105">
                               Save for later
-                              <BookmarkAddIcon className="ml-2" />
+                              <BookmarkAddIcon className=" ml-2" />
                             </button>
                             <button
-                              className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
+                              className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-gray-800 hover:border-gray-900 rounded-full flex items-center transform hover:scale-105"
                               onClick={() => handleRemoveCartItem(course.cait_id)}
                             >
                               Remove
@@ -231,7 +234,7 @@ const handleCreateOrder = async () => {
                 <p className="text-lg font-bold text-gray-800">Total:</p>
                 <p className="text-3xl font-bold text-gray-800">Rp. {totalPriceNumber.toLocaleString()}</p>
 
-                <button className="bg-red-600 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4 flex items-center justify-center flex-row-reverse"
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
                   onClick={handleCreateOrder}
                 >
                   <MdShoppingCart className="ml-2" />
@@ -239,7 +242,7 @@ const handleCreateOrder = async () => {
                 </button>
 
                 <button
-                  className="bg-red-600 hover:bg-red-400 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4 flex items-center justify-center flex-row-reverse"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
                   onClick={handleCancelOrder}
                 >
                   <MdRemoveShoppingCart className="ml-2" />
@@ -250,19 +253,23 @@ const handleCreateOrder = async () => {
           </div>
         </div>
 
-        <div>
-          <div className="items-center p-4 bg-white mt-2">
-            <p className="text-2xl font-bold bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Payment via {fintechName}</p>
-            <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Number: {accountNumber}</p>
-            <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Name: {userName}</p>
-            <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Credit: Rp. {totalPriceNumber.toLocaleString()}</p>
+        <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+
+          <div>
+            <div className="items-center p-4 bg-white mt-2">
+              <p className="text-2xl font-bold bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Payment via {fintechName}</p>
+              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Number: {accountNumber}</p>
+              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Name: {userName}</p>
+              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Credit: Rp. {totalPriceNumber.toLocaleString()}</p>
+            </div>
+
+
+
+
+
           </div>
-
-
-
-
-
         </div>
+
 
 
       </div>

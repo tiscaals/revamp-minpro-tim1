@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
       <Provider store={store}>
       <Component {...pageProps} />
-      // </Provider>
+      </Provider>
     )
   } else if (router.pathname.startsWith(`/landing`)) {
     return (

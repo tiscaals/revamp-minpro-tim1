@@ -9,14 +9,6 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import { getAllCartReq } from '../redux/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
 
-const ApplyButton = styled(Button)(({ theme }) => ({
-    backgroundColor: '#3f51b5',
-    transition: 'transform 0.3s ease',
-    '&:hover': {
-        transform: 'scale(1.1)',
-    },
-}));
-
 const Invoice: React.FC = () => {
     const { items, message, refresh } = useSelector((state: any) => state.salesReducers);
     const dispatch = useDispatch();
@@ -101,13 +93,17 @@ const Invoice: React.FC = () => {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <div className="items-center p-4 bg-white mt-2">
-                        <p className="text-2xl font-bold bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Payment via {fintechName}</p>
-                        <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Number: {accountNumber}</p>
-                        <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Name: {userName}</p>
-                        <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Credit: Rp. {totalPriceNumber.toLocaleString()}</p>
-                        <p className="text-lg font-semibold italic bg-gradient-to-r from-gray-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Transaction Number: {trpaCodeNumber}</p>
+
+                <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+
+                    <div>
+                        <div className="items-center p-4 bg-white mt-2">
+                            <p className="text-2xl font-bold bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Payment via {fintechName}</p>
+                            <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Number: {accountNumber}</p>
+                            <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Name: {userName}</p>
+                            <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Credit: Rp. {totalPriceNumber.toLocaleString()}</p>
+                            <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Transaction Number: {trpaCodeNumber}</p>
+                        </div>
                     </div>
                 </div>
 
