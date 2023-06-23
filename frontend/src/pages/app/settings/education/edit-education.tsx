@@ -3,8 +3,8 @@ import { Button, Input, Textarea } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { doRequestUpdateEducation } from '../../redux/users-schema/action/actionReducer';
 import moment from 'moment';
+import { doRequestUpdateEducation } from '@/pages/redux/users-schema/action/actionReducer';
 
 const EditEducation = (props: any) => {
   type FormValue = {

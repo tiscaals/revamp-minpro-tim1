@@ -6,7 +6,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Swal from 'sweetalert2';
 import { useDispatch, useSelector } from 'react-redux';
-import defaultImage from '../../../public/img/default.jpg';
+import defaultImage from '../../images/default-avatar.jpg';
 import { doRequestGetProfile } from '../redux/users-schema/action/actionReducer';
 import Cookies from 'js-cookie';
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -107,7 +107,7 @@ export default function TopBar({ showNav, setShowNav }: any) {
                   <Menu.Item>
                     {({ active }) => (
                       <button
-                        onClick={() => router.push('/settings')}
+                        onClick={() => router.push('/app/settings')}
                         className={`${
                           active ? 'bg-blue-500 text-white' : 'text-gray-900'
                         } group flex w-full items-center rounded-md px-2 py-2 text-sm`}

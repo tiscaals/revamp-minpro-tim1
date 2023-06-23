@@ -1,13 +1,13 @@
+import { doRequestUpdatePhoneNumber } from '@/pages/redux/users-schema/action/actionReducer';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button, Input } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { doRequestAddPhoneNumber } from '../../redux/users-schema/action/actionReducer';
 
-const AddPhoneNumber = (props: any) => {
+const EditPhoneNumber = (props: any) => {
   type FormValue = {
-    uspo_entity_id: any;
+    uspo_number: string;
     number_phone: string;
     uspo_ponty_code: string;
   };
@@ -20,20 +20,20 @@ const AddPhoneNumber = (props: any) => {
 
   const dispatch = useDispatch();
 
-  const addPhoneNumberValidation = {
-    uspo_entity_id: { required: 'id required' },
+  const editPhoneNumberValidation = {
+    uspo_number: { required: 'please fill column email address before submit' },
     number_phone: {
       required: 'please fill column email address before submit',
     },
     uspo_ponty_code: { required: 'type phone is required' },
   };
 
-  const handleAddPhoneNumber = async (data: any) => {
-    dispatch(doRequestAddPhoneNumber(data));
+  const handleEditPhoneNumber = async (phone_number: any) => {
+    dispatch(doRequestUpdatePhoneNumber(phone_number));
     props.closeModal();
   };
 
-  useEffect(() => {}, [handleAddPhoneNumber]);
+  useEffect(() => {}, [handleEditPhoneNumber]);
 
   return (
     <div>
@@ -67,36 +67,38 @@ const AddPhoneNumber = (props: any) => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Add Phone
+                    Edit Phone
                   </Dialog.Title>
 
                   <div className="border-t-1 border border-black-900 mt-3"></div>
                   <div className="">
-                    <form onSubmit={handleSubmit(handleAddPhoneNumber)}>
+                    <form onSubmit={handleSubmit(handleEditPhoneNumber)}>
                       <div className=" bg-white py-6  m-auto w-full">
                         <div className="grid grid-cols-1 gap-4  m-auto">
                           <div className="col-span-1">
-                            <input
-                              type="hidden"
-                              defaultValue={props.profile?.user_entity_id}
-                              {...register(
-                                'uspo_entity_id',
-                                addPhoneNumberValidation.uspo_entity_id
-                              )}
-                            />
                             <div className="w-full mt-2 mb-2 relative">
+                              <input
+                                type="hidden"
+                                {...register(
+                                  'uspo_number',
+                                  editPhoneNumberValidation.uspo_number
+                                )}
+                                defaultValue={props.selectedPhone.uspo_number}
+                                autoComplete="off"
+                              />
                               <Input
-                                label="New Phone Number"
-                                type="text"
+                                label="Edit Phone Number"
+                                type="number"
                                 {...register(
                                   'number_phone',
-                                  addPhoneNumberValidation.number_phone
+                                  editPhoneNumberValidation.number_phone
                                 )}
+                                defaultValue={props.selectedPhone.uspo_number}
                                 autoComplete="off"
                               />
                               <span className="text-sm text-red-600">
-                                {errors?.number_phone &&
-                                  errors.number_phone.message}
+                                {errors?.uspo_number &&
+                                  errors.uspo_number.message}
                               </span>
                             </div>
 
@@ -105,8 +107,9 @@ const AddPhoneNumber = (props: any) => {
                                 className="block w-50 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 {...register(
                                   'uspo_ponty_code',
-                                  addPhoneNumberValidation.uspo_ponty_code
+                                  editPhoneNumberValidation.uspo_ponty_code
                                 )}
+                                defaultValue={props.selectedPontyCode}
                               >
                                 <option value="">Select Type Number</option>
                                 <option value="cellular">Cellular</option>
@@ -151,4 +154,4 @@ const AddPhoneNumber = (props: any) => {
   );
 };
 
-export default AddPhoneNumber;
+export default EditPhoneNumber;

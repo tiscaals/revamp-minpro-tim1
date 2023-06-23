@@ -1,12 +1,9 @@
+import { doRequestUpdateExperiences, doReqCity } from '@/pages/redux/users-schema/action/actionReducer';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button, Checkbox, Input, Textarea } from '@material-tailwind/react';
 import React, { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  doReqCity,
-  doRequestUpdateExperiences,
-} from '../../redux/users-schema/action/actionReducer';
 
 const EditExperiences = (props: any) => {
   const [isnilai, setIsNilai] = useState(1);

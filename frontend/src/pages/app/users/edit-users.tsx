@@ -7,7 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import {
   doRequestGetRole,
   doRequestUpdateRole,
-} from '../redux/users-schema/action/actionReducer';
+} from '../../redux/users-schema/action/actionReducer';
 
 const EditUsers = (props: any) => {
   type FormValue = {

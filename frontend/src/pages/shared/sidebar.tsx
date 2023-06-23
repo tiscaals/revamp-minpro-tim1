@@ -48,7 +48,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       case 1:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/users', path: '/users', icon: <MdGroup />, name: 'User' },
+          { to: '/app/users', path: '/users', icon: <MdGroup />, name: 'User' },
           {
             to: '/category',
             path: '/category',

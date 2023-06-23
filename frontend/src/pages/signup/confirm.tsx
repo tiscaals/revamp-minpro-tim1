@@ -1,6 +1,5 @@
 import React from 'react';
-import Logo from '../../../public/img/logo.png';
-import Link from 'next/link';
+import Logo from '../../images/logo.png';
 import { useRouter } from 'next/router';
 
 const ConfirmSucces = () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../../../public/img/logo.png';
+import Logo from '../../../images/logo.png';
 import { useRouter } from 'next/router';
 
 const ConfirmSucces = () => {
@@ -19,10 +19,10 @@ const ConfirmSucces = () => {
               terimakasih sudah apply untuk mengikuti perektrutan profesional
               job, click{' '}
               <button
-                onClick={() => router.replace('/')}
+                onClick={() => router.replace('/app/settings')}
                 className="text-blue-800 underline"
               >
-                Home
+                disini
               </button>
               {''} untuk kembali
             </p>

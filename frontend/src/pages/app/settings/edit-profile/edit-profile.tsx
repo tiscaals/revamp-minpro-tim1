@@ -2,9 +2,9 @@ import { Dialog, Transition } from '@headlessui/react';
 import { Button, Input } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import DefaultImage from '../../../../public/img/default.jpg';
+import DefaultImage from '../../../../images/default-avatar.jpg';
 import { useDispatch } from 'react-redux';
-import { doRequestUpdateProfile } from '../../redux/users-schema/action/actionReducer';
+import { doRequestUpdateProfile } from '@/pages/redux/users-schema/action/actionReducer';
 
 const EditProfile = (props: any) => {
   type FormValue = {

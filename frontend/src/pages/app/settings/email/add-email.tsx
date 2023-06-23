@@ -1,9 +1,9 @@
+import { doRequestAddEmail } from '@/pages/redux/users-schema/action/actionReducer';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button, Input } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { doRequestAddEmail } from '../../redux/users-schema/action/actionReducer';
 
 const AddEmail = (props: any) => {
   type FormValue = {

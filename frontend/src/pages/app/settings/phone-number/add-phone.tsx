@@ -1,51 +1,39 @@
+import { doRequestAddPhoneNumber } from '@/pages/redux/users-schema/action/actionReducer';
 import { Dialog, Transition } from '@headlessui/react';
+import { Button, Input } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import {
-  doReqGetSkills,
-  doRequestAddSkills,
-} from '../../redux/users-schema/action/actionReducer';
-import { Button } from '@material-tailwind/react';
+import { useDispatch } from 'react-redux';
 
-const AddSkills = (props: any) => {
+const AddPhoneNumber = (props: any) => {
   type FormValue = {
-    uski_entity_id: string;
-    uski_skty_name: string;
+    uspo_entity_id: any;
+    number_phone: string;
+    uspo_ponty_code: string;
   };
 
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<FormValue>();
 
   const dispatch = useDispatch();
-  const { skills }: any = useSelector((state: any) => state.skillsReducers);
 
-  const handleValidation = {
-    uski_entity_id: { required: 'id is required' },
-    uski_skty_name: { required: 'choose your skills' },
+  const addPhoneNumberValidation = {
+    uspo_entity_id: { required: 'id required' },
+    number_phone: {
+      required: 'please fill column email address before submit',
+    },
+    uspo_ponty_code: { required: 'type phone is required' },
   };
 
-  const handleAddSkilss = async (data: any) => {
-    if (data.uski_skty_name === undefined) {
-      setError('uski_skty_name', {
-        type: 'validate',
-        message: 'choose your skills',
-      });
-    } else {
-      dispatch(doRequestAddSkills(data));
-      props.closeModal();
-    }
+  const handleAddPhoneNumber = async (data: any) => {
+    dispatch(doRequestAddPhoneNumber(data));
+    props.closeModal();
   };
 
-  useEffect(() => {
-    dispatch(doReqGetSkills());
-  }, []);
+  useEffect(() => {}, [handleAddPhoneNumber]);
 
   return (
     <div>
@@ -79,12 +67,12 @@ const AddSkills = (props: any) => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Add Skills
+                    Add Phone
                   </Dialog.Title>
 
                   <div className="border-t-1 border border-black-900 mt-3"></div>
                   <div className="">
-                    <form onSubmit={handleSubmit(handleAddSkilss)}>
+                    <form onSubmit={handleSubmit(handleAddPhoneNumber)}>
                       <div className=" bg-white py-6  m-auto w-full">
                         <div className="grid grid-cols-1 gap-4  m-auto">
                           <div className="col-span-1">
@@ -92,40 +80,45 @@ const AddSkills = (props: any) => {
                               type="hidden"
                               defaultValue={props.profile?.user_entity_id}
                               {...register(
-                                'uski_entity_id',
-                                handleValidation.uski_entity_id
+                                'uspo_entity_id',
+                                addPhoneNumberValidation.uspo_entity_id
                               )}
                             />
-                            <div className="w-full">
-                              <Autocomplete
-                                options={skills}
-                                getOptionLabel={(option: any) =>
-                                  option.skty_name
-                                }
-                                autoComplete
-                                id="combo-box-demo"
-                                size="small"
-                                includeInputInList
-                                onChange={(event: any, value: any) => {
-                                  register('uski_skty_name', {
-                                    value: value?.skty_name || value,
-                                  });
-                                }}
-                                renderInput={params => (
-                                  <TextField
-                                    {...params}
-                                    label="Choose Skills"
-                                    InputProps={{
-                                      ...params.InputProps,
-                                    }}
-                                  />
+                            <div className="w-full mt-2 mb-2 relative">
+                              <Input
+                                label="New Phone Number"
+                                type="text"
+                                {...register(
+                                  'number_phone',
+                                  addPhoneNumberValidation.number_phone
                                 )}
+                                autoComplete="off"
                               />
                               <span className="text-sm text-red-600">
-                                {errors?.uski_skty_name &&
-                                  errors.uski_skty_name.message}
+                                {errors?.number_phone &&
+                                  errors.number_phone.message}
                               </span>
                             </div>
+
+                            <div className="w-50 mt-2 mb-2">
+                              <select
+                                className="block w-50 py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                {...register(
+                                  'uspo_ponty_code',
+                                  addPhoneNumberValidation.uspo_ponty_code
+                                )}
+                              >
+                                <option value="">Select Type Number</option>
+                                <option value="cellular">Cellular</option>
+                                <option value="home">Home</option>
+                              </select>
+
+                              <span className="text-sm text-red-600">
+                                {errors?.uspo_ponty_code &&
+                                  errors.uspo_ponty_code.message}
+                              </span>
+                            </div>
+
                             <div className="border-t-1 border border-black-900 mt-5"></div>
                             <div className="flex-row space-x-4 mt-4 text-right">
                               <Button
@@ -158,4 +151,4 @@ const AddSkills = (props: any) => {
   );
 };
 
-export default AddSkills;
+export default AddPhoneNumber;

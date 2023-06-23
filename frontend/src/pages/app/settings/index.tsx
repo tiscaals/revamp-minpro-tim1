@@ -1,26 +1,14 @@
-import image from '../../../public/img/default.jpg';
-import BreadcrumbsSlice from '../shared/breadcrumbs';
+import image from '../../../images/default-avatar.jpg';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import Cookies from 'js-cookie';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-
-import {
-  doRequestDeleteAddress,
-  doRequestDeleteEducation,
-  doRequestDeleteEmail,
-  doRequestDeleteExperiences,
-  doRequestDeletePhone,
-  doRequestDeleteSkills,
-  doRequestGetProfile,
-} from '../redux/users-schema/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsPencilFill, BsPlusCircleFill, BsTrash3Fill } from 'react-icons/bs';
 import EditProfile from './edit-profile/edit-profile';
 import { ToastContainer, toast } from 'react-toastify';
-import { notifyFailed, notifySuccess } from '../alert';
 import EditPassword from './edit-password/edit-password';
 import { Button, Typography } from '@material-tailwind/react';
 import AddEmail from './email/add-email';
@@ -35,6 +23,9 @@ import EditEducation from './education/edit-education';
 import AddExperiences from './experiences/add-experiences';
 import EditExperiences from './experiences/edit-experience';
 import AddSkills from './skills/add-skills';
+import { notifySuccess, notifyFailed } from '@/pages/alert';
+import { doRequestDeleteEmail, doRequestDeletePhone, doRequestDeleteAddress, doRequestDeleteEducation, doRequestDeleteExperiences, doRequestDeleteSkills, doRequestGetProfile } from '@/pages/redux/users-schema/action/actionReducer';
+import BreadcrumbsSlice from '@/pages/shared/breadcrumbs';
 
 const Settings = (props: any) => {
   // Var Core

@@ -1,9 +1,9 @@
+import { dotRequestUpdateEmail } from '@/pages/redux/users-schema/action/actionReducer';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button, Input } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { dotRequestUpdateEmail } from '../../redux/users-schema/action/actionReducer';
 
 const EditEmail = (props: any) => {
   type FormValue = {

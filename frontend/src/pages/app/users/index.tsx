@@ -1,12 +1,12 @@
 import * as React from 'react';
-import image from '../../../public/img/default.jpg';
-import BreadcrumbsSlice from '../shared/breadcrumbs';
+import image from '../../../images/default-avatar.jpg';
+import BreadcrumbsSlice from '../../shared/breadcrumbs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { doRequestGetUser } from '../redux/users-schema/action/actionReducer';
+import { doRequestGetUser } from '../../redux/users-schema/action/actionReducer';
 import { AiOutlineSearch } from 'react-icons/ai';
 import EditUsers from './edit-users';
-import { notifySuccess } from '../alert';
+import { notifySuccess } from '../../alert';
 import { ToastContainer, toast } from 'react-toastify';
 import Cookies from 'js-cookie';
 import jwt, { JwtPayload } from 'jsonwebtoken';

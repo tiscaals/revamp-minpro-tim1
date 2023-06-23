@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from 'react';
-import Logo from '../../../public/img/logo.png';
+import Logo from '../../images/logo.png';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';

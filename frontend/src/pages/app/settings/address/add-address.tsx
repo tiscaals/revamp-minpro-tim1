@@ -1,22 +1,17 @@
+import { doRequestAddAddress, doReqAddressType, doReqCity } from '@/pages/redux/users-schema/action/actionReducer';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button, Input } from '@material-tailwind/react';
 import React, { Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  doReqAddressType,
-  doReqCity,
-  doRequestAddAddress,
-  doRequestUpdateAddress,
-} from '../../redux/users-schema/action/actionReducer';
 
-const EditAddress = (props: any) => {
+const AddAddress = (props: any) => {
   type FormValue = {
-    address_id: string;
     first_address: string;
     second_address: string;
     code_pos: string;
     city_id: string;
+    user_id: string;
     address_type_id: string;
   };
 
@@ -33,16 +28,15 @@ const EditAddress = (props: any) => {
   const { city }: any = useSelector((state: any) => state.cityReducers);
 
   const handleValidationAddress = {
-    address_id: { required: 'id is required' },
     first_address: { required: 'first address required' },
     code_pos: { required: 'postal code required' },
     city_id: { required: 'choose your city' },
+    user_id: { required: 'id is required' },
     address_type_id: { required: 'choose your type address' },
   };
 
-  const handleUpdateAddress = async (data: any) => {
-    console.log('kwkwkw', data);
-    dispatch(doRequestUpdateAddress(data));
+  const handleAddAddress = async (data: any) => {
+    dispatch(doRequestAddAddress(data));
     props.closeModal();
   };
 
@@ -83,21 +77,21 @@ const EditAddress = (props: any) => {
                     as="h3"
                     className="text-lg font-medium leading-6 text-gray-900"
                   >
-                    Edit Address
+                    Add Address
                   </Dialog.Title>
 
                   <div className="border-t-1 border border-black-900 mt-3"></div>
                   <div className="">
-                    <form onSubmit={handleSubmit(handleUpdateAddress)}>
+                    <form onSubmit={handleSubmit(handleAddAddress)}>
                       <div className=" bg-white py-6  m-auto w-full">
                         <div className="grid grid-cols-1 gap-4  m-auto">
                           <div className="col-span-1">
                             <input
                               type="hidden"
-                              defaultValue={props.selectedAddress?.addr_id}
+                              defaultValue={props.profile?.user_entity_id}
                               {...register(
-                                'address_id',
-                                handleValidationAddress.address_id
+                                'user_id',
+                                handleValidationAddress.user_id
                               )}
                             />
                             <div className="w-full mt-2 mb-2 relative">
@@ -108,9 +102,6 @@ const EditAddress = (props: any) => {
                                   'first_address',
                                   handleValidationAddress.first_address
                                 )}
-                                defaultValue={
-                                  props.selectedAddress?.addr_line1 || ''
-                                }
                                 autoComplete="off"
                               />
                               <span className="text-sm text-red-600">
@@ -124,13 +115,10 @@ const EditAddress = (props: any) => {
                                 type="text"
                                 {...register('second_address')}
                                 autoComplete="off"
-                                defaultValue={
-                                  props.selectedAddress?.addr_line2 || ''
-                                }
                               />
                             </div>
                             <div className="mt-2 mb-2 flex justify-between">
-                              <div className="w-full mr-3 mt-5">
+                              <div className="w-full mr-3">
                                 <Input
                                   label="Postal Code"
                                   type="text"
@@ -138,10 +126,6 @@ const EditAddress = (props: any) => {
                                     'code_pos',
                                     handleValidationAddress.code_pos
                                   )}
-                                  defaultValue={
-                                    props.selectedAddress?.addr_postal_code ||
-                                    ''
-                                  }
                                   autoComplete="off"
                                 />
                                 <span className="text-sm text-red-600">
@@ -150,12 +134,6 @@ const EditAddress = (props: any) => {
                               </div>
 
                               <div className="w-full">
-                                <label
-                                  htmlFor="city"
-                                  className="block text-sm text-gray-700"
-                                >
-                                  City
-                                </label>
                                 <select
                                   className="py-2.5 w-full border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                   {...register(
@@ -163,16 +141,10 @@ const EditAddress = (props: any) => {
                                     handleValidationAddress.city_id
                                   )}
                                 >
+                                  <option value="">Select City</option>
                                   {Array.isArray(city) &&
                                     city.map((dt: any, index: any) => (
-                                      <option
-                                        key={index}
-                                        value={dt.city_id}
-                                        selected={
-                                          props.selectedAddress?.city
-                                            .city_name === dt.city_name
-                                        }
-                                      >
+                                      <option key={index} value={dt.city_id}>
                                         {dt.city_name}
                                       </option>
                                     ))}
@@ -184,12 +156,6 @@ const EditAddress = (props: any) => {
                               </div>
                             </div>
                             <div className="w-50">
-                              <label
-                                htmlFor="city"
-                                className="block text-sm text-gray-700"
-                              >
-                                Address Type
-                              </label>
                               <select
                                 className="py-2.5 w-80 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 {...register(
@@ -197,16 +163,10 @@ const EditAddress = (props: any) => {
                                   handleValidationAddress.address_type_id
                                 )}
                               >
+                                <option value="">Select Address Type</option>
                                 {Array.isArray(addr_type) &&
                                   addr_type.map((dt: any, index: any) => (
-                                    <option
-                                      key={index}
-                                      value={dt.adty_id}
-                                      selected={
-                                        props.selectedAddressType?.adty_name ===
-                                        dt.adty_name
-                                      }
-                                    >
+                                    <option key={index} value={dt.adty_id}>
                                       {dt.adty_name}
                                     </option>
                                   ))}
@@ -249,4 +209,4 @@ const EditAddress = (props: any) => {
   );
 };
 
-export default EditAddress;
+export default AddAddress;

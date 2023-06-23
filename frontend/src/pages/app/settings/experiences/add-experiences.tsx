@@ -1,12 +1,9 @@
+import { doReqCity, doRequestAddExperiences } from '@/pages/redux/users-schema/action/actionReducer';
 import { Dialog, Transition } from '@headlessui/react';
 import { Button, Checkbox, Input, Textarea } from '@material-tailwind/react';
 import React, { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  doReqCity,
-  doRequestAddExperiences,
-} from '../../redux/users-schema/action/actionReducer';
 
 const AddExperiences = (props: any) => {
   type FormValue = {
@@ -96,8 +93,7 @@ const AddExperiences = (props: any) => {
       usex_experience_type: data.usex_experience_type,
       usex_city_id: data.usex_city_id,
     };
-
-    console.log('add', add);
+    
     dispatch(doRequestAddExperiences(add));
     props.closeModal();
   };
