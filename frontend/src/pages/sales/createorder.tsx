@@ -48,7 +48,7 @@ const CreateOrder: React.FC = () => {
 
   useEffect(() => {
     dispatch(getAllCartReq());
-  }, [dispatch]);
+  }, [refresh]);
   console.log(items);
 
 // Fungsi untuk menghasilkan nomor pesanan acak

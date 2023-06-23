@@ -15,7 +15,7 @@ function salesReducers(state = initialState, action: any) {
         case ActionTypes.ADD_CART_RES:
             return { message: payload.message, status: payload.status, refresh:false };
         case ActionTypes.DEL_CART_RES:
-            return { message: payload.message, status: payload.status, refresh:false }
+            return { state, refresh:false }
     default:
         return state;
     }

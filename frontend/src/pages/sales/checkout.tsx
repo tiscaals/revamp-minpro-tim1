@@ -75,51 +75,6 @@ const CartPage: React.FC = () => {
     setSearchTerm(searchTerm);
   };
 
-  // const handleSearchFintech = (event: any) => {
-  //   const searchTerm = event.target.value;
-  //   setSearchTerm(searchTerm);
-  // };
-
-  // const handleSearchAccountNumber = () => {
-  //   const matchingAccount = payment.find(
-  //     (account: any) =>
-  //       account.fint_name.toLowerCase() === selectedFintech.toLowerCase()
-  //   );
-
-  //   if (matchingAccount) {
-  //     // Account number found based on selected fintech
-  //     // You can perform further search logic based on the account number here
-  //     const accountNumber = matchingAccount.usac_account_number;
-  //     console.log('Account Number:', accountNumber);
-  //     // Perform additional search logic using the account number
-
-  //     setSelectedAccountNumber(accountNumber); // Set nomor akun yang ditemukan
-  //   } else {
-  //     toast.error('No matching fintech account found');
-  //     setSelectedAccountNumber(''); // Reset nomor akun jika tidak ditemukan
-  //   }
-  // };
-
-  // const handleSearchAccount = () => {
-  //   const matchingAccount = payment.find(
-  //     (account: any) =>
-  //       account.usac_account_number.toLowerCase() === searchTerm.toLowerCase()
-  //   );
-
-  //   if (matchingAccount) {
-  //     // Account found based on account number
-  //     // You can perform further search logic here
-  //     const accountNumber = matchingAccount.usac_account_number;
-  //     console.log('Account Number:', accountNumber);
-  //     // Perform additional search logic using the account number
-
-  //     setSelectedAccountNumber(accountNumber); // Set nomor akun yang ditemukan
-  //   } else {
-  //     toast.error('No matching account found');
-  //     setSelectedAccountNumber(''); // Reset nomor akun jika tidak ditemukan
-  //   }
-  // };
-
   const handleSearchFintech = (event: any) => {
     const searchTerm = event.target.value;
     setSearchTerm(searchTerm);
@@ -160,23 +115,9 @@ const CartPage: React.FC = () => {
     }
   };
 
-
-
-  // Contoh penggunaan handleSearchFintech
-  // Misalkan ada komponen input dengan event onChange yang memanggil handleSearchFintech
-  // <input type="text" onChange={handleSearchFintech} />
-
-  // Contoh penggunaan handleSearchAccountNumber
-  // Misalkan ada tombol atau peristiwa lain yang memanggil handleSearchAccountNumber
-  // <button onClick={handleSearchAccountNumber}>Search</button>
-
-
-
-
-
   useEffect(() => {
     dispatch(getAllCartReq());
-  }, [dispatch]);
+  }, [refresh]);
 
   useEffect(() => {
     calculateTotalPrice();
@@ -191,8 +132,8 @@ const CartPage: React.FC = () => {
   }, [dispatch])
 
   const calculateTotalPrice = () => {
-    if (items && items.length > 0) {
-      const total = items.reduce((accumulator: number, course: any) => {
+    if (items && items?.length > 0) {
+      const total = items?.reduce((accumulator: number, course: any) => {
         const price = parseFloat(course.prog_price.replace(/[^0-9.-]+/g, ""));
         const matchingDiscount = diskon.find((d: any) => d.prog_entity_id === course.prog_entity_id);
         if (matchingDiscount) {
@@ -218,9 +159,19 @@ const CartPage: React.FC = () => {
 
   const confirmRemoveCartItem = () => {
     dispatch(delCartReq(removeItemId));
-    toast.success('Item removed from cart'); // Display success message
+    toast.success('Item removed from cart'); // Menampilkan pesan berhasil
     setShowRemoveModal(false);
   };
+
+  // const confirmRemoveCartItem = async () => {
+  //   dispatch(delCartReq(removeItemId));
+  //   await dispatch(getAllCartReq());
+  //   setShowRemoveModal(false);
+  //   toast.success('Item removed from cart');
+  // };
+  
+  
+  
 
   const cancelRemoveCartItem = () => {
     setShowRemoveModal(false);
@@ -228,11 +179,12 @@ const CartPage: React.FC = () => {
 
   const handleApplyDiscount = () => {
     const matchingDiscount = diskon.find((d: any) =>
-      d.spof_description.toLowerCase().includes(searchTerm.toLowerCase())
+      d.spof_description.toLowerCase().includes(searchTerm.toLowerCase()) &&
+      d.prog_entity_id === d.prog_entity_id
     );
 
     if (matchingDiscount) {
-      setDiscountApply(matchingDiscount)
+      setDiscountApply(matchingDiscount);
       const discount = parseFloat(matchingDiscount.spof_discount);
       const discountedPrice = totalPrice - (totalPrice * discount) / 100;
       setTotalPrice(discountedPrice);
@@ -242,8 +194,9 @@ const CartPage: React.FC = () => {
       toast.error('No matching discount found');
     }
   };
-  console.log(discountApply);
-  
+
+
+
   const handleCancelDiscount = () => {
     setTotalPrice(originalPrice);
     isSetDiscountApplied(false);
@@ -255,13 +208,13 @@ const CartPage: React.FC = () => {
       <Navbar />
       <ToastContainer />
       <div className="container mx-auto p-4">
-      <p className="text-lg font-bold text-red-600">
-  <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
-    {items.length}
-  </span>
-  Course in cart
-  <BiCartDownload className="inline-block ml-2" />
-</p>
+        <p className="text-lg font-bold text-red-600">
+          <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
+            {items?.length}
+          </span>
+          Course in cart
+          <BiCartDownload className="inline-block ml-2" />
+        </p>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
@@ -290,7 +243,7 @@ const CartPage: React.FC = () => {
                             </button>
                             <button
                               className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg flex items-center transform hover:scale-105"
-                              onClick={() => handleRemoveCartItem(course.cait_id)} // Memastikan parameter yang diteruskan adalah cait_id
+                              onClick={() => handleRemoveCartItem(course?.cait_id)} // Memastikan parameter yang diteruskan adalah cait_id
                             >
                               Remove
                               <DeleteForeverIcon className="ml-2" />
@@ -315,7 +268,7 @@ const CartPage: React.FC = () => {
             <div className="grid grid-cols-1 gap-4 h-full">
               <div className="p-5 y-1 bg-white rounded-lg shadow-lg flex flex-col">
                 <p className="text-lg font-bold text-gray-800">Total:</p>
-                <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice?.toLocaleString()}</p>
 
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 shadow-lg mt-4"
