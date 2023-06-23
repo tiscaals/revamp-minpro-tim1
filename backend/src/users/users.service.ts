@@ -10,6 +10,7 @@ import {
   users_education,
   users_email,
   users_experiences,
+  users_media,
   users_phones,
   users_roles,
   users_skill,
@@ -148,6 +149,9 @@ export class UsersService {
           {
             model: users_skill,
           },
+          {
+            model: users_media
+          }
         ],
         where: { user_entity_id: id },
       });

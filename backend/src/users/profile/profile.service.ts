@@ -50,15 +50,15 @@ export class ProfileService {
       if (updateUserDto.user_photo) {
         updatedFields.user_photo = updateUserDto.user_photo;
       }
+      
+      if (updateUserDto.user_photo && fs.existsSync(oldImagePath)) {
+        fs.unlinkSync(oldImagePath);
+      }
 
       const result = await users.update(updatedFields, {
         where: { user_entity_id: id },
         returning: true,
       });
-
-      if (updateUserDto.user_photo && fs.existsSync(oldImagePath)) {
-        fs.unlinkSync(oldImagePath);
-      }
 
       return {
         message: 'update profile success',
@@ -66,10 +66,6 @@ export class ProfileService {
         result: result[1],
       };
     } catch (error) {
-      // const oldImagePath = './public/user-image/' + updateUserDto.user_photo;
-      // if (fs.existsSync(oldImagePath)) {
-      //   fs.unlinkSync(oldImagePath);
-      // }
       return {
         status: 400,
         message: error.message,

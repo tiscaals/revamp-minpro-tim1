@@ -14,8 +14,7 @@ import {
 import * as fs from 'fs-extra';
 import { AuthGuard } from 'src/midleware/auth-guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UpdateUserDto } from '../dto/update-user.dto';
-import { ProfileService } from './profile.service';
+import { ApplyJobService } from './applyJob.service';
 
 const fileUploadInterceptor = FileInterceptor('user_photo', {
   storage: diskStorage({
@@ -44,27 +43,7 @@ const fileUploadInterceptor = FileInterceptor('user_photo', {
   },
 });
 
-@Controller('profile')
-export class ProfileController {
-  constructor(private readonly profileService: ProfileService) {}
-
-  // Controller Update Profile
-  @UseGuards(AuthGuard)
-  @Patch('/update-profile/:id')
-  @UseInterceptors(fileUploadInterceptor)
-  UpdateProfile(
-    @Param('id') id: string,
-    @Body() updateUserDto: UpdateUserDto,
-    @UploadedFile() file: Express.Multer.File,
-  ) {
-    if (file) {
-      updateUserDto.user_photo = file.filename;
-
-      if (file.size > 4 * 1024 * 1024) {
-        fs.unlinkSync(file.path);
-        throw new Error('file size exceeds the maximum limit (4MB)');
-      }
-    }
-    return this.profileService.updateProfile(+id, updateUserDto);
-  }
+@Controller('apply-job')
+export class ApplyJobController {
+  constructor(private readonly applyJobService: ApplyJobService) {}
 }

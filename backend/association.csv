@@ -11,3 +11,4 @@
 1:N, user_entity_id, usex_entity_id, users, users_experiences
 1:N, city_id, usex_city_id, city, users_experiences
 1:N, user_entity_id, uski_entity_id, users, users_skill
+1:N, user_entity_id, usme_entity_id, users, users_media

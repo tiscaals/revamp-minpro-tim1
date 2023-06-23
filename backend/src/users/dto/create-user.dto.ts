@@ -64,3 +64,16 @@ export class CreateSkillsDto {
   uski_entity_id: any;
   uski_skty_name: string;
 }
+
+export class CreateApplyJobsDto {
+  user_id:any;
+  firstname:string;
+  lastname:string;
+  user_school:string;
+  user_degree:string;
+  user_field_study:string;
+  user_phone_number:string;
+  filename:string;
+  filetype:string;
+  role_id:string;
+}

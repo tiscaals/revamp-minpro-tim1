@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { users } from './users';
 
 export interface users_mediaAttributes {
   usme_id?: number;
@@ -33,6 +35,7 @@ export class users_media
   @Index({ name: 'users_media_pkey', using: 'btree', unique: true })
   usme_id?: number;
 
+  @ForeignKey(() => users)
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'users_media_pkey', using: 'btree', unique: true })
   usme_entity_id!: number;
@@ -55,4 +58,7 @@ export class users_media
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   usme_modified_data?: Date;
+
+  @BelongsTo(() => users)
+  user?: users;
 }

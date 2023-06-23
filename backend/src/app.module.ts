@@ -18,6 +18,7 @@ import { PhoneModule } from './users/phone-number/phone.module';
 import { EducationModule } from './users/education/education.module';
 import { ExperiencesModule } from './users/experiences/experiences.module';
 import { SkillsModule } from './users/skills/skills.module';
+import { ApplyJobModule } from './users/apply-job/applyJob,module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { SkillsModule } from './users/skills/skills.module';
     EducationModule,
     ExperiencesModule,
     SkillsModule,
+    ApplyJobModule,
   ],
   controllers: [AppController],
   providers: [AppService],
