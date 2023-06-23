@@ -24,7 +24,10 @@ import { useRouter } from 'next/router';
 // import { Popover } from '@headlessui/react';
 
 export default function evaluation() {
-  const { trainees } = useSelector((state: any) => state.traineeReducers);
+  const { trainees, refresh } = useSelector(
+    (state: any) => state.traineeReducers
+  );
+  const [storeTrainees, setStoreTrainees] = useState<any>();
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
@@ -33,23 +36,24 @@ export default function evaluation() {
     if (id) {
       dispatch(getAllTraineesByBatchReq(id));
     }
-  }, [id]);
+  }, [id, refresh]);
 
   if (trainees.length === 0) {
     return <div>loading...</div>;
   }
 
-  // console.log(isOpen);
+  console.log(trainees);
   return (
     <div className="bg-white rounded-md">
       <div className="flex justify-between mb-5 p-4">
         <p className="grid content-center">
-          {trainees[0].batch_name}, Bootcamp {trainees[0].prog_title} Evaluation
+          {storeTrainees?.batch_name}, Bootcamp {storeTrainees?.prog_title}{' '}
+          Evaluation
         </p>
         <Button>Back</Button>
       </div>
       <div className="grid lg:grid-cols-5 gap-3">
-        {trainees.map((item: any) => (
+        {trainees?.map((item: any) => (
           <Card className="shadow-none">
             <CardHeader floated={false} className="h-36">
               <img

@@ -13,81 +13,76 @@ import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addBatchReq,
+  editReq,
   getAllProgramsReq,
   getAllRecStudentReq,
   getAllTrainersReq,
   getOneBatchesReq,
 } from '../../redux/bootcamp-schema/action/actionReducer';
 import { useRouter } from 'next/router';
+import BreadcrumbsSlice from '@/pages/shared/breadcrumbs';
 
 export default function EditBatch() {
+  const date = new Date();
   const { batch, refresh } = useSelector((state: any) => state.batchReducers);
   const { programs } = useSelector((state: any) => state.programReducers);
   const { trainers } = useSelector((state: any) => state.trainerReducers);
   const { recstudents } = useSelector((state: any) => state.studentReducers);
+  const [filterStudents, setFilterStudents] = useState<any>({
+    month_number: date.getMonth(),
+    month: date.toLocaleString('default', { month: 'long' }),
+    year: date.getFullYear().toString(),
+  });
 
   const [checked, setChecked] = useState<any>([]);
-  // const [selectedTrainer, setSelectedTrainer] = useState<any>();
-  // const [selectedCoTrainer, setSelectedCoTrainer] = useState<any>();
   const [selTechno, setSelTechno] = useState<any>();
-  // const [batchType, setBatchType] = useState<string>('');
 
   const dispatch = useDispatch();
   const router = useRouter();
+  const technoRef = useRef();
+  const { id }: any = router.query;
 
   const {
     register,
     reset,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data: any) => {
-    // data.batch_status = 'open';
-
-    // //PIC diambil dari user yang login (recruiter)
-    // data.batch_pic_id = 1;
-    // // console.log(data);
-
-    // let newTrainer = {
-    //   tpro_emp_entity_id: data.trainer.emp_entity_id,
-    // };
-
-    // let newCoTrainer = {
-    //   tpro_emp_entity_id: data.cotrainer.emp_entity_id,
-    // };
-
-    // let newTrainee = [];
-
-    // for (let i in checked) {
-    //   newTrainee.push({
-    //     batr_trainee_entity_id: checked[i].user_entity_id,
-    //   });
-    // }
-    // const newObj = {
-    //   batch: data,
-    //   trainee: newTrainee,
-    //   instructors: [newTrainer, newCoTrainer],
-    // };
-    console.log(data);
+    data.batch_id = +id;
+    const newObj = {
+      batch: data,
+      trainee: checked,
+      instructors: [
+        { tpro_emp_entity_id: +data.trainer },
+        { tpro_emp_entity_id: +data.cotrainer },
+      ],
+    };
+    dispatch(editReq(newObj));
+    router.push('/batch');
   };
 
   const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       setChecked([...checked, item]);
     } else {
-      setChecked(
-        checked.filter(
-          (it: any) =>
-            it.batr_trainee_entity_id !== item.prap_user_entity_id &&
-            it.prap_user_entity_id !== item.prap_user_entity_id
-        )
-      );
+      setChecked(checked.filter((it: any) => it.user_id !== item.user_id));
     }
   };
 
-  const { id } = router.query;
+  const years: number[] = [];
+  const months: any = [];
+
+  for (let i = 0; i < 12; i++) {
+    years.push(date.getFullYear() + i);
+
+    const dateMonth = new Date(2000, i, 1);
+    const monthName = dateMonth.toLocaleString('default', { month: 'long' });
+    const monthNumber = i;
+
+    months.push({ monthName, monthNumber });
+  }
 
   useEffect(() => {
     if (id) {
@@ -95,29 +90,49 @@ export default function EditBatch() {
     }
     dispatch(getAllTrainersReq());
     dispatch(getAllProgramsReq());
-    dispatch(getAllRecStudentReq(selTechno));
-  }, [id, selTechno]);
+  }, [id]);
 
   useEffect(() => {
     if (batch) {
-      setSelTechno(batch.batch_entity_id);
+      // setSelTechno(batch.batch_entity_id)
+      technoRef.current = batch.batch_entity_id;
+      dispatch(getAllRecStudentReq(technoRef.current));
       setChecked(batch.trainees);
 
-      // let defaultValue:any = {}
-      // defaultValue.batch_entity_id = batch.batch_entity_id
+      let defaultValue: any = {};
+      defaultValue.batch_name = batch.batch_name;
+      defaultValue.batch_entity_id = batch.batch_entity_id;
+      defaultValue.batch_type = batch.batch_type;
+      defaultValue.batch_start_date = batch.batch_start_date;
+      defaultValue.batch_end_date = batch.batch_end_date;
+      reset({ ...defaultValue });
     }
-  }, [batch, selTechno]);
+  }, [batch]);
+
+  const handleTechnoChange = (e: any) => {
+    const selectedTechno = e.target.value;
+    setSelTechno(selectedTechno);
+    dispatch(getAllRecStudentReq(selectedTechno));
+  };
 
   if (programs.length === 0 && trainers.length === 0) {
     return <div className="bg-black w-full h-screen"> Loading</div>;
   }
 
+  const filteredStudents = recstudents?.filter((student: any) => {
+    const dateObj = new Date(student.join_date);
+
+    const month: any = dateObj.getMonth();
+    const year: any = dateObj.getFullYear();
+
+    return month == filterStudents.month_number && year == filterStudents.year;
+  });
+
   if (!id && !batch) {
     return <div>....</div>;
   }
 
-  console.log(batch);
-  // console.log(recstudents);
+  // console.log(batch);
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -135,9 +150,9 @@ export default function EditBatch() {
             <div>
               <Input
                 label="Batch Name"
-                defaultValue={batch?.batch_name}
+                // defaultValue={batch?.batch_name}
                 {...register('batch_name', { required: true })}
-                error={errors.batch_name}
+                error={errors.batch_name ? true : false}
               />
               {errors.batch_name && (
                 <span className="text-sm text-red-500">
@@ -146,20 +161,14 @@ export default function EditBatch() {
               )}
             </div>
             <div className="flex lg:flex-row flex-col gap-5">
-              <div className="w-1/2">
-                {/* <Select inputProps={{...register('batch_entity_id',{required:true})}} error={errors.batch_entity_id} onChange={setSelTechno} label="Technology" >
-                {
-                  (programs || []).map((item:any)=>(
-                    <Option key={item.prog_entity_id} value={item.prog_entity_id} >{item.prog_title}</Option>
-                  ))
-                }
-              </Select> */}
+              <div className="lg:w-1/2">
                 <select
                   className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
                   {...register('batch_entity_id')}
-                  // onChange={(e)=>setSelTechno(e.target.value)}
-                  error={errors.batch_entity_id}
-                  // label="Technology"
+                  onChange={handleTechnoChange}
+                  value={selTechno}
+                  error={errors.batch_entity_id ? true : false}
+                  // disabled
                 >
                   {(programs || []).map((item: any) => (
                     <option
@@ -177,7 +186,7 @@ export default function EditBatch() {
                   </span>
                 )}
               </div>
-              <div className="w-1/2">
+              <div className="lg:w-1/2">
                 <select
                   className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
                   {...register('batch_type')}
@@ -219,7 +228,7 @@ export default function EditBatch() {
                 <Textarea
                   label="Description"
                   {...register('batch_description', { required: true })}
-                  error={errors.batch_description}
+                  error={errors.batch_description ? true : false}
                   defaultValue={batch?.batch_description}
                 />
                 {errors.batch_description && (
@@ -239,7 +248,7 @@ export default function EditBatch() {
               <div>
                 <input
                   type="date"
-                  defaultValue={batch?.batch_start_date}
+                  // defaultValue={batch?.batch_start_date}
                   {...register('batch_start_date', { required: true })}
                   className={`appearance-none border ${
                     errors.batch_start_date
@@ -260,7 +269,7 @@ export default function EditBatch() {
               <div>
                 <input
                   type="date"
-                  defaultValue={batch?.batch_end_date}
+                  // defaultValue={batch?.batch_end_date}
                   {...register('batch_end_date', { required: true })}
                   className={`appearance-none border ${
                     errors.batch_start_date
@@ -284,22 +293,14 @@ export default function EditBatch() {
         <div className="flex flex-col lg:flex-row gap-5 lg:gap-10 mt-5 ">
           <div className="lg:w-1/2">
             <div>
-              {/* <Select onChange={setSelectedTrainer} label="Trainer" inputProps={{...register('trainer',{required:true})}} error={errors.trainer}>
-                {
-                  (trainers || []).map((item:any)=> (
-                    <Option value={item}>{item.user_first_name}</Option>
-                  ))
-                }
-            </Select> */}
-              {/* selected={} */}
               <select
                 className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
                 {...register('trainer')}
-                error={errors.trainer}
+                error={errors.trainer ? true : false}
               >
                 {(trainers || []).map((item: any) => (
                   <option
-                    value={item}
+                    value={item.emp_entity_id}
                     selected={
                       batch?.trainers &&
                       batch.trainers[0].tpro_emp_entity_id ===
@@ -322,11 +323,11 @@ export default function EditBatch() {
               <select
                 className="w-full text-blue-gray-500 border border-gray-400 p-2 rounded-md"
                 {...register('cotrainer')}
-                error={errors.cotrainer}
+                error={errors.cotrainer ? true : false}
               >
                 {(trainers || []).map((item: any) => (
                   <option
-                    value={item}
+                    value={item.emp_entity_id}
                     selected={
                       batch?.trainers &&
                       batch.trainers[1].tpro_emp_entity_id ===
@@ -337,13 +338,6 @@ export default function EditBatch() {
                   </option>
                 ))}
               </select>
-              {/* <Select onChange={setSelectedCoTrainer} label="Co-Trainer" inputProps={{...register('cotrainer',{required:true})}} error={errors.cotrainer}>
-                {
-                  (trainers || []).map((item:any)=> (
-                    <Option value={item} selected={batch.trainers && batch.trainers[1].tpro_emp_entity_id === item.emp_entity_id}>{item.user_first_name}</Option>
-                  ))
-                }
-            </Select> */}
               {errors.cotrainer && (
                 <span className="text-sm text-red-500">
                   This field is required
@@ -356,17 +350,52 @@ export default function EditBatch() {
         <Typography color="gray" className="font-normal mb-2 mt-10">
           Recommended Bootcamp Members
         </Typography>
+        <div className="flex justify-end my-10 gap-7 text-gray-800">
+          <select
+            onChange={e =>
+              setFilterStudents({
+                ...filterStudents,
+                month_number: e.target.value,
+              })
+            }
+            className="pr-2"
+          >
+            {months.map((month: any) => (
+              <option
+                selected={month.monthNumber === filterStudents.month_number}
+                key={month.monthNumber}
+                value={month.monthNumber}
+              >
+                {' '}
+                {month.monthName}{' '}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={e =>
+              setFilterStudents({ ...filterStudents, year: e.target.value })
+            }
+            className="pr-2"
+          >
+            {years.map((year: string | number) => (
+              <option
+                selected={year === filterStudents.year}
+                key={year}
+                value={year}
+              >
+                {' '}
+                {year}{' '}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="flex flex-col lg:flex-row gap-3 justify-start ">
-          {recstudents ? (
-            recstudents.map((item: any, index: number) => (
+          {filteredStudents ? (
+            filteredStudents.map((item: any, index: number) => (
               <div className="my-3" key={item.prap_user_entity_id}>
                 <label
                   className={`flex justify-between content-center w-auto cursor-pointer rounded-lg py-3 px-4 font-semibold text-sm ${
-                    checked.find(
-                      (i: any) =>
-                        i.batr_trainee_entity_id === item.prap_user_entity_id ||
-                        i.prap_user_entity_id === item.prap_user_entity_id
-                    )
+                    checked.find((i: any) => i.user_id === item.user_id)
                       ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-lg shadow-light-blue-200'
                       : 'bg-white border border-gray-`300 text-light-blue-400 hover:scale-105 transition-transform ease-in-out'
                   }`}
@@ -382,12 +411,7 @@ export default function EditBatch() {
                   </div>
                   <input
                     checked={
-                      checked.find(
-                        (i: any) =>
-                          i.batr_trainee_entity_id ===
-                            item.prap_user_entity_id ||
-                          i.prap_user_entity_id === item.prap_user_entity_id
-                      )
+                      checked.find((i: any) => i.user_id === item.user_id)
                         ? true
                         : false
                     }
@@ -395,11 +419,7 @@ export default function EditBatch() {
                     type="checkbox"
                     onChange={e => activate(item, e)}
                   />
-                  {checked.find(
-                    (i: any) =>
-                      i.prap_user_entity_id === item.prap_user_entity_id ||
-                      i.prap_user_entity_id === item.prap_user_entity_id
-                  ) ? (
+                  {checked.find((i: any) => i.user_id === item.user_id) ? (
                     <div className="text-xl grid content-center">
                       {' '}
                       <HiMinusSm />{' '}
@@ -410,11 +430,6 @@ export default function EditBatch() {
                       <HiPlusSm />{' '}
                     </div>
                   )}
-                  {/* {
-                    checked.map(check=>(
-                      check.
-                    ))
-                  } */}
                 </label>
               </div>
             ))

@@ -17,6 +17,7 @@ import {
   getAllTrainersRes,
   getOneBatchesReq,
   getOneBatchesRes,
+  addEvalsRes,
   UpdateChangeStatusBatchRes,
 } from '../action/actionReducer';
 
@@ -84,6 +85,15 @@ function* handleAddBatch(action: any): any {
     yield put(addBatchRes(result.data));
   } catch (error) {
     yield put(addBatchRes({ message: error, status: 400 }));
+  }
+}
+
+function* handleAddEvaluation(action: any): any {
+  try {
+    const result = yield call(apiMethod.createEvals, action.payload);
+    yield put(addEvalsRes(result.data));
+  } catch (error) {
+    yield put(addEvalsRes({ message: error, status: 400 }));
   }
 }
 
@@ -177,5 +187,6 @@ export {
   handleEditParog,
   handleEditPrap,
   handleGetAllTraineesByBatch,
-  handleUpdateChangeStatusBatch,
+  handleAddEvaluation,
+  handleUpdateChangeStatusBatch
 };

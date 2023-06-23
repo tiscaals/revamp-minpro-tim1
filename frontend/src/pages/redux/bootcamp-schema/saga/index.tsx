@@ -2,6 +2,7 @@ import { takeEvery, all } from 'redux-saga/effects';
 import ActionTypes from '../action/actionType';
 import {
   handleAddBatch,
+  handleAddEvaluation,
   handleDelete,
   handleEditBatch,
   handleEditParog,
@@ -34,10 +35,8 @@ function* watchAll() {
     takeEvery(ActionTypes.REQ_UPDATE_PRAP, handleEditPrap),
     takeEvery(ActionTypes.REQ_GET_TRAINEES_BATCH, handleGetAllTraineesByBatch),
     takeEvery(ActionTypes.REQ_GET_TALENTS, handleGetAllTalents),
-    takeEvery(
-      ActionTypes.REQ_UPDATE_CHANGE_STATUS_BATCH,
-      handleUpdateChangeStatusBatch
-    ),
+    takeEvery(ActionTypes.REQ_CREATE_EVALUATION, handleAddEvaluation),
+    takeEvery(ActionTypes.REQ_UPDATE_CHANGE_STATUS_BATCH, handleUpdateChangeStatusBatch)
   ]);
 }
 

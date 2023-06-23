@@ -9,7 +9,7 @@ const createBatch = (data: any) => {
 };
 
 const editBatch = (data: any) => {
-  return axios.put(`/bootcamp/${data.id}`, data);
+  return axios.patch(`/bootcamp/${data.batch.batch_id}`, data);
 };
 
 const findAllPrograms = () => {
@@ -63,6 +63,9 @@ const updateChangeStatusBatch = (data: any) => {
   return axios.post(`/bootcamp/change-status-batch`, data);
 };
 
+const createEvals = (data: any) => {
+  return axios.post('/bootcamp/evaluation', data);
+};
 export default {
   findAllBatch,
   createBatch,
@@ -78,5 +81,6 @@ export default {
   updatePrap,
   findAllTraineesBatch,
   findAllTalents,
-  updateChangeStatusBatch,
+  createEvals,
+  updateChangeStatusBatch
 };

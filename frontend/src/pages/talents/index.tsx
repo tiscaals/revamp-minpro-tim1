@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Card,
   CardHeader,
@@ -17,6 +17,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllTalentsReq } from '../redux/bootcamp-schema/action/actionReducer';
 
 export default function Talents() {
+  let { talents, message, refresh, status } = useSelector(
+    (state: any) => state.talentsReducers
+  );
+  const [filter, setFilter] = useState({
+    query: '',
+    status: 'all',
+  });
+
   const TABLE_HEAD = [
     'FULL NAME',
     'TECHNOLOGY',
@@ -27,54 +35,38 @@ export default function Talents() {
     '',
   ];
 
-  let { talents, message, refresh, status } = useSelector(
-    (state: any) => state.talentsReducers
-  );
   const dispatch = useDispatch();
+
+  console.log(talents);
 
   useEffect(() => {
     dispatch(getAllTalentsReq());
   }, [refresh]);
 
-  console.log('testtalents', talents);
-
-  const TABLE_BODY = [
-    {
-      full_name: 'Abu Zubair',
-      image:
-        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-      technology: 'NodeJS',
-      batch: 'Batch#3',
-      periode: 'March 18,2023 until June 18,2023',
-      trainer: 'RinsLet',
-      status: 'Idle',
-    },
-    {
-      full_name: 'Boruto',
-      image:
-        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-      technology: 'Java',
-      batch: 'Batch#4',
-      periode: 'March 18,2023 until June 18,2023',
-      trainer: 'Naruto',
-      status: 'Placement',
-    },
-    {
-      full_name: 'Luffy',
-      image:
-        'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-      technology: '.Net',
-      batch: 'Batch#4',
-      periode: 'March 18,2023 until June 18,2023',
-      trainer: 'Sanji',
-      status: 'Trial',
-    },
-  ];
+  // console.log();
+  const filteredTalents =
+    filter.query === '' && filter.status === 'all'
+      ? talents
+      : filter.status === 'all'
+      ? talents.filter((talent: any) =>
+          talent.talent_fullname
+            .toLowerCase()
+            .replace(/\s/g, '')
+            .includes(filter.query.toLowerCase().replace(/\s/g, ''))
+        )
+      : talents.filter(
+          (talent: any) =>
+            talent.talent_fullname
+              .toLowerCase()
+              .replace(/\s/g, '')
+              .includes(filter.query.toLowerCase().replace(/\s/g, '')) &&
+            talent.talent_status === filter.status
+        );
 
   return (
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
-        <div className="mb-8 flex items-center justify-between gap-8">
+        <div className="flex items-center justify-between gap-8">
           <div>
             <Typography variant="h5" color="blue-gray">
               Talents App
@@ -84,32 +76,30 @@ export default function Talents() {
             </Typography>
           </div>
         </div>
-        <div className="mb-8 flex items-center justify-between gap-8">
-          <div>Search by Category</div>
-          <div className="w-full md:w-72">
-            <Input
-              label="talent name,technologi,trainer"
-              icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-            />
-          </div>
-          <div className="w-13">
-            <Select label="Status">
-              <Option>Idle</Option>
-              <Option>Placement</Option>
-              <Option>Trial</Option>
+      </CardHeader>
+      <CardBody className="lg:overflow overflow-scroll">
+        <div className="lg:flex gap-4 w-1/2">
+          <Input
+            onChange={e => setFilter({ ...filter, query: e.target.value })}
+            variant="outlined"
+            label="search"
+            icon={<MagnifyingGlassIcon className="h-5 w-5" />}
+          />
+          <div>
+            <Select
+              label="Status"
+              variant="outlined"
+              defaultValue={filter.status}
+              onChange={(data: any) => setFilter({ ...filter, status: data })}
+            >
+              <Option value="all">All</Option>
+              <Option value="on">On</Option>
+              <Option value="idle">Idle</Option>
+              <Option value="training">Training</Option>
+              <Option value="trial">Trial</Option>
             </Select>
           </div>
-          <button
-            type="button"
-            className="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4
-             focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg
-              text-sm px-5 py-2.5 text-center mr-2 mb-2"
-          >
-            Search
-          </button>
         </div>
-      </CardHeader>
-      <CardBody className="lg:overflow overflow-scroll px-0">
         <table className="mt-4 w-full min-w-max table-auto text-left">
           <thead>
             <tr>
@@ -133,7 +123,7 @@ export default function Talents() {
             </tr>
           </thead>
           <tbody>
-            {talents.map(
+            {filteredTalents.map(
               (
                 {
                   talent_fullname,
@@ -146,7 +136,7 @@ export default function Talents() {
                 }: any,
                 index: number
               ) => {
-                const isLast = index === TABLE_BODY.length - 1;
+                const isLast = index === talents.length - 1;
                 const classes = isLast
                   ? 'p-4'
                   : 'p-4 border-b border-blue-gray-50';

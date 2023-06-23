@@ -42,6 +42,7 @@ import {
   getAllBatchesReq,
 } from '../redux/bootcamp-schema/action/actionReducer';
 import { useSelector } from 'react-redux';
+import MyPaginate from '../bootcamp/components/pagination';
 
 const TABS = [
   {
@@ -80,47 +81,9 @@ const TABLE_HEAD = [
   '',
 ];
 
-const TABLE_ROWS = [
-  {
-    batch_name: 'Batch#1',
-    prog_title: 'Node JS ',
-    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-    trainer_names: 'John Michael',
-    cotrainer: 'anu co',
-    email: 'john@creative-tim.com',
-    org: 'Organization',
-    batch_status: 'running',
-    // online: true,
-    batch_start_date: '18 March 2023',
-  },
-  {
-    batch_name: 'Batch#2',
-    prog_title: '.Net Technology',
-    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
-    trainer_names: 'Alexa Liras',
-    cotrainer: 'nganu',
-    email: 'alexa@creative-tim.com',
-    org: 'Developer',
-    batch_status: 'open',
-    // online: false,
-    batch_start_date: '19 April 2023',
-  },
-  {
-    batch_name: 'Batch#3',
-    prog_title: 'Golang',
-    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
-    trainer_names: 'Laurent Perrier',
-    cotrainer: 'dia co',
-    email: 'laurent@creative-tim.com',
-    org: 'Projects',
-    batch_status: 'closed',
-    // online: false,
-    batch_start_date: '20 Mei 2023',
-  },
-];
-
 export default function BatchList() {
-  const [buttonSelect, setButtonSelect] = useState('all');
+  // const [isSearching, setIsSearching] = useState(false)
+  const [query, setQuery] = useState('');
   const { batches, refresh } = useSelector((state: any) => state.batchReducers);
   const [selectedBatch, setSelectedBatch] = useState<any>({
     batch_id: 0,
@@ -131,14 +94,35 @@ export default function BatchList() {
   const dispatch = useDispatch();
   const [batchstatus, setBatchstatus] = useState();
   // console.log('Test Const Batches', batches);
+  const [buttonSelect, setButtonSelect] = useState('');
 
   // console.log("Piliah Batch Bro",selectedBatch)
 
   const filteredBatch: any =
-    buttonSelect === 'all'
+    buttonSelect === 'all' && query === ''
       ? batches
-      : batches.filter((item: any) => item.batch_status == buttonSelect);
-  // console.log('Test dulu bang', filteredBatch);
+      : buttonSelect === 'all'
+      ? batches?.filter((item: any) =>
+          item.batch_name
+            .toLowerCase()
+            .replace(/\s/g, '')
+            .includes(query.toLowerCase().replace(/\s/g, ''))
+        )
+      : batches?.filter(
+          (item: any) =>
+            item.batch_name
+              .toLowerCase()
+              .replace(/\s/g, '')
+              .includes(query.toLowerCase().replace(/\s/g, '')) &&
+            item.batch_status === buttonSelect
+        );
+
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPage = Math.ceil(filteredBatch?.length / itemPerPage);
+  const startIndex = (currentPage - 1) * itemPerPage;
+  const endIndex = startIndex + itemPerPage;
+  const currentItems = filteredBatch?.slice(startIndex, endIndex);
 
   const router = useRouter();
   useEffect(() => {
@@ -149,7 +133,9 @@ export default function BatchList() {
     dispatch(deleteBatchReq(batchid));
   };
 
-  useEffect(() => {}, [refresh, buttonSelect]);
+  useEffect(() => {
+    setButtonSelect('all')
+  }, [refresh, buttonSelect,filteredBatch]);
 
   const changeStatusBatch = () => {
     dispatch(
@@ -189,7 +175,7 @@ export default function BatchList() {
           </div>
         </div>
         <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-          <Tabs value="all" className="w-full md:w-max">
+          <Tabs value="all" className="w-full md:w-max z-0">
             <TabsHeader>
               {TABS.map(({ label, value }) => (
                 <Tab
@@ -206,6 +192,7 @@ export default function BatchList() {
           </Tabs>
           <div className="w-full md:w-72">
             <Input
+              onChange={(e: any) => setQuery(e.target.value)}
               label="Search"
               icon={<MagnifyingGlassIcon className="h-5 w-5" />}
             />
@@ -236,14 +223,14 @@ export default function BatchList() {
             </tr>
           </thead>
           <tbody>
-            {(filteredBatch || []).length === 0 ? (
+            {currentItems?.length === 0 ? (
               <tr>
                 <td colSpan={7} className="text-center py-6 text-red-300">
                   No data found
                 </td>
               </tr>
             ) : (
-              (filteredBatch || []).map(
+              (currentItems || []).map(
                 (
                   {
                     batch_id,
@@ -258,7 +245,7 @@ export default function BatchList() {
                   }: any,
                   index: number
                 ) => {
-                  const isLast = index === TABLE_ROWS.length - 1;
+                  const isLast = index === filteredBatch.length - 1;
                   const classes = isLast
                     ? 'p-4'
                     : 'p-4 border-b border-blue-gray-50';
@@ -446,6 +433,11 @@ export default function BatchList() {
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
+                                      // disabled={
+                                      //   batch_status !== 'running'
+                                      //     ? true
+                                      //     : false
+                                      // }
                                       onClick={() =>
                                         router.push(
                                           `/batch/evaluation/${batch_id}`
@@ -455,10 +447,14 @@ export default function BatchList() {
                                         active
                                           ? 'bg-light-blue-500 text-white'
                                           : 'text-gray-900'
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      } disabled:bg-gray-200 disabled:text-gray-400 group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                     >
                                       <HiOutlineAcademicCap
-                                        className={`mr-2 h-5 w-5 ${
+                                        className={`${
+                                          batch_status !== 'running'
+                                            ? 'text-gray-400'
+                                            : ''
+                                        } mr-2 h-5 w-5 ${
                                           active
                                             ? 'text-white'
                                             : 'text-light-blue-500'
@@ -671,18 +667,13 @@ export default function BatchList() {
           </tbody>
         </table>
       </CardBody>
-      <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-        <Typography variant="small" color="blue-gray" className="font-normal">
-          Page 1 of 10
-        </Typography>
-        <div className="flex gap-2">
-          <Button variant="outlined" color="blue-gray" size="sm">
-            Previous
-          </Button>
-          <Button variant="outlined" color="blue-gray" size="sm">
-            Next
-          </Button>
-        </div>
+      <CardFooter>
+        <MyPaginate
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          variant="simple"
+        />
       </CardFooter>
     </Card>
   );

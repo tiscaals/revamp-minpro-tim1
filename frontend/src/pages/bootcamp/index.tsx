@@ -3,7 +3,14 @@ import Navigation from './components/navbar';
 import BootcampCard from './components/card';
 import Material from './components/material';
 import CardLearn from './components/card2';
-import { Button, Card, CardBody, Typography } from '@material-tailwind/react';
+import {
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+  Typography,
+} from '@material-tailwind/react';
 import Instructor from './components/instructor';
 import Testi from './components/testimonials';
 import { RiWhatsappFill } from 'react-icons/ri';
@@ -69,27 +76,75 @@ export default function index() {
           <br />
           <Testi />
         </div>
-        <div className="lg:w-2/6 bg-gradient-to-br from-blue-600 to-blue-300 rounded-lg">
-          <video className="p-3 w-full rounded-lg" controls>
-            <source src="/demo.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <Typography className="flex gap-3 p-3 text-white text-sm">
-            <HiCalendar className="text-2xl" />
-            Next batch, April 2023
-          </Typography>
-          <Typography className="flex gap-3 p-3 text-white text-sm">
-            <HiLocationMarker className="text-2xl" />
-            Sentul, Bogor, Jawa Barat
-          </Typography>
-          <Typography className="flex gap-3 p-3 text-white text-sm">
-            <RiWhatsappFill className="text-2xl" />
-            Next batch, April 2023
-          </Typography>
-          <Button className="shadow-inner shadow-white w-5/6 ">
-            Apply Bootcamp
-          </Button>
-        </div>
+        <Card
+          color="blue"
+          variant="gradient"
+          className="w-full h-fit max-w-[20rem] p-8"
+        >
+          <CardHeader
+            floated={false}
+            shadow={false}
+            color="transparent"
+            className="m-0 mb-8 rounded-none border-b border-white/10 pb-8 text-center"
+          >
+            <Typography
+              variant="small"
+              color="white"
+              className="font-normal uppercase"
+            >
+              Testimoni Alumni
+            </Typography>
+            <video className="h-full w-full rounded-lg" controls>
+              <source src="/demo.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </CardHeader>
+          <CardBody className="p-0">
+            <ul className="flex flex-col gap-4">
+              <li className="flex items-center gap-4">
+                <span className="rounded-full border border-white/20 bg-white/20 p-1">
+                  {/* <CheckIcon strokeWidth={2} className="h-3 w-3" /> */}
+                </span>
+                <Typography className="font-normal">5 team members</Typography>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="rounded-full border border-white/20 bg-white/20 p-1">
+                  {/* <CheckIcon strokeWidth={2} className="h-3 w-3" /> */}
+                </span>
+                <Typography className="font-normal">200+ components</Typography>
+              </li>
+              <li className="flex items-center gap-4">
+                <span className="rounded-full border border-white/20 bg-white/20 p-1">
+                  {/* <CheckIcon strokeWidth={2} className="h-3 w-3" /> */}
+                </span>
+                <Typography className="font-normal">
+                  40+ built-in pages
+                </Typography>
+              </li>
+            </ul>
+          </CardBody>
+          <CardFooter className="mt-12 p-0">
+            <Button
+              size="lg"
+              color="white"
+              className="text-blue-500 hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
+              ripple={false}
+              fullWidth={true}
+            >
+              Apply Bootcamp
+            </Button>
+            <Button
+              size="lg"
+              color="white"
+              variant="outlined"
+              className=" hover:scale-[1.02] focus:scale-[1.02] active:scale-100 mt-3"
+              ripple={false}
+              fullWidth={true}
+            >
+              Add to cart
+            </Button>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   );

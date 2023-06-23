@@ -9,7 +9,12 @@ import {
   Textarea,
   Typography,
 } from '@material-tailwind/react';
-import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
+import {
+  HiPlusSm,
+  HiMinusSm,
+  HiOutlineCalendar,
+  HiChevronDown,
+} from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   addBatchReq,
@@ -19,7 +24,11 @@ import {
 } from '../redux/bootcamp-schema/action/actionReducer';
 import { useRouter } from 'next/router';
 
-export default function Content() {
+export default function CreateBatch() {
+  const date = new Date();
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const { programs } = useSelector((state: any) => state.programReducers);
   const { trainers } = useSelector((state: any) => state.trainerReducers);
   const { recstudents } = useSelector((state: any) => state.studentReducers);
@@ -30,8 +39,11 @@ export default function Content() {
   const [selTechno, setSelTechno] = useState<any>();
   const [batchType, setBatchType] = useState<string>('');
 
-  const dispatch = useDispatch();
-  const router = useRouter();
+  const [filterStudents, setFilterStudents] = useState<any>({
+    month_number: date.getMonth(),
+    month: date.toLocaleString('default', { month: 'long' }),
+    year: date.getFullYear().toString(),
+  });
 
   const {
     register,
@@ -45,7 +57,6 @@ export default function Content() {
 
     //PIC diambil dari user yang login (recruiter)
     data.batch_pic_id = 1;
-    // console.log(data);
 
     let newTrainer = {
       tpro_emp_entity_id: data.trainer.emp_entity_id,
@@ -59,7 +70,7 @@ export default function Content() {
 
     for (let i in checked) {
       newTrainee.push({
-        batr_trainee_entity_id: checked[i].user_entity_id,
+        user_id: checked[i].user_id,
       });
     }
     const newObj = {
@@ -67,7 +78,7 @@ export default function Content() {
       trainee: newTrainee,
       instructors: [newTrainer, newCoTrainer],
     };
-    console.log(newObj);
+
     dispatch(addBatchReq(newObj));
 
     router.push('/batch');
@@ -77,13 +88,33 @@ export default function Content() {
     if (event.target.checked) {
       setChecked([...checked, item]);
     } else {
-      setChecked(
-        checked.filter(
-          (it: any) => it.prap_user_entity_id !== item.prap_user_entity_id
-        )
-      );
+      setChecked(checked.filter((it: any) => it.user_id !== item.user_id));
     }
   };
+
+  const years: number[] = [];
+  const months: any = [];
+
+  for (let i = 0; i < 12; i++) {
+    years.push(date.getFullYear() + i);
+
+    const dateMonth = new Date(2000, i, 1);
+    const monthName = dateMonth.toLocaleString('default', { month: 'long' });
+    const monthNumber = i;
+
+    months.push({ monthName, monthNumber });
+  }
+
+  console.log(recstudents);
+
+  const filteredStudents = recstudents?.filter((student: any) => {
+    const dateObj = new Date(student.join_date);
+
+    const month: any = dateObj.getMonth();
+    const year: any = dateObj.getFullYear();
+
+    return month == filterStudents.month_number && year == filterStudents.year;
+  });
 
   useEffect(() => {
     dispatch(getAllTrainersReq());
@@ -114,7 +145,7 @@ export default function Content() {
               <Input
                 label="Batch Name"
                 {...register('batch_name', { required: true })}
-                error={errors.batch_name}
+                error={errors.batch_name ? true : false}
               />
               {errors.batch_name && (
                 <span className="text-sm text-red-500">
@@ -128,7 +159,7 @@ export default function Content() {
                   inputProps={{
                     ...register('batch_entity_id', { required: true }),
                   }}
-                  error={errors.batch_entity_id}
+                  error={errors.batch_entity_id ? true : false}
                   onChange={setSelTechno}
                   label="Technology"
                 >
@@ -152,7 +183,7 @@ export default function Content() {
                   inputProps={{ ...register('batch_type', { required: true }) }}
                   onChange={setBatchType}
                   label="Type"
-                  error={errors.batch_type}
+                  error={errors.batch_type ? true : false}
                 >
                   <Option key="offline" value="offline">
                     Offline
@@ -242,7 +273,7 @@ export default function Content() {
                 onChange={setSelectedTrainer}
                 label="Trainer"
                 inputProps={{ ...register('trainer', { required: true }) }}
-                error={errors.trainer}
+                error={errors.trainer ? true : false}
               >
                 {(trainers || []).map((item: any) => (
                   <Option key={item.emp_entity_id} value={item}>
@@ -263,7 +294,7 @@ export default function Content() {
                 onChange={setSelectedCoTrainer}
                 label="Co-Trainer"
                 inputProps={{ ...register('cotrainer', { required: true }) }}
-                error={errors.cotrainer}
+                error={errors.cotrainer ? true : false}
               >
                 {(trainers || []).map((item: any) => (
                   <Option value={item}>{item.user_first_name}</Option>
@@ -281,16 +312,52 @@ export default function Content() {
         <Typography color="gray" className="font-normal mb-2 mt-10">
           Recommended Bootcamp Members
         </Typography>
+        <div className="flex justify-end my-10 gap-7 text-gray-800">
+          <select
+            onChange={e =>
+              setFilterStudents({
+                ...filterStudents,
+                month_number: e.target.value,
+              })
+            }
+            className="pr-2"
+          >
+            {months.map((month: any) => (
+              <option
+                selected={month.monthNumber === filterStudents.month_number}
+                key={month.monthNumber}
+                value={month.monthNumber}
+              >
+                {' '}
+                {month.monthName}{' '}
+              </option>
+            ))}
+          </select>
+          <select
+            onChange={e =>
+              setFilterStudents({ ...filterStudents, year: e.target.value })
+            }
+            className="pr-2"
+          >
+            {years.map((year: string | number) => (
+              <option
+                selected={year === filterStudents.year}
+                key={year}
+                value={year}
+              >
+                {' '}
+                {year}{' '}
+              </option>
+            ))}
+          </select>
+        </div>
         <div className="flex flex-col lg:flex-row gap-3 justify-start ">
-          {recstudents ? (
-            recstudents.map((item: any, index: number) => (
-              <div className="my-3" key={item.prap_user_entity_id}>
+          {filteredStudents ? (
+            filteredStudents.map((item: any, index: number) => (
+              <div className="my-3" key={item.user_id}>
                 <label
                   className={`flex justify-between content-center w-auto cursor-pointer rounded-lg py-3 px-4 font-semibold text-sm ${
-                    checked.find(
-                      (i: any) =>
-                        i.prap_user_entity_id === item.prap_user_entity_id
-                    )
+                    checked.find((i: any) => i.user_id === item.user_id)
                       ? 'bg-light-blue-500 border border-light-blue-500 transition-all duration-300 text-white shadow-lg shadow-light-blue-200'
                       : 'bg-white border border-gray-`300 text-light-blue-400 hover:scale-105 transition-transform ease-in-out'
                   }`}
@@ -309,10 +376,7 @@ export default function Content() {
                     type="checkbox"
                     onChange={e => activate(item, e)}
                   />
-                  {checked.find(
-                    (i: any) =>
-                      i.prap_user_entity_id === item.prap_user_entity_id
-                  ) ? (
+                  {checked.find((i: any) => i.user_id === item.user_id) ? (
                     <div className="text-xl grid content-center">
                       {' '}
                       <HiMinusSm />{' '}

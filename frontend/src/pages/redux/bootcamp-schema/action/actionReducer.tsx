@@ -144,6 +144,19 @@ const addBatchRes = (payload: any) => {
     payload,
   };
 };
+const addEvalsReq = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_CREATE_EVALUATION,
+    payload,
+  };
+};
+
+const addEvalsRes = (payload: any) => {
+  return {
+    type: ActionTypes.RES_CREATE_EVALUATION,
+    payload,
+  };
+};
 
 const editReq = (payload: any) => {
   return {
@@ -232,4 +245,6 @@ export {
   getAllTalentsRes,
   UpdateChangeStatusBatchReq,
   UpdateChangeStatusBatchRes,
+  addEvalsReq,
+  addEvalsRes
 };
