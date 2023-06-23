@@ -8,7 +8,7 @@ import { JobHireModule } from './job-hire/job-hire.module';
 import { SalesModule } from './sales/sales.module';
 import { PaymentModule } from './payment/payment.module';
 import { BootcampModule } from './bootcamp/bootcamp.module';
-import { UsersModule } from './users/users.module';
+// import { UsersModule } from './users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
@@ -30,7 +30,7 @@ import { join } from 'path';
         autoLoadModels: true,
       }),
     }),
-    UsersModule, BootcampModule, PaymentModule, SalesModule, JobHireModule, PlacementModule, CurriculumModule, MasterModule],
+     BootcampModule, PaymentModule, SalesModule, JobHireModule, PlacementModule, CurriculumModule, MasterModule],
   controllers: [AppController],
   providers: [AppService],
 })
