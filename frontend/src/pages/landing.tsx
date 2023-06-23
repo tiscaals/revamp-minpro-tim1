@@ -4,6 +4,8 @@ import Image from 'next/image';
 import logo from '../images/codexlogo.png';
 import courseImage from '../images/logokecil.png'
 import ReactPlayer from 'react-player';
+import FAQ from './components/faq'; 
+import Footer from './components/footer';
 
 const Home: React.FC = () => {
     const [isClient, setIsClient] = useState(false);
@@ -13,6 +15,10 @@ const Home: React.FC = () => {
     }, []);
 
     return (
+        <div>
+
+        <div>
+
         <div>
             <Navbar />
             <div className="grid grid-cols-2 min-h-screen bg-gray-100 p-8">
@@ -320,6 +326,61 @@ const Home: React.FC = () => {
 
             
 
+        </div>
+<div className="flex flex-col items-center mt-20">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Online Course</h2>
+                <p className="text-center text-xl text-gray-600">
+                    Bagi kamu yang tidak punya waktu untuk mengikuti full bootcamp, kami menyediakan online course,
+                    dimana kamu bisa belajar kapan saja dan fulltime access
+                </p>
+            </div>
+            <div>
+            <div className="flex justify-center">
+
+<div className="grid grid-cols-3 gap-14 mt-8">
+    <div className="flex items-center p-2 border border-gray-300 rounded-lg max-w-xs">
+        <Image src={courseImage} alt="Course Image" className="h-12 w-12 mr-2" />
+        <div className="flex flex-col">
+            <p className="text-base font-bold text-gray-800">Course 1</p>
+            <p className="text-gray-600">Description of Course 1</p>
+            <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
+                Curriculum
+            </button>
+        </div>
+    </div>
+
+    <div className="flex items-center p-2 border border-gray-300 rounded-lg max-w-xs">
+        <Image src={courseImage} alt="Course Image" className="h-12 w-12 mr-2" />
+        <div className="flex flex-col">
+            <p className="text-base font-bold text-gray-800">Course 1</p>
+            <p className="text-gray-600">Description of Course 1</p>
+            <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
+                Curriculum
+            </button>
+        </div>
+    </div>
+
+    <div className="flex items-center p-2 border border-gray-300 rounded-lg max-w-xs">
+        <Image src={courseImage} alt="Course Image" className="h-12 w-12 mr-2" />
+        <div className="flex flex-col">
+            <p className="text-base font-bold text-gray-800">Course 1</p>
+            <p className="text-gray-600">Description of Course 1</p>
+            <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
+                Curriculum
+            </button>
+        </div>
+    </div>
+
+</div>
+</div>
+            </div>
+
+            <FAQ />
+        </div>
+        <div className='mt-8'>
+
+            <Footer />
+        </div>
         </div>
 
         
