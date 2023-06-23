@@ -69,6 +69,7 @@ export class CreateApplyJobsDto {
   user_id:any;
   firstname:string;
   lastname:string;
+  userphoto:string;
   user_school:string;
   user_degree:string;
   user_field_study:string;

@@ -36,7 +36,7 @@ export class ProfileService {
 
       const getPk = await users.findByPk(id);
 
-      const oldImagePath = './public/user-image/' + getPk.user_photo;
+      const oldImagePath = './images/user-image/' + getPk.user_photo;
 
       let updatedFields: Partial<UpdateUserDto> = {
         user_name: updateUserDto.user_name,
