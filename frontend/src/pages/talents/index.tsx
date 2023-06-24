@@ -15,8 +15,10 @@ import {
 } from '@heroicons/react/24/outline';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllTalentsReq } from '../redux/bootcamp-schema/action/actionReducer';
+import MyPaginate from '../bootcamp/components/pagination';
 
 export default function Talents() {
+  const [query, setQuery] = useState('');
   let { talents, message, refresh, status } = useSelector(
     (state: any) => state.talentsReducers
   );
@@ -35,33 +37,54 @@ export default function Talents() {
     '',
   ];
 
-  const dispatch = useDispatch();
-
-  console.log(talents);
-
-  useEffect(() => {
-    dispatch(getAllTalentsReq());
-  }, [refresh]);
-
-  // console.log();
   const filteredTalents =
-    filter.query === '' && filter.status === 'all'
+    query === '' && filter.status === 'all'
       ? talents
       : filter.status === 'all'
       ? talents.filter((talent: any) =>
           talent.talent_fullname
             .toLowerCase()
             .replace(/\s/g, '')
-            .includes(filter.query.toLowerCase().replace(/\s/g, ''))
+            .includes(query.toLowerCase().replace(/\s/g, ''))
         )
-      : talents.filter(
+      : 
+      talents.filter(
           (talent: any) =>
             talent.talent_fullname
               .toLowerCase()
               .replace(/\s/g, '')
-              .includes(filter.query.toLowerCase().replace(/\s/g, '')) &&
+              .includes(query.toLowerCase().replace(/\s/g, '')) &&
             talent.talent_status === filter.status
         );
+
+  const [itemPerPage, setItemPerPage] = useState(5);
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPage = Math.ceil(filteredTalents?.length / itemPerPage);
+  const startIndex = (currentPage - 1) * itemPerPage;
+  const endIndex = startIndex + itemPerPage;
+  const currentItems = filteredTalents?.slice(startIndex, endIndex);
+  
+
+  const dispatch = useDispatch();
+  console.log(filteredTalents)
+
+  // console.log("Test data Talents",talents);
+  console.log(query);
+  // console.log(filter);
+  
+  
+
+  useEffect(() => {
+    dispatch(getAllTalentsReq());
+  }, [refresh]);
+
+  // console.log();
+  
+
+
+// console.log(totalPage);
+
+
 
   return (
     <Card className="h-full w-full">
@@ -80,9 +103,9 @@ export default function Talents() {
       <CardBody className="lg:overflow overflow-scroll">
         <div className="lg:flex gap-4 w-1/2">
           <Input
-            onChange={e => setFilter({ ...filter, query: e.target.value })}
+            onChange={(e: any) => setQuery(e.target.value)}
             variant="outlined"
-            label="search"
+            label="Search"
             icon={<MagnifyingGlassIcon className="h-5 w-5" />}
           />
           <div>
@@ -123,7 +146,14 @@ export default function Talents() {
             </tr>
           </thead>
           <tbody>
-            {filteredTalents.map(
+            {(filteredTalents?.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="text-center py-6 text-red-300">
+                  No data found
+                </td>
+              </tr>
+            ) : (
+              filteredTalents || []).map(
               (
                 {
                   talent_fullname,
@@ -136,7 +166,7 @@ export default function Talents() {
                 }: any,
                 index: number
               ) => {
-                const isLast = index === talents.length - 1;
+                const isLast = index === filteredTalents.length - 1;
                 const classes = isLast
                   ? 'p-4'
                   : 'p-4 border-b border-blue-gray-50';
@@ -219,10 +249,16 @@ export default function Talents() {
                   </tr>
                 );
               }
-            )}
+            ))}
           </tbody>
         </table>
       </CardBody>
+      {/* <MyPaginate
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          totalPage={totalPage}
+          variant="standard"
+        /> */}
     </Card>
   );
 }

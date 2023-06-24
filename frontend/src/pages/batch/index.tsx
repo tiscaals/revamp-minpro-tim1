@@ -96,6 +96,12 @@ export default function BatchList() {
   // console.log('Test Const Batches', batches);
   const [buttonSelect, setButtonSelect] = useState('');
 
+  // console.log("Test Batches",batches[0]?.trainees[0].full_name);
+  console.log(batches);
+  // console.log("Test Batches",batches[0]?.trainees.length);
+  
+  
+
   // console.log("Piliah Batch Bro",selectedBatch)
 
   const filteredBatch: any =
@@ -106,15 +112,37 @@ export default function BatchList() {
           item.batch_name
             .toLowerCase()
             .replace(/\s/g, '')
+            .includes(query.toLowerCase().replace(/\s/g, '')) 
+            ||
+          item.trainees.some((trainee: any) =>
+          trainee.full_name
+            .toLowerCase()
+            .replace(/\s/g, '')
             .includes(query.toLowerCase().replace(/\s/g, ''))
+          )
+            ||
+          item.trainers.some((trainer:any)=>
+          trainer.concat
+            .toLowerCase()
+            .replace(/\s/g, '')
+            .includes(query.toLowerCase().replace(/\s/g, ''))
+          )
+            
         )
       : batches?.filter(
           (item: any) =>
-            item.batch_name
+            (item.batch_name
               .toLowerCase()
               .replace(/\s/g, '')
               .includes(query.toLowerCase().replace(/\s/g, '')) &&
-            item.batch_status === buttonSelect
+            item.batch_status === buttonSelect)
+            ||
+            (item.trainees.some((trainee:any)=>
+            trainee.full_name
+              .toLowerCase()
+              .replace(/\s/g, '')
+              .includes(query.toLowerCase().replace(/\s/g, ''))
+          ) && item.batch_status === buttonSelect)
         );
 
   const [itemPerPage, setItemPerPage] = useState(5);
@@ -135,7 +163,8 @@ export default function BatchList() {
 
   useEffect(() => {
     setButtonSelect('all')
-  }, [refresh, buttonSelect,filteredBatch]);
+  }, []);
+  // console.log(buttonSelect)
 
   const changeStatusBatch = () => {
     dispatch(
@@ -149,7 +178,7 @@ export default function BatchList() {
     );
   };
 
-  console.log(batchstatus);
+  // console.log(batchstatus);
 
   return (
     <Card className="h-full w-full">
