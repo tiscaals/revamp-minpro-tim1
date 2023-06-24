@@ -18,7 +18,7 @@ import {
   getOneBatchesReq,
   getOneBatchesRes,
   addEvalsRes,
-  UpdateChangeStatusBatchRes,
+  // UpdateChangeStatusBatchRes,
 } from '../action/actionReducer';
 
 function* handleGetAllBatches(): any {
@@ -163,9 +163,9 @@ function* handleGetAllTraineesByBatch(action: any): any {
 function* handleUpdateChangeStatusBatch(action:any):any{
     try {
         const result = yield call(apiMethod.updateChangeStatusBatch,action.payload)
-        yield put(UpdateChangeStatusBatchRes(result))
+        // yield put(UpdateChangeStatusBatchRes(result))
     } catch (error) {
-        yield put( UpdateChangeStatusBatchRes({message:error,status:400}))
+        // yield put( UpdateChangeStatusBatchRes({message:error,status:400}))
     }
 }
 

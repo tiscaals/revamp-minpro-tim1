@@ -112,10 +112,10 @@ export default function BatchList() {
 
   const [itemPerPage, setItemPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPage = Math.ceil(filteredBatch.length / itemPerPage);
+  const totalPage = Math.ceil(filteredBatch?.length / itemPerPage);
   const startIndex = (currentPage - 1) * itemPerPage;
   const endIndex = startIndex + itemPerPage;
-  const currentItems = filteredBatch.slice(startIndex, endIndex);
+  const currentItems = filteredBatch?.slice(startIndex, endIndex);
 
   const router = useRouter();
   useEffect(() => {
