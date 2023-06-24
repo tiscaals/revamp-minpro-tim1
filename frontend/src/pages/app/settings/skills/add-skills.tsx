@@ -5,7 +5,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { Button } from '@material-tailwind/react';
-import { doRequestAddSkills, doReqGetSkills } from '@/pages/redux/users-schema/action/actionReducer';
+import {
+  doRequestAddSkills,
+  doReqGetSkills,
+} from '@/pages/redux/users-schema/action/actionReducer';
 
 const AddSkills = (props: any) => {
   type FormValue = {

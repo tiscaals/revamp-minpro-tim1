@@ -87,6 +87,10 @@ const ActionTypes = {
 
   REQ_DELETE_SKILL: 'REQ_DELETE_SKILL',
   RES_DELETE_SKILL: 'RES_DELETE_SKILL',
+
+  //Apply Job
+  REQ_APPLY_JOB: 'REQ_APPLY_JOB',
+  RES_APPLY_JOB: 'RES_APPLY_JOB',
 };
 
 export default ActionTypes;

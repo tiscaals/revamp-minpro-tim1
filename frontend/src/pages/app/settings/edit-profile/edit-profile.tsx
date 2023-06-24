@@ -23,7 +23,7 @@ const EditProfile = (props: any) => {
   } = useForm<FormValue>();
 
   const dispatch = useDispatch();
-  const port = 'http://localhost:7300/';
+  const port = 'http://localhost:7300/images/user-image/';
 
   const editProfileValidation = {
     user_entity_id: { required: 'id required' },
@@ -40,7 +40,6 @@ const EditProfile = (props: any) => {
   const handlePhotoSelection = (event: any) => {
     const file = event.target.files[0];
     const reader = new FileReader();
-
     reader.onload = function (e: any) {
       setSelectedPhotoFile(file);
       setSelectedPhotoURL(e.target.result);

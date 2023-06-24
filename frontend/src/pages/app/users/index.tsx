@@ -37,7 +37,7 @@ const IndexUsers = () => {
         decoded = jwt.decode(token) as JwtPayload;
 
         if (decoded.user_current_role !== 1) {
-          router.push('/error-page/error-403');
+          router.push('/components/error-403');
         }
       } catch (error) {
         console.log(error);
@@ -47,7 +47,7 @@ const IndexUsers = () => {
     }
   };
   //End
-  
+
   // Fn Filter Data
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [isSearch, setIsSearch] = useState('');
@@ -56,7 +56,7 @@ const IndexUsers = () => {
     setIsSearch(e.target.value);
   };
   //End
-  
+
   // Fn Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -174,12 +174,12 @@ const IndexUsers = () => {
                         </td>
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-left">
-                            {data?.users_emails[0].pmail_address}
+                            {data?.users_emails[0]?.pmail_address}
                           </div>
                         </td>
                         <td className="p-2 whitespace-nowrap">
                           <div className="text-left font-medium text-blue-500">
-                            {data?.users_roles[0].role.role_name}
+                            {data?.users_roles[0]?.role.role_name}
                           </div>
                         </td>
                         <td className="p-2 whitespace-nowrap">

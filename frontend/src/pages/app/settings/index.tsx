@@ -24,7 +24,15 @@ import AddExperiences from './experiences/add-experiences';
 import EditExperiences from './experiences/edit-experience';
 import AddSkills from './skills/add-skills';
 import { notifySuccess, notifyFailed } from '@/pages/alert';
-import { doRequestDeleteEmail, doRequestDeletePhone, doRequestDeleteAddress, doRequestDeleteEducation, doRequestDeleteExperiences, doRequestDeleteSkills, doRequestGetProfile } from '@/pages/redux/users-schema/action/actionReducer';
+import {
+  doRequestDeleteEmail,
+  doRequestDeletePhone,
+  doRequestDeleteAddress,
+  doRequestDeleteEducation,
+  doRequestDeleteExperiences,
+  doRequestDeleteSkills,
+  doRequestGetProfile,
+} from '@/pages/redux/users-schema/action/actionReducer';
 import BreadcrumbsSlice from '@/pages/shared/breadcrumbs';
 
 const Settings = (props: any) => {
@@ -241,7 +249,7 @@ const Settings = (props: any) => {
     }
   }, [refresh]);
 
-  const port = 'http://localhost:7300/';
+  const port = 'http://localhost:7300/images/user-image/';
 
   return (
     <>

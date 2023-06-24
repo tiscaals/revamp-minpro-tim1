@@ -412,3 +412,18 @@ export const doGetDeleteSkillsResponse = (payload: any) => {
     payload,
   };
 };
+
+//Apply Jobs
+export const doRequestApplyJob = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_APPLY_JOB,
+    payload,
+  };
+};
+
+export const doGetApplyJobResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_APPLY_JOB,
+    payload,
+  };
+};

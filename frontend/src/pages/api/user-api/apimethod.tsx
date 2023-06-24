@@ -155,6 +155,16 @@ const removeSkill = (id: any) => {
   return axios.delete(`skills/remove-skills/${id}`, id);
 };
 
+//Apply Jobs
+const applyJobs = (data: any) => {
+  console.log('API', ...data);
+  return axios.patch(`/apply-job/${data.get('user_id')}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -184,4 +194,5 @@ export default {
   getSkill,
   addSkill,
   removeSkill,
+  applyJobs,
 };

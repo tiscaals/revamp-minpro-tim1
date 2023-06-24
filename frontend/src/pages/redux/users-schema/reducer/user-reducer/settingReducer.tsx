@@ -169,6 +169,14 @@ function settingReducers(state = initialState, action: any) {
         message: payload.message,
         refresh: false,
       };
+    case ActionTypes.RES_APPLY_JOB:
+      return {
+        state,
+        profile: payload.result,
+        status: payload.status,
+        message: payload.message,
+        refresh: false,
+      };
     default:
       return state;
   }

@@ -41,6 +41,7 @@ import {
   handleGetSkill,
 } from '../user-saga/skillsSaga';
 import { handleGetRole, handleUpdateRole } from '../user-saga/roleSaga';
+import { handleApplyJobs } from '../user-saga/applySaga';
 
 function* watchAll() {
   yield all([
@@ -91,6 +92,9 @@ function* watchAll() {
     takeEvery(ActionTypes.REQ_GET_SKILL, handleGetSkill),
     takeEvery(ActionTypes.REQ_ADD_SKILL, handleAddSkills),
     takeEvery(ActionTypes.REQ_DELETE_SKILL, handleDeleteSkills),
+
+    //Apply
+    takeEvery(ActionTypes.REQ_APPLY_JOB, handleApplyJobs),
   ]);
 }
 

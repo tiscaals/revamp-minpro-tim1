@@ -14,7 +14,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 export default function TopBar({ showNav, setShowNav }: any) {
   const router = useRouter();
   const dispatch = useDispatch();
-  const port = 'http://localhost:7300/';
+  const port = 'http://localhost:7300/images/user-image/';
   const { profile }: any = useSelector((state: any) => state.settingReducers);
   const [profileImage, setProfileImage] = useState('');
 

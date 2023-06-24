@@ -81,18 +81,11 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         setListMenu([
           //MENU BLM TAU
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/users', path: '/users', icon: <MdGroup />, name: 'User' },
           {
-            to: '/category',
-            path: '/category',
-            icon: <MdCategory />,
-            name: 'Category',
-          },
-          {
-            to: '/product',
-            path: '/product',
-            icon: <MdShopTwo />,
-            name: 'Product',
+            to: '/app/profesional/apply',
+            path: '/users',
+            icon: <MdGroup />,
+            name: 'Apply Job',
           },
         ]);
         break;
@@ -181,6 +174,16 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             path: '/bootcamp',
             icon: <MdPostAdd />,
             name: 'Bootcamp',
+          },
+        ]);
+      case 7:
+        setListMenu([
+          { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
+          {
+            to: '/app/profesional/apply',
+            path: '/users',
+            icon: <MdGroup />,
+            name: 'Apply Job',
           },
         ]);
         break;
