@@ -26,7 +26,7 @@ const ApplyButton = styled(Button)(({ theme }) => ({
 
 const CreateOrder: React.FC = () => {
   const { items, message, refresh } = useSelector((state: any) => state.salesReducers);
-  const { order, messagee, refreshh } = useSelector((state: any) => state.orderReducers);
+  const { order, messagee, refreshh, status } = useSelector((state: any) => state.orderReducers);
 
   const dispatch = useDispatch();
 
@@ -86,11 +86,56 @@ const CreateOrder: React.FC = () => {
     return `${prefix}${randomNumber}`;
   };
 
+  useEffect(() => {
+    if (router.query.thanksMessage) {
+      console.log('Thanks for buying');
+      // Tambahkan logika atau perintah lainnya di sini untuk menampilkan teks atau melakukan tindakan yang diinginkan
+    }
+  }, [router.query.thanksMessage]);
+  
 
   // Menggunakan generator untuk mendapatkan nilai acak
+  // const handleCreateOrder = async () => {
+  //   const trpaCodeNumber = generateTrpaCodeNumber();
+
+  //   const cartItems = items.map((item: any) => {
+  //     return {
+  //       cait_id: item.cait_id,
+  //       cait_quantity: item.cait_quantity,
+  //       cait_unit_price: totalPrice,
+  //       cait_user_entity_id: item.cait_user_entity_id,
+  //       cait_prog_entity_id: item.cait_prog_entity_id,
+  //     };
+  //   });
+
+  //   const dummyData = {
+  //     cartItems,
+  //     p_sohe_order_number: generateOrderNumber(),
+  //     p_sohe_account_number: accountNumber,
+  //     p_sohe_trpa_code_number: trpaCodeNumber,
+  //     p_sohe_license_code: generateLicenseCode(),
+  //     p_sohe_user_entity_id: items[0].cait_user_entity_id,
+  //     p_sohe_status: 'open',
+  //     p_sode_unit_discount: parseFloat(spof_discount),
+  //     p_sode_soco_id: parseInt(spof_id),
+  //   };
+
+  //   try {
+  //     await dispatch(addOrderReq(dummyData));
+  //     // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
+  //     router.push({
+  //       pathname: '/sales/receipt',
+  //       query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber, thanksMessage: true },
+  //     });
+  //   } catch (error) {
+  //     // Handle error jika terjadi kegagalan
+  //     console.error('Gagal memasukkan data:', error);
+  //   }
+  // };
+
   const handleCreateOrder = async () => {
     const trpaCodeNumber = generateTrpaCodeNumber();
-
+  
     const cartItems = items.map((item: any) => {
       return {
         cait_id: item.cait_id,
@@ -100,7 +145,7 @@ const CreateOrder: React.FC = () => {
         cait_prog_entity_id: item.cait_prog_entity_id,
       };
     });
-
+  
     const dummyData = {
       cartItems,
       p_sohe_order_number: generateOrderNumber(),
@@ -112,19 +157,33 @@ const CreateOrder: React.FC = () => {
       p_sode_unit_discount: parseFloat(spof_discount),
       p_sode_soco_id: parseInt(spof_id),
     };
-
+  
     try {
-      await dispatch(addOrderReq(dummyData));
-      // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
-      router.push({
-        pathname: '/sales/receipt',
-        query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber },
-      });
+      const response: any = await dispatch(addOrderReq(dummyData));
+      console.log("RESPONSEEE sts",status);
+      if (status === 200) {
+        // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
+        router.push({
+          pathname: '/sales/receipt',
+          query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber, thanksMessage: true },
+        });
+      } else {
+        console.error('Gagal memasukkan data ke database');
+        // Tampilkan pesan kesalahan di frontend
+        // Sesuaikan penanganan kesalahan berdasarkan framework atau library spesifik Anda
+      }
     } catch (error) {
       // Handle error jika terjadi kegagalan
       console.error('Gagal memasukkan data:', error);
+      // Tampilkan pesan kesalahan di frontend
+      // Sesuaikan penanganan kesalahan berdasarkan framework atau library spesifik Anda
     }
   };
+  
+  
+  
+    
+  
 
 
 
@@ -234,7 +293,7 @@ const CreateOrder: React.FC = () => {
                 <p className="text-lg font-bold text-gray-800">Total:</p>
                 <p className="text-3xl font-bold text-gray-800">Rp. {totalPriceNumber.toLocaleString()}</p>
 
-                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-600 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
                   onClick={handleCreateOrder}
                 >
                   <MdShoppingCart className="ml-2" />
@@ -242,7 +301,7 @@ const CreateOrder: React.FC = () => {
                 </button>
 
                 <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-600 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
                   onClick={handleCancelOrder}
                 >
                   <MdRemoveShoppingCart className="ml-2" />

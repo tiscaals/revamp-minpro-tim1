@@ -10,7 +10,8 @@ import { TextField, Button } from '@mui/material';
 import { styled } from '@mui/system';
 import { Search as SearchIcon } from '@mui/icons-material';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
-import Navbar from '../components/navbar';
+// import Navbar from '../components/navbar';
+import NavBar from '../components/navigasi';
 import { useRouter } from 'next/router';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
@@ -194,9 +195,6 @@ const CartPage: React.FC = () => {
     }
   };
 
-
-
-
   const handleCancelDiscount = () => {
     setTotalPrice(originalPrice);
     isSetDiscountApplied(false);
@@ -205,9 +203,9 @@ const CartPage: React.FC = () => {
 
   return (
     <>
-      <Navbar />
+      <NavBar />
       <ToastContainer />
-      <div className="container mx-auto p-4">
+      <div className="container mt-12 mx-auto p-4">
         <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
 
           <p className="text-lg font-bold text-red-600">
@@ -274,7 +272,7 @@ const CartPage: React.FC = () => {
                 <p className="text-3xl font-bold text-gray-800">Rp. {totalPrice?.toLocaleString()}</p>
 
                 <button
-                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-700 hover:border-gray-900 rounded-full mt-4"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-600 hover:border-gray-900 rounded-full mt-4"
                   onClick={handleCheckOut}
                 >
                   Checkout
@@ -291,7 +289,7 @@ const CartPage: React.FC = () => {
                         color="secondary"
                         startIcon={<MdCancel />}
                         style={{ backgroundColor: '#f44336' }}
-                        className="mr-2"
+                        className="mr-2 mt-3"
                         onClick={handleCancelDiscount}
                       >
                         Cancel Discount

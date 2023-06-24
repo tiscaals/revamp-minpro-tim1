@@ -9,9 +9,10 @@ const initialState = {
 
 function orderReducers(state = initialState, action: any) {
     const {type, payload} = action;
+    console.log("orderReducer", payload);
     switch (type) {
         case ActionTypes.ADD_ORDER_RES:
-            return { message: payload.messagee, status: payload.status, refresh:false };
+            return { messagee: payload.message, status: payload.status, refresh:false };
     default:
         return state;
     }

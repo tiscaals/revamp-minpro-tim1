@@ -85,8 +85,11 @@ const Invoice: React.FC = () => {
                                 <p className="text-3xl font-bold text-gray-800">Rp. {totalPriceNumber.toLocaleString()}</p>
 
                                 <div className="mt-20">
-                                    <p className="text-lg font-bold text-center text-gray-800">Thanks For Buying</p>
-                                </div>
+  {router.query.thanksMessage === 'true' && (
+    <p className="text-lg font-bold text-center text-gray-800">Thanks for buying</p>
+  )}
+</div>
+
 
 
                             </div>
