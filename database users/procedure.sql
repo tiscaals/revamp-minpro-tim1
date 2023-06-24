@@ -101,12 +101,15 @@ CREATE OR REPLACE PROCEDURE users.apply_jobs (
     IN firstname VARCHAR,
     IN lastname VARCHAR,
 	IN userphoto VARCHAR,
+	IN birthdate DATE,
     IN user_school VARCHAR,
     IN user_degree VARCHAR,
     IN user_field_study VARCHAR,
 	IN user_phone_number VARCHAR,
-	IN filename VARCHAR,
-	IN filetype VARCHAR,
+	IN user_resume VARCHAR,
+	IN user_filelink VARCHAR,
+	IN user_filesize INT,
+	IN user_filetype VARCHAR,
 	IN role_id INT
 )
 LANGUAGE plpgsql
@@ -115,20 +118,15 @@ $$
 DECLARE
     update_role INT;
 BEGIN
-    UPDATE users.users_education
-    SET usdu_school = user_school,
-		usdu_degree = user_degree,
-		usdu_field_study = user_field_study
-    WHERE usdu_entity_id = user_id;
+	INSERT INTO users.users_education(usdu_entity_id, usdu_school,usdu_degree, usdu_field_study)
+	VALUES(user_id, user_school, user_degree, user_field_study);
 	
 	UPDATE users.users_phones 
 	SET uspo_number = user_phone_number 
 	WHERE uspo_entity_id = user_id;
 	
-	UPDATE users.users_media
-	SET usme_filename = filename,
-		usme_filetype = filetype 
-	WHERE usme_entity_id = user_id;
+	INSERT INTO users.users_media (usme_entity_id, usme_filename, usme_file_link, usme_filesize, usme_filetype)
+    VALUES (user_id, user_resume, user_filelink, user_filesize, user_filetype);
 	
 	UPDATE users.users_roles
 	SET usro_role_id = role_id
@@ -139,12 +137,11 @@ BEGIN
     SET user_first_name = firstname,
         user_last_name = lastname,
 		user_photo = userphoto,
+		user_birth_date = birthdate,
 		user_current_role = update_role
-    WHERE user_entity_id = user_id;
-    
+    WHERE user_entity_id = user_id; 
 END;
 $$;
 
-
 -- contoh call untuk aplly jobs
-call users.apply_jobs(9, 'hendri', 'prasmono', 'test-photo.jpg','codex academy university', 'Diploma', 'd3 informatika', '08127', 'mycv.pdf', 'pdf', 7 )
+call users.apply_jobs(1, 'Bagas', 'Arya', 'test-photo.jpg', '2000-08-15', 'Unindra', 'Bachelor', 'Informatika', '081285711519', 'CV', 'http://localhost:3000/user-media/bgs.pdf', 512,  'pdf',  7 )
