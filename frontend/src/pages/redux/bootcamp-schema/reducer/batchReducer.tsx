@@ -12,7 +12,7 @@ function batchReducers(state = initialState, action: any) {
   const { type, payload } = action;
   switch (type) {
     case ActionTypes.RES_GET_BATCHES:
-      return { state, batches: payload.data, refresh: true };
+      return { state, batches: payload.data,message:payload.message, refresh: true };
 
     case ActionTypes.RES_GET_BATCH:
       return {

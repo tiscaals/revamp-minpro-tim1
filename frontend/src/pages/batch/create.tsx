@@ -8,6 +8,7 @@ import {
   Option,
   Textarea,
   Typography,
+  Alert,
 } from '@material-tailwind/react';
 import {
   HiPlusSm,
@@ -30,6 +31,7 @@ export default function CreateBatch() {
   const router = useRouter();
 
   const { programs } = useSelector((state: any) => state.programReducers);
+  const {message} = useSelector((state:any)=> state.batchReducers);
   const { trainers } = useSelector((state: any) => state.trainerReducers);
   const { recstudents } = useSelector((state: any) => state.studentReducers);
 
@@ -38,6 +40,8 @@ export default function CreateBatch() {
   const [selectedCoTrainer, setSelectedCoTrainer] = useState<any>();
   const [selTechno, setSelTechno] = useState<any>();
   const [batchType, setBatchType] = useState<string>('');
+  const [isAlert, setIsAlert] = useState(false)
+  const [counter,setCounter] = useState(5)
 
   const [filterStudents, setFilterStudents] = useState<any>({
     month_number: date.getMonth(),
@@ -80,8 +84,7 @@ export default function CreateBatch() {
     };
 
     dispatch(addBatchReq(newObj));
-
-    router.push('/batch');
+    setIsAlert(true)
   };
 
   const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,8 +108,6 @@ export default function CreateBatch() {
     months.push({ monthName, monthNumber });
   }
 
-  console.log(recstudents);
-
   const filteredStudents = recstudents?.filter((student: any) => {
     const dateObj = new Date(student.join_date);
 
@@ -125,11 +126,28 @@ export default function CreateBatch() {
     setValue('batch_type', batchType);
     setValue('trainer', selectedTrainer);
     setValue('cotrainer', selectedCoTrainer);
-  }, [selTechno, batchType, selectedTrainer, selectedCoTrainer]);
+
+    if(isAlert){
+      const timer = setTimeout(()=>{
+        setIsAlert(false)
+      },4000)
+
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+
+  }, [selTechno, batchType, selectedTrainer, selectedCoTrainer,isAlert]);
 
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>
+        {/* <button type='button' onClick={()=>setIsAlert(true)}>on</button> */}
+        {
+          isAlert?
+          <Alert className='mb-4'>{message} redirecting in: {counter}</Alert>:
+          ''
+        }
         <div className="flex justify-between">
           <Typography variant="h5" color="blue-gray">
             Create Batch

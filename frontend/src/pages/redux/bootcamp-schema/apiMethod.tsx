@@ -59,9 +59,9 @@ const findAllTalents = () => {
   return axios.get('/bootcamp/talents');
 };
 
-const updateChangeStatusBatch = (data:any) =>{
-    return axios.post(`/bootcamp/change-status-batch`,data)
-}
+const updateChangeStatusBatch = (data: any) => {
+  return axios.post(`/bootcamp/change-status-batch`, data);
+};
 
 const createEvals = (data: any) => {
   return axios.post('/bootcamp/evaluation', data);

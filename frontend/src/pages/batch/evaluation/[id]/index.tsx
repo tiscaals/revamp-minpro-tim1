@@ -42,7 +42,7 @@ export default function evaluation() {
     return <div>loading...</div>;
   }
 
-  // console.log(trainees);
+  console.log(trainees);
   return (
     <div className="bg-white rounded-md">
       <div className="flex justify-between mb-5 p-4">
