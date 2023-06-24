@@ -19,6 +19,7 @@ import {
   getOneBatchesRes,
   addEvalsRes,
   UpdateChangeStatusBatchRes,
+  // UpdateChangeStatusBatchRes,
 } from '../action/actionReducer';
 
 function* handleGetAllBatches(): any {

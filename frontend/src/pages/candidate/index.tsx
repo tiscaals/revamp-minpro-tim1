@@ -2,29 +2,19 @@ import React, { Fragment, useEffect, useState } from 'react';
 import {
   Tabs,
   TabsHeader,
-  TabsBody,
   Tab,
-  TabPanel,
   Select,
   Option,
   Button,
-  IconButton,
   Avatar,
-  ButtonGroup,
   Input,
   Textarea,
   Typography,
 } from '@material-tailwind/react';
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from 'react-icons/ai';
 import { Menu, Transition } from '@headlessui/react';
 import {
   BsThreeDotsVertical,
-  BsPencil,
-  BsPencilFill,
-  BsTrash,
-  BsTrashFill,
 } from 'react-icons/bs';
-import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   editParogReq,
@@ -59,7 +49,7 @@ export default function Candidates() {
   useEffect(() => {
     dispatch(getAllRoutesReq());
     dispatch(getAllCandidatesReq());
-  }, [route, refresh]);
+  }, [route, refresh])
 
   useEffect(() => {
     if (routes) {
@@ -72,7 +62,7 @@ export default function Candidates() {
     setRoute(routeName);
   };
 
-  console.log(filterStudents);
+  // console.log(filterStudents);
 
   const filteredData =
     selectRoute === ''
