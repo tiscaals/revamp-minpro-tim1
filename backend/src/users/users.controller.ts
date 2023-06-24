@@ -17,19 +17,19 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   //Controller Get Users
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @Get()
   GetUsers() {
     return this.usersService.getUsers();
   }
 
-  @UseGuards(AdminGuard)
+  // @UseGuards(AdminGuard)
   @Get('/get-role')
   getRole() {
     return this.usersService.getRole();
   }
 
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @Get(':id')
   GetUsersById(@Param('id') id: string) {
     return this.usersService.getUsersById(+id);

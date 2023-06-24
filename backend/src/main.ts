@@ -5,6 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as bodyParser from 'body-parser';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import * as express from 'express';
 
 async function bootstrap() {
   const port = process.env.PORT;
@@ -14,20 +15,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(bodyParser.urlencoded({ extended: true }));
 
-  app.useStaticAssets(join(__dirname, '..', '..', 'images', 'user-image'));
-  // app.useStaticAssets(join(__dirname, '..', '..', 'media', 'user-media'));
+  app.use('/images', express.static('images'));
+  app.use('/files', express.static('files'));
 
   await app.listen(port, () => {
     console.log(`Server run on port ${port}`);
   });
 }
 bootstrap();
-
-// import { NestFactory } from '@nestjs/core';
-// import { AppModule } from './app.module';
-
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-//   await app.listen(3000);
-// }
-// bootstrap();

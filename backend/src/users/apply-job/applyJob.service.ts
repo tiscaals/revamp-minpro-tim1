@@ -2,44 +2,41 @@ import { Injectable } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 import { UpdateApplyJobsDto } from '../dto/update-user.dto';
 import { users } from 'models/users/users';
+import * as fs from 'fs-extra';
 
 @Injectable()
 export class ApplyJobService {
   constructor(private sequelize: Sequelize) {}
 
-  async applyJobs(id:number, updateApplyJobsDto: UpdateApplyJobsDto): Promise<any>{
+  async applyJobs(id: any, updateApplyJobsDto: any): Promise<any> {
     try {
-
-      const getPk = await users.findByPk(id);
-      const oldImagePath = './images/user-image/' + getPk.user_photo;
-
-      const query = `CALL users.apply_jobs(:user_id, :, :uspo_number, :userphoto, :usro_role_id)`;
+      const query = `CALL users.apply_jobs(:user_id, :firstname, :lastname, :userphoto, :birthdate, :user_school, :user_degree, :user_field_study, :user_phone_number, :user_resume, :user_filelink, :user_filesize, :user_filetype, :role_id )`;
       const result = await this.sequelize.query(query, {
         replacements: {
           user_id: id,
           firstname: updateApplyJobsDto.firstname,
           lastname: updateApplyJobsDto.lastname,
           userphoto: updateApplyJobsDto.userphoto,
-        //   usro_role_id: updateApplyJobsDto.usro_role_id,
+          birthdate: updateApplyJobsDto.birthdate,
+          user_school: updateApplyJobsDto.user_school,
+          user_degree: updateApplyJobsDto.user_degree,
+          user_field_study: updateApplyJobsDto.user_field_study,
+          user_phone_number: updateApplyJobsDto.user_phone_number,
+          user_resume: updateApplyJobsDto.user_resume,
+          user_filelink: `http://localhost:7300/files/user-media/${updateApplyJobsDto.user_resume}`,
+          user_filesize: updateApplyJobsDto.user_filesize,
+          user_filetype: updateApplyJobsDto.user_filetype,
+          role_id: updateApplyJobsDto.role_id,
         },
       });
 
-        // IN user_id INT,
-        // IN firstname VARCHAR,
-        // IN lastname VARCHAR,
-        // IN user_school VARCHAR,
-        // IN user_degree VARCHAR,
-        // IN user_field_study VARCHAR,
-        // IN user_phone_number VARCHAR,
-        // IN filename VARCHAR,
-        // IN filetype VARCHAR,
-        // IN role_id INT
-      let updatedFields: Partial<UpdateApplyJobsDto> = {
-
+      return {
+        message: 'apply jobs successfully',
+        status: 200,
+        result: result[0],
       };
-
     } catch (error) {
-        return{message:error.message, status:400}
+      return { message: error.message, status: 400 };
     }
   }
 }

@@ -21,8 +21,11 @@ const fileUploadInterceptor = FileInterceptor('user_photo', {
   storage: diskStorage({
     destination: './images/user-image',
     filename: (req, file, cb) => {
-      const date = Date.now();
-      cb(null, date + '-' + file.originalname);
+      // const date = Date.now();
+      // cb(null, date + '-' + file.originalname);
+      const random = Math.random().toString(36).substring(2, 15);
+      const Suffix = file.originalname.trim();
+      cb(null, file.fieldname + '-' + random + '-' + Suffix);
     },
   }),
   fileFilter: (req, file, cb) => {

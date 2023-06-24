@@ -4,7 +4,7 @@ import {
   Param,
   Body,
   UseInterceptors,
-  UploadedFiles,
+  UploadedFile,
   HttpException,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
@@ -17,11 +17,13 @@ export function MultiFileInterceptor() {
   return FileFieldsInterceptor(
     [
       { name: 'userphoto', maxCount: 1 },
-      { name: 'user_resume', maxCount: 1 },
+      { name: 'usmed_filename', maxCount: 1 },
     ],
     {
       storage: diskStorage({
         destination: (req, file, cb) => {
+          console.log(file.mimetype);
+          console.log(file.originalname.endsWith('.jpg'));
           if (
             file.mimetype.startsWith('image') ||
             file.originalname.endsWith('.jpg') ||
@@ -30,12 +32,15 @@ export function MultiFileInterceptor() {
           ) {
             cb(null, './images/user-image');
           } else {
-            cb(null, './files/user-media');
+            cb(null, './media/user-media');
           }
         },
         filename: async (req, file, cb) => {
-          const random = Math.random().toString(36).substring(2, 15);
+          const random =
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15);
           const Suffix = file.originalname.trim();
+          console.log(file);
           cb(null, file.fieldname + '-' + random + '-' + Suffix);
         },
       }),
@@ -61,25 +66,22 @@ export class ApplyJobController {
   @UseInterceptors(MultiFileInterceptor())
   async applyJobs(
     @Param('id') id: string,
-    @Body() updateApplyJobsDto: any,
-    @UploadedFiles() files: { [fieldname: string]: Express.Multer.File[] },
+    @Body() updateApplyJobsDto: UpdateApplyJobsDto,
+    @UploadedFile() files: { [fieldname: string]: Express.Multer.File[] },
   ) {
-    const images = [files.user_resume?.[0], files.userphoto?.[0]].filter(
+    const images = [files.usmed_filename?.[0], files.userphoto?.[0]].filter(
       Boolean,
     );
     if (images.length < 2) {
       for (let i = 0; i < images.length; i++) {
         const imagePath = './images/user-image/' + images[i].filename;
-        const exist = await fse.pathExists(imagePath);
+        const exist = await fse.pathExists(imagePath); // Gunakan await untuk memastikan pengecekan selesai
         if (exist) {
-          await fse.remove(imagePath);
+          await fse.remove(imagePath); // Gunakan await untuk memastikan penghapusan selesai
         }
       }
-      throw new HttpException('Error uploading files', 400);
+      throw new HttpException('Error uploading files', 400); // Ganti return dengan throw new HttpException
     }
-    updateApplyJobsDto.userphoto = files.userphoto[0].filename;
-    updateApplyJobsDto.user_resume = files.user_resume[0].filename;
-
-    return this.applyJobService.applyJobs(parseInt(id), updateApplyJobsDto);
+    return this.applyJobService.applyJobs(parseInt(id), updateApplyJobsDto); // Ganti + dengan parseInt
   }
 }

@@ -66,15 +66,17 @@ export class CreateSkillsDto {
 }
 
 export class CreateApplyJobsDto {
-  user_id:any;
-  firstname:string;
-  lastname:string;
-  userphoto:string;
-  user_school:string;
-  user_degree:string;
-  user_field_study:string;
-  user_phone_number:string;
-  filename:string;
-  filetype:string;
-  role_id:string;
+  user_id: any;
+  firstname: string;
+  lastname: string;
+  userphoto: string;
+  birthdate: any;
+  user_school: string;
+  user_degree: string;
+  user_field_study: string;
+  user_phone_number: string;
+  user_resume: string;
+  usmed_filelink: string;
+  filetype: string;
+  role_id: string;
 }

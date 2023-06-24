@@ -50,7 +50,7 @@ export class ProfileService {
       if (updateUserDto.user_photo) {
         updatedFields.user_photo = updateUserDto.user_photo;
       }
-      
+
       if (updateUserDto.user_photo && fs.existsSync(oldImagePath)) {
         fs.unlinkSync(oldImagePath);
       }

@@ -27,7 +27,7 @@ import { address, address_type, city } from 'models/master';
       users_education,
       users_experiences,
       users_skill,
-      users_media,  
+      users_media,
       phone_number_type,
       users_address,
       address,

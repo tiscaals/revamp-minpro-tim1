@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MasterModule } from './master/master.module';
@@ -19,9 +20,18 @@ import { EducationModule } from './users/education/education.module';
 import { ExperiencesModule } from './users/experiences/experiences.module';
 import { SkillsModule } from './users/skills/skills.module';
 import { ApplyJobModule } from './users/apply-job/applyJob,module';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot(
+      {
+        rootPath: join(__dirname, '..', 'images/user-image'),
+      },
+      {
+        rootPath: join(__dirname, '..', 'files/user-media'),
+      },
+    ),
     SequelizeModule.forRootAsync({
       useFactory: () => ({
         dialect: 'postgres',

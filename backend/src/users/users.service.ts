@@ -150,8 +150,8 @@ export class UsersService {
             model: users_skill,
           },
           {
-            model: users_media
-          }
+            model: users_media,
+          },
         ],
         where: { user_entity_id: id },
       });
