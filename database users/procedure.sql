@@ -145,3 +145,60 @@ $$;
 
 -- contoh call untuk aplly jobs
 call users.apply_jobs(1, 'Bagas', 'Arya', 'test-photo.jpg', '2000-08-15', 'Unindra', 'Bachelor', 'Informatika', '081285711519', 'CV', 'http://localhost:3000/user-media/bgs.pdf', 512,  'pdf',  7 )
+
+
+-- procedure aply bootcamp
+create or replace procedure bootcamp.createProgramApply(in data json, in data2 json)
+language plpgsql
+as
+$$
+declare
+	userEntityId int;
+	progEntityId int;
+	
+begin
+	with result as(
+	insert into bootcamp.program_apply(
+		prap_user_entity_id,
+		prap_prog_entity_id
+	)
+	select
+		x.prap_user_entity_id,
+		x.prap_prog_entity_id
+	
+	from json_to_recordset(data) as x(
+		prap_user_entity_id int,
+		prap_prog_entity_id int
+	)
+	returning prap_user_entity_id,prap_prog_entity_id
+	)
+	select prap_user_entity_id,prap_prog_entity_id into userEntityId,progEntityId from result;
+	
+	insert into bootcamp.program_apply_progress(
+		parog_user_entity_id,
+		parog_prog_entity_id,
+		parog_progress_name,
+		parog_status
+	)
+	select
+		userEntityId,
+		progEntityId,
+		y.parog_progress_name,
+		y.parog_status
+		
+	from json_to_recordset(data2) as y(
+		parog_progress_name VARCHAR(15),
+		parog_status VARCHAR(15)
+	);
+end;
+$$;
+
+insert into users.users(user_entity_id,user_first_name,user_last_name) values(3,'Jordy','Saputra');
+
+call bootcamp.createProgramApply('[{
+								 	"prap_user_entity_id": 7,
+								 	"prap_prog_entity_id": 3
+								 }]','[{
+								 	"parog_progress_name": "apply",
+								 	"parog_status": "open"
+								 }]')
