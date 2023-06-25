@@ -19,8 +19,9 @@ import { PhoneModule } from './users/phone-number/phone.module';
 import { EducationModule } from './users/education/education.module';
 import { ExperiencesModule } from './users/experiences/experiences.module';
 import { SkillsModule } from './users/skills/skills.module';
-import { ApplyJobModule } from './users/apply-job/applyJob,module';
+import { ApplyJobModule } from './users/apply-job/applyJob.module';
 import { join } from 'path';
+import { ApplyBootcampModule } from './users/apply-bootcamp/applyBootcamp.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { join } from 'path';
     ExperiencesModule,
     SkillsModule,
     ApplyJobModule,
+    ApplyBootcampModule,
   ],
   controllers: [AppController],
   providers: [AppService],

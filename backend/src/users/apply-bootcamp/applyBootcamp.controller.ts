@@ -4,26 +4,24 @@ import {
   Param,
   Body,
   UseInterceptors,
-  UploadedFile,
+  UploadedFiles,
   HttpException,
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApplyJobService } from './applyJob.service';
 import { UpdateApplyJobsDto } from '../dto/update-user.dto';
 import * as fse from 'fs-extra';
 import { diskStorage } from 'multer';
+import { ApplyBootcampService } from './applyBootcamp.service';
 
 export function MultiFileInterceptor() {
   return FileFieldsInterceptor(
     [
       { name: 'userphoto', maxCount: 1 },
-      { name: 'usmed_filename', maxCount: 1 },
+      { name: 'user_resume', maxCount: 1 },
     ],
     {
       storage: diskStorage({
         destination: (req, file, cb) => {
-          console.log(file.mimetype);
-          console.log(file.originalname.endsWith('.jpg'));
           if (
             file.mimetype.startsWith('image') ||
             file.originalname.endsWith('.jpg') ||
@@ -32,15 +30,12 @@ export function MultiFileInterceptor() {
           ) {
             cb(null, './images/user-image');
           } else {
-            cb(null, './media/user-media');
+            cb(null, './files/user-media');
           }
         },
         filename: async (req, file, cb) => {
-          const random =
-            Math.random().toString(36).substring(2, 15) +
-            Math.random().toString(36).substring(2, 15);
+          const random = Math.random().toString(36).substring(2, 15);
           const Suffix = file.originalname.trim();
-          console.log(file);
           cb(null, file.fieldname + '-' + random + '-' + Suffix);
         },
       }),
@@ -58,30 +53,36 @@ export function MultiFileInterceptor() {
   );
 }
 
-@Controller('apply-job')
-export class ApplyJobController {
-  constructor(private readonly applyJobService: ApplyJobService) {}
+@Controller('apply-bootcamp')
+export class ApplyBootcampController {
+  constructor(private readonly applyBootcampService: ApplyBootcampService) {}
 
   @Patch(':id')
   @UseInterceptors(MultiFileInterceptor())
-  async applyJobs(
+  async applyBootcamp(
     @Param('id') id: string,
-    @Body() updateApplyJobsDto: UpdateApplyJobsDto,
-    @UploadedFile() files: { [fieldname: string]: Express.Multer.File[] },
+    @Body() updateBootcamp: any,
+    @UploadedFiles() files: { [fieldname: string]: Express.Multer.File[] },
   ) {
-    const images = [files.usmed_filename?.[0], files.userphoto?.[0]].filter(
+    const images = [files.user_resume?.[0], files.userphoto?.[0]].filter(
       Boolean,
     );
     if (images.length < 2) {
       for (let i = 0; i < images.length; i++) {
         const imagePath = './images/user-image/' + images[i].filename;
-        const exist = await fse.pathExists(imagePath); // Gunakan await untuk memastikan pengecekan selesai
+        const exist = await fse.pathExists(imagePath);
         if (exist) {
-          await fse.remove(imagePath); // Gunakan await untuk memastikan penghapusan selesai
+          await fse.remove(imagePath);
         }
       }
-      throw new HttpException('Error uploading files', 400); // Ganti return dengan throw new HttpException
+      throw new HttpException('Error uploading files', 400);
     }
-    return this.applyJobService.applyJobs(parseInt(id), updateApplyJobsDto); // Ganti + dengan parseInt
+    updateBootcamp.userphoto = files.userphoto[0].filename;
+    updateBootcamp.user_resume = files.user_resume[0].filename;
+
+    return this.applyBootcampService.applyBootcamp(
+      parseInt(id),
+      updateBootcamp,
+    );
   }
 }
