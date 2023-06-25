@@ -347,7 +347,7 @@ export class BootcampService {
         const batchStatus = dataBatch[0][0].batch_status
         if (dataBody.batch_status === batchStatus) throw new Error('Batch Sudah di Closed');
 
-        const dataTalents = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${dataBody.batch_id}`)
+        const dataTalents = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${dataBody.batch_id} and batr_status = 'passed'`)
 
         const dataString = `[${JSON.stringify(dataBody)}]`;
         const talentString = `${JSON.stringify(dataTalents[0])}`;

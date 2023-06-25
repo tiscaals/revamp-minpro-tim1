@@ -196,6 +196,7 @@ select
 	batch.batch_entity_id,
 	batch.batch_start_date,
 	batch.batch_end_date,
+	batch_trainee.batr_status,
 	batch_trainee.batr_review,
 	users.user_entity_id,
 	program_entity.prog_title as technology,
