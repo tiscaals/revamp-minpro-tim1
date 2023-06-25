@@ -1,99 +1,76 @@
-import axios from "../config/endpoint";
+import axios from '../config/endpoint';
 
-// axios.interceptors.request.use(
-//     (config) => {
-//       // Retrieve the authorization token from storage
-//       const token = localStorage.getItem("AuthToken");
-  
-//       // If the token exists, add it to the request headers
-//       if (token && token!=undefined && token!='false') {
-//         config.headers["Authorization"] = token;
-//       }
-  
-//       return config;
-//     },
-//     (error) => {
-//       // Handle request error
-//       return Promise.reject(error);
-//     }
-// );
+const viewEmployee = () => {
+  return axios.get('/placement');
+};
+const viewTalents = () => {
+  return axios.get('/placement/talents');
+};
 
-// //USER
-// const findAllUser=()=>{
-//     return axios.get("/customer")
-// }
+const viewTalentsJob = () => {
+  return axios.get('/placement/talentsJob');
+};
 
-// const createUser=(data:any)=>{
-//     return axios.post("/user", data)
-// }
+const findEmployee = (data: any) => {
+  return axios.get(`/placement/findemployee/${data}`)
+}
 
-// const updateCustomer=(data:any)=>{
-//     return axios.patch(`/customer/${data.id}`, data.data)
-// }
+const deptHistory = (data: any) => {
+  return axios.get(`/placement/depthistory/${data}`)
+}
 
-// const deleteUser=(id:any)=>{
-//     return axios.delete(`/user/${id}`)
-// }
+const salaryHistory = (data: any) => {
+  return axios.get(`/placement/salhistory/${data}`)
+}
 
-// const updatePassword=(data:any)=>{
-//     console.log(data);
-//     return axios.patch(`/user/password/${data.id}`, data.data)
-// }
+const searchUser = () => {
+  return axios.get('/placement/search');
+};
+const searchClient = () => {
+  return axios.get('/placement/client');
+};
 
-// //PRODUCT
-// const findAllProduct=()=>{
-//     return axios.get("/product")
-// }
+const department = () => {
+  return axios.get('placement/dpm');
+};
+const masterJoRo = () => {
+  return axios.get('placement/masterjoro');
+};
+const usersRoles = () => {
+  return axios.get('placement/usersRoles');
+};
+const jobType = () => {
+  return axios.get('placement/jobType');
+};
+const accountManager = () => {
+  return axios.get('placement/AM');
+};
 
-// const findProductById=(id:any)=>{
-//     return axios.get(`/product/${id}`)
-// }
+const createDataEmployee = (data: any) => {
+  return axios.post('/placement/create', data);
+};
+const createEmployeeTalents = (data: any) => {
+  return axios.post('/placement/contract', data);
+};
+const updateEmployee = (data: any) => {
+  return axios.patch('/placement/update', data);
+};
 
-// const createProduct=(data:any)=>{
-//     return axios.post("/product/create", data, {
-//         headers:{
-//             "Content-Type": "multipart/form-data"
-//         }
-//     })
-// }
-
-// const updateProduct=(data:any)=>{
-//     console.log("API DATA",data);
-//     return axios.patch(`/product/${data.id}`, data.data, {
-//         headers:{
-//             "Content-Type": "multipart/form-data"
-//         }
-//     })
-// }
-
-// const deleteProduct=(id:any)=>{
-//     return axios.delete(`/product/${id}`)
-// }
-
-// const findAllCategory=()=>{
-//     return axios.get("/product/category")
-// }
-
-// //LOGIN
-// const login=(data:any)=>{
-//     return axios.post("/login", data)
-// }
-
-// export default{
-//     //USER
-//     findAllUser,
-//     createUser,
-//     updateCustomer,
-//     deleteUser,
-//     updatePassword,
-//     //PRODUCT
-//     findAllProduct,
-//     findProductById,
-//     createProduct,
-//     updateProduct,
-//     deleteProduct,
-//     //CATEGORY
-//     findAllCategory,
-//     //LOGIN
-//     login
-// }
+export default {
+  viewEmployee,
+  viewTalents,
+  viewTalentsJob,
+  createDataEmployee,
+  createEmployeeTalents,
+  searchUser,
+  searchClient,
+  department,
+  masterJoRo,
+  usersRoles,
+  jobType,
+  accountManager,
+  findEmployee,
+  deptHistory,
+  salaryHistory,
+  updateEmployee
+};

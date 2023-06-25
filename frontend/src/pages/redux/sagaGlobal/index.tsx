@@ -1,29 +1,49 @@
-import { takeEvery,all } from "redux-saga/effects";
-// import ActionTypes from "../action/actionType";
-// import { handleAddUser, handleDeleteUser, handleGetAllUser, handleUpdatePassword, handleUpdateUser } from "./userSaga";
-// import { handleAddProduct, handleDeleteProduct, handleGetAllProduct, handleGetProductById, handleUpdateProduct } from "./productSaga";
-// import { handleGetAllCategories } from "./categorySaga";
-// import { handleLogin } from "./loginSaga";
+import ActionTypes from '../hr-schema/action/actionType';
+import { takeEvery, all } from 'redux-saga/effects';
+import {
+  handleAccountManager,
+  handleGetEmployee,
+  handleGetTalents,
+  handleJobType,
+  handleSearchClient,
+  handleTalentsEmployee,
+} from '../hr-schema/saga/hrSaga';
+import {
+  handleCreateEmployee,
+  handleDepartment,
+  handleMasterJoRo,
+  handleSearchEmp,
+  handleUsersRoles,
+  handleGetTalentsJob,
+  handlefindEmployee,
+  handledeptHistory,
+  handlesalHistory,
+  handleUpdateEmployee,
+} from '../hr-schema/saga/empSaga';
 
-// function* watchAll(){
-//     yield all([
-//         //USER
-//         takeEvery(ActionTypes.GET_USERS, handleGetAllUser),
-//         takeEvery(ActionTypes.ADD_USER, handleAddUser),
-//         takeEvery(ActionTypes.UPDATE_USER, handleUpdateUser),
-//         takeEvery(ActionTypes.DEL_USER, handleDeleteUser),
-//         takeEvery(ActionTypes.UPDATE_PASSWORD, handleUpdatePassword),
-//         //PRODUCT
-//         takeEvery(ActionTypes.GET_PRODUCT, handleGetAllProduct),
-//         takeEvery(ActionTypes.GET_PRODUCT_ID, handleGetProductById),
-//         takeEvery(ActionTypes.ADD_PRODUCT, handleAddProduct),
-//         takeEvery(ActionTypes.UPDATE_PRODUCT, handleUpdateProduct),
-//         takeEvery(ActionTypes.DEL_PRODUCT, handleDeleteProduct),
-//         //CATEGORY
-//         takeEvery(ActionTypes.GET_CATEGORY, handleGetAllCategories),
-//         //LOGIN
-//         takeEvery(ActionTypes.REQ_LOGIN, handleLogin)
-//     ])
-// }
+function* watchAll() {
+  yield all([takeEvery(ActionTypes.REQ_GET_EMPLOYEE, handleGetEmployee)]);
+  yield all([takeEvery(ActionTypes.REQ_GET_SEARCH, handleSearchEmp)]);
+  yield all([takeEvery(ActionTypes.REQ_GET_DEPARTMENT, handleDepartment)]);
+  yield all([takeEvery(ActionTypes.REQ_GET_JOROMASTER, handleMasterJoRo)]);
+  yield all([takeEvery(ActionTypes.REQ_GET_USERSROLES, handleUsersRoles)]);
+  yield all([takeEvery(ActionTypes.REQ_GET_JOBTYPE, handleJobType)]);
+  yield all([takeEvery(ActionTypes.REQ_GET_AM, handleAccountManager)]);
+  yield all([
+    takeEvery(ActionTypes.REQ_CREATE_DATA_EMPLOYEE, handleCreateEmployee),
+  ]);
+  yield all([
+    takeEvery(ActionTypes.REQ_UPDATE_EMPLOYEE, handleUpdateEmployee),
+  ]);
+  yield all([takeEvery(ActionTypes.REQ_GET_TALENTS, handleGetTalents)]);
+  yield all([takeEvery(ActionTypes.REQ_GET_TALENTS_JOB, handleGetTalentsJob)]);
+  yield all([takeEvery(ActionTypes.REQ_SEARCH_CLIENT, handleSearchClient)]);
+  yield all([
+    takeEvery(ActionTypes.REQ_TALENTS_EMPLOYEE, handleTalentsEmployee),
+  ]);
+  yield all([takeEvery(ActionTypes.REQ_FIND_EMPLOYEE, handlefindEmployee),]);
+  yield all([takeEvery(ActionTypes.REQ_DEPT_HISTORY, handledeptHistory),]);
+  yield all([takeEvery(ActionTypes.REQ_SALARY_HISTORY, handlesalHistory),]);
+}
 
-// export default watchAll;
+export default watchAll;
