@@ -1,8 +1,8 @@
 import React from 'react';
-import Logo from '../../../images/logo.png';
+import Logo from '../../images/logo.png';
 import { useRouter } from 'next/router';
 
-const ConfirmSucces = () => {
+const ConfirmJobs = () => {
   const router = useRouter();
   return (
     <div>
@@ -19,7 +19,7 @@ const ConfirmSucces = () => {
               terimakasih sudah apply untuk mengikuti perektrutan profesional
               job, click{' '}
               <button
-                onClick={() => router.replace('/app/settings')}
+                onClick={() => router.replace('/')}
                 className="text-blue-800 underline"
               >
                 disini
@@ -33,4 +33,4 @@ const ConfirmSucces = () => {
   );
 };
 
-export default ConfirmSucces;
+export default ConfirmJobs;

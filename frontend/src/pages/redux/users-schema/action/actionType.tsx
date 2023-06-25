@@ -91,6 +91,10 @@ const ActionTypes = {
   //Apply Job
   REQ_APPLY_JOB: 'REQ_APPLY_JOB',
   RES_APPLY_JOB: 'RES_APPLY_JOB',
+
+  //Apply Bootcamp
+  REQ_APPLY_BOOTCAMP: 'REQ_APPLY_BOOTCAMP',
+  RES_APPLY_BOOTCAMP: 'RES_APPLY_BOOTCAMP',
 };
 
 export default ActionTypes;

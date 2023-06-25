@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import Logo from '../../../images/logo.png';
-import DefaultImage from '../../../images/default-avatar.jpg';
+import Logo from '../../images/logo.png';
+import DefaultImage from '../../images/default-avatar.jpg';
 import { Button } from '@material-tailwind/react';
 import Cookies from 'js-cookie';
 import jwt, { JwtPayload } from 'jsonwebtoken';
@@ -102,7 +102,7 @@ const Apply = () => {
 
       if (result.isConfirmed) {
         const formData: any = new FormData();
-        formData.append('user_id', data.user_id);
+        formData.append('user_id', profile?.user_entity_id);
         formData.append('firstname', data.firstname);
         formData.append('lastname', data.lastname);
 
@@ -116,7 +116,10 @@ const Apply = () => {
         formData.append('user_school', data.user_school);
         formData.append('user_degree', data.user_degree);
         formData.append('user_field_study', data.user_field_study);
-        formData.append('user_phone_number', data.user_phone_number);
+        formData.append(
+          'user_phone_number',
+          profile?.users_phones[0].uspo_number
+        );
         formData.append('user_resume', data.user_resume[0]);
         formData.append('user_filesize', data.user_resume[0].size);
         let type = data.user_resume[0]?.type;
@@ -128,7 +131,7 @@ const Apply = () => {
         console.log('dataAply', data);
 
         dispatch(doRequestApplyJob(formData));
-        router.push('/app/apply-jobs/confirm');
+        router.push('/profesional/confirm');
       }
     } catch (error) {
       console.error('Apply Error:', error);
@@ -170,19 +173,10 @@ const Apply = () => {
         >
           <div>
             <div>
-              <label htmlFor="user_id"></label>
-              <input
-                type="hidden"
-                defaultValue={profile?.user_entity_id}
-                {...register('user_id', handleValidation.user_id)}
-              />
-            </div>
-
-            <div>
               <label htmlFor="role_id"></label>
               <input
                 type="hidden"
-                defaultValue="7"
+                defaultValue="10"
                 {...register('role_id', handleValidation.role_id)}
               />
             </div>
@@ -320,9 +314,9 @@ const Apply = () => {
                 readOnly
                 className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white mb-3"
                 defaultValue={
-                  profile?.users_phones &&
-                  (profile?.users_phones[1]?.uspo_number ||
-                    profile?.users_phones[0]?.uspo_number)
+                  (profile?.users_phones &&
+                    profile.users_phones[0]?.uspo_number) ||
+                  ''
                 }
                 {...register('user_phone_number')}
               />
@@ -425,7 +419,6 @@ const Apply = () => {
               </div>
             </div>
           </div>
-
           <Button
             // href="/"
             onClick={() => router.push('/')}

@@ -41,7 +41,8 @@ import {
   handleGetSkill,
 } from '../user-saga/skillsSaga';
 import { handleGetRole, handleUpdateRole } from '../user-saga/roleSaga';
-import { handleApplyJobs } from '../user-saga/applySaga';
+import { handleApplyBootcamp, handleApplyJobs } from '../user-saga/applySaga';
+import { doGetApplyBootcampResponse } from '../../action/actionReducer';
 
 function* watchAll() {
   yield all([
@@ -95,6 +96,9 @@ function* watchAll() {
 
     //Apply
     takeEvery(ActionTypes.REQ_APPLY_JOB, handleApplyJobs),
+
+    //Apply Bootcamp
+    takeEvery(ActionTypes.REQ_APPLY_BOOTCAMP, handleApplyBootcamp),
   ]);
 }
 

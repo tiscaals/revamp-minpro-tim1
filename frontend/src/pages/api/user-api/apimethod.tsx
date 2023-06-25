@@ -165,6 +165,16 @@ const applyJobs = (data: any) => {
   });
 };
 
+//Apply Bootcamp
+const applyBootcamp = (data: any) => {
+  console.log('API', ...data);
+  return axios.patch(`/apply-bootcamp/${data.get('user_id')}`, data, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+};
+
 export default {
   authLogin,
   authSignUp,
@@ -195,4 +205,5 @@ export default {
   addSkill,
   removeSkill,
   applyJobs,
+  applyBootcamp,
 };

@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Input, ThemeProvider } from '@material-tailwind/react';
+import { ThemeProvider } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
 import { Provider } from 'react-redux';
 import store from './redux/users-schema/store';
@@ -15,9 +15,11 @@ export default function App({ Component, pageProps }: AppProps) {
       router.pathname.startsWith('/external/signup') ||
       router.pathname.startsWith('/internal/signup') ||
       router.pathname.startsWith('/signup/confirm') ||
-      router.pathname.startsWith('/error-page/error-403') ||
-      router.pathname.startsWith('/app/profesional/apply') ||
-      router.pathname.startsWith('/app/apply-jobs/confirm') ? (
+      router.pathname.startsWith('/bootcamp/apply') ||
+      router.pathname.startsWith('/bootcamp/confirm') ||
+      router.pathname.startsWith('/profesional/apply') ||
+      router.pathname.startsWith('/profesional/confirm') ||
+      router.pathname.startsWith('/error/error-403') ? (
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>

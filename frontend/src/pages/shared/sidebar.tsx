@@ -44,7 +44,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
     }
 
     switch (decoded?.user_current_role) {
-      //admin
+      //Admin
       case 1:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
@@ -76,21 +76,26 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         ]);
         break;
 
-      //direksi/busdev
+      //Users
       case 2:
         setListMenu([
-          //MENU BLM TAU
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
           {
-            to: '/app/profesional/apply',
-            path: '/users',
+            to: '/bootcamp/apply',
+            path: '/bootcamp',
+            icon: <MdGroup />,
+            name: 'Apply Bootcamp',
+          },
+          {
+            to: '/profesional/apply',
+            path: '/profesional',
             icon: <MdGroup />,
             name: 'Apply Job',
           },
         ]);
         break;
 
-      //hr
+      //Employee
       case 3:
         setListMenu([
           //MENU BLM TAU
@@ -111,7 +116,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         ]);
         break;
 
-      //talent
+      //Talent
       case 4:
         setListMenu([
           //MENU BLM TAU

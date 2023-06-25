@@ -427,3 +427,18 @@ export const doGetApplyJobResponse = (payload: any) => {
     payload,
   };
 };
+
+//Apply Jobs
+export const doRequestApplyBootcamp = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_APPLY_BOOTCAMP,
+    payload,
+  };
+};
+
+export const doGetApplyBootcampResponse = (payload: any) => {
+  return {
+    type: ActionTypes.RES_APPLY_BOOTCAMP,
+    payload,
+  };
+};
