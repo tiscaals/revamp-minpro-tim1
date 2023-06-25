@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { BsFiletypeDoc } from 'react-icons/bs';
 import { useForm } from 'react-hook-form';
+import Swal from 'sweetalert2';
 
 const Apply = () => {
   type FormValue = {
@@ -46,9 +47,10 @@ const Apply = () => {
   );
 
   const [selectedPhotoFile, setSelectedPhotoFile] = useState(null);
-  const [selectedPhotoURL, setSelectedPhotoURL] = useState(
-    profile?.user_photo ? `${port}${profile.user_photo}` : DefaultImage.src
-  );
+  const [selectedPhotoURL, setSelectedPhotoURL] = useState('');
+  // const [selectedPhotoURL, setSelectedPhotoURL] = useState(
+  //   profile?.user_photo ? `${port}${profile?.user_photo}` : DefaultImage.src
+  // );
 
   const handlePhotoSelection = (event: any) => {
     const file = event.target.files[0];
@@ -60,6 +62,14 @@ const Apply = () => {
 
     reader.readAsDataURL(file);
   };
+
+  useEffect(() => {
+    if (profile && profile.user_photo) {
+      setSelectedPhotoURL(`${port}${profile.user_photo}`);
+    } else {
+      setSelectedPhotoURL(DefaultImage.src);
+    }
+  }, [profile, port]);
 
   const handleValidation = {
     user_id: { required: 'user_id is required' },
@@ -79,32 +89,50 @@ const Apply = () => {
   };
 
   const handleApply = async (data: any) => {
-    const formData: any = new FormData();
-    formData.append('user_id', data.user_id);
-    formData.append('firstname', data.firstname);
-    formData.append('lastname', data.lastname);
+    try {
+      const result = await Swal.fire({
+        title: 'Apply Confirmation',
+        text: `check your data again before registering`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Apply',
+      });
 
-    if (selectedPhotoFile) {
-      formData.append('userphoto', selectedPhotoFile);
-    } else if (!selectedPhotoFile) {
-      formData.append('userphoto', '');
+      if (result.isConfirmed) {
+        const formData: any = new FormData();
+        formData.append('user_id', data.user_id);
+        formData.append('firstname', data.firstname);
+        formData.append('lastname', data.lastname);
+
+        if (selectedPhotoFile) {
+          formData.append('userphoto', selectedPhotoFile);
+        } else if (!selectedPhotoFile) {
+          formData.append('userphoto', '');
+        }
+
+        formData.append('birthdate', data.birthdate);
+        formData.append('user_school', data.user_school);
+        formData.append('user_degree', data.user_degree);
+        formData.append('user_field_study', data.user_field_study);
+        formData.append('user_phone_number', data.user_phone_number);
+        formData.append('user_resume', data.user_resume[0]);
+        formData.append('user_filesize', data.user_resume[0].size);
+        let type = data.user_resume[0]?.type;
+        let fileType = type?.split('/')[1];
+        formData.append('user_filetype', fileType);
+        formData.append('role_id', data.role_id);
+
+        console.log('ApplyJobs', ...formData);
+        console.log('dataAply', data);
+
+        dispatch(doRequestApplyJob(formData));
+        router.push('/app/apply-jobs/confirm');
+      }
+    } catch (error) {
+      console.error('Apply Error:', error);
     }
-    formData.append('birthdate', data.birthdate);
-    formData.append('user_school', data.user_school);
-    formData.append('user_degree', data.user_degree);
-    formData.append('user_field_study', data.user_field_study);
-    formData.append('user_phone_number', data.user_phone_number);
-    formData.append('user_resume', data.user_resume[0]);
-    formData.append('user_filesize', data.user_resume[0].size);
-    let type = data.user_resume[0]?.type;
-    let fileType = type?.split('/')[1];
-    formData.append('user_filetype', fileType);
-    formData.append('role_id', data.role_id);
-
-    dispatch(doRequestApplyJob(formData));
-    console.log('ApplyJobs', ...formData);
-
-    // router.push('/app/apply-jobs/confirm');
   };
 
   //Decode Token
@@ -123,7 +151,7 @@ const Apply = () => {
     } else {
       console.log('tokens not found');
     }
-  }, [refresh]);
+  }, [refresh, profile?.user_photo]);
 
   return (
     <div className="grid place-items-center mx-2 sm:my-auto">
@@ -160,10 +188,7 @@ const Apply = () => {
             </div>
 
             <div>
-              <label
-                htmlFor=""
-                className="block text-xs font-semibold text-gray-600 uppercase"
-              >
+              <label className="block text-xs font-semibold text-gray-600 uppercase">
                 Firstname
               </label>
               <input
@@ -180,14 +205,10 @@ const Apply = () => {
             </div>
 
             <div>
-              <label
-                htmlFor=""
-                className="block text-xs font-semibold text-gray-600 uppercase mb-1 mt-2"
-              >
+              <label className="block text-xs font-semibold text-gray-600 uppercase mb-1 mt-2">
                 Lastname
               </label>
               <input
-                id=""
                 type="text"
                 placeholder="Last Name"
                 autoComplete="off"
@@ -244,10 +265,7 @@ const Apply = () => {
             </div>
 
             <div>
-              <label
-                htmlFor=""
-                className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-              >
+              <label className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1">
                 School or University
               </label>
               <input
@@ -268,10 +286,7 @@ const Apply = () => {
             </div>
 
             <div>
-              <label
-                htmlFor=""
-                className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-              >
+              <label className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1">
                 Field Study
               </label>
               <input
@@ -295,18 +310,16 @@ const Apply = () => {
             </div>
 
             <div>
-              <label
-                htmlFor=""
-                className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1"
-              >
+              <label className="block text-xs font-semibold text-gray-600 uppercase mt-2 mb-1">
                 Phone Number
               </label>
               <input
                 type="text"
                 placeholder="Phone Number"
                 autoComplete="off"
+                readOnly
                 className="block w-full py-2 px-1 text-black appearance-none border-b-2 border-black-800 focus:text-gray-500 focus:outline-none focus:border-gray-200 bg-white mb-3"
-                value={
+                defaultValue={
                   profile?.users_phones &&
                   (profile?.users_phones[1]?.uspo_number ||
                     profile?.users_phones[0]?.uspo_number)
@@ -341,10 +354,7 @@ const Apply = () => {
             </div>
 
             <div className="lg:mt-2 sm:mt-8">
-              <label
-                htmlFor=""
-                className="block w-full py-2 px-1 text-xs font-semibold text-gray-600 uppercase"
-              >
+              <label className="block w-full py-2 px-1 text-xs font-semibold text-gray-600 uppercase">
                 USER PHOTO
               </label>
               <div className="shrink-0">
@@ -369,6 +379,7 @@ const Apply = () => {
                 accept="image/png, image/jpeg, image/jpg"
                 type="file"
                 className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 hover:file:bg-violet-100"
+                disabled={profile?.user_current_role !== 2}
                 {...register('userphoto', handleValidation.userphoto)}
                 onChange={handlePhotoSelection}
               />
@@ -385,7 +396,7 @@ const Apply = () => {
               </label>
               <input
                 type="file"
-                accept=".pdf"
+                accept=".pdf,.doc,.docx,.png"
                 className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-blue-700 hover:file:bg-violet-100"
                 defaultValue={
                   (profile?.users_media &&
@@ -416,10 +427,10 @@ const Apply = () => {
           </div>
 
           <Button
-            type="button"
+            // href="/"
             onClick={() => router.push('/')}
             className="lg:py-3 lg:px-16 md:px-12 sm:px-8 mt-4 sm:mt-0 bg-blue-800 rounded-sm
-                      font-medium text-white uppercase text-center
+                      font-medium text-white uppercase text-center text-xs
                       focus:outline-none hover:bg-blue-700 hover:shadow-none"
           >
             Cancel
@@ -432,7 +443,7 @@ const Apply = () => {
                       focus:outline-none hover:bg-blue-700 hover:shadow-none disabled:bg-red-900"
             disabled={profile?.user_current_role !== 2}
           >
-            Apply
+            {profile?.user_current_role !== 2 ? 'You are registered' : 'Apply'}
           </Button>
         </form>
       </div>
