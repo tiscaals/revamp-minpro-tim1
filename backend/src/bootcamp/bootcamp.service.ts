@@ -16,7 +16,7 @@ export class BootcampService {
 
       for (let i = 0; i < trainees.length; i++) {
         const trainee = trainees[i];
-        const traineeId = trainee.batr_trainee_entity_id;
+        const traineeId = trainee.user_id;
         
         if (idSet.has(traineeId)) {
           throw new Error('Terdapat Peserta dengan ID yang sama');
@@ -354,7 +354,6 @@ export class BootcampService {
         await this.sequelize.query(
           `call bootcamp.closebatch ('${dataString}','${talentString}')`,
         );
-
       }
       return {
         status: 201,

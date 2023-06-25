@@ -6,7 +6,11 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasOne,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { users } from './users';
+import { address_type, address } from 'models/master';
 
 export interface users_addressAttributes {
   etad_addr_id: number;
@@ -31,9 +35,20 @@ export class users_address
   })
   etad_modified_date?: Date;
 
+  @ForeignKey(() => users)
   @Column({ allowNull: true, type: DataType.INTEGER })
   etad_entity_id?: number;
 
+  @ForeignKey(() => address_type)
   @Column({ allowNull: true, type: DataType.INTEGER })
   etad_adty_id?: number;
+
+  @HasOne(() => address, { sourceKey: 'etad_addr_id' })
+  address?: address;
+
+  @BelongsTo(() => address_type)
+  address_type?: address_type;
+
+  @BelongsTo(() => users)
+  user?: users;
 }

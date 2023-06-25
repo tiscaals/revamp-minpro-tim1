@@ -1,3 +1,4 @@
+import { users_address } from 'models/users';
 import {
   Model,
   Table,
@@ -6,6 +7,7 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
 
 export interface address_typeAttributes {
@@ -40,4 +42,7 @@ export class address_type
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   adty_modified_date?: Date;
+
+  @HasMany(() => users_address, { sourceKey: 'adty_id' })
+  users_addresses?: users_address[];
 }

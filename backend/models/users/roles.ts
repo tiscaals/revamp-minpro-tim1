@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { users_roles } from './users_roles';
 
 export interface rolesAttributes {
   role_id?: number;
@@ -22,7 +24,6 @@ export class roles
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('users.roles_role_id_seq'::regclass)",
@@ -44,4 +45,7 @@ export class roles
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   role_modified_date?: Date;
+
+  @HasMany(() => users_roles, { sourceKey: 'role_id' })
+  users_roles?: users_roles[];
 }

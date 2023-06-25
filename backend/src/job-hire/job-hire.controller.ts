@@ -116,7 +116,7 @@ export class JobHireController {
     return this.jobHireService.removeJopoSoft(+id);
   }
 
-  @Patch('status')
+  @Patch('status/edit')
   updateStatus(@Body() status: any) {
     return this.jobHireService.updateStatus(status);
   }

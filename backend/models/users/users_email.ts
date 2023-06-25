@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { users } from './users';
 
 export interface users_emailAttributes {
   pmail_entity_id: number;
@@ -20,13 +22,13 @@ export class users_email
   extends Model<users_emailAttributes, users_emailAttributes>
   implements users_emailAttributes
 {
+  @ForeignKey(() => users)
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'users_email_pkey', using: 'btree', unique: true })
   pmail_entity_id!: number;
 
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('users.users_email_pmail_id_seq'::regclass)",
@@ -44,4 +46,7 @@ export class users_email
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   pmail_modified_date?: Date;
+
+  @BelongsTo(() => users)
+  user?: users;
 }

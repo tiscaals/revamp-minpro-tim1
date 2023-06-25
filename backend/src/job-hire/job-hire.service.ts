@@ -335,12 +335,13 @@ export class JobHireService {
 
   async updateStatus(fields: any) {
     try {
-      console.log(fields);
+      const id = fields.id;
+      // console.log(fields);
       const result = await job_post.update(
         {
           jopo_status: fields.status,
         },
-        { where: { jopo_entity_id: fields.id } },
+        { where: { jopo_entity_id: id } },
       );
 
       return messageHelper(result, 201, 'Status Berhasil diUpdate');

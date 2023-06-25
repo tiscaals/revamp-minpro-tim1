@@ -41,7 +41,6 @@ export class batch
 
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'batch_pkey', using: 'btree', unique: true })
-  @Index({ name: 'batch_entity_unique_id', using: 'btree', unique: true })
   batch_entity_id!: number;
 
   @Column({ allowNull: true, type: DataType.STRING(15) })

@@ -6,7 +6,9 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { users_phones } from './users_phones';
 
 export interface phone_number_typeAttributes {
   ponty_code: string;
@@ -28,4 +30,7 @@ export class phone_number_type
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   })
   ponty_modified_date?: Date;
+
+  @HasMany(() => users_phones, { sourceKey: 'ponty_code' })
+  users_phones?: users_phones[];
 }

@@ -6,7 +6,10 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  HasMany,
 } from 'sequelize-typescript';
+import { address } from './address';
+import { users_experiences } from 'models/users';
 
 export interface cityAttributes {
   city_id?: number;
@@ -44,4 +47,10 @@ export class city
 
   @Column({ allowNull: true, type: DataType.INTEGER })
   city_prov_id?: number;
+
+  @HasMany(() => address, { sourceKey: 'city_id' })
+  addresses?: address[];
+
+  @HasMany(() => users_experiences, { sourceKey: 'city_id' })
+  users_experiences?: users_experiences[];
 }

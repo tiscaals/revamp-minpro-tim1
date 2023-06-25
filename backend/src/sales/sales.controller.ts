@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
@@ -7,14 +7,71 @@ import { UpdateSaleDto } from './dto/update-sale.dto';
 export class SalesController {
   constructor(private readonly salesService: SalesService) {}
 
-  @Post()
+  @Post('insert-cart')
   create(@Body() createSaleDto: CreateSaleDto) {
-    return this.salesService.create(createSaleDto);
+    return this.salesService.insertCartItem(createSaleDto);
   }
 
-  @Get()
+  @Post('insert-special-offer')
+  createSpecialOfferdanPrograms(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSpecialOfferAndPrograms(createSaleDto);
+  }
+
+  @Post('insert-order-detail')
+  createOrderDetail(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSalesOrder(createSaleDto);
+  }
+
+  @Post('insert-order')
+  createOrder(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSalesOrderDetail(createSaleDto);
+  }
+
+  @Post('insert-order-json')
+  createOrderJson(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertSalesOrderJson(createSaleDto);
+  }
+
+  @Post('insert-sales-order')
+  createSalesOrder(@Body() createSaleDto: CreateSaleDto) {
+    return this.salesService.insertOrder(createSaleDto);
+  }
+
+  @Get('order-detail')
   findAll() {
-    return this.salesService.findAll();
+    return this.salesService.findAllOrderDetail();
+  }
+
+  @Get('view-cart')
+  findAllCart() {
+    return this.salesService.viewCartItems();
+  }
+  
+  @Get('view-diskon')
+  findAllDiskon() {
+    return this.salesService.viewDiskon();
+  }
+
+  @Get('view-payment')
+  findAllPayment() {
+    return this.salesService.viewPayment();
+  }
+
+  @Get('order-header')
+  findAllOrderHeader() {
+    return this.salesService.findAllOrderHeader();
+  }
+  @Get('cart-items')
+  findAllCartItems() {
+    return this.salesService.findAllCartItems();
+  }
+  @Get('special-offer')
+  findAllSpecialOffer() {
+    return this.salesService.findAllSpecialOffer();
+  }
+  @Get('special-programs')
+  findAllSpecialOfferPrograms() {
+    return this.salesService.findAllSpecialOfferPrograms();
   }
 
   @Get(':id')
@@ -22,13 +79,43 @@ export class SalesController {
     return this.salesService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSaleDto: UpdateSaleDto) {
-    return this.salesService.update(+id, updateSaleDto);
+  @Put('update-cart/:id')
+  updateCartItems(@Param('id') id: number, @Body() updateSaleDto: UpdateSaleDto) {
+    return this.salesService.updateCartItemById(id, updateSaleDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.salesService.remove(+id);
+  @Put('update-order-header')
+  updateOrderHeader(@Body() updateSaleDto: UpdateSaleDto) {
+    return this.salesService.updateOrderDetailHeader(updateSaleDto);
+  }
+
+  @Put('update-special-offer')
+  updateSpecialOfferPrograms(@Body() updateSaleDto: UpdateSaleDto) {
+    return this.salesService.updateSpecialOfferAndPrograms(updateSaleDto);
+  }
+
+  @Delete('delete-cart/:id')
+  deleteCartItem(@Param('id') id: string) {
+    return this.salesService.deleteCartItemById(+id);
+  }
+
+  @Delete('delete-cart-sp/:id')
+  deleteCartItemSP(@Param('id') id: string) {
+    return this.salesService.deleteCartItemSP(+id);
+  }
+
+  @Delete('hapus-cart/:id')
+  hapusCartItems(@Param('id') id: string) {
+    return this.salesService.hapusCartItem(id);
+  }
+
+  @Delete('delete-order/:id')
+  deleteOrder(@Param('id') id: number) {
+    return this.salesService.deleteOrderById(+id);
+  }
+
+  @Delete('delete-special-offer/:id')
+  deleteSpecialOffer(@Param('id') id: number) {
+    return this.salesService.deleteSpecialOfferById(+id);
   }
 }

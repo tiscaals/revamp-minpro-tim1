@@ -14,6 +14,11 @@ async function bootstrap() {
 
   app.use('/image', express.static('images/job_photo'));
 
+  // For User
+  app.use('/images', express.static('images'));
+  app.use('/files', express.static('files'));
+  // End
+
   app.useGlobalPipes(new ValidationPipe())
 
   await app.listen(port, ()=>{

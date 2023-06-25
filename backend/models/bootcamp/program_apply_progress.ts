@@ -34,7 +34,6 @@ export class program_apply_progress
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('bootcamp.program_apply_progress_parog_id_seq'::regclass)",
@@ -49,10 +48,18 @@ export class program_apply_progress
   @Column({ allowNull: true, type: DataType.INTEGER })
   parog_prog_entity_id?: number;
 
-  @Column({ allowNull: true, type: DataType.DATE })
+  @Column({
+    allowNull: true,
+    type: DataType.DATE,
+    defaultValue: Sequelize.literal('now()'),
+  })
   parog_action_date?: Date;
 
-  @Column({ allowNull: true, type: DataType.DATE })
+  @Column({
+    allowNull: true,
+    type: DataType.DATE,
+    defaultValue: Sequelize.literal('now()'),
+  })
   parog_modified_date?: Date;
 
   @Column({ allowNull: true, type: DataType.STRING(512) })

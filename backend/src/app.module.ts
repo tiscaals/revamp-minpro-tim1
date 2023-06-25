@@ -1,23 +1,45 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MasterModule } from './master/master.module';
+// import { MasterModule } from './master/';
 import { CurriculumModule } from './curriculum/curriculum.module';
 import { PlacementModule } from './placement/placement.module';
 import { JobHireModule } from './job-hire/job-hire.module';
-import { SalesModule } from './sales/sales.module';
-import { PaymentModule } from './payment/payment.module';
+// import { SalesModule } from './sales/sales.module';
+import { BankModule } from './payment/bank/bank.module';
+import { FintechModule } from './payment/fintech/fintech.module';
+import { TransactionPaymentModule } from './payment/transaction_payment/transaction_payment.module';
+import { UsersAccountModule } from './payment/users_account/users_account.module';
 import { BootcampModule } from './bootcamp/bootcamp.module';
 // import { UsersModule } from './users/users.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { ApplyBootcampModule } from './users/apply-bootcamp/applyBootcamp.module';
+import { ApplyJobModule } from './users/apply-job/applyJob.module';
+import { EducationModule } from './users/education/education.module';
+import { EmailModule } from './users/email/email.module';
+import { ExperiencesModule } from './users/experiences/experiences.module';
+import { PhoneModule } from './users/phone-number/phone.module';
+import { ProfileModule } from './users/profile/profile.module';
+import { SkillsModule } from './users/skills/skills.module';
+import { ProfileAddressModule } from './users/address/address.module';
 
 @Module({
   imports: [
-    ServeStaticModule.forRoot({
+    ServeStaticModule.forRoot(
+      {
       rootPath: join(__dirname, '..', 'images'), // Sesuaikan dengan path ke folder gambar
-    }),
+      },
+      {
+        rootPath: join(__dirname, '..', 'images/user-image'), //For User
+      },
+      {
+        rootPath: join(__dirname, '..', 'files/user-media'), //For User
+      },
+    ),
     SequelizeModule.forRootAsync({
       useFactory: () => ({
         dialect: 'postgres',
@@ -30,7 +52,25 @@ import { join } from 'path';
         autoLoadModels: true,
       }),
     }),
-     BootcampModule, PaymentModule, SalesModule, JobHireModule, PlacementModule, CurriculumModule, MasterModule],
+    UsersModule,
+    BootcampModule, 
+    BankModule,
+    FintechModule,
+    TransactionPaymentModule,
+    UsersAccountModule,
+    JobHireModule, 
+    PlacementModule, 
+    CurriculumModule, 
+    AuthModule,
+    ProfileAddressModule,
+    ProfileModule,
+    EmailModule,
+    PhoneModule,
+    EducationModule,
+    ExperiencesModule,
+    SkillsModule,
+    ApplyJobModule,
+    ApplyBootcampModule,],
   controllers: [AppController],
   providers: [AppService],
 })

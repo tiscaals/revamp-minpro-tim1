@@ -23,7 +23,6 @@ export class users_license
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('users.users_license_usli_id_seq'::regclass)",

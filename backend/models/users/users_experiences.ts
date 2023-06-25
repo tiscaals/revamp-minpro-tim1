@@ -6,7 +6,10 @@ import {
   Index,
   Sequelize,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
+import { users } from './users';
+import { city } from 'models/master';
 
 export interface users_experiencesAttributes {
   usex_id?: number;
@@ -31,7 +34,6 @@ export class users_experiences
 {
   @Column({
     primaryKey: true,
-    autoIncrement: true,
     type: DataType.INTEGER,
     defaultValue: Sequelize.literal(
       "nextval('users.users_experiences_usex_id_seq'::regclass)",
@@ -45,6 +47,7 @@ export class users_experiences
   })
   usex_id?: number;
 
+  @ForeignKey(() => users)
   @Column({ primaryKey: true, type: DataType.INTEGER })
   @Index({ name: 'users_experiences_pkey', using: 'btree', unique: true })
   usex_entity_id!: number;
@@ -61,7 +64,7 @@ export class users_experiences
   @Column({ allowNull: true, type: DataType.STRING(255) })
   usex_company_name?: string;
 
-  @Column({ allowNull: true, type: DataType.STRING(1) })
+  @Column({ allowNull: true, type: DataType.STRING(10) })
   usex_is_current?: string;
 
   @Column({ allowNull: true, type: DataType.STRING })
@@ -79,6 +82,13 @@ export class users_experiences
   @Column({ allowNull: true, type: DataType.STRING(15) })
   usex_experience_type?: string;
 
+  @ForeignKey(() => city)
   @Column({ allowNull: true, type: DataType.INTEGER })
   usex_city_id?: number;
+
+  @BelongsTo(() => users)
+  user?: users;
+
+  @BelongsTo(() => city)
+  city?: city;
 }
