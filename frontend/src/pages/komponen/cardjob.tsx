@@ -89,7 +89,7 @@ const CardJob = ({ currentPage, itemsPerPage, data, filtering }: { currentPage: 
             <div className="w-auto p-5 bg-white border shadow-lg block ">
               <div className="flex items-center">
                 {/*---- Gambar ----*/}
-                <img src={`http://localhost:3003/image/${data.jopho_filename}`} alt="gambar"
+                <img src={`http://localhost:7003/image/${data.jopho_filename}`} alt="gambar"
                 className="object-contain h-14 w-24 mr-5"/>
                 <div className="">
                   {/*---- Title ----*/}

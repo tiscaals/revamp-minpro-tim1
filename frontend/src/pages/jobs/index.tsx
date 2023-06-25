@@ -44,7 +44,7 @@ export default function Home() {
       },
     };
 
-    console.log("GABUNGG",gabung);
+    // console.log("GABUNGG",gabung);
 
     dispatch({type:"RESET_STATE"})
     dispatch(doRequestSearchJobPost(gabung));

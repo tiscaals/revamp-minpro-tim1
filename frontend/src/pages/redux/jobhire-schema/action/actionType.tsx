@@ -54,7 +54,7 @@ const ActionType = {
     REQ_GET_EMPRANGE : "REQ_GET_EMPRANGE",
     RES_GET_EMPRANGE : "RES_GET_EMPRANGE",
 
-    RESET_STATE: "RESET_STATE"
+    RESET_STATE : "RESET_STATE"
 }
 
 export default ActionType;

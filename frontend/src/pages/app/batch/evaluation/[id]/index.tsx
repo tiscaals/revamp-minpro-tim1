@@ -21,7 +21,6 @@ import { getAllTraineesByBatchReq } from '@/pages/redux/bootcamp-schema/action/a
 import { HiDotsVertical, HiOutlineChevronDown } from 'react-icons/hi';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-// import { Popover } from '@headlessui/react';
 
 export default function evaluation() {
   const { trainees, refresh } = useSelector(
@@ -42,7 +41,7 @@ export default function evaluation() {
     return <div>loading...</div>;
   }
 
-  // console.log(trainees);
+  console.log(trainees);
   return (
     <div className="bg-white rounded-md">
       <div className="flex justify-between mb-5 p-4">
@@ -105,7 +104,7 @@ export default function evaluation() {
                   </PopoverContent>
                 </Popover>
               </div>
-              <Link href={`/batch/evaluation/${id}/${item.batr_id}`}>
+              <Link href={`/app/batch/evaluation/${id}/${item.batr_id}`}>
                 <div className="absolute h-2/3 bottom-0 text-center w-full bg-gradient-to-t from-white to-transparent grid content-end text-xs">
                   Click to Evaluate{' '}
                   <span className="flex justify-center mb-1">

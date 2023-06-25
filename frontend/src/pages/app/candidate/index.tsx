@@ -90,12 +90,12 @@ export default function Candidates() {
           );
         });
 
-  console.log(selectRoute);  
+  console.log(candidates);  
 
-  const totalPage = Math.ceil(filteredData.length / itemsPerPage);
+  const totalPage = Math.ceil(filteredData?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentItems = filteredData.slice(startIndex, endIndex);
+  const currentItems = filteredData?.slice(startIndex, endIndex);
 
   const years: number[] = [];
   const months: any = [];

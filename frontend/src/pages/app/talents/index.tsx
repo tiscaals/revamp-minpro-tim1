@@ -14,7 +14,7 @@ import {
   ChevronUpDownIcon,
 } from '@heroicons/react/24/outline';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllTalentsReq } from '../redux/bootcamp-schema/action/actionReducer';
+import { getAllTalentsReq } from '../../redux/bootcamp-schema/action/actionReducer';
 
 export default function Talents() {
   let { talents, message, refresh, status } = useSelector(
@@ -37,7 +37,7 @@ export default function Talents() {
 
   const dispatch = useDispatch();
 
-  console.log(talents);
+  // console.log(talents);
 
   useEffect(() => {
     dispatch(getAllTalentsReq());
@@ -48,13 +48,13 @@ export default function Talents() {
     filter.query === '' && filter.status === 'all'
       ? talents
       : filter.status === 'all'
-      ? talents.filter((talent: any) =>
+      ? talents?.filter((talent: any) =>
           talent.talent_fullname
             .toLowerCase()
             .replace(/\s/g, '')
             .includes(filter.query.toLowerCase().replace(/\s/g, ''))
         )
-      : talents.filter(
+      : talents?.filter(
           (talent: any) =>
             talent.talent_fullname
               .toLowerCase()
@@ -123,7 +123,7 @@ export default function Talents() {
             </tr>
           </thead>
           <tbody>
-            {filteredTalents.map(
+            {filteredTalents?.map(
               (
                 {
                   talent_fullname,

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { Input, Option, Select, Switch } from "@material-tailwind/react"
 import { Menu, Transition } from "@headlessui/react";
 import { useDispatch, useSelector } from "react-redux";
-import { doRequestGetJobPost } from "@/pages/redux/jobhire-schema/action/actionReducer";
+import { doRequestGetJobPost, doRequestUpdateStatus } from "@/pages/redux/jobhire-schema/action/actionReducer";
 import { doRequestGetIndustry, doRequestGetJobrole } from "@/pages/redux/master-schema/action/actionReducer";
 import DeleteJobPost from "./delete";
 
@@ -90,6 +90,14 @@ const Jobs = () => {
     dispatch(doRequestGetJobrole())
   },[job_post])
 
+  const handlePublishChange = (event:any,data:any)=>{
+    const status = event.target.checked? 'publish' : 'draft'
+
+    const union = {id:data , status:status}
+    console.log("union",union)
+    dispatch(doRequestUpdateStatus(union))
+  }
+
   return (
     <div>
       <ContentLink title="JOB POSTING" isilink="jobs/new" button="Posting Job">
@@ -170,6 +178,7 @@ const Jobs = () => {
                           </h2>
                       ) : null
                       )}
+                      {/* {dt.indu_name} */}
 
                       {/* Job Role */}
                       {job_role.map((option:any) =>
@@ -180,12 +189,16 @@ const Jobs = () => {
                       ) : null
                       )}
                     </td>
-                    <td className="flex justify-center">
-                      <div className="px-6 py-4">
-                        {dt.jopo_status === "publish" ?
-                        <Switch checked={true}/> :
-                        <Switch checked={false}/>}
-                      </div>
+                    <td className="px-6 py-4 text-center">
+                      <label className="relative inline-flex items-center  cursor-pointer">
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          defaultChecked={dt.jopo_status === 'publish'}
+                          onChange={(event) => handlePublishChange(event, dt.jopo_entity_id)}
+                        />
+                        <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                      </label>
                     </td>
                     <td className="px-6 py-4">
                       <div className="w-full text-right">

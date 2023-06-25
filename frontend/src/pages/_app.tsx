@@ -10,22 +10,46 @@ import store from './redux/storeGlobal';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
-  if (router.pathname.startsWith('/jobs')) {
-    return(
-      <ThemeProvider>
+  // if (router.pathname.startsWith('/jobs') || router.pathname.startsWith(`/sales/checkout`) || router.pathname.startsWith(`/sales/createorder`) || router.pathname.startsWith(`/sales/receipt`)) {
+  //   return(
+  //     <ThemeProvider>
+  //       <Provider store={store}>
+  //         <Component {...pageProps} />
+  //       </Provider>
+  //     </ThemeProvider>
+  //   )
+  // }
+  // return (
+  //   <ThemeProvider>
+  //     <Provider store={store}>
+  //       <Layout>
+  //         <Component {...pageProps} />
+  //       </Layout>
+  //     </Provider>
+  //   </ThemeProvider>
+  // );
+  
+  return (
+    <ThemeProvider>
+      {router.pathname.startsWith('/signin') ||
+      router.pathname.startsWith('/external/signup') ||
+      router.pathname.startsWith('/internal/signup') ||
+      router.pathname.startsWith('/signup/confirm') ||
+      router.pathname.startsWith('/bootcamp/apply') ||
+      router.pathname.startsWith('/bootcamp/confirm') ||
+      router.pathname.startsWith('/profesional/apply') ||
+      router.pathname.startsWith('/profesional/confirm') ||
+      router.pathname.startsWith('/error/error-403') ? (
         <Provider store={store}>
           <Component {...pageProps} />
         </Provider>
-      </ThemeProvider>
-    )
-  }
-  return (
-    <ThemeProvider>
-      <Provider store={store}>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </Provider>
+      ) : (
+        <Provider store={store}>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </Provider>
+      )}
     </ThemeProvider>
   );
 }

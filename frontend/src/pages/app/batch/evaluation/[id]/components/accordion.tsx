@@ -154,7 +154,7 @@ export default function SkillAccordion({ skills, additionalInfo }: any) {
               <Button
                 onClick={() => {
                   dispatch(addEvalsReq(newObj));
-                  router.push('/batch');
+                  router.push('/app/batch');
                 }}
               >
                 <span>Confirm</span>

@@ -60,7 +60,7 @@ export default function EditBatch() {
       ],
     };
     dispatch(editReq(newObj));
-    router.push('/batch');
+    router.push('/app/batch');
   };
 
   const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {

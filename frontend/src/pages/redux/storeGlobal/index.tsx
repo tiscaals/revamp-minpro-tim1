@@ -7,13 +7,15 @@ import rootSaga from "../sagaGlobal";
 import JobPostReducers from "../jobhire-schema/reducer/jobPostReducer";
 import ClientReducers from "../jobhire-schema/reducer/clientReducer";
 import TalentReducers from "../jobhire-schema/reducer/talentReducer";
+import EmprangeReducers from "../jobhire-schema/reducer/emprangeReducer";
+
 import EducationReducers from "../master-schema/reducer/educationReducer";
 import IndustryReducers from "../master-schema/reducer/industryReducer";
 import JobroleReducers from "../master-schema/reducer/jobroleReducer";
 import WorktypeReducers from "../master-schema/reducer/worktypeReducer";
-import EmprangeReducers from "../jobhire-schema/reducer/emprangeReducer";
 import CityReducers from "../master-schema/reducer/cityReducer";
 import RouteactionReducers from "../master-schema/reducer/routeactionReducer";
+
 import batchReducers from "../bootcamp-schema/reducer/batchReducer";
 import trainerReducers from "../bootcamp-schema/reducer/trainerReducer";
 import programReducers from "../bootcamp-schema/reducer/programReducer";
@@ -23,6 +25,20 @@ import routeReducers from "../bootcamp-schema/reducer/routeReducer";
 import candidateReducers from "../bootcamp-schema/reducer/candidateReducer";
 import traineeReducers from "../bootcamp-schema/reducer/traineeReducer";
 import evalReducers from "../bootcamp-schema/reducer/evaluationReducer";
+
+import salesReducers from "../sales-schema/reducer/salesReducer";
+import orderReducers from "../sales-schema/reducer/orderReducers";
+import diskonReducers from "../sales-schema/reducer/diskonReducer";
+import paymentReducers from "../sales-schema/reducer/paymentReducer";
+
+import userReducers from "../users-schema/reducer/user-reducer/userReducer";
+import settingReducers from "../users-schema/reducer/user-reducer/settingReducer";
+import authLoginReducers from "../users-schema/reducer/auth-reducer/authLoginReducer";
+import { authSignUpReducers } from "../users-schema/reducer/auth-reducer/authSignUpReducer";
+import addressTypeReducers from "../users-schema/reducer/user-reducer/addressTypeReducer";
+import cityReducers from "../users-schema/reducer/user-reducer/cityReducers";
+import rolesReducers from "../users-schema/reducer/user-reducer/roleReducer";
+import skillsReducers from "../users-schema/reducer/user-reducer/skillsReducers";
 
 const logger = createLogger();
 const saga = createSagaMiddleware();
@@ -49,6 +65,24 @@ const reducer = combineReducers({
     candidateReducers,
     traineeReducers,
     evalReducers,
+
+    //SALES
+    salesReducers,
+    diskonReducers,
+    orderReducers,
+    paymentReducers,
+
+    //MASTER
+    
+    //USER
+    userReducers,
+    settingReducers,
+    authLoginReducers,
+    authSignUpReducers,
+    addressTypeReducers,
+    cityReducers,
+    skillsReducers,
+    rolesReducers,
 });
 
 const store = configureStore({

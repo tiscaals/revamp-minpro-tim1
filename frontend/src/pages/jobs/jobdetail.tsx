@@ -70,7 +70,7 @@ const JobDetail = () => {
                 <section className="p-8 border-b-2">
                     <div className="container">
                         <div className="flex">
-                            <img src={`http://localhost:3003/image/${job_detail?.jopho_filename}`} alt="gambar" className="float-left mr-3 object-contain w-20 pr-2 md:h-24 md:w-24 lg:h-28 lg:w-28" />
+                            <img src={`http://localhost:7003/image/${job_detail?.jopho_filename}`} alt="gambar" className="float-left mr-3 object-contain w-20 pr-2 md:h-24 md:w-24 lg:h-28 lg:w-28" />
                             <div className="w-full">
                                 <h1 className="text-lg font-semibold md:text-xl lg:text-2xl ">{title}</h1>
                                 <h2 className="text-sm font-light lg:text-base">{name}</h2>
@@ -209,7 +209,7 @@ const JobDetail = () => {
                             <div className="w-full border border-slate-500 px-3 py-2 shadow-lg">
                                 <h1 className="text-lg md:text-xl lg:text-2xl pb-6">Tentang Perusahaan</h1>
                                 <div className="pb-3 md:pb-4 lg:pb-12">
-                                    <img src={`http://localhost:3003/image/${job_detail?.jopho_filename}`} alt="gambar" className="float-left mr-3 object-contain w-20 pr-2 md:h-24 md:w-24 lg:h-28 lg:w-28" />
+                                    <img src={`http://localhost:7003/image/${job_detail?.jopho_filename}`} alt="gambar" className="float-left mr-3 object-contain w-20 pr-2 md:h-24 md:w-24 lg:h-28 lg:w-28" />
                                     <div className="grid grid-cols-1 pl-2">
                                         <h1 className="text-lg font-semibold pb-2 md:text-xl">{name}</h1>
 

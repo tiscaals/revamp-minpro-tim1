@@ -2,8 +2,7 @@ import {
   MagnifyingGlassIcon,
   ChevronUpDownIcon,
 } from '@heroicons/react/24/outline';
-import { PencilIcon, UserPlusIcon } from '@heroicons/react/24/solid';
-import axios from 'axios';
+import { UserPlusIcon } from '@heroicons/react/24/solid';
 import { Menu, Transition } from '@headlessui/react';
 import {
   Card,
@@ -20,6 +19,8 @@ import {
   Avatar,
   button,
   Textarea,
+  Select,
+  Option,
 } from '@material-tailwind/react';
 import {
   HiDotsVertical,
@@ -28,19 +29,20 @@ import {
   HiPencil,
   HiTrash,
   HiX,
+  HiOutlineClock,
 } from 'react-icons/hi';
+import { BiCalendarPlus } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  // UpdateChangeStatusBatchReq,
+  UpdateChangeStatusBatchReq,
   deleteBatchReq,
   getAllBatchesReq,
 } from '../../redux/bootcamp-schema/action/actionReducer';
-
 import { useSelector } from 'react-redux';
 import MyPaginate from '../../bootcamp/components/pagination';
-
+import { ToastContainer, toast } from 'react-toastify';
 const TABS = [
   {
     label: 'All',
@@ -79,44 +81,67 @@ const TABLE_HEAD = [
 ];
 
 export default function BatchList() {
-  // const [isSearching, setIsSearching] = useState(false)
   const [query, setQuery] = useState('');
-  const { batches, refresh } = useSelector((state: any) => state.batchReducers);
+  const { batches, refresh,message } = useSelector((state: any) => state.batchReducers);
   const [selectedBatch, setSelectedBatch] = useState<any>({
     batch_id: 0,
-    batch_entity_id : 0,
-    batch_reason: ''
-  })
+    batch_entity_id: 0,
+    batch_reason: '',
+    batch_status: '',
+  });
   const dispatch = useDispatch();
+  const [batchstatus, setBatchstatus] = useState();
   const [buttonSelect, setButtonSelect] = useState('');
 
-  console.log(selectedBatch)
+  // console.log(batchstatus);
 
   const filteredBatch: any =
-    buttonSelect === 'all' && query === ''
-      ? batches
-      : buttonSelect === 'all'
-      ? batches?.filter((item: any) =>
-          item.batch_name
+  buttonSelect === 'all' && query === ''
+    ? batches
+    : buttonSelect === 'all'
+    ? batches?.filter((item: any) =>
+        item.batch_name
+          .toLowerCase()
+          .replace(/\s/g, '')
+          .includes(query.toLowerCase().replace(/\s/g, '')) 
+          ||
+        item.trainees.some((trainee: any) =>
+        trainee.full_name
+          .toLowerCase()
+          .replace(/\s/g, '')
+          .includes(query.toLowerCase().replace(/\s/g, ''))
+        )
+          ||
+        item.trainers.some((trainer:any)=>
+        trainer.concat
+          .toLowerCase()
+          .replace(/\s/g, '')
+          .includes(query.toLowerCase().replace(/\s/g, ''))
+        )
+          
+      )
+    : batches?.filter(
+        (item: any) =>
+          (item.batch_name
+            .toLowerCase()
+            .replace(/\s/g, '')
+            .includes(query.toLowerCase().replace(/\s/g, '')) &&
+          item.batch_status === buttonSelect)
+          ||
+          (item.trainees.some((trainee:any)=>
+          trainee.full_name
             .toLowerCase()
             .replace(/\s/g, '')
             .includes(query.toLowerCase().replace(/\s/g, ''))
-        )
-      : batches?.filter(
-          (item: any) =>
-            item.batch_name
-              .toLowerCase()
-              .replace(/\s/g, '')
-              .includes(query.toLowerCase().replace(/\s/g, '')) &&
-            item.batch_status === buttonSelect
-        );
+        ) && item.batch_status === buttonSelect)
+      );
 
   const [itemPerPage, setItemPerPage] = useState(5);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPage = Math.ceil(filteredBatch.length / itemPerPage);
+  const totalPage = Math.ceil(filteredBatch?.length / itemPerPage);
   const startIndex = (currentPage - 1) * itemPerPage;
   const endIndex = startIndex + itemPerPage;
-  const currentItems = filteredBatch.slice(startIndex, endIndex);
+  const currentItems = filteredBatch?.slice(startIndex, endIndex);
 
   const router = useRouter();
   useEffect(() => {
@@ -128,21 +153,30 @@ export default function BatchList() {
   };
 
   useEffect(() => {
-    setButtonSelect('all');
+    setButtonSelect('all')
+    setTimeout(() => {
+      if (message) {
+        toast.success(message);
+      }
+    }, 30);
   }, []);
-  
-  const changeStatusBatch = (status:string)=> {
-    // dispatch(UpdateChangeStatusBatchReq({
-    //   batch_id: selectedBatch.batch_id,
-    //   batch_entity_id: selectedBatch.batch_entity_id,
-    //   batch_reason: filteredBatch.batch_status,
-    //   batch_status: status,
-    //   talent_status: 'idle'
-    // }))
-  }
-  
+
+  const changeStatusBatch = () => {
+    dispatch(
+      UpdateChangeStatusBatchReq({
+        batch_id: selectedBatch.batch_id,
+        batch_entity_id: selectedBatch.batch_entity_id,
+        batch_reason: selectedBatch.batch_reason,
+        batch_status: batchstatus,
+        talent_status: 'idle',
+      })
+    );
+  };
+
+  console.log(selectedBatch);
 
   return (
+    <>
     <Card className="h-full w-full">
       <CardHeader floated={false} shadow={false} className="rounded-none">
         <div className="mb-8 flex items-center justify-between gap-8">
@@ -156,7 +190,7 @@ export default function BatchList() {
           </div>
           <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
             <Button
-              onClick={() => router.push('/batch/create')}
+              onClick={() => router.push('/app/batch/create')}
               className="flex items-center gap-3"
               color="blue"
               size="sm"
@@ -190,8 +224,8 @@ export default function BatchList() {
           </div>
         </div>
       </CardHeader>
-      <CardBody className=" overflow-scroll px-0">
-        <table className="mt-4 w-full min-w-max table-auto text-left">
+      <CardBody className="  px-0">
+        <table className="mt-4 w-full min-w-max text-left">
           <thead>
             <tr>
               {TABLE_HEAD.map((head, index) => (
@@ -269,22 +303,22 @@ export default function BatchList() {
                       <td className={classes}>
                         <div className="items-center">
                           <div className="flex -space-x-4 overflow-hidden">
-                            {trainees.map((poto: any) => (
+                            {trainees.slice(0,3).map((poto: any) => (
                               <Avatar
                                 src={poto.user_photo}
                                 size="sm"
                                 className="inline-block rounded-full ring-2 ring-white"
                               />
                             ))}
-                            {/* {
-                            totaltrainee > 3?
+                            {
+                            trainees.length >3 ?
                             <Avatar
-                            src={`https://ui-avatars.com/api/?name=%2B${totaltrainee-3}&bold=true&color=757575`}
-                            alt={trainer_names}
+                            src={`https://ui-avatars.com/api/?name=%2B${trainees.length-3}&bold=true&color=757575`}
+                            alt={trainees.full_name}
                             size="sm"
                             className="inline-block rounded-full ring-2 ring-white"
                           />:''
-                          } */}
+                          }
                           </div>
                         </div>
                       </td>
@@ -345,23 +379,23 @@ export default function BatchList() {
                                 ? 'purple'
                                 : 'indigo'
                             }
-                            // color='blue'
                           />
                         </div>
                       </td>
                       <td className={classes}>
-                        {/* <Tooltip content="Edit User">
-                      <IconButton variant="text" color="blue-gray">
-                        <HiDotsVertical className="h-4 w-4" />
-                      </IconButton>
-                    </Tooltip> */}
                         <Menu
                           as="div"
                           className="relative inline-block text-left"
                         >
                           <div>
                             <Menu.Button
-                            onClick={()=>setSelectedBatch({...selectedBatch,batch_id: batch_id, batch_entity_id: batch_entity_id })}
+                              onClick={() =>
+                                setSelectedBatch({
+                                  ...selectedBatch,
+                                  batch_id: batch_id,
+                                  batch_entity_id: batch_entity_id,
+                                })
+                              }
                             >
                               <HiDotsVertical
                                 className="ml-2 -mr-1 h-5 w-5 text-violet-200 hover:text-violet-100"
@@ -379,26 +413,33 @@ export default function BatchList() {
                             leaveTo="transform opacity-0 scale-95"
                           >
                             <Menu.Items className="absolute z-50 right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              <div className="px-1 py-1 ">
+                              <div className="px-1 py-1">
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
+                                    disabled={
+                                      batch_status !== 'open' && batch_status !== 'pending'
+                                        ? true
+                                        : false
+                                    }
                                       onClick={() =>
-                                        router.push(`batch/edit/${batch_id}`)
+                                        router.push(`/app/batch/edit/${batch_id}`)
                                       }
                                       className={`${
                                         active
                                           ? 'bg-light-blue-500 text-white'
                                           : 'text-gray-900'
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      } group disabled:bg-gray-200 disabled:text-gray-400  flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                     >
                                       <HiPencil
-                                        className={`mr-2 h-5 w-5 ${
+                                        className={`
+                                        mr-2 h-5 w-5 ${
                                           active
                                             ? 'text-white'
                                             : 'text-light-blue-500'
-                                        }`}
+                                        } `}
                                         aria-hidden="true"
+                                        // disabled={}
                                       />
                                       Edit
                                     </button>
@@ -425,7 +466,7 @@ export default function BatchList() {
                                       }
                                       onClick={() =>
                                         router.push(
-                                          `/batch/evaluation/${batch_id}`
+                                          `/app/batch/evaluation/${batch_id}`
                                         )
                                       }
                                       className={`${
@@ -450,56 +491,6 @@ export default function BatchList() {
                                     </button>
                                   )}
                                 </Menu.Item>
-                              </div>
-                              <div className="px-1 py-1">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                    onClick={()=>changeStatusBatch('closed')}
-                                      className={`${
-                                        active
-                                          ? 'bg-light-blue-500 text-white'
-                                          : 'text-gray-900'
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      <HiX
-                                        className={`mr-2 h-5 w-5 ${
-                                          active
-                                            ? 'text-white'
-                                            : 'text-orange-600'
-                                        }`}
-                                        aria-hidden="true"
-                                      />
-                                      Close Batch
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${
-                                        active
-                                          ? 'bg-light-blue-500 text-white'
-                                          : 'text-gray-900'
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      <HiFastForward
-                                        className={`mr-2 h-5 w-5 ${
-                                          active
-                                            ? 'text-white'
-                                            : 'text-green-500'
-                                        }`}
-                                        aria-hidden="true"
-                                      />
-                                      Run Batch
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                              <div className="px-1 py-1">
-                                <Textarea label='reason' onChange={(e:any)=>setSelectedBatch({...selectedBatch,batch_reason: e.target.value })}></Textarea>
-                              </div>
-                              <div className="px-1 py-1">
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
@@ -520,6 +511,75 @@ export default function BatchList() {
                                     </button>
                                   )}
                                 </Menu.Item>
+                              </div>
+                              <div className="px-4 py-1">
+                                {/* <div className=''> */}
+                                <Select
+                                  label="Change Status"
+                                  onChange={(e: any) => setBatchstatus(e)}
+                                  value={batchstatus}
+                                  disabled={batch_status === 'closed'}
+                                >
+                                  <Option value="running">
+                                    <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm text-black">
+                                      <HiFastForward
+                                        className={`mr-2 h-5 w-5 text-green-500`}
+                                        aria-hidden="true"
+                                      />
+                                      Running
+                                    </button>
+                                  </Option>
+                                  <Option value="pending">
+                                    <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm text-black">
+                                      <HiOutlineClock
+                                        className={`mr-2 h-5 w-5 text-purple-500`}
+                                        aria-hidden="true"
+                                      />
+                                      Pending
+                                    </button>
+                                  </Option>
+                                  <Option value="extend">
+                                    <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm text-black">
+                                      <BiCalendarPlus
+                                        className={`mr-2 h-5 w-5 text-pink-200`}
+                                        aria-hidden="true"
+                                      />
+                                      Extend
+                                    </button>
+                                  </Option>
+                                  <Option value="closed">
+                                    <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm text-black">
+                                      <HiX
+                                        className={`mr-2 h-5 w-5 text-orange-500`}
+                                        aria-hidden="true"
+                                      />
+                                      Close
+                                    </button>
+                                  </Option>
+                                </Select>
+                                {/* </div> */}
+                              </div>
+                              {
+                                batchstatus === 'pending' || batchstatus === 'extend'?
+                                <div className="px-4 py-1">
+                                <Textarea
+                                  label="Reason"
+                                  onChange={(e: any) =>
+                                    setSelectedBatch({
+                                      ...selectedBatch,
+                                      batch_reason: e.target.value,
+                                    })
+                                  }
+                                ></Textarea>
+                              </div>:''
+                              }
+                              <div className="flex flex-col gap-3 pl-4 pr-3 py-1">
+                                <Button
+                                  onClick={() => changeStatusBatch()}
+                                  size="md"
+                                >
+                                  Submit
+                                </Button>
                               </div>
                             </Menu.Items>
                           </Transition>
@@ -542,5 +602,6 @@ export default function BatchList() {
         />
       </CardFooter>
     </Card>
+    </>
   );
 }

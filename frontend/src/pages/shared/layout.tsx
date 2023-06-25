@@ -3,11 +3,15 @@ import { Transition } from '@headlessui/react';
 import { useState, useEffect, Fragment } from 'react';
 import SideBar from './sidebar';
 import TopBar from './topbar';
+import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 // import { Animate } from "@material-tailwind/react";
 
 export default function Layout({ children }: any) {
   const [showNav, setShowNav] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+
+  const router = useRouter();
 
   function handleResize() {
     if (innerWidth <= 640) {
@@ -20,6 +24,11 @@ export default function Layout({ children }: any) {
   }
 
   useEffect(() => {
+    const token = Cookies.get('access_token');
+    if (!token) {
+      router.push('/signin');
+    }
+
     if (typeof window != undefined) {
       addEventListener('resize', handleResize);
     }
@@ -49,7 +58,7 @@ export default function Layout({ children }: any) {
           showNav && !isMobile ? 'pl-56' : ''
         }`}
       >
-        <div className="px-4 md:px-16">{children}</div>
+        <div className="px-4 md:px-8">{children}</div>
       </main>
     </>
   );

@@ -19,21 +19,36 @@ import {
   MdGroupAdd,
 } from 'react-icons/md';
 import { useEffect } from 'react';
+import Cookies from 'js-cookie';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   const [listMenu, setListMenu] = useState([
     { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
   ]);
-  let token: any;
+
+  //Decode Token
+  let decoded: any;
+  const token = Cookies.get('access_token');
+  //End
+
   useEffect(() => {
-    token = localStorage.getItem('AuthToken');
-    // const decoded:any = jwt.verify(token, `SECRETKEY`);
-    const decoded = { role_id: 5, username: 'Tamariska' }; //INI DUMMY NTAR HAPUS AJA AKTIFIN YG ATAS
-    switch (decoded.role_id) {
-      //admin
+    if (token) {
+      try {
+        decoded = jwt.decode(token) as JwtPayload;
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log('tokens not found');
+    }
+
+    switch (decoded?.user_current_role) {
+      //Admin
       case 1:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
+          { to: '/app/users', path: '/users', icon: <MdGroup />, name: 'User' },
           {
             to: '/category',
             path: '/category',
@@ -61,28 +76,26 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         ]);
         break;
 
-      //direksi/busdev
+      //Users
       case 2:
         setListMenu([
-          //MENU BLM TAU
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/user', path: '/user', icon: <MdGroup />, name: 'User' },
           {
-            to: '/category',
-            path: '/category',
-            icon: <MdCategory />,
-            name: 'Category',
+            to: '/bootcamp/apply',
+            path: '/bootcamp',
+            icon: <MdGroup />,
+            name: 'Apply Bootcamp',
           },
           {
-            to: '/product',
-            path: '/product',
-            icon: <MdShopTwo />,
-            name: 'Product',
+            to: '/profesional/apply',
+            path: '/profesional',
+            icon: <MdGroup />,
+            name: 'Apply Job',
           },
         ]);
         break;
 
-      //hr
+      //Employee
       case 3:
         setListMenu([
           //MENU BLM TAU
@@ -103,7 +116,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         ]);
         break;
 
-      //talent
+      //Talent
       case 4:
         setListMenu([
           //MENU BLM TAU
@@ -131,21 +144,15 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
           {
-            to: '/app/candidate',
-            path: '/app/candidate',
+            to: '/candidate',
+            path: '/candidate',
             icon: <MdGroupAdd />,
             name: 'Candidate',
           },
+          { to: '/batch', path: '/batch', icon: <MdCategory />, name: 'Batch' },
           {
-            to: '/app/pro-candidate',
-            path: '/app/pro-candidate',
-            icon: <MdGroupAdd />,
-            name: 'Pro Candidate',
-          },
-          { to: '/app/batch', path: '/app/batch', icon: <MdCategory />, name: 'Batch' },
-          {
-            to: '/app/talents',
-            path: '/app/talents',
+            to: '/talents',
+            path: '/talents',
             icon: <MdGroups />,
             name: 'Talents',
           },
@@ -162,8 +169,8 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             name: 'Assignment',
           },
           {
-            to: '/app/jobs',
-            path: '/app/jobs',
+            to: '/postinghiring',
+            path: '/postinghiring',
             icon: <MdPostAdd />,
             name: 'Posting Hiring',
           },
@@ -173,11 +180,15 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             icon: <MdPostAdd />,
             name: 'Bootcamp',
           },
+        ]);
+      case 7:
+        setListMenu([
+          { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
           {
-            to: '/app/client',
-            path: '/app/client',
-            icon: <MdPostAdd />,
-            name: 'Client',
+            to: '/app/profesional/apply',
+            path: '/users',
+            icon: <MdGroup />,
+            name: 'Apply Job',
           },
         ]);
         break;
