@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-const Checkbox = (props:any) => {
-    const {namaCheck} = props
+const Checkbox = (props: any) => {
+  const { namaCheck } = props;
 
   const [isChecked, setIsChecked] = useState(false);
 
@@ -14,7 +14,6 @@ const Checkbox = (props:any) => {
       <input
         type="checkbox"
         className="form-checkbox h-4 w-4 text-blue-500 transition duration-150 ease-in-out"
-
         checked={isChecked}
         onChange={handleCheckboxChange}
       />

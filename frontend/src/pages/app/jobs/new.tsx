@@ -1,8 +1,8 @@
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { format } from "date-fns";
-import React, { useEffect, useRef, useState } from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { format } from 'date-fns';
+import React, { useEffect, useRef, useState } from 'react';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   Autocomplete,
   FormControl,
@@ -10,34 +10,38 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import { AiOutlineSearch } from 'react-icons/ai'
-import imgDefault from "../../../../public/defaultPhoto.png";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import ContentLink from "../../contentlink";
-import { useDispatch, useSelector } from "react-redux";
+} from '@mui/material';
+import { AiOutlineSearch } from 'react-icons/ai';
+import imgDefault from '../../../../public/defaultPhoto.png';
+import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import ContentLink from '../../contentlink';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   doRequestAddJobPost,
   doRequestGetClient,
   doRequestGetCurnumber,
-} from "@/pages/redux/jobhire-schema/action/actionReducer";
-import dayjs from "dayjs";
+} from '@/pages/redux/jobhire-schema/action/actionReducer';
+import dayjs from 'dayjs';
 import {
   doRequestGetEducation,
   doRequestGetJobrole,
   doRequestGetWorktype,
-} from "@/pages/redux/master-schema/action/actionReducer";
-import { Router, useRouter } from "next/router";
-import { Button } from "@material-tailwind/react";
+} from '@/pages/redux/master-schema/action/actionReducer';
+import { Router, useRouter } from 'next/router';
+import { Button } from '@material-tailwind/react';
 
 const JobCreate = () => {
   /*`````````` koneksi ke backend  ``````````````*/
   const dispatch = useDispatch();
   const router = useRouter();
 
-  let { cur_number, job_post, message, status, refresh } = useSelector((state: any) => state.JobPostReducers);
-  let { education, refreshEdu } = useSelector((state: any) => state.EducationReducers);
+  let { cur_number, job_post, message, status, refresh } = useSelector(
+    (state: any) => state.JobPostReducers
+  );
+  let { education, refreshEdu } = useSelector(
+    (state: any) => state.EducationReducers
+  );
   let { work_type } = useSelector((state: any) => state.WorktypeReducers);
   let { job_role } = useSelector((state: any) => state.JobroleReducers);
   let { client } = useSelector((state: any) => state.ClientReducers);
@@ -114,7 +118,6 @@ const JobCreate = () => {
     // setValue("jopo_number", cur_number);
   }, [refresh]);
 
- 
   /*````````````` fungsi untuk ganti foto dan hapus foto start ``````````````*/
 
   const [selectedImage, setSelectedImage]: any = useState(imgDefault);
@@ -155,74 +158,74 @@ const JobCreate = () => {
     setStartDate(date);
     setEndDate(null);
     if (date) {
-      const formattedDate: any = format(date.$d, "dd-MM-yyyy");
-      setValue("start_date", formattedDate); // Set the value of "StartPeriod" field in the form
+      const formattedDate: any = format(date.$d, 'dd-MM-yyyy');
+      setValue('start_date', formattedDate); // Set the value of "StartPeriod" field in the form
     }
   };
 
   const handleEndDateChange = (date: any) => {
     setEndDate(date);
     if (date) {
-      const formattedDate: any = format(date.$d, "dd-MM-yyyy");
-      setValue("end_date", formattedDate); // Set the value of "StartPeriod" field in the form
+      const formattedDate: any = format(date.$d, 'dd-MM-yyyy');
+      setValue('end_date', formattedDate); // Set the value of "StartPeriod" field in the form
     }
   };
 
   const isEndDateDisabled = !startDate;
-  const minEndDate = startDate? dayjs(startDate).add(1, "day") : null;
+  const minEndDate = startDate ? dayjs(startDate).add(1, 'day') : null;
 
   /*``````````````` fungsi handle date end`````````````````` */
 
   const handleRegistration = async (data: any) => {
     const formData: any = new FormData();
-    formData.append("jopo_emp_entity_id", data.emp_entity_id);
-    formData.append("jopo_number", cur_number);
-    formData.append("jopo_title", data.title);
-    formData.append("jopo_start_date", data.start_date);
-    formData.append("jopo_end_date", data.end_date);
-    formData.append("jopo_min_salary", data.min_salary);
-    formData.append("jopo_max_salary", data.max_salary);
-    formData.append("jopo_min_experience", data.min_experience);
-    formData.append("jopo_max_experience", data.max_experience);
-    formData.append("jopo_primary_skill", data.primary_skill);
-    formData.append("jopo_secondary_skill", data.secondary_skill);
-    formData.append("jopo_joro_id", data.specification_role);
-    formData.append("jopo_work_code", data.working_type);
-    formData.append("jopo_edu_code", data.education);
-    formData.append("jopo_benefit", data.benefit);
-    formData.append("jopo_clit_id", data.client.clit_id);
-    formData.append("jopo_addr_id", data.client.addr_id);
-    formData.append("jopo_description", data.description);
-    formData.append("image", data.image[0]);
+    formData.append('jopo_emp_entity_id', data.emp_entity_id);
+    formData.append('jopo_number', cur_number);
+    formData.append('jopo_title', data.title);
+    formData.append('jopo_start_date', data.start_date);
+    formData.append('jopo_end_date', data.end_date);
+    formData.append('jopo_min_salary', data.min_salary);
+    formData.append('jopo_max_salary', data.max_salary);
+    formData.append('jopo_min_experience', data.min_experience);
+    formData.append('jopo_max_experience', data.max_experience);
+    formData.append('jopo_primary_skill', data.primary_skill);
+    formData.append('jopo_secondary_skill', data.secondary_skill);
+    formData.append('jopo_joro_id', data.specification_role);
+    formData.append('jopo_work_code', data.working_type);
+    formData.append('jopo_edu_code', data.education);
+    formData.append('jopo_benefit', data.benefit);
+    formData.append('jopo_clit_id', data.client.clit_id);
+    formData.append('jopo_addr_id', data.client.addr_id);
+    formData.append('jopo_description', data.description);
+    formData.append('image', data.image[0]);
     let type = data.image[0]?.type;
-    let imageType = type?.split("/")[1];
-    formData.append("image_type", imageType);
-    formData.append("image_size", data.image[0]?.size);
-    formData.append("jopo_status", data.publish? "publish" : "draft");
-    formData.append("jopo_joty_id", data.remote? 1 : 2); //2 onsite 1remote
-    formData.append("jopo_open", data.close_hiring? 1 : 0);
+    let imageType = type?.split('/')[1];
+    formData.append('image_type', imageType);
+    formData.append('image_size', data.image[0]?.size);
+    formData.append('jopo_status', data.publish ? 'publish' : 'draft');
+    formData.append('jopo_joty_id', data.remote ? 1 : 2); //2 onsite 1remote
+    formData.append('jopo_open', data.close_hiring ? 1 : 0);
 
-    dispatch(doRequestAddJobPost(formData))
-    router.push('/app/jobs')
-    console.log("aa", ...formData);
+    dispatch(doRequestAddJobPost(formData));
+    router.push('/app/jobs');
+    console.log('aa', ...formData);
     console.log(data);
   };
 
   const registerOptions = {
-    title: { required: "Title is required" },
-    min_salary: { required: "Min Salary is required" },
-    max_salary: { required: "Max Salary is required" },
-    min_experience: { required: "Min Experience is required" },
-    max_experience: { required: "Max Experience required" },
-    primary_skill: { required: "Primary Skill is required" },
-    secondary_skill: { required: "Secondary Skill is required" },
-    specification_role: { required: "Specification Role is required" },
-    education: { required: "Education is required" },
-    benefit: { required: "Benefit is required" },
-    client: { required: "Client is required" },
-    location: { required: "Location is required" },
-    start_date: { required: "Start Date is required" },
-    end_date: { required: "End Date is required" },
+    title: { required: 'Title is required' },
+    min_salary: { required: 'Min Salary is required' },
+    max_salary: { required: 'Max Salary is required' },
+    min_experience: { required: 'Min Experience is required' },
+    max_experience: { required: 'Max Experience required' },
+    primary_skill: { required: 'Primary Skill is required' },
+    secondary_skill: { required: 'Secondary Skill is required' },
+    specification_role: { required: 'Specification Role is required' },
+    education: { required: 'Education is required' },
+    benefit: { required: 'Benefit is required' },
+    client: { required: 'Client is required' },
+    location: { required: 'Location is required' },
+    start_date: { required: 'Start Date is required' },
+    end_date: { required: 'End Date is required' },
   };
 
   return (
@@ -239,7 +242,7 @@ const JobCreate = () => {
                       <input
                         hidden
                         defaultValue={2}
-                        {...register("emp_entity_id")}
+                        {...register('emp_entity_id')}
                       ></input>
                     </div>
                     {/* Title */}
@@ -248,7 +251,7 @@ const JobCreate = () => {
                       <TextField
                         id="outlined-basic"
                         placeholder="Title"
-                        {...register("title")}
+                        {...register('title')}
                         variant="outlined"
                         className="w-full"
                         size="small"
@@ -265,7 +268,7 @@ const JobCreate = () => {
                           <DatePicker
                             slotProps={{
                               actionBar: {
-                                actions: ["clear"],
+                                actions: ['clear'],
                               },
                             }}
                             format="DD/MM/YYYY"
@@ -277,7 +280,7 @@ const JobCreate = () => {
                           <DatePicker
                             slotProps={{
                               actionBar: {
-                                actions: ["clear"],
+                                actions: ['clear'],
                               },
                             }}
                             format="DD/MM/YYYY"
@@ -298,7 +301,7 @@ const JobCreate = () => {
                           id="outlined-basic"
                           type="number"
                           placeholder="Min Salary"
-                          {...register("min_salary")}
+                          {...register('min_salary')}
                           variant="outlined"
                           className="w-full"
                           size="small"
@@ -316,7 +319,7 @@ const JobCreate = () => {
                           id="outlined-basic"
                           type="number"
                           placeholder="Max Salary"
-                          {...register("max_salary")}
+                          {...register('max_salary')}
                           variant="outlined"
                           className="w-full"
                           size="small"
@@ -338,7 +341,7 @@ const JobCreate = () => {
                           id="outlined-basic"
                           type="number"
                           placeholder="Min"
-                          {...register("min_experience")}
+                          {...register('min_experience')}
                           size="small"
                           className="w-full"
                           InputLabelProps={{
@@ -359,7 +362,7 @@ const JobCreate = () => {
                           id="outlined-basic"
                           type="number"
                           placeholder="Max"
-                          {...register("max_experience")}
+                          {...register('max_experience')}
                           size="small"
                           className="w-full"
                           InputLabelProps={{
@@ -381,7 +384,7 @@ const JobCreate = () => {
                       <TextField
                         id="outlined-basic"
                         placeholder="Java, Springboot, Oracle, Pl/Sql"
-                        {...register("primary_skill")}
+                        {...register('primary_skill')}
                         variant="outlined"
                         className="w-full"
                         size="small"
@@ -396,7 +399,7 @@ const JobCreate = () => {
                       <TextField
                         id="outlined-basic"
                         placeholder="SDLC,HTML/CSS,Javascript"
-                        {...register("secondary_skill")}
+                        {...register('secondary_skill')}
                         variant="outlined"
                         className="w-full"
                         size="small"
@@ -409,8 +412,6 @@ const JobCreate = () => {
 
                     {/*  Specification Role */}
                     <div className="pad-input ">
-                     
-
                       <div>
                         <h1 className="text-format">Specification Role</h1>
                         <TextField
@@ -418,7 +419,7 @@ const JobCreate = () => {
                           select
                           label="Choose Role"
                           className="w-full"
-                          {...register("specification_role")}
+                          {...register('specification_role')}
                           size="small"
                         >
                           {job_role.map((option: any) => (
@@ -441,7 +442,7 @@ const JobCreate = () => {
                           select
                           label="Choose Type"
                           className="w-full"
-                          {...register("working_type")}
+                          {...register('working_type')}
                           size="small"
                         >
                           {work_type.map((option: any) => (
@@ -461,7 +462,7 @@ const JobCreate = () => {
                           select
                           label="Choose Education"
                           className="w-full"
-                          {...register("education")}
+                          {...register('education')}
                           size="small"
                         >
                           {education.map((option: any) => (
@@ -482,7 +483,7 @@ const JobCreate = () => {
                       <TextField
                         id="outlined-basic"
                         placeholder="THR,BPJS,Bonus"
-                        {...register("benefit")}
+                        {...register('benefit')}
                         variant="outlined"
                         className="w-full"
                         size="small"
@@ -502,9 +503,9 @@ const JobCreate = () => {
                         size="small"
                         includeInputInList
                         onChange={(event: any, value: any) => {
-                          register("client", { value: value });
+                          register('client', { value: value });
                         }}
-                        renderInput={(params) => (
+                        renderInput={params => (
                           <TextField
                             {...params}
                             placeholder="Client"
@@ -517,7 +518,7 @@ const JobCreate = () => {
                                 </>
                               ),
                             }}
-                            {...register("test", registerOptions.client)}
+                            {...register('test', registerOptions.client)}
                           />
                         )}
                       />
@@ -535,7 +536,7 @@ const JobCreate = () => {
                         rows={4}
                         placeholder="Description"
                         className="w-full"
-                        {...register("description")}
+                        {...register('description')}
                       />
                     </div>
                   </div>
@@ -554,7 +555,7 @@ const JobCreate = () => {
                       <TextField
                         id="outlined-basic"
                         value={cur_number}
-                        {...register("jopo_number")}
+                        {...register('jopo_number')}
                         variant="outlined"
                         className="w-full bg-slate-300 opacity-80 lg:w-[18.7rem]"
                         size="small"
@@ -582,7 +583,7 @@ const JobCreate = () => {
                             id="file-upload"
                             type="file"
                             accept="image/*"
-                            {...register("image")}
+                            {...register('image')}
                             onChange={handleImageChange}
                             // ref={fileInputRef}
                           ></input>
@@ -596,7 +597,7 @@ const JobCreate = () => {
                             <input
                               type="checkbox"
                               className="sr-only peer"
-                              {...register("publish")}
+                              {...register('publish')}
                               checked={isPublishChecked}
                               onChange={handlePublishToggle}
                             />
@@ -609,7 +610,7 @@ const JobCreate = () => {
                             <input
                               type="checkbox"
                               className="sr-only peer"
-                              {...register("remote")}
+                              {...register('remote')}
                               checked={isRemoteChecked}
                               onChange={handleRemoteToggle}
                             />
@@ -622,7 +623,7 @@ const JobCreate = () => {
                             <input
                               type="checkbox"
                               className="sr-only peer"
-                              {...register("close_hiring")}
+                              {...register('close_hiring')}
                               checked={isHiringChecked}
                               onChange={handleHiringToggle}
                             />
@@ -643,9 +644,7 @@ const JobCreate = () => {
               <div className="w-full">
                 <div className="bg-white border-t-2 shadow-gray-200 shadow-inner">
                   <div className="text-right p-4">
-                    <Button type="submit" >
-                      Save
-                    </Button>
+                    <Button type="submit">Save</Button>
                     {/* <button type="submit" className="button-foot">
                       Save
                     </button> */}

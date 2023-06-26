@@ -619,7 +619,7 @@
 //                     }}
 //                   />
 //                 </div>
-                
+
 //                 {item.sectionDetail.map((detailItem: any) => (
 //                   <AccordionBody
 //                   // key={index}

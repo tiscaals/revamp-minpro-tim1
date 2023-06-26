@@ -3,7 +3,7 @@ import { Transition, Dialog } from '@headlessui/react';
 import { Listbox } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateCat} from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import { reqCreateCat } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddCategory = (props: any) => {
   const [selected, setSelected] = useState('');
@@ -23,10 +23,9 @@ const AddCategory = (props: any) => {
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqCreateCat(data));
-    props.closeModal()
-    
+    props.closeModal();
   };
   return (
     <div>
@@ -65,7 +64,10 @@ const AddCategory = (props: any) => {
                 >
                   Tambahkan Category
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
                   <div className="flex items-center">
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -90,19 +92,20 @@ const AddCategory = (props: any) => {
                     >
                       Parent Category
                     </label>
-<div className="w-2/3">
-  <select {...register('cate_cate_id')} className='rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900'>
-    <option value="">-- Pilih --</option> {/* Empty string to represent null */}
-    {props.data[0]?.map((dt: any) => (
-      <option key={dt.cate_id} value={dt.cate_id}>
-        {dt.cate_name}
-      </option>
-    ))}
-  </select>
-</div>
-
-
-
+                    <div className="w-2/3">
+                      <select
+                        {...register('cate_cate_id')}
+                        className="rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
+                      >
+                        <option value="">-- Pilih --</option>{' '}
+                        {/* Empty string to represent null */}
+                        {props.data[0]?.map((dt: any) => (
+                          <option key={dt.cate_id} value={dt.cate_id}>
+                            {dt.cate_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="flex justify-end">
                     <button

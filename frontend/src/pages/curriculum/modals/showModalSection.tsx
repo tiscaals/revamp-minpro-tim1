@@ -26,7 +26,7 @@ const ModalSection = ({
   };
 
   const [createdSectionId, setCreatedSectionId] = useState(null);
-  console.log('id',setCreatedSectionId);
+  console.log('id', setCreatedSectionId);
 
   const handleRegistrationSection = (data: any) => {
     // console.log('data', data);
@@ -37,7 +37,6 @@ const ModalSection = ({
     // setCreatedSectionId(sectionId);
     handleCancel();
   };
-  
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">

@@ -24,7 +24,6 @@ function Dashboard() {
         if (decoded.user_current_role == 2) {
           router.push('/');
         }
-
       } catch (error) {
         console.log(error);
       }
@@ -33,9 +32,9 @@ function Dashboard() {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     isUser();
-  },[])
+  }, []);
 
   return (
     <>

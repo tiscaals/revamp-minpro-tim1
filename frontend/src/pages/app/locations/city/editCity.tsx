@@ -1,19 +1,22 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
-import { reqUpdateCat, reqUpdateCity } from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqUpdateCat,
+  reqUpdateCity,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
 type FormValues = {
-    city_id :string;
+  city_id: string;
   city_name: string;
   city_prov_id: string;
 };
 
 const EditCity = (props: any) => {
-  console.log(props.dataCity)
-    const [selectedValue, setSelectedValue] = useState(props.dataCity.prov_id)
+  console.log(props.dataCity);
+  const [selectedValue, setSelectedValue] = useState(props.dataCity.prov_id);
   const dispatch = useDispatch();
 
   const {
@@ -66,16 +69,19 @@ const EditCity = (props: any) => {
               >
                 Edit City
               </Dialog.Title>
-              <form className="space-y-6" onSubmit={handleSubmit(handleRegistration)}>
+              <form
+                className="space-y-6"
+                onSubmit={handleSubmit(handleRegistration)}
+              >
                 <div className="w-2/3">
-                    <input
-                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                      id="inline-full-name"
-                      type="hidden"
-                      defaultValue={props.dataCity.city_id}
-                      {...register('city_id')}
-                    />
-                  </div>
+                  <input
+                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                    id="inline-full-name"
+                    type="hidden"
+                    defaultValue={props.dataCity.city_id}
+                    {...register('city_id')}
+                  />
+                </div>
                 <div className="flex items-center">
                   <label
                     className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -90,14 +96,14 @@ const EditCity = (props: any) => {
                       type="text"
                       defaultValue={props.dataCity.city_name}
                       {...register('city_name', {
-                        required: 'City name is required'
+                        required: 'City name is required',
                       })}
                     />
                     {errors.city_name && (
-                  <div className='w-3/4 text-xs text-red-500'>
-                    {errors.city_name.message}
-                  </div>
-                )}
+                      <div className="w-3/4 text-xs text-red-500">
+                        {errors.city_name.message}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -109,16 +115,17 @@ const EditCity = (props: any) => {
                   </label>
                   <div className="w-2/3">
                     <select
-                    value={selectedValue} 
+                      value={selectedValue}
                       {...register('city_prov_id')}
                       className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                      onChange={(e)=>setSelectedValue(e.target.value)}>
-                      
-                      {props.dataProv && props.dataProv[0]?.map((dt: any) => (
-                        <option key={dt.prov_id} value={dt.prov_id}>
-                          {dt.prov_name}
-                        </option>
-                      ))}
+                      onChange={e => setSelectedValue(e.target.value)}
+                    >
+                      {props.dataProv &&
+                        props.dataProv[0]?.map((dt: any) => (
+                          <option key={dt.prov_id} value={dt.prov_id}>
+                            {dt.prov_name}
+                          </option>
+                        ))}
                     </select>
                   </div>
                 </div>

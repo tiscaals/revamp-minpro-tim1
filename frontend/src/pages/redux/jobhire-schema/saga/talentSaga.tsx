@@ -1,8 +1,9 @@
-import { call, put } from "redux-saga/effects";
-import apiMethod from "../../../api/apimethod";
+import { call, put } from 'redux-saga/effects';
+import apiMethod from '../../../api/apimethod';
 import {
-  doResponseGetCandidate, doResponseUpdateCandidate,
-} from "../action/actionReducer";
+  doResponseGetCandidate,
+  doResponseUpdateCandidate,
+} from '../action/actionReducer';
 
 export function* handleGetProCandidate(): any {
   try {
@@ -14,10 +15,10 @@ export function* handleGetProCandidate(): any {
   }
 }
 
-export function* handleUpdateCandidate(action:any): any {
+export function* handleUpdateCandidate(action: any): any {
   try {
     const result = yield call(apiMethod.updateCandidate, action.payload);
-    console.log("talentSaga", result.data);
+    console.log('talentSaga', result.data);
     yield put(doResponseUpdateCandidate(result.data));
   } catch (error) {
     yield put(doResponseUpdateCandidate({ message: error, status: 400 }));

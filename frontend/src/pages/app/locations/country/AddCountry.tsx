@@ -2,15 +2,19 @@ import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateCountry, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqCreateAdressType,
+  reqCreateCat,
+  reqCreateCountry,
+  reqCreateSkillType,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddCountry = (props: any) => {
-
   const dispatch = useDispatch();
 
   type FormValues = {
     country_code: string;
-    country_name:string;
+    country_name: string;
   };
 
   const {
@@ -20,9 +24,9 @@ const AddCountry = (props: any) => {
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqCreateCountry(data));
-    props.closeModal()
+    props.closeModal();
   };
   return (
     <div>
@@ -61,36 +65,39 @@ const AddCountry = (props: any) => {
                 >
                   Tambahkan Country
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
-                <div className="flex items-center">
-                <label
-                  className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
-                  htmlFor="inline-full-name"
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
                 >
-                  Code
-                </label>
-                <div className="w-2/3">
-                  <input
-                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                    id="inline-full-name"
-                    type="text"
-                    placeholder='3 Digit Province Code'
-                    {...register('country_code', {
-                      required: 'Code is required',
-                      pattern: {
-                        value: /^[A-Z]{3}$/,
-                        message: 'Code must be 3 uppercase letters',
-                      },
-                    })}
-                  />
-                  {errors.country_code && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.country_code.message}
+                  <div className="flex items-center">
+                    <label
+                      className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
+                      htmlFor="inline-full-name"
+                    >
+                      Code
+                    </label>
+                    <div className="w-2/3">
+                      <input
+                        className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                        id="inline-full-name"
+                        type="text"
+                        placeholder="3 Digit Province Code"
+                        {...register('country_code', {
+                          required: 'Code is required',
+                          pattern: {
+                            value: /^[A-Z]{3}$/,
+                            message: 'Code must be 3 uppercase letters',
+                          },
+                        })}
+                      />
+                      {errors.country_code && (
+                        <div className="w-3/4 text-xs text-red-500">
+                          {errors.country_code.message}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </div>
-                    <div className="flex items-center">
+                  </div>
+                  <div className="flex items-center">
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
                       htmlFor="inline-full-name"
@@ -102,19 +109,19 @@ const AddCountry = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="text"
-                        placeholder='Country Name'
+                        placeholder="Country Name"
                         {...register('country_name', {
-                          required: 'Country Name is required'
+                          required: 'Country Name is required',
                         })}
                       />
                       {errors.country_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.country_name.message}
-                    </div>
-                  )}
+                        <div className="w-3/4 text-xs text-red-500">
+                          {errors.country_name.message}
+                        </div>
+                      )}
                     </div>
                   </div>
-                  
+
                   <div className="flex justify-end">
                     <button
                       className="mr-4 shadow bg-teal-600 hover:bg-teal-800 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"

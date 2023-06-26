@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { Fragment } from "react";
-import { Transition, Dialog } from "@headlessui/react";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { doRequestDeleteJobPost } from "@/pages/redux/jobhire-schema/action/actionReducer";
-import { Button } from "@material-tailwind/react";
+import React, { useState } from 'react';
+import { Fragment } from 'react';
+import { Transition, Dialog } from '@headlessui/react';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { doRequestDeleteJobPost } from '@/pages/redux/jobhire-schema/action/actionReducer';
+import { Button } from '@material-tailwind/react';
 
 const DeleteJobPost = (props: any) => {
   const {
@@ -20,7 +20,6 @@ const DeleteJobPost = (props: any) => {
     props.closeModal();
   };
 
- 
   return (
     <div>
       <Transition appear show={props.show} as={Fragment}>
@@ -65,17 +64,13 @@ const DeleteJobPost = (props: any) => {
                           <input
                             type="hidden"
                             defaultValue={props.data.jopo_entity_id}
-                            {...register("id")}
+                            {...register('id')}
                             className="px-2 py-2 border w-full rounded-lg text-gray-800"
                           />
                         </div>
                         <div className=" flex-row space-x-4 mt-0 text-center">
-                          <Button onClick={props.closeModal}>
-                            Cancel
-                          </Button>
-                          <Button type="submit">
-                            Submit
-                          </Button>
+                          <Button onClick={props.closeModal}>Cancel</Button>
+                          <Button type="submit">Submit</Button>
                         </div>
                       </div>
                     </form>

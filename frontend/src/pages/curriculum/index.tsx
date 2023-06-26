@@ -23,7 +23,7 @@ const Curriculum = () => {
   const { curriculum, message, status, refresh } = useSelector(
     (state: any) => state.curriculumReducers
   );
-  console.log("curr",curriculum);
+  console.log('curr', curriculum);
   const dispatch = useDispatch();
 
   const [searchValue, setSearchValue] = useState('');

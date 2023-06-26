@@ -139,49 +139,27 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
 
       //trainer
       case 5:
-      //recruiter
-      case 9:
         setListMenu([
+          //MENU BLM TAU
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
+          { to: '/user', path: '/user', icon: <MdGroup />, name: 'User' },
           {
-            to: '/candidate',
-            path: '/candidate',
-            icon: <MdGroupAdd />,
-            name: 'Candidate',
-          },
-          { to: '/batch', path: '/batch', icon: <MdCategory />, name: 'Batch' },
-          {
-            to: '/talents',
-            path: '/talents',
-            icon: <MdGroups />,
-            name: 'Talents',
+            to: '/category',
+            path: '/category',
+            icon: <MdCategory />,
+            name: 'Category',
           },
           {
-            to: '/curriculum',
-            path: '/curriculum',
-            icon: <MdLibraryBooks />,
-            name: 'Curriculum',
-          },
-          {
-            to: '/assignment',
-            path: '/assignment',
-            icon: <MdAssignment />,
-            name: 'Assignment',
-          },
-          {
-            to: '/app/jobs',
-            path: '/app/jobs',
-            icon: <MdPostAdd />,
-            name: 'Posting Hiring',
-          },
-          {
-            to: '/bootcamp',
-            path: '/bootcamp',
-            icon: <MdPostAdd />,
-            name: 'Bootcamp',
+            to: '/product',
+            path: '/product',
+            icon: <MdShopTwo />,
+            name: 'Product',
           },
         ]);
         break;
+
+      //recruiter
+
       case 7:
         setListMenu([
           { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
@@ -195,8 +173,65 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       case 8:
         setListMenu([
           { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
-          { to: '/app/batch', path: '/app/batch', icon: <MdGroup />, name: 'Batch' },
-          { to: '/app/candidate', path: '/app/candidate', icon: <MdGroup />, name: 'Candidate' },
+          {
+            to: '/app/batch',
+            path: '/app/batch',
+            icon: <MdGroup />,
+            name: 'Batch',
+          },
+          {
+            to: '/app/candidate',
+            path: '/app/candidate',
+            icon: <MdGroup />,
+            name: 'Candidate',
+          },
+        ]);
+        break;
+      case 9:
+        setListMenu([
+          { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
+          {
+            to: '/candidate',
+            path: '/app/candidate',
+            icon: <MdGroupAdd />,
+            name: 'Candidate',
+          },
+          {
+            to: '/app/batch',
+            path: '/app/batch',
+            icon: <MdCategory />,
+            name: 'Batch',
+          },
+          {
+            to: '/app/talents',
+            path: '/app/talents',
+            icon: <MdGroups />,
+            name: 'Talents',
+          },
+          {
+            to: '/app/curriculum',
+            path: '/app/curriculum',
+            icon: <MdLibraryBooks />,
+            name: 'Curriculum',
+          },
+          {
+            to: '/app/assignment',
+            path: '/app/assignment',
+            icon: <MdAssignment />,
+            name: 'Assignment',
+          },
+          {
+            to: '/app/jobs',
+            path: '/app/jobs',
+            icon: <MdPostAdd />,
+            name: 'Posting Hiring',
+          },
+          {
+            to: '/app/bootcamp',
+            path: '/bootcamp',
+            icon: <MdPostAdd />,
+            name: 'Bootcamp',
+          },
         ]);
         break;
       default:

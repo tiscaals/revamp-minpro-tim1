@@ -1,33 +1,30 @@
-import ContentLink from "@/pages/contentlink";
-import React, { Fragment, useEffect, useState } from "react";
-import { AiOutlineSearch } from 'react-icons/ai'
-import Pagination from "@/pages/komponen/pagination";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { doRequestGetClient } from "../../redux/jobhire-schema/action/actionReducer";
-import { Button } from "@material-tailwind/react";
+import ContentLink from '@/pages/contentlink';
+import React, { Fragment, useEffect, useState } from 'react';
+import { AiOutlineSearch } from 'react-icons/ai';
+import Pagination from '@/pages/komponen/pagination';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { doRequestGetClient } from '../../redux/jobhire-schema/action/actionReducer';
+import { Button } from '@material-tailwind/react';
 
 const Jobs = () => {
   const columns = [
-    {name:'NAME'},
-    {name:'INDUSTRY NAME'},
-    {name:'EMPLOYEE RANGE'},
-    {name:''},
-  ]
+    { name: 'NAME' },
+    { name: 'INDUSTRY NAME' },
+    { name: 'EMPLOYEE RANGE' },
+    { name: '' },
+  ];
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  let { client ,refresh } = useSelector(
-    (state: any) => state.ClientReducers
-  );
+  let { client, refresh } = useSelector((state: any) => state.ClientReducers);
 
   useEffect(() => {
     dispatch(doRequestGetClient());
   }, [refresh]);
 
-
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [filteredData, setFilteredData]: any = useState([]);
 
@@ -35,19 +32,19 @@ const Jobs = () => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
 
   const handleSearchChange = () => {
-    setCurrentPage(1)
+    setCurrentPage(1);
     setIsSearching(true);
-  
+
     const filtered = client.filter((item: any) => {
       const clitName = item.clit_name?.toLowerCase() ?? '';
       const induName = item.indu_name?.toLowerCase() ?? '';
-  
+
       return (
         clitName.includes(searchValue.toLowerCase()) ||
         induName.includes(searchValue.toLowerCase())
       );
     });
-  
+
     setFilteredData(filtered);
   };
 
@@ -69,14 +66,10 @@ const Jobs = () => {
   }
 
   type FormValues = {
-    search:string,
-
+    search: string;
   };
 
-  const {
-    register,
-    handleSubmit,
-  } = useForm<FormValues>();
+  const { register, handleSubmit } = useForm<FormValues>();
 
   const handleRegistration = async (data: any) => {
     console.log(data);
@@ -105,7 +98,7 @@ const Jobs = () => {
                       placeholder="Client"
                       value={searchValue}
                       {...register('search')}
-                      onChange={(e) => setSearchValue(e.target.value)}
+                      onChange={e => setSearchValue(e.target.value)}
                     />
                   </div>
                 </div>
@@ -121,22 +114,21 @@ const Jobs = () => {
               </div>
             </div>
 
-
-            <div>
-
-
-            </div>
+            <div></div>
 
             {/* TABEL */}
             <div className=" relative overflow-x-auto shadow-md sm:rounded-lg">
               <table className="w-full text-sm text-center text-gray-900">
                 <thead>
-                  <tr className='border-t border-gray-200'>
-                      {(columns || []).map((col) =>
-                      <th scope="col" className='px-6 py-3 text-center border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider'>
-                          <span className='lg:pl-2'>{col.name}</span>
+                  <tr className="border-t border-gray-200">
+                    {(columns || []).map(col => (
+                      <th
+                        scope="col"
+                        className="px-6 py-3 text-center border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-500 uppercase tracking-wider"
+                      >
+                        <span className="lg:pl-2">{col.name}</span>
                       </th>
-                      )}
+                    ))}
                   </tr>
                 </thead>
 
@@ -160,8 +152,8 @@ const Jobs = () => {
                             <Link
                               href={{
                                 pathname: `client/edit/`,
-                                query :{
-                                    clit_id : dt.clit_id
+                                query: {
+                                  clit_id: dt.clit_id,
                                 },
                               }}
                             >

@@ -110,7 +110,7 @@ const ModalSectionDetail = ({ setShowModals, data }: any) => {
                         ></input>
                       </div> */}
                       <div className='"col-span-1'>
-                        <Select onChange={(e:any)=> setIsSelectFileType(e)}>
+                        <Select onChange={(e: any) => setIsSelectFileType(e)}>
                           <Option value="video">Video</Option>
                           <Option value="image">Image</Option>
                           <Option value="text">Text</Option>
@@ -118,7 +118,7 @@ const ModalSectionDetail = ({ setShowModals, data }: any) => {
                         </Select>
                       </div>
                       <div className='"col-span-1'>
-                        <Select onChange={(e:any)=> setIsSelectPreview(e)}>
+                        <Select onChange={(e: any) => setIsSelectPreview(e)}>
                           <Option value="0">Yes</Option>
                           <Option value="1">No</Option>
                         </Select>

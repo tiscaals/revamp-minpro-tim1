@@ -33,7 +33,6 @@ import { Select as SelectAntd } from 'antd';
 import ModalSection from './modals/showModalSection';
 import ModalSectionDetail from './modals/showModalSectDetail';
 
-
 // interface userEmployee {
 //   instructor: userEmployeeDetail[],
 //   refreshIns?: boolean
@@ -61,7 +60,6 @@ const NewCurr = () => {
     (state: any) => state.SectionReducers
   );
   console.log('section: ', section);
-
 
   // let { instructor, refreshIns }: userEmployee = useSelector(
   //   (state: any) => state.InstructorReducers
@@ -101,8 +99,6 @@ const NewCurr = () => {
     //   dispatch(getAllCurrReq());
     // }, 1000);
   }, [refresh, refreshSect]);
-
- 
 
   const [selectedImage, setSelectedImage]: any = useState(null);
   const [isImageSelected, setIsImageSelected]: any = useState(false);
@@ -145,12 +141,12 @@ const NewCurr = () => {
   const [isSelectDuration, setIsSelectDuration] = useState('');
   const [IsSelectCategory, setIsSelectCategory] = useState('');
   const [IsSelectType, setIsSelectType] = useState('');
-  const [selectedId, setSelectedId] = useState<number>()
-  
-//   useEffect(() => {
-//     const nameImage = instructor?.find((item:any) => item.emp_entity_id === selectedId)
-//     setSelectedImage(nameImage?.user_photo ?? null)
-// }, [refreshIns, selectedId])
+  const [selectedId, setSelectedId] = useState<number>();
+
+  //   useEffect(() => {
+  //     const nameImage = instructor?.find((item:any) => item.emp_entity_id === selectedId)
+  //     setSelectedImage(nameImage?.user_photo ?? null)
+  // }, [refreshIns, selectedId])
 
   // console.log('learning type:', isSelectLearning);
   // console.log('language type:', isSelectLanguage);
@@ -195,7 +191,7 @@ const NewCurr = () => {
   const [data, setData] = useState('');
   const [opens, setOpens] = useState(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
-  const [selectedImages, setSelectedImages] = useState<string | null>(null)
+  const [selectedImages, setSelectedImages] = useState<string | null>(null);
   console.log('cek: ', selectedFile);
 
   const handleOpens = (items: any) => {

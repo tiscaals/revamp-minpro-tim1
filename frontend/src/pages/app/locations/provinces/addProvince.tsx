@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
-import { reqCreateProv, reqUpdateCat } from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqCreateProv,
+  reqUpdateCat,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -12,7 +15,7 @@ type FormValues = {
 };
 
 const AddProv = (props: any) => {
-    console.log(props.data)
+  console.log(props.data);
   const dispatch = useDispatch();
 
   const {
@@ -65,7 +68,10 @@ const AddProv = (props: any) => {
               >
                 Tambahkan Province
               </Dialog.Title>
-              <form className="space-y-6" onSubmit={handleSubmit(handleRegistration)}>
+              <form
+                className="space-y-6"
+                onSubmit={handleSubmit(handleRegistration)}
+              >
                 <div className="flex items-center">
                   <label
                     className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -78,7 +84,7 @@ const AddProv = (props: any) => {
                       className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                       id="inline-full-name"
                       type="text"
-                      placeholder='5 Digit Province Code'
+                      placeholder="5 Digit Province Code"
                       {...register('prov_code', {
                         required: 'Province Code is required',
                         pattern: {
@@ -88,11 +94,10 @@ const AddProv = (props: any) => {
                       })}
                     />
                     {errors.prov_code && (
-                  <div className='w-3/4 text-xs text-red-500'>
-                    {errors.prov_code.message}
-                  </div>
-                )}
-                    
+                      <div className="w-3/4 text-xs text-red-500">
+                        {errors.prov_code.message}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -107,16 +112,16 @@ const AddProv = (props: any) => {
                       className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                       id="inline-full-name"
                       type="text"
-                      placeholder='province name'
+                      placeholder="province name"
                       {...register('prov_name', {
-                        required: 'Province Code is required'
+                        required: 'Province Code is required',
                       })}
                     />
                     {errors.prov_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.prov_name.message}
-                    </div>
-                  )}
+                      <div className="w-3/4 text-xs text-red-500">
+                        {errors.prov_name.message}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center">

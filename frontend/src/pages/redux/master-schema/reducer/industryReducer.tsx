@@ -1,21 +1,21 @@
-import ActionTypes from "../action/actionType";
+import ActionTypes from '../action/actionType';
 
 const initialState = {
-    industry: [],
-    messageIndu: "",
-    statusIndu: "",
-    refreshIndu: "",
-  }; 
-  
-  function IndustryReducers(state = initialState, action: any) {
-    const { type, payload } = action;
-    switch (type) {
-      case ActionTypes.RES_GET_INDUSTRY:
-        return { state, industry: payload, refresh: true };
-  
-      default:
-        return state;
-    }
-  }
+  industry: [],
+  messageIndu: '',
+  statusIndu: '',
+  refreshIndu: '',
+};
 
-  export default IndustryReducers
+function IndustryReducers(state = initialState, action: any) {
+  const { type, payload } = action;
+  switch (type) {
+    case ActionTypes.RES_GET_INDUSTRY:
+      return { state, industry: payload, refresh: true };
+
+    default:
+      return state;
+  }
+}
+
+export default IndustryReducers;

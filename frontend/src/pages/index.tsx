@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import Image from "next/image";
-import logo from "../../public/codexlogo.png";
-import courseImage from "../../public/codexlogo.png";
-import ReactPlayer from "react-player";
+import Image from 'next/image';
+import logo from '../../public/codexlogo.png';
+import courseImage from '../../public/codexlogo.png';
+import ReactPlayer from 'react-player';
 // import FAQ from "./components/faq";
 // import Footer from "./components/footer";
-import astra from "../../public/codexlogo.png";
-import bumn from "../../public/codexlogo.png";
-import mahaka from "../../public/codexlogo.png";
-import { alumniTestimoni, partnerShip } from "@/pages/data";
-import AccordionLandingPage from "./accordion";
-import { useRouter } from "next/router";
-import node from '../../public/codexlogo.png'
-import java from '../../public/codexlogo.png'
-import flutter from '../../public/codexlogo.png'
-import dotnet from '../../public/codexlogo.png'
-import next from '../../public/next.png'
-import { useDispatch, useSelector } from "react-redux";
-import { getAllProgramsReq } from "@/pages/redux/bootcamp-schema/action/actionReducer";
-import Footer from "./footer";
-import Header from "@/pages/shared/header"
+import astra from '../../public/codexlogo.png';
+import bumn from '../../public/codexlogo.png';
+import mahaka from '../../public/codexlogo.png';
+import { alumniTestimoni, partnerShip } from '@/pages/data';
+import AccordionLandingPage from './accordion';
+import { useRouter } from 'next/router';
+import node from '../../public/codexlogo.png';
+import java from '../../public/codexlogo.png';
+import flutter from '../../public/codexlogo.png';
+import dotnet from '../../public/codexlogo.png';
+import next from '../../public/next.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProgramsReq } from '@/pages/redux/bootcamp-schema/action/actionReducer';
+import Footer from './footer';
+import Header from '@/pages/shared/header';
 
 const LandingPage = () => {
   // let { programs, refresh } = useSelector((state: any) => state.programReducers);
@@ -29,11 +29,11 @@ const LandingPage = () => {
   // console.log('gambar',partnerShip.gambar)
 
   // console.log(programs)
-  const router = useRouter()
-  const dispatch = useDispatch()
+  const router = useRouter();
+  const dispatch = useDispatch();
   useEffect(() => {
     setIsClient(true);
-    dispatch(getAllProgramsReq())
+    dispatch(getAllProgramsReq());
   }, []);
 
   return (
@@ -52,9 +52,10 @@ const LandingPage = () => {
                 more than 250 alumni to secure positions in 33 leading
                 companies.
               </p>
-              <button 
-              onClick={()=> router.push('bootcamp')}
-              className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-lg">
+              <button
+                onClick={() => router.push('bootcamp')}
+                className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-lg"
+              >
                 Join the Bootcamp
               </button>
             </div>
@@ -138,7 +139,7 @@ const LandingPage = () => {
           <div className="flex justify-center">
             {isClient && (
               <>
-                <div style={{ margin: "0 10px" }}>
+                <div style={{ margin: '0 10px' }}>
                   <ReactPlayer
                     url="https://youtu.be/o8oLQVYlpqw"
                     controls={true}
@@ -154,7 +155,7 @@ const LandingPage = () => {
                     sebagai software engineer di ABC Company.
                   </p>
                 </div>
-                <div style={{ margin: "0 10px" }}>
+                <div style={{ margin: '0 10px' }}>
                   <ReactPlayer
                     url="https://youtu.be/o8oLQVYlpqw"
                     controls={true}
@@ -170,7 +171,7 @@ const LandingPage = () => {
                     sebagai software engineer di ABC Company.
                   </p>
                 </div>
-                <div style={{ margin: "0 10px" }}>
+                <div style={{ margin: '0 10px' }}>
                   <ReactPlayer
                     url="https://youtu.be/o8oLQVYlpqw"
                     controls={true}
@@ -213,25 +214,34 @@ const LandingPage = () => {
                   className="h-12 w-24 mr-2"
                 />
                 <div className="flex flex-col">
-                  <p className=" font-bold text-lg text-gray-800">Nodejs Fullstack</p>
-                  <p className="text-gray-600 text-sm">Learn Nodejs Technologi with our mentor</p>
+                  <p className=" font-bold text-lg text-gray-800">
+                    Nodejs Fullstack
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Learn Nodejs Technologi with our mentor
+                  </p>
                   <button
-                  onClick={() => router.push('bootcamp/node js fullstack')}
-                  className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
+                    onClick={() => router.push('bootcamp/node js fullstack')}
+                    className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg"
+                  >
                     Curriculum
                   </button>
                 </div>
               </div>
 
               <div className="flex items-center p-2 border border-gray-300 rounded-lg max-w-xs">
-              <Image
+                <Image
                   src={java}
                   alt="Course Image"
                   className="h-12 w-24 mr-2"
                 />
                 <div className="flex flex-col">
-                  <p className=" text-lg font-bold text-gray-800">Java Fullstack</p>
-                  <p className="text-sm text-gray-600">Learn java lastest technology from zero to hero</p>
+                  <p className=" text-lg font-bold text-gray-800">
+                    Java Fullstack
+                  </p>
+                  <p className="text-sm text-gray-600">
+                    Learn java lastest technology from zero to hero
+                  </p>
                   <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
                     Curriculum
                   </button>
@@ -242,14 +252,19 @@ const LandingPage = () => {
           <div className="flex justify-center">
             <div className="grid grid-cols-2 gap-40 mt-8">
               <div className="flex items-center p-2 border border-gray-300 rounded-lg max-w-xs">
-              <Image
+                <Image
                   src={dotnet}
                   alt="Course Image"
                   className="h-16 w-48 mr-2"
                 />
                 <div className="flex flex-col">
-                  <p className="text-base font-bold text-gray-800">.NET Framwork</p>
-                  <p className="text-gray-600">.NET is cool technology framwork to building dekstop app and web app</p>
+                  <p className="text-base font-bold text-gray-800">
+                    .NET Framwork
+                  </p>
+                  <p className="text-gray-600">
+                    .NET is cool technology framwork to building dekstop app and
+                    web app
+                  </p>
                   <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
                     Curriculum
                   </button>
@@ -264,7 +279,9 @@ const LandingPage = () => {
                 />
                 <div className="flex flex-col">
                   <p className="text-base font-bold text-gray-800">Flutter</p>
-                  <p className="text-gray-600">Flutter is lastest technology for develop mobile app</p>
+                  <p className="text-gray-600">
+                    Flutter is lastest technology for develop mobile app
+                  </p>
                   <button className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
                     Curriculum
                   </button>
@@ -274,7 +291,10 @@ const LandingPage = () => {
           </div>
 
           <div className="flex justify-center">
-            <button onClick={() => router.push('bootcamp')} className="mt-8 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-lg">
+            <button
+              onClick={() => router.push('bootcamp')}
+              className="mt-8 bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 shadow-lg"
+            >
               More Bootcamps
             </button>
           </div>
@@ -293,7 +313,7 @@ const LandingPage = () => {
                     <div>
                       <img
                         src={data.gambar}
-                        alt={"alumniTestimoni"}
+                        alt={'alumniTestimoni'}
                         className="h-24 w-32 mr-2"
                       />
                       <div className="flex flex-col">
@@ -317,7 +337,7 @@ const LandingPage = () => {
           <div className="flex justify-center mx-auto mt-10">
             <div className="items-center p-4 border border-gray-300 rounded-lg max-w-5xl relative h-60">
               <div className="flex-1 ml-4 flex items-center">
-                {" "}
+                {' '}
                 <div>
                   <Image
                     src={courseImage}
@@ -381,15 +401,18 @@ const LandingPage = () => {
           <div className="flex justify-center">
             <div className="grid grid-cols-3 gap-14 mt-8">
               <div className="flex items-center p-2 border border-gray-300 rounded-lg max-w-xs">
-                <Image
-                  src={flutter}
-                  alt="Course Image"
-                  className="h-12 w-32"
-                />
+                <Image src={flutter} alt="Course Image" className="h-12 w-32" />
                 <div className="flex flex-col">
-                  <p className="text-base font-bold text-gray-800">Android Development</p>
-                  <p className="text-gray-600 text-sm">Flutter is lastest technology for develop mobile app</p>
-                  <button onClick={() => router.push('bootcamp/online/flutter')} className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
+                  <p className="text-base font-bold text-gray-800">
+                    Android Development
+                  </p>
+                  <p className="text-gray-600 text-sm">
+                    Flutter is lastest technology for develop mobile app
+                  </p>
+                  <button
+                    onClick={() => router.push('bootcamp/online/flutter')}
+                    className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg"
+                  >
                     Curriculum
                   </button>
                 </div>
@@ -403,8 +426,13 @@ const LandingPage = () => {
                 />
                 <div className="flex flex-col">
                   <p className="text-base font-bold text-gray-800">Java OOP</p>
-                  <p className="text-gray-600 text-sm">Learn java lastest technology from zero to hero</p>
-                  <button onClick={() => router.push('bootcamp/online/java')} className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
+                  <p className="text-gray-600 text-sm">
+                    Learn java lastest technology from zero to hero
+                  </p>
+                  <button
+                    onClick={() => router.push('bootcamp/online/java')}
+                    className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg"
+                  >
                     Curriculum
                   </button>
                 </div>
@@ -418,8 +446,13 @@ const LandingPage = () => {
                 />
                 <div className="flex flex-col">
                   <p className="text-base font-bold text-gray-800">Nodejs</p>
-                  <p className="text-gray-600 text-sm">Learn Nodejs Technologi with our mentor</p>
-                  <button onClick={() => router.push('bootcamp/online/nodejs')} className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg">
+                  <p className="text-gray-600 text-sm">
+                    Learn Nodejs Technologi with our mentor
+                  </p>
+                  <button
+                    onClick={() => router.push('bootcamp/online/nodejs')}
+                    className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-1 px-2 rounded-lg transition-colors duration-300 shadow-lg"
+                  >
                     Curriculum
                   </button>
                 </div>
@@ -437,7 +470,7 @@ const LandingPage = () => {
       </div>
       <div className="mt-8">
         <Footer />
-        </div>
+      </div>
     </div>
   );
 };

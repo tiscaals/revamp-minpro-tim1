@@ -2,23 +2,30 @@ import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateSkillType, reqUpdateSkillTemplete} from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqCreateAdressType,
+  reqCreateCat,
+  reqCreateModule,
+  reqCreateSkillType,
+  reqUpdateSkillTemplete,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditST = (props: any) => {
-
   const dispatch = useDispatch();
 
   type FormValues = {
-    skte_id : number;
+    skte_id: number;
     skte_skill: string;
     skte_description: string;
-    skte_week : string;
-    skte_orderby : string;
-    skty_name : string;
-    skte_skte_id? : number ;
+    skte_week: string;
+    skte_orderby: string;
+    skty_name: string;
+    skte_skte_id?: number;
   };
 
-  const [selectedValue, setSelectedValue] = useState(props.data.roac_module_name)
+  const [selectedValue, setSelectedValue] = useState(
+    props.data.roac_module_name
+  );
 
   const {
     register,
@@ -27,9 +34,9 @@ const EditST = (props: any) => {
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqUpdateSkillTemplete(data));
-    props.closeModal()
+    props.closeModal();
   };
   return (
     <div>
@@ -68,15 +75,18 @@ const EditST = (props: any) => {
                 >
                   Edit Skill Templete
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
                   <div className="flex items-center">
-                  <input
-                        className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                        id="inline-full-name"
-                        type="hidden"
-                        defaultValue={props.data.skte_id}
-                        {...register('skte_id')}
-                      />
+                    <input
+                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                      id="inline-full-name"
+                      type="hidden"
+                      defaultValue={props.data.skte_id}
+                      {...register('skte_id')}
+                    />
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
                       htmlFor="inline-full-name"
@@ -101,19 +111,19 @@ const EditST = (props: any) => {
                       Type
                     </label>
                     <div className="w-2/3">
-                    <select
-                    value={selectedValue}
-                    
-                      {...register('skty_name')}
-                      className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                      onChange={(e)=>setSelectedValue(e.target.value)}>
-                      {props.dataType?.map((dt: any) => (
-                        <option key={dt.skty_name} value={dt.skty_name}>
-                          {dt.skty_name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                      <select
+                        value={selectedValue}
+                        {...register('skty_name')}
+                        className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
+                        onChange={e => setSelectedValue(e.target.value)}
+                      >
+                        {props.dataType?.map((dt: any) => (
+                          <option key={dt.skty_name} value={dt.skty_name}>
+                            {dt.skty_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="flex items-center">
                     <label
@@ -123,18 +133,22 @@ const EditST = (props: any) => {
                       Parent
                     </label>
                     <div className="w-2/3">
-                    <select
-                      {...(e:any)=>{e.target.value?{...register('skte_skte_id')}:null}}
-                      defaultValue={props.data.skty_name}
-                      className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                    >
-                      <option ></option>
-                      {props.dataParent[0].map((dp: any) => (
-                        <option key={dp.skte_id} value={dp.skte_id}>
-                          {dp.skte_skill}
-                        </option>
-                      ))}
-                    </select>
+                      <select
+                        {...(e: any) => {
+                          e.target.value
+                            ? { ...register('skte_skte_id') }
+                            : null;
+                        }}
+                        defaultValue={props.data.skty_name}
+                        className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
+                      >
+                        <option></option>
+                        {props.dataParent[0].map((dp: any) => (
+                          <option key={dp.skte_id} value={dp.skte_id}>
+                            {dp.skte_skill}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div className="flex items-center">
@@ -177,13 +191,13 @@ const EditST = (props: any) => {
                       Description
                     </label>
                     <div className="w-2/3">
-                    <input
+                      <input
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500 h-24"
                         id="inline-full-name"
                         type="text"
                         defaultValue={props.data.skte_description}
                         {...register('skte_description')}
-                        />
+                      />
                     </div>
                   </div>
                   <div className="flex justify-end">

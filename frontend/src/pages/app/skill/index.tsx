@@ -3,19 +3,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import SkillTemplete from './skillTemplete/skillTemplete';
 import SkillType from './skillType/skillType';
 import BreadcrumbsSlice from '../../shared/breadcrumbs';
-import { reqSkillTemplete, reqSkillType } from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqSkillTemplete,
+  reqSkillType,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const Index = () => {
-  const { skillTemplete ,refreshSkillTemplete } = useSelector((state : any) => state.skillTempeleteReducer);
-  const { skillType,  refreshSkillType } = useSelector((state :any) => state.skillTypeReducer);
+  const { skillTemplete, refreshSkillTemplete } = useSelector(
+    (state: any) => state.skillTempeleteReducer
+  );
+  const { skillType, refreshSkillType } = useSelector(
+    (state: any) => state.skillTypeReducer
+  );
   const dispatch = useDispatch();
-console.log('skill',skillTemplete )
-
+  console.log('skill', skillTemplete);
 
   useEffect(() => {
     dispatch(reqSkillType());
     dispatch(reqSkillTemplete());
-  }, [refreshSkillTemplete , refreshSkillType]);
+  }, [refreshSkillTemplete, refreshSkillType]);
 
   return (
     <>
@@ -26,7 +32,10 @@ console.log('skill',skillTemplete )
             <SkillType skillType={skillType} />
           </div>
           <div className="rounded bg-blue h-auto shadow-sm py-2">
-            <SkillTemplete skillTemplete={skillTemplete} skillType={skillType}/>
+            <SkillTemplete
+              skillTemplete={skillTemplete}
+              skillType={skillType}
+            />
           </div>
         </div>
       </div>

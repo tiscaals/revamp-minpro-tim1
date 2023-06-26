@@ -2,20 +2,26 @@ import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateRouteAction, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqCreateAdressType,
+  reqCreateCat,
+  reqCreateModule,
+  reqCreateRouteAction,
+  reqCreateSkillType,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddRA = (props: any) => {
-  console.log(props.data)
+  console.log(props.data);
 
-  const [isnilai, setIsNilai]=useState()
+  const [isnilai, setIsNilai] = useState();
 
   const dispatch = useDispatch();
 
   type FormValues = {
     roac_name: string;
     roac_orderby: string;
-    roac_display : boolean;
-    roac_module_name : string;
+    roac_display: boolean;
+    roac_module_name: string;
   };
 
   const {
@@ -30,15 +36,15 @@ const AddRA = (props: any) => {
       roac_displayOI = 1;
     }
 
-    const dataNilai ={
-    roac_name: data.roac_name,
-    roac_orderby: data.roac_orderby,
-    roac_display : roac_displayOI,
-    roac_module_name : data.roac_module_name
-}
-    console.log('ini',dataNilai);
+    const dataNilai = {
+      roac_name: data.roac_name,
+      roac_orderby: data.roac_orderby,
+      roac_display: roac_displayOI,
+      roac_module_name: data.roac_module_name,
+    };
+    console.log('ini', dataNilai);
     dispatch(reqCreateRouteAction(dataNilai));
-    props.closeModal()
+    props.closeModal();
   };
   return (
     <div>
@@ -77,7 +83,10 @@ const AddRA = (props: any) => {
                 >
                   Tambahkan Route Actions
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
                   <div className="flex items-center">
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -90,42 +99,38 @@ const AddRA = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="text"
-                        placeholder='Route Actions'
-
+                        placeholder="Route Actions"
                         {...register('roac_name', {
-                          required: 'Module is required'
+                          required: 'Module is required',
                         })}
                       />
                       {errors.roac_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.roac_name.message}
-                    </div>
-                  )}
+                        <div className="w-3/4 text-xs text-red-500">
+                          {errors.roac_name.message}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex items-center">
-                  <label
-                    className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
-                    htmlFor="inline-password"
-                  >
-                    Module
-                  </label>
-                  <div className="w-2/3">
-                  <select
-                    className=" text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                    {...register('roac_module_name')}
-                  >
-                    <option value="">-- Pilih --</option>
-                    {props.dataModule?.map((dt: any) => (
-                      <option key={dt.module_name} value={dt.module_name}>
-                        {dt.module_name}
-                      </option>
-                    ))}
-                  </select>
-
-                  </div>
-               
-                    
+                    <label
+                      className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
+                      htmlFor="inline-password"
+                    >
+                      Module
+                    </label>
+                    <div className="w-2/3">
+                      <select
+                        className=" text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
+                        {...register('roac_module_name')}
+                      >
+                        <option value="">-- Pilih --</option>
+                        {props.dataModule?.map((dt: any) => (
+                          <option key={dt.module_name} value={dt.module_name}>
+                            {dt.module_name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
                   <div className="flex items-center">
                     <label
@@ -135,16 +140,16 @@ const AddRA = (props: any) => {
                       Display
                     </label>
                     <div className="w-2/3">
-                    <input
-                    className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-blue-500 checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-blue-500 checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-blue-500 checked:focus:bg-blue-500 checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-blue-500 dark:checked:after:bg-blue-500 dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
-                    type="checkbox"
-                    role="switch"
-                    id="flexSwitchCheckDefault"
-                    value=''
-                    {...register('roac_display')}
-                  />
-                </div>
-                <label
+                      <input
+                        className="mr-2 mt-[0.3rem] h-3.5 w-8 appearance-none rounded-[0.4375rem] bg-neutral-300 before:pointer-events-none before:absolute before:h-3.5 before:w-3.5 before:rounded-full before:bg-transparent before:content-[''] after:absolute after:z-[2] after:-mt-[0.1875rem] after:h-5 after:w-5 after:rounded-full after:border-none after:bg-neutral-100 after:shadow-[0_0px_3px_0_rgb(0_0_0_/_7%),_0_2px_2px_0_rgb(0_0_0_/_4%)] after:transition-[background-color_0.2s,transform_0.2s] after:content-[''] checked:bg-blue-500 checked:after:absolute checked:after:z-[2] checked:after:-mt-[3px] checked:after:ml-[1.0625rem] checked:after:h-5 checked:after:w-5 checked:after:rounded-full checked:after:border-none checked:after:bg-blue-500 checked:after:shadow-[0_3px_1px_-2px_rgba(0,0,0,0.2),_0_2px_2px_0_rgba(0,0,0,0.14),_0_1px_5px_0_rgba(0,0,0,0.12)] checked:after:transition-[background-color_0.2s,transform_0.2s] checked:after:content-[''] hover:cursor-pointer focus:outline-none focus:ring-0 focus:before:scale-100 focus:before:opacity-[0.12] focus:before:shadow-[3px_-1px_0px_13px_rgba(0,0,0,0.6)] focus:before:transition-[box-shadow_0.2s,transform_0.2s] focus:after:absolute focus:after:z-[1] focus:after:block focus:after:h-5 focus:after:w-5 focus:after:rounded-full focus:after:content-[''] checked:focus:border-blue-500 checked:focus:bg-blue-500 checked:focus:before:ml-[1.0625rem] checked:focus:before:scale-100 checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca] checked:focus:before:transition-[box-shadow_0.2s,transform_0.2s] dark:bg-neutral-600 dark:after:bg-neutral-400 dark:checked:bg-blue-500 dark:checked:after:bg-blue-500 dark:focus:before:shadow-[3px_-1px_0px_13px_rgba(255,255,255,0.4)] dark:checked:focus:before:shadow-[3px_-1px_0px_13px_#3b71ca]"
+                        type="checkbox"
+                        role="switch"
+                        id="flexSwitchCheckDefault"
+                        value=""
+                        {...register('roac_display')}
+                      />
+                    </div>
+                    <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
                       htmlFor="inline-full-name"
                     >
@@ -156,15 +161,14 @@ const AddRA = (props: any) => {
                         id="inline-full-name"
                         type="number"
                         {...register('roac_orderby', {
-                          required: 'Order is required'
+                          required: 'Order is required',
                         })}
                       />
                       {errors.roac_orderby && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.roac_orderby.message}
-                    </div>
-                  )}
-
+                        <div className="w-3/4 text-xs text-red-500">
+                          {errors.roac_orderby.message}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-end">

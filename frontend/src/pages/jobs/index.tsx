@@ -1,16 +1,21 @@
-import { useEffect, useState } from "react";
-import CardJob from "../komponen/cardjob";
-import FilterComp from "../komponen/filterKomponen";
-import ImgSlide from "../komponen/imgSlide";
-import Pagination from "../komponen/pagination";
-import SearchBar from "../komponen/search";
-import Header from "../shared/header";
-import { useDispatch, useSelector } from "react-redux";
-import { doRequestGetJobPost, doRequestSearchJobPost } from "../redux/jobhire-schema/action/actionReducer";
-import { useRouter } from "next/router";
+import { useEffect, useState } from 'react';
+import CardJob from '../komponen/cardjob';
+import FilterComp from '../komponen/filterKomponen';
+import ImgSlide from '../komponen/imgSlide';
+import Pagination from '../komponen/pagination';
+import SearchBar from '../komponen/search';
+import Header from '../shared/header';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  doRequestGetJobPost,
+  doRequestSearchJobPost,
+} from '../redux/jobhire-schema/action/actionReducer';
+import { useRouter } from 'next/router';
 
 export default function Home() {
-  const { job_post, search_jobpost, refresh } = useSelector((state:any) => state.JobPostReducers,);
+  const { job_post, search_jobpost, refresh } = useSelector(
+    (state: any) => state.JobPostReducers
+  );
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -19,9 +24,9 @@ export default function Home() {
   }, [refresh]);
 
   /* ---------------FILTER BY SEARCH--------------- */
-  const [selectedValue, setSelectedValue] = useState("");
-  const [searchValue, setSearchValue] = useState("");
-  const [searchLocation, setSearchLocation] = useState("");
+  const [selectedValue, setSelectedValue] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+  const [searchLocation, setSearchLocation] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [filteredData, setFilteredData]: any = useState([]);
 
@@ -36,22 +41,22 @@ export default function Home() {
         keyword: searchValue.trim(),
         location: searchLocation.trim(),
         job: selectedValue,
-        type: "",
+        type: '',
         jobType: [],
-        expe : [],
-        terupdate : "",
-        newest : "",
+        expe: [],
+        terupdate: '',
+        newest: '',
       },
     };
 
     // console.log("GABUNGG",gabung);
 
-    dispatch({type:"RESET_STATE"})
+    dispatch({ type: 'RESET_STATE' });
     dispatch(doRequestSearchJobPost(gabung));
     setIsToggleChecked(false);
     // setCheckboxValues([]);
 
-    console.log("SEARCH RESULT",search_jobpost);   
+    console.log('SEARCH RESULT', search_jobpost);
 
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
     checkboxes.forEach((checkbox: any) => {
@@ -79,7 +84,7 @@ export default function Home() {
       updatedValues = [...checkboxValues, value];
       setCheckboxValues(updatedValues);
     } else {
-      updatedValues = checkboxValues.filter((val) => val !== value);
+      updatedValues = checkboxValues.filter(val => val !== value);
       setCheckboxValues(updatedValues);
     }
 
@@ -88,14 +93,14 @@ export default function Home() {
         keyword: searchValue.trim(),
         location: searchLocation.trim(),
         job: selectedValue,
-        type: isToggleChecked ? 2 : "",
+        type: isToggleChecked ? 2 : '',
         jobType: updatedValues,
-        expe : checkboxValuesExpe,
-        terupdate : selectedOption,
-        newest : buttonClick ? 1 : 0,
+        expe: checkboxValuesExpe,
+        terupdate: selectedOption,
+        newest: buttonClick ? 1 : 0,
       },
     };
-    console.log("JOBTYPE", dataJobType);
+    console.log('JOBTYPE', dataJobType);
 
     dispatch(doRequestSearchJobPost(dataJobType));
   };
@@ -113,11 +118,11 @@ export default function Home() {
           keyword: searchValue.trim(),
           location: searchLocation.trim(),
           job: selectedValue,
-          type: "",
+          type: '',
           jobType: checkboxValues,
-          expe : checkboxValuesExpe,
-          terupdate : selectedOption,
-          newest : buttonClick ? 1 : 0,
+          expe: checkboxValuesExpe,
+          terupdate: selectedOption,
+          newest: buttonClick ? 1 : 0,
         },
       };
       dispatch(doRequestSearchJobPost(dataOnSite));
@@ -130,9 +135,9 @@ export default function Home() {
           job: selectedValue,
           type: 2,
           jobType: checkboxValues,
-          expe : checkboxValuesExpe,
-          terupdate : selectedOption,
-          newest : buttonClick ? 1 : 0,
+          expe: checkboxValuesExpe,
+          terupdate: selectedOption,
+          newest: buttonClick ? 1 : 0,
         },
       };
       dispatch(doRequestSearchJobPost(dataRemote));
@@ -141,7 +146,7 @@ export default function Home() {
     }
   };
 
-  /* -------FILTER BY WORK EXPE-------- */  
+  /* -------FILTER BY WORK EXPE-------- */
 
   const [checkboxValuesExpe, setCheckboxValuesExpe] = useState<string[]>([]);
   let updatedValuesExpe: any;
@@ -153,7 +158,7 @@ export default function Home() {
       updatedValuesExpe = [...checkboxValuesExpe, value];
       setCheckboxValuesExpe(updatedValuesExpe);
     } else {
-      updatedValuesExpe = checkboxValuesExpe.filter((val) => val !== value);
+      updatedValuesExpe = checkboxValuesExpe.filter(val => val !== value);
       setCheckboxValuesExpe(updatedValuesExpe);
     }
 
@@ -162,11 +167,11 @@ export default function Home() {
         keyword: searchValue.trim(),
         location: searchLocation.trim(),
         job: selectedValue,
-        type: isToggleChecked ? 2 : "",
+        type: isToggleChecked ? 2 : '',
         jobType: checkboxValues,
-        expe : updatedValuesExpe,
-        terupdate : selectedOption,
-        newest : buttonClick ? 1 : 0,
+        expe: updatedValuesExpe,
+        terupdate: selectedOption,
+        newest: buttonClick ? 1 : 0,
       },
     };
     // console.log("EXPE", dataExpe);
@@ -174,12 +179,11 @@ export default function Home() {
     dispatch(doRequestSearchJobPost(dataExpe));
   };
 
-
-  /* -------FILTER BY TERUPDATE-------- */  
+  /* -------FILTER BY TERUPDATE-------- */
 
   const [selectedOption, setSelectedOption] = useState('');
 
-  const handleOptionChange = (e:any) => {
+  const handleOptionChange = (e: any) => {
     setIsSearching(true);
     const selectedOption = e.target.value;
     setSelectedOption(selectedOption);
@@ -188,63 +192,63 @@ export default function Home() {
         keyword: searchValue.trim(),
         location: searchLocation.trim(),
         job: selectedValue,
-        type: isToggleChecked ? 2 : "",
+        type: isToggleChecked ? 2 : '',
         jobType: checkboxValues,
-        expe : checkboxValuesExpe,
-        terupdate : selectedOption,
-        newest : buttonClick ? 1 : 0,
+        expe: checkboxValuesExpe,
+        terupdate: selectedOption,
+        newest: buttonClick ? 1 : 0,
       },
     };
 
     // console.log(dataTerUpdate)
     dispatch(doRequestSearchJobPost(dataTerUpdate));
-    console.log("dataTerupdate", dataTerUpdate);
-    console.log("hasilSearch",search_jobpost);
+    console.log('dataTerupdate', dataTerUpdate);
+    console.log('hasilSearch', search_jobpost);
     // setFilteredData(search_jobpost);
   };
 
-/* FILTER NEWEST */
+  /* FILTER NEWEST */
 
-const [buttonClick,setButtonClick]  = useState(false)
-const handleNewestButton = ()=>{
-  setButtonClick(true)
-  setIsSearching(true);
+  const [buttonClick, setButtonClick] = useState(false);
+  const handleNewestButton = () => {
+    setButtonClick(true);
+    setIsSearching(true);
     const dataNewest = {
       search: {
         keyword: searchValue.trim(),
         location: searchLocation.trim(),
         job: selectedValue,
-        type: isToggleChecked ? 2 : "",
+        type: isToggleChecked ? 2 : '',
         jobType: checkboxValues,
-        expe : checkboxValuesExpe,
-        terupdate : selectedOption,
-        newest : 1,
+        expe: checkboxValuesExpe,
+        terupdate: selectedOption,
+        newest: 1,
       },
     };
     // console.log(dataNewest)
     dispatch(doRequestSearchJobPost(dataNewest));
-  }
+  };
   // console.log('NILAI BUTTON',buttonClick)
   /* FILTER MATCH */
-  
-  const handleMatchButton = ()=>{
-    setButtonClick(false)
+
+  const handleMatchButton = () => {
+    setButtonClick(false);
     setIsSearching(true);
     const dataMatch = {
       search: {
         keyword: searchValue.trim(),
         location: searchLocation.trim(),
         job: selectedValue,
-        type: isToggleChecked ? 2 : "",
+        type: isToggleChecked ? 2 : '',
         jobType: checkboxValues,
-        expe : checkboxValuesExpe,
-        terupdate : selectedOption,
-        newest : 0,
+        expe: checkboxValuesExpe,
+        terupdate: selectedOption,
+        newest: 0,
       },
     };
-    console.log(dataMatch)
+    console.log(dataMatch);
     dispatch(doRequestSearchJobPost(dataMatch));
-  }
+  };
 
   /* ----------------------------------------------------------- */
 
@@ -254,24 +258,24 @@ const handleNewestButton = ()=>{
     setFilteredData(search_jobpost);
   }, [search_jobpost]);
 
-  console.log("DISPLAY DATA", displayData);
+  console.log('DISPLAY DATA', displayData);
 
   const handleQuery1 = () => {
     let queryParams: Record<string, string> = {};
-    if (searchValue.trim() !== "") {
+    if (searchValue.trim() !== '') {
       queryParams.keyword = searchValue.trim();
     }
 
-    if (searchLocation.trim() !== "") {
+    if (searchLocation.trim() !== '') {
       queryParams.location = searchLocation.trim();
     }
 
-    if (selectedValue !== "") {
+    if (selectedValue !== '') {
       queryParams.job = selectedValue;
     }
 
     if (!isToggleChecked) {
-      queryParams.type = "remote"; 
+      queryParams.type = 'remote';
     } else {
       delete queryParams.type;
     }
@@ -283,15 +287,15 @@ const handleNewestButton = ()=>{
 
   const handleQuery2 = () => {
     let queryParams: Record<string, string> = {};
-    if (searchValue.trim() !== "") {
+    if (searchValue.trim() !== '') {
       queryParams.keyword = searchValue.trim();
     }
 
-    if (searchLocation.trim() !== "") {
+    if (searchLocation.trim() !== '') {
       queryParams.location = searchLocation.trim();
     }
 
-    if (selectedValue !== "") {
+    if (selectedValue !== '') {
       queryParams.job = selectedValue;
     }
 
@@ -309,12 +313,12 @@ const handleNewestButton = ()=>{
 
     // Mengganti URL jika tidak ada parameter
     if (!hasQueryParams) {
-      router.replace("/jobs");
+      router.replace('/jobs');
     }
   }, []);
 
   /* ----------------------------------------------------------- */
-  
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const totalPages = Math.ceil(displayData?.length / itemsPerPage);
@@ -328,7 +332,7 @@ const handleNewestButton = ()=>{
 
   return (
     <div className="mx-auto w-[100%]">
-        <Header/>
+      <Header />
       <div>
         <div className="w-full bg-light-blue-50">
           <div className="lg:w-3/4 mx-auto py-2 w-11/12">
@@ -337,35 +341,38 @@ const handleNewestButton = ()=>{
         </div>
         <div className="shadow-sm shadow-gray-500">
           <div className="mx-auto lg:w-3/4 w-11/12">
-          <SearchBar
-            buttonClick={handleSearchChange}
-            searchValue={searchValue}
-            searchLocation={searchLocation}
-            setSearchValue={(e: any) => setSearchValue(e.target.value)}
-            setSearchLocation={(e: any) => setSearchLocation(e.target.value)}
-            selectedValue={selectedValue}
-            handleChange={handleChange}
-          />
+            <SearchBar
+              buttonClick={handleSearchChange}
+              searchValue={searchValue}
+              searchLocation={searchLocation}
+              setSearchValue={(e: any) => setSearchValue(e.target.value)}
+              setSearchLocation={(e: any) => setSearchLocation(e.target.value)}
+              selectedValue={selectedValue}
+              handleChange={handleChange}
+            />
           </div>
         </div>
 
         <div className="max-w-screen-2xl xl:w-3/4 w-11/12 mx-auto p-2">
           <h2 className="py-5 text-sm">Lowongan Pekerjaan di Indonesia</h2>
-            <div className="lg:flex justify-start md:block mx-auto">
-              <FilterComp
-                handleToggle={handleToggle}
-                valueCheck={isToggleChecked}
-                handleCheckboxChange={handleCheckboxChange}
-                handleCheckboxChangeExpe = {handleCheckboxChangeExpe}
-                handleOptionChange={handleOptionChange}
-                handleNewestButton={handleNewestButton}
-                handleMatchButton={handleMatchButton}
+          <div className="lg:flex justify-start md:block mx-auto">
+            <FilterComp
+              handleToggle={handleToggle}
+              valueCheck={isToggleChecked}
+              handleCheckboxChange={handleCheckboxChange}
+              handleCheckboxChangeExpe={handleCheckboxChangeExpe}
+              handleOptionChange={handleOptionChange}
+              handleNewestButton={handleNewestButton}
+              handleMatchButton={handleMatchButton}
+            />
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 w-full">
+              <CardJob
+                currentPage={currentPage}
+                itemsPerPage={itemsPerPage}
+                data={displayData}
               />
-              <div className="grid grid-cols-1 gap-4 md:grid-cols-2 w-full">
-                <CardJob currentPage={currentPage} itemsPerPage={itemsPerPage}
-                data={displayData}/>
-              </div>
             </div>
+          </div>
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}

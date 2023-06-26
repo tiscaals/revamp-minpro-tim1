@@ -246,5 +246,5 @@ export {
   UpdateChangeStatusBatchReq,
   UpdateChangeStatusBatchRes,
   addEvalsReq,
-  addEvalsRes
+  addEvalsRes,
 };

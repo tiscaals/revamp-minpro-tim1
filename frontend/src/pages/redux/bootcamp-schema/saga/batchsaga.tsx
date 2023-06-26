@@ -189,5 +189,5 @@ export {
   handleEditPrap,
   handleGetAllTraineesByBatch,
   handleAddEvaluation,
-  handleUpdateChangeStatusBatch
+  handleUpdateChangeStatusBatch,
 };
