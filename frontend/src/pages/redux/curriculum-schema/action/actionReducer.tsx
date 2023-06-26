@@ -1,4 +1,4 @@
-import ActionTypeCurr from "./actionType";
+import ActionTypeCurr from './actionType';
 
 // get view
 const getAllCurrReq = () => {
@@ -63,7 +63,7 @@ const updateCurrReq = (id: any, payload: any) => {
   return {
     type: ActionTypeCurr.UPDATE_CURRICULUM,
     id,
-    payload
+    payload,
   };
 };
 
@@ -102,72 +102,72 @@ const viewSectionRes = (sections: any) => {
 };
 
 // view section detail
-const viewSectionUp = (id:any) => {
-    return{
-        type: ActionTypeCurr.GET_SECTION_UP,
-        id
-    }
-}
-const viewSectionUpRes = (sectionUps:any) => {
-    return{
-        type: ActionTypeCurr.GET_SECTION_UP_RES,
-        sectionUps
-    }
-}
+const viewSectionUp = (id: any) => {
+  return {
+    type: ActionTypeCurr.GET_SECTION_UP,
+    id,
+  };
+};
+const viewSectionUpRes = (sectionUps: any) => {
+  return {
+    type: ActionTypeCurr.GET_SECTION_UP_RES,
+    sectionUps,
+  };
+};
 
 // GET CURR BY ID
-const currById = (id:any) => {
-  return{
+const currById = (id: any) => {
+  return {
     type: ActionTypeCurr.GET_CURR_BY_ID,
-    id
-  }
-}
-const currByIdRes = (payload:any) => {
-  return{
+    id,
+  };
+};
+const currByIdRes = (payload: any) => {
+  return {
     type: ActionTypeCurr.GET_CURR_BY_ID_RES,
-    payload
-  }
-}
+    payload,
+  };
+};
 
 // merge section
-const getSectionMerge = () =>{
-  return{
-    type: ActionTypeCurr.GET_SECT_MERGE
-  }
-}
-const getSectionMergeRes = (sections:any) =>{
-  return{
+const getSectionMerge = () => {
+  return {
+    type: ActionTypeCurr.GET_SECT_MERGE,
+  };
+};
+const getSectionMergeRes = (sections: any) => {
+  return {
     type: ActionTypeCurr.GET_SECT_MERGE_RES,
-    sections
-  }
-}
+    sections,
+  };
+};
 
 // get all
-const getAlltable = (id:any)=>{
-  return{
+const getAlltable = (id: any) => {
+  return {
     type: ActionTypeCurr.GET_ALL,
-    id
-  }
-} 
-const getAlltableRes = (getAlls:any)=>{
-  return{
+    id,
+  };
+};
+const getAlltableRes = (getAlls: any) => {
+  return {
     type: ActionTypeCurr.GET_ALL_RES,
-    getAlls
-  }
-} 
+    getAlls,
+  };
+};
 
 // get instructor
-const getInstructor = ()=>{
-  return{
-    type: ActionTypeCurr.GET_INSTRUCTOR
-  }
-}
-const getInstructorRes = (instructors:any)=>{
-  return{
+const getInstructor = () => {
+  return {
+    type: ActionTypeCurr.GET_INSTRUCTOR,
+  };
+};
+const getInstructorRes = (instructors: any) => {
+  return {
     type: ActionTypeCurr.GET_INSTRUCTOR_RES,
-    instructors
-  }
-}
+    instructors,
+  };
+};
 
 export {
   getAllCurrReq,
@@ -193,5 +193,5 @@ export {
   getAlltable,
   getAlltableRes,
   getInstructor,
-  getInstructorRes
+  getInstructorRes,
 };

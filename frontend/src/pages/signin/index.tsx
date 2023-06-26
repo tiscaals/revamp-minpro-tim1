@@ -62,7 +62,7 @@ const AuthLogin = () => {
     if (token) {
       const decoded = jwt.decode(token) as JwtPayload;
       if (decoded.user_current_role == 2 || decoded.user_current_role == 10) {
-          router.push('/');
+        router.push('/');
       } else {
         router.push('/app');
       }

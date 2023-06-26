@@ -65,7 +65,7 @@ export default function Candidates() {
     if (routes) {
       setSelectRoute(route);
     }
-  }, [routes,selectRoute]);
+  }, [routes, selectRoute]);
 
   const handleRoute = (routeName: string) => {
     setSelectRoute(routeName);
@@ -75,7 +75,7 @@ export default function Candidates() {
   // console.log(filted);
 
   const filteredData =
-    selectRoute === '' 
+    selectRoute === ''
       ? candidates
       : candidates?.filter((candidate: any) => {
           const dateObj = new Date(candidate?.join_date);
@@ -90,7 +90,7 @@ export default function Candidates() {
           );
         });
 
-  console.log(candidates);  
+  console.log(candidates);
 
   const totalPage = Math.ceil(filteredData?.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -426,12 +426,12 @@ export default function Candidates() {
           )}
         </tbody>
       </table>
-              <MyPaginate
-          setCurrentPage={setCurrentPage}
-          currentPage={currentPage}
-          totalPage={totalPage}
-          variant="standard"
-        />
+      <MyPaginate
+        setCurrentPage={setCurrentPage}
+        currentPage={currentPage}
+        totalPage={totalPage}
+        variant="standard"
+      />
     </div>
   );
 }

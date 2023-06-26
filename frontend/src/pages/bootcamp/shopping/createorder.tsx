@@ -10,7 +10,11 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import { MdRemoveShoppingCart, MdShoppingCart } from 'react-icons/md';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import { addOrderReq, delCartReq, getAllCartReq } from '../redux/action/actionReducer';
+import {
+  addOrderReq,
+  delCartReq,
+  getAllCartReq,
+} from '../redux/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,8 +29,12 @@ const ApplyButton = styled(Button)(({ theme }) => ({
 }));
 
 const CreateOrder: React.FC = () => {
-  const { items, message, refresh } = useSelector((state: any) => state.salesReducers);
-  const { order, messagee, refreshh, status } = useSelector((state: any) => state.orderReducers);
+  const { items, message, refresh } = useSelector(
+    (state: any) => state.salesReducers
+  );
+  const { order, messagee, refreshh, status } = useSelector(
+    (state: any) => state.orderReducers
+  );
 
   const dispatch = useDispatch();
 
@@ -42,9 +50,18 @@ const CreateOrder: React.FC = () => {
   const [removeItemId, setRemoveItemId] = useState(0);
 
   const router = useRouter();
-  const { totalPrice, accountNumber, fintechName, userName, spof_id, spof_discount }: any = router.query;
-  const totalPriceString = Array.isArray(totalPrice) ? totalPrice[0] : totalPrice;
-  const totalPriceNumber = parseInt(totalPriceString || "0");
+  const {
+    totalPrice,
+    accountNumber,
+    fintechName,
+    userName,
+    spof_id,
+    spof_discount,
+  }: any = router.query;
+  const totalPriceString = Array.isArray(totalPrice)
+    ? totalPrice[0]
+    : totalPrice;
+  const totalPriceNumber = parseInt(totalPriceString || '0');
 
   useEffect(() => {
     dispatch(getAllCartReq());
@@ -57,11 +74,12 @@ const CreateOrder: React.FC = () => {
     const characters = '0123456789';
     let randomNumber = '';
     for (let i = 0; i < 6; i++) {
-      randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+      randomNumber += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
     }
     return `${prefix}${randomNumber}`;
   };
-
 
   // Fungsi untuk menghasilkan kode nomor TRPA acak
   const generateTrpaCodeNumber = () => {
@@ -69,11 +87,12 @@ const CreateOrder: React.FC = () => {
     const characters = '0123456789';
     let randomNumber = '';
     for (let i = 0; i < 6; i++) {
-      randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+      randomNumber += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
     }
     return `${prefix}${randomNumber}`;
   };
-
 
   // Fungsi untuk menghasilkan kode lisensi acak
   const generateLicenseCode = () => {
@@ -81,7 +100,9 @@ const CreateOrder: React.FC = () => {
     const characters = '0123456789';
     let randomNumber = '';
     for (let i = 0; i < 5; i++) {
-      randomNumber += characters.charAt(Math.floor(Math.random() * characters.length));
+      randomNumber += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
     }
     return `${prefix}${randomNumber}`;
   };
@@ -92,7 +113,6 @@ const CreateOrder: React.FC = () => {
       // Tambahkan logika atau perintah lainnya di sini untuk menampilkan teks atau melakukan tindakan yang diinginkan
     }
   }, [router.query.thanksMessage]);
-  
 
   // Menggunakan generator untuk mendapatkan nilai acak
   // const handleCreateOrder = async () => {
@@ -135,7 +155,7 @@ const CreateOrder: React.FC = () => {
 
   const handleCreateOrder = async () => {
     const trpaCodeNumber = generateTrpaCodeNumber();
-  
+
     const cartItems = items.map((item: any) => {
       return {
         cait_id: item.cait_id,
@@ -145,7 +165,7 @@ const CreateOrder: React.FC = () => {
         cait_prog_entity_id: item.cait_prog_entity_id,
       };
     });
-  
+
     const dummyData = {
       cartItems,
       p_sohe_order_number: generateOrderNumber(),
@@ -157,15 +177,22 @@ const CreateOrder: React.FC = () => {
       p_sode_unit_discount: parseFloat(spof_discount),
       p_sode_soco_id: parseInt(spof_id),
     };
-  
+
     try {
       const response: any = await dispatch(addOrderReq(dummyData));
-      console.log("RESPONSEEE sts",status);
+      console.log('RESPONSEEE sts', status);
       if (status === 200) {
         // Pindahkan halaman ke '/sales/receipt' setelah memasukkan data
         router.push({
           pathname: '/sales/receipt',
-          query: { totalPrice, accountNumber, fintechName, userName, trpaCodeNumber, thanksMessage: true },
+          query: {
+            totalPrice,
+            accountNumber,
+            fintechName,
+            userName,
+            trpaCodeNumber,
+            thanksMessage: true,
+          },
         });
       } else {
         console.error('Gagal memasukkan data ke database');
@@ -179,15 +206,6 @@ const CreateOrder: React.FC = () => {
       // Sesuaikan penanganan kesalahan berdasarkan framework atau library spesifik Anda
     }
   };
-  
-  
-  
-    
-  
-
-
-
-
 
   // useEffect(() => {
   //   calculateTotalPrice();
@@ -230,7 +248,6 @@ const CreateOrder: React.FC = () => {
       <ToastContainer />
       <div className="container mx-auto p-4">
         <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
-
           <p className="text-lg font-bold text-red-600">
             <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
               {items.length}
@@ -246,18 +263,33 @@ const CreateOrder: React.FC = () => {
                 items.map((course: any, index: any) => {
                   if (course.cait_id && !isNaN(course.cait_id)) {
                     return (
-                      <div key={index} className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+                      <div
+                        key={index}
+                        className="flex items-center p-4 bg-white rounded-lg shadow-lg"
+                      >
                         <div className="h-16 w-16 mr-4 relative">
-                          <Image src={courseImage} alt="Course Image" layout="fill" objectFit="cover" className="rounded-full" />
+                          <Image
+                            src={courseImage}
+                            alt="Course Image"
+                            layout="fill"
+                            objectFit="cover"
+                            className="rounded-full"
+                          />
                         </div>
                         <div className="flex flex-col flex-grow">
                           <div className="flex justify-between mb-4">
                             <div>
-                              <p className="text-lg font-bold text-gray-800">{course.prog_headline}</p>
-                              <p className="text-gray-600">{course.prog_title}</p>
+                              <p className="text-lg font-bold text-gray-800">
+                                {course.prog_headline}
+                              </p>
+                              <p className="text-gray-600">
+                                {course.prog_title}
+                              </p>
                             </div>
                             <div className="flex items-center">
-                              <p className="text-gray-600">Rp. {course.prog_price}</p>
+                              <p className="text-gray-600">
+                                Rp. {course.prog_price}
+                              </p>
                             </div>
                           </div>
                           <div className="flex gap-4">
@@ -267,7 +299,9 @@ const CreateOrder: React.FC = () => {
                             </button>
                             <button
                               className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-gray-800 hover:border-gray-900 rounded-full flex items-center transform hover:scale-105"
-                              onClick={() => handleRemoveCartItem(course.cait_id)}
+                              onClick={() =>
+                                handleRemoveCartItem(course.cait_id)
+                              }
                             >
                               Remove
                               <DeleteForeverIcon className="ml-2" />
@@ -291,9 +325,12 @@ const CreateOrder: React.FC = () => {
             <div className="grid grid-cols-1 gap-4 h-full">
               <div className="p-5 y-1 bg-white rounded-lg shadow-lg flex flex-col">
                 <p className="text-lg font-bold text-gray-800">Total:</p>
-                <p className="text-3xl font-bold text-gray-800">Rp. {totalPriceNumber.toLocaleString()}</p>
+                <p className="text-3xl font-bold text-gray-800">
+                  Rp. {totalPriceNumber.toLocaleString()}
+                </p>
 
-                <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-600 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
+                <button
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 border-b-4 border-gray-600 hover:border-gray-900 rounded-full mt-4 flex items-center justify-center flex-row-reverse"
                   onClick={handleCreateOrder}
                 >
                   <MdShoppingCart className="ml-2" />
@@ -313,24 +350,23 @@ const CreateOrder: React.FC = () => {
         </div>
 
         <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
-
           <div>
             <div className="items-center p-4 bg-white mt-2">
-              <p className="text-2xl font-bold bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Payment via {fintechName}</p>
-              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Number: {accountNumber}</p>
-              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Account Name: {userName}</p>
-              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">Credit: Rp. {totalPriceNumber.toLocaleString()}</p>
+              <p className="text-2xl font-bold bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">
+                Payment via {fintechName}
+              </p>
+              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">
+                Account Number: {accountNumber}
+              </p>
+              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">
+                Account Name: {userName}
+              </p>
+              <p className="text-lg font-semibold italic bg-gradient-to-r from-red-800 via-green-500 to-blue-500 bg-clip-text text-transparent ">
+                Credit: Rp. {totalPriceNumber.toLocaleString()}
+              </p>
             </div>
-
-
-
-
-
           </div>
         </div>
-
-
-
       </div>
 
       {showRemoveModal && (
@@ -339,17 +375,25 @@ const CreateOrder: React.FC = () => {
             <h2 className="text-lg font-bold">Remove Item</h2>
             <p>Are you sure you want to remove this item?</p>
             <div className="mt-4 flex justify-end">
-              <Button variant="outlined" className="mr-2" onClick={cancelRemoveCartItem}>
+              <Button
+                variant="outlined"
+                className="mr-2"
+                onClick={cancelRemoveCartItem}
+              >
                 Cancel
               </Button>
-              <Button variant="contained" color="secondary" className="bg-red-500" onClick={confirmRemoveCartItem}>
+              <Button
+                variant="contained"
+                color="secondary"
+                className="bg-red-500"
+                onClick={confirmRemoveCartItem}
+              >
                 Remove
               </Button>
             </div>
           </div>
         </div>
       )}
-
     </>
   );
 };

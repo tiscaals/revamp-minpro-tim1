@@ -8,7 +8,6 @@ export default function MyPaginate({
   totalPage,
   variant,
 }: any) {
-
   const getItemProps = (index: number) =>
     ({
       variant: currentPage === index ? 'filled' : 'text',

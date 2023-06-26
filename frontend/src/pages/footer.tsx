@@ -18,14 +18,18 @@ const Footer: React.FC = () => {
           <div>
             <p className="text-sm hover:text-gray-400">Our Campus</p>
             <div>
-              <p className="text-sm hover:text-gray-400">Jl. Bukit Golf Hijau, No. 131, Babakan Madang</p>
+              <p className="text-sm hover:text-gray-400">
+                Jl. Bukit Golf Hijau, No. 131, Babakan Madang
+              </p>
             </div>
           </div>
           <div>
             <p className="text-sm hover:text-gray-400">Contact Us</p>
             <div>
               <p className="text-sm hover:text-gray-400">WA : 081360089190</p>
-              <p className="text-sm hover:text-gray-400">Email : vendygulo@gmail.com</p>
+              <p className="text-sm hover:text-gray-400">
+                Email : vendygulo@gmail.com
+              </p>
             </div>
           </div>
           <div>

@@ -1,5 +1,5 @@
-import { call, put } from "redux-saga/effects";
-import apiMethod from "../../../api/apimethod";
+import { call, put } from 'redux-saga/effects';
+import apiMethod from '../../../api/apimethod';
 import {
   doResponseAddJobPost,
   doResponseDeleteJobPost,
@@ -10,7 +10,7 @@ import {
   doResponseSearchJobPost,
   doResponseUpdateJobPost,
   doResponseUpdateStatus,
-} from "../action/actionReducer";
+} from '../action/actionReducer';
 
 export function* handleGetAllJobPost(): any {
   try {
@@ -21,7 +21,7 @@ export function* handleGetAllJobPost(): any {
   }
 }
 
-export function* handleGetJobById(action:any): any {
+export function* handleGetJobById(action: any): any {
   // console.log("jopoSaga action", action);
   try {
     const result = yield call(apiMethod.findJobById, action.payload);
@@ -51,7 +51,6 @@ export function* handleGetCurnumber(): any {
     yield put(doResponseGetCurnumber({ message: error, status: 400 }));
   }
 }
-
 
 export function* handleAddJobPost(action: any): any {
   try {
@@ -91,9 +90,9 @@ export function* handleUpdateStatus(action: any): any {
   }
 }
 
-export function* handleGetSearchJobPost(action:any): any {
+export function* handleGetSearchJobPost(action: any): any {
   try {
-    const result = yield call(apiMethod.searchPostJob,action.payload);
+    const result = yield call(apiMethod.searchPostJob, action.payload);
     // console.log('SAGA',result)
     yield put(doResponseSearchJobPost(result.data));
   } catch (error) {

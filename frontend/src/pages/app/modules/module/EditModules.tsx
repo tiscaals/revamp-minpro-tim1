@@ -1,11 +1,11 @@
-import React, { Fragment} from 'react';
+import React, { Fragment } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import {reqUpdateModule} from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import { reqUpdateModule } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditModule = (props: any) => {
-console.log(props.data.module_name)
+  console.log(props.data.module_name);
   const dispatch = useDispatch();
 
   type FormValues = {
@@ -20,9 +20,9 @@ console.log(props.data.module_name)
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqUpdateModule(data));
-    props.closeModal()
+    props.closeModal();
   };
   return (
     <div>
@@ -61,15 +61,18 @@ console.log(props.data.module_name)
                 >
                   Edit Module
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
                   <div className="flex items-center">
-                  <input
-                        className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                        id="inline-full-name"
-                        type="hidden"
-                        defaultValue={props.data.module_name}
-                        {...register('old_module_name')}
-                      />
+                    <input
+                      className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                      id="inline-full-name"
+                      type="hidden"
+                      defaultValue={props.data.module_name}
+                      {...register('old_module_name')}
+                    />
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
                       htmlFor="inline-full-name"
@@ -82,17 +85,16 @@ console.log(props.data.module_name)
                         id="inline-full-name"
                         type="text"
                         defaultValue={props.data.module_name}
-                        placeholder='Module name'
-
+                        placeholder="Module name"
                         {...register('module_name', {
-                          required: 'Module is required'
+                          required: 'Module is required',
                         })}
                       />
                       {errors.module_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.module_name.message}
-                    </div>
-                  )}
+                        <div className="w-3/4 text-xs text-red-500">
+                          {errors.module_name.message}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-end">

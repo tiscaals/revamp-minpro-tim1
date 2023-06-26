@@ -1,7 +1,5 @@
-import { useState } from "react"
-import {
-  ChevronLeftIcon, ChevronRightIcon
-} from '@heroicons/react/24/solid'
+import { useState } from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 
 const Pagination = (props: any): any => {
   const { totalPages, currentPage, handlePageChange } = props;
@@ -21,10 +19,11 @@ const Pagination = (props: any): any => {
           key={i}
           aria-current="page"
           onClick={() => handlePageChange(i)}
-          className={`relative z-10 inline-flex items-center ${currentPage === i
-              ? "bg-blue-500 text-white focus-visible:outline-indigo-600"
-              : "bg-white text-black"
-            } px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 `}
+          className={`relative z-10 inline-flex items-center ${
+            currentPage === i
+              ? 'bg-blue-500 text-white focus-visible:outline-indigo-600'
+              : 'bg-white text-black'
+          } px-4 py-2 text-sm font-semibold focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 `}
         >
           {i}
         </a>
@@ -33,7 +32,6 @@ const Pagination = (props: any): any => {
 
     return buttons;
   };
-
 
   return (
     <div className="py-2 text-center">
@@ -55,9 +53,7 @@ const Pagination = (props: any): any => {
         <a
           onClick={() =>
             handlePageChange(
-              currentPage + 1 <= totalPages
-                ? currentPage + 1
-                : currentPage
+              currentPage + 1 <= totalPages ? currentPage + 1 : currentPage
             )
           }
           href="#"
@@ -67,7 +63,7 @@ const Pagination = (props: any): any => {
         </a>
       </nav>
     </div>
-  )
-}
+  );
+};
 
-export default Pagination
+export default Pagination;

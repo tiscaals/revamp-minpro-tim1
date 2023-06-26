@@ -1,31 +1,30 @@
-import ActionTypes from "./actionType";
-
+import ActionTypes from './actionType';
 
 /*------------ JOB POST SECTION -------------*/
 export const doRequestGetJobPost = () => {
   return {
-    type: ActionTypes.REQ_GET_JOBPOST
+    type: ActionTypes.REQ_GET_JOBPOST,
   };
 };
 export const doResponseGetJobPost = (payload: any) => {
   return {
     type: ActionTypes.RES_GET_JOBPOST,
-    payload
+    payload,
   };
 };
 
 export const doRequestGetJobById = (payload: any) => {
-  console.log("actionReducer payload", payload);
+  console.log('actionReducer payload', payload);
   return {
     type: ActionTypes.REQ_GET_JOBBYID,
-    payload
+    payload,
   };
 };
 export const doResponseGetJobById = (payload: any) => {
-  console.log("actionReducer response", payload);
+  console.log('actionReducer response', payload);
   return {
     type: ActionTypes.RES_GET_JOBBYID,
-    payload
+    payload,
   };
 };
 
@@ -53,7 +52,6 @@ export const doResponseGetCurnumber = (cur_number: any) => {
     cur_number,
   };
 };
-
 
 export const doRequestAddJobPost = (payload: any) => {
   return {
@@ -112,7 +110,7 @@ export const doResponseUpdateStatus = (payload: any) => {
   };
 };
 
-export const doRequestSearchJobPost = (payload:any) => {
+export const doRequestSearchJobPost = (payload: any) => {
   return {
     type: ActionTypes.REQ_SEARCH_JOBPOST,
     payload,
@@ -129,16 +127,16 @@ export const doResponseSearchJobPost = (payload: any) => {
 /*------------ TALENT APPLY SECTION -------------*/
 export const doRequestGetCandidate = () => {
   return {
-    type: ActionTypes.REQ_GET_CANDIDATE
+    type: ActionTypes.REQ_GET_CANDIDATE,
   };
 };
 export const doResponseGetCandidate = (payload: any) => {
   return {
     type: ActionTypes.RES_GET_CANDIDATE,
-    payload
+    payload,
   };
 };
-  
+
 export const doRequestUpdateCandidate = (payload: any) => {
   return {
     type: ActionTypes.REQ_UPDATE_CANDIDATE,
@@ -170,16 +168,15 @@ export const doResponseGetClient = (payload: any) => {
 export const doRequestGetClientById = (payload: any) => {
   return {
     type: ActionTypes.REQ_GET_CLIENTBYID,
-    payload
+    payload,
   };
 };
 export const doResponseGetClientById = (payload: any) => {
   return {
     type: ActionTypes.RES_GET_CLIENTBYID,
-    payload
+    payload,
   };
 };
-
 
 export const doRequestAddClient = (payload: any) => {
   return {

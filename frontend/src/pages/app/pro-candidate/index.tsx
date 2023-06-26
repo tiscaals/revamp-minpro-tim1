@@ -27,7 +27,10 @@ import {
 import Link from 'next/link';
 import { useDispatch, useSelector } from 'react-redux';
 import { doRequestGetRoac } from '../../redux/master-schema/action/actionReducer';
-import { doRequestGetCandidate, doRequestUpdateCandidate } from '../../redux/jobhire-schema/action/actionReducer';
+import {
+  doRequestGetCandidate,
+  doRequestUpdateCandidate,
+} from '../../redux/jobhire-schema/action/actionReducer';
 import Pagination from '../../komponen/pagination';
 // import {
 //   editParogReq,
@@ -39,7 +42,9 @@ import Pagination from '../../komponen/pagination';
 export default function Candidates() {
   const dispatch = useDispatch();
   const { routes } = useSelector((state: any) => state.RouteactionReducers);
-  const { candidates, refresh } = useSelector((state: any) => state.TalentReducers);
+  const { candidates, refresh } = useSelector(
+    (state: any) => state.TalentReducers
+  );
 
   const [idProgress, setIdProgress] = useState();
   const [selectRoute, setSelectRoute] = useState('Apply');
@@ -52,7 +57,7 @@ export default function Candidates() {
   useEffect(() => {
     dispatch(doRequestGetRoac());
     dispatch(doRequestGetCandidate());
-    console.log("CANDIDATES", candidates);
+    console.log('CANDIDATES', candidates);
   }, [route, refresh]);
 
   useEffect(() => {
@@ -65,25 +70,28 @@ export default function Candidates() {
     setSelectRoute(routeName);
     setRoute(routeName);
 
-    const currentIndex = routes.findIndex((r: any) => r.roac_name === routeName);
-    console.log("CURRENT INDEX", currentIndex);
+    const currentIndex = routes.findIndex(
+      (r: any) => r.roac_name === routeName
+    );
+    console.log('CURRENT INDEX', currentIndex);
 
     const nextIndex = currentIndex + 1;
 
     if (nextIndex < routes.length) {
       const nextRoute = routes[nextIndex].roac_name;
       setNextRoute(nextRoute);
-      console.log("NEXT ROUTE", nextRoute);
+      console.log('NEXT ROUTE', nextRoute);
     } else {
       setNextRoute('');
     }
   };
 
   const filteredData =
-    selectRoute != '' ? 
-    candidates?.filter(
-      (item: any) => item.tapr_progress_name === selectRoute)
-    : candidates;
+    selectRoute != ''
+      ? candidates?.filter(
+          (item: any) => item.tapr_progress_name === selectRoute
+        )
+      : candidates;
 
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -137,9 +145,7 @@ export default function Candidates() {
             ))}
           </TabsHeader>
           <TabsBody>
-            <table>
-
-            </table>
+            <table></table>
           </TabsBody>
         </Tabs>
       ) : (
@@ -157,7 +163,9 @@ export default function Candidates() {
             (currentItems || []).map((dt: any, index: any) => (
               <tr key={dt.id}>
                 <td className="py-3 text-gray-900">
-                  <Avatar src={`http://localhost:3003/image/profile/${dt.user_photo}`} />
+                  <Avatar
+                    src={`http://localhost:3003/image/profile/${dt.user_photo}`}
+                  />
                 </td>
                 <td className="py-3 text-gray-900">
                   <Typography variant="h6" color="blue-gray">
@@ -177,7 +185,8 @@ export default function Candidates() {
                     color="blue-gray"
                     className="opacity-70 italic"
                   >
-                    {dt.uspo_ponty_code}{dt.uspo_number}
+                    {dt.uspo_ponty_code}
+                    {dt.uspo_number}
                   </Typography>
                 </td>
                 <td className="py-3 text-gray-900">
@@ -197,34 +206,40 @@ export default function Candidates() {
                     Status: {dt.taap_status}
                   </Typography>
                 </td>
-                {selectRoute==='Interview'||selectRoute==='Succeed'||selectRoute==='Failed'?
-                <td className="py-3 text-gray-900">
-                  <Typography variant="small" color="blue-gray">
-                    Filtering test score: {dt.taap_scoring}
-                  </Typography>
-                  <Typography variant="small" color="blue-gray" className="opacity-70 italic">
-                  "{dt.tapr_comment}"
-                  </Typography>
-                </td>
-                :null}
+                {selectRoute === 'Interview' ||
+                selectRoute === 'Succeed' ||
+                selectRoute === 'Failed' ? (
+                  <td className="py-3 text-gray-900">
+                    <Typography variant="small" color="blue-gray">
+                      Filtering test score: {dt.taap_scoring}
+                    </Typography>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="opacity-70 italic"
+                    >
+                      "{dt.tapr_comment}"
+                    </Typography>
+                  </td>
+                ) : null}
                 <td className="py-3 text-gray-900">
                   <div className="w-full text-right">
                     <Menu as="div" className="relative inline-block text-left ">
                       <div>
-                        {route === 'Failed' || route === 'Succeed' ? null :
-                        <Menu.Button
-                          onClick={() => setIdProgress(dt.taap_entity_id)}
-                          className="inline-flex w-full justify-center rounded-md 
+                        {route === 'Failed' || route === 'Succeed' ? null : (
+                          <Menu.Button
+                            onClick={() => setIdProgress(dt.taap_entity_id)}
+                            className="inline-flex w-full justify-center rounded-md 
                         bg-opacity-20 px-4 py-2 text-sm font-medium text-white hover:bg-opacity-30 
                         focus:outline-none focus-visible:ring-2 focus-visible:ring-white 
                         focus-visible:ring-opacity-75"
-                        >
-                          <BsThreeDotsVertical
-                            className="h-5 w-5 text-black hover:text-violet-100"
-                            aria-hidden="true"
-                          />
-                        </Menu.Button>
-                        }
+                          >
+                            <BsThreeDotsVertical
+                              className="h-5 w-5 text-black hover:text-violet-100"
+                              aria-hidden="true"
+                            />
+                          </Menu.Button>
+                        )}
                       </div>
 
                       {/* ------ Switch Status ------ */}
@@ -253,29 +268,27 @@ export default function Candidates() {
                                     <Input
                                       label="Score Filtering Test"
                                       type="number"
-                                      onChange={(e: any) => 
+                                      onChange={(e: any) =>
                                         setScore(e.target.value)
                                       }
                                     />
-                                    {score?
+                                    {score ? (
                                       <>
-                                      <Input
-                                      labelProps={{
-                                        className: "hidden" 
-                                      }}
-                                      className={
-                                        score < 50
-                                        ? 'bg-red-100 text-red-800'
-                                        : 'bg-green-100 text-green-800'
-                                      }
-                                      value={
-                                        score < 50
-                                        ? 'Failed'
-                                        : 'Passed'
-                                      }
-                                      />
+                                        <Input
+                                          labelProps={{
+                                            className: 'hidden',
+                                          }}
+                                          className={
+                                            score < 50
+                                              ? 'bg-red-100 text-red-800'
+                                              : 'bg-green-100 text-green-800'
+                                          }
+                                          value={
+                                            score < 50 ? 'Failed' : 'Passed'
+                                          }
+                                        />
                                       </>
-                                    : null}
+                                    ) : null}
                                     <Textarea
                                       label="Review"
                                       onChange={(e: any) =>
@@ -284,21 +297,25 @@ export default function Candidates() {
                                     />
                                     <Button
                                       size="sm"
-                                      onClick={() =>{
-                                        {score ? 
-                                          score < 50 ? setStatus('Failed') : setStatus(nextRoute)
-                                        : ''};
-                                        console.log("STATUS AT BUTTON",status);
+                                      onClick={() => {
+                                        {
+                                          score
+                                            ? score < 50
+                                              ? setStatus('Failed')
+                                              : setStatus(nextRoute)
+                                            : '';
+                                        }
+                                        console.log('STATUS AT BUTTON', status);
                                         dispatch(
                                           doRequestUpdateCandidate({
                                             id: dt.taap_user_entity_id,
                                             taap_status: status.toLowerCase(),
                                             tapr_progress_name: status,
                                             taap_scoring: score,
-                                            tapr_comment: comment
+                                            tapr_comment: comment,
                                           })
                                         );
-                                        console.log("STATUS",status);
+                                        console.log('STATUS', status);
                                       }}
                                     >
                                       Submit

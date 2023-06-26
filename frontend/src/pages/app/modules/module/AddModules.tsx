@@ -2,10 +2,14 @@ import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqCreateAdressType,
+  reqCreateCat,
+  reqCreateModule,
+  reqCreateSkillType,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddModule = (props: any) => {
-
   const dispatch = useDispatch();
 
   type FormValues = {
@@ -19,9 +23,9 @@ const AddModule = (props: any) => {
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqCreateModule(data));
-    props.closeModal()
+    props.closeModal();
   };
   return (
     <div>
@@ -60,7 +64,10 @@ const AddModule = (props: any) => {
                 >
                   Tambahkan Module
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
                   <div className="flex items-center">
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -73,17 +80,16 @@ const AddModule = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="text"
-                        placeholder='Module name'
-
+                        placeholder="Module name"
                         {...register('module_name', {
-                          required: 'Module is required'
+                          required: 'Module is required',
                         })}
                       />
                       {errors.module_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.module_name.message}
-                    </div>
-                  )}
+                        <div className="w-3/4 text-xs text-red-500">
+                          {errors.module_name.message}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-end">

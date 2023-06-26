@@ -6,8 +6,8 @@ import { useDispatch } from 'react-redux';
 
 const EditCategory = (props: any) => {
   const dispatch = useDispatch();
-console.log('asw',props.list[0])
-// console.log('cat',props.data)
+  console.log('asw', props.list[0]);
+  // console.log('cat',props.data)
   type FormValues = {
     cate_id: number;
     cate_name: string;
@@ -21,13 +21,12 @@ console.log('asw',props.list[0])
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqUpdateCat(data));
-    props.closeModal()
+    props.closeModal();
   };
 
   const [selected, setSelected] = useState('');
-
 
   return (
     <div>
@@ -66,14 +65,17 @@ console.log('asw',props.list[0])
                 >
                   Edit Category
                 </Dialog.Title>
-                <form className="space-y-6" onSubmit={handleSubmit(handleRegistration)}>
-                <div className="w-2/3">
-                      <input
-                        type="hidden"
-                        defaultValue={props.data.cate_id}
-                        {...register('cate_id')}
-                      />
-                    </div>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
+                  <div className="w-2/3">
+                    <input
+                      type="hidden"
+                      defaultValue={props.data.cate_id}
+                      {...register('cate_id')}
+                    />
+                  </div>
                   <div className="flex items-center">
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -99,14 +101,18 @@ console.log('asw',props.list[0])
                       Parent Category
                     </label>
                     <div className="w-2/3">
-                    <select {...register('cate_cate_id')} className='rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900'>
-                    <option value="">-- Pilih --</option> {/* Empty string to represent null */}
-                    {props.list[0]?.map((ct: any) => (
-                      <option key={ct.cate_id} value={ct.cate_id} >
-                        {ct.cate_name}
-                      </option>
-                    ))}
-                  </select>
+                      <select
+                        {...register('cate_cate_id')}
+                        className="rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
+                      >
+                        <option value="">-- Pilih --</option>{' '}
+                        {/* Empty string to represent null */}
+                        {props.list[0]?.map((ct: any) => (
+                          <option key={ct.cate_id} value={ct.cate_id}>
+                            {ct.cate_name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                   </div>
                   <div className="flex justify-end">

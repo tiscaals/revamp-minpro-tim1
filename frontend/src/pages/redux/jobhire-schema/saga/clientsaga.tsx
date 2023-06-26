@@ -1,12 +1,12 @@
-import { call, put } from "redux-saga/effects";
-import apiMethod from "../../../api/apimethod";
+import { call, put } from 'redux-saga/effects';
+import apiMethod from '../../../api/apimethod';
 import {
   doResponseAddClient,
   doResponseDeleteClient,
   doResponseGetClient,
   doResponseGetClientById,
   doResponseUpdateClient,
-} from "../action/actionReducer";
+} from '../action/actionReducer';
 
 export function* handleGetAllClient(): any {
   try {
@@ -17,10 +17,10 @@ export function* handleGetAllClient(): any {
   }
 }
 
-export function* handleGetClientById(action:any): any {
+export function* handleGetClientById(action: any): any {
   try {
     const result = yield call(apiMethod.findOneClient, action.payload);
-    console.log("clientSaga result", result);
+    console.log('clientSaga result', result);
     yield put(doResponseGetClientById(result.data[0]));
   } catch (error) {
     yield put(doResponseGetClientById({ message: error, status: 400 }));
@@ -44,5 +44,3 @@ export function* handleUpdateClient(action: any): any {
     yield put(doResponseUpdateClient({ message: error, status: 400 }));
   }
 }
-
-

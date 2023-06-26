@@ -1,7 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
-import { reqCreateCity, reqUpdateCat } from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqCreateCity,
+  reqUpdateCat,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -11,7 +14,7 @@ type FormValues = {
 };
 
 const AddCity = (props: any) => {
-    console.log(props.dataProv)
+  console.log(props.dataProv);
   const dispatch = useDispatch();
 
   const {
@@ -64,7 +67,10 @@ const AddCity = (props: any) => {
               >
                 Tambahkan City
               </Dialog.Title>
-              <form className="space-y-6" onSubmit={handleSubmit(handleRegistration)}>
+              <form
+                className="space-y-6"
+                onSubmit={handleSubmit(handleRegistration)}
+              >
                 <div className="flex items-center">
                   <label
                     className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -77,18 +83,16 @@ const AddCity = (props: any) => {
                       className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                       id="inline-full-name"
                       type="text"
-                      placeholder='City Name'
-
-                        {...register('city_name', {
-                          required: 'City name is required'
-                        })}
-                      />
-                      {errors.city_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.city_name.message}
-                    </div>
-                  )}
-                    
+                      placeholder="City Name"
+                      {...register('city_name', {
+                        required: 'City name is required',
+                      })}
+                    />
+                    {errors.city_name && (
+                      <div className="w-3/4 text-xs text-red-500">
+                        {errors.city_name.message}
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex items-center">

@@ -109,7 +109,10 @@ const addAddress = (data: any) => {
 };
 
 const updateAddress = (data: any) => {
-  return axios.patch(`/profile-address/update-address/${data.address_id}`, data);
+  return axios.patch(
+    `/profile-address/update-address/${data.address_id}`,
+    data
+  );
 };
 
 const removeAddress = (id: any) => {

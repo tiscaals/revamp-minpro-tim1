@@ -4,15 +4,17 @@ import { Listbox } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqUpdateAdressType, reqUpdateSkillType } from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {
+  reqUpdateAdressType,
+  reqUpdateSkillType,
+} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditAddressType = (props: any) => {
-
   const dispatch = useDispatch();
 
   type FormValues = {
     adty_name: string;
-    adty_id : number;
+    adty_id: number;
   };
 
   const {
@@ -22,9 +24,9 @@ const EditAddressType = (props: any) => {
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqUpdateAdressType(data));
-    props.closeModal()
+    props.closeModal();
   };
   return (
     <div>
@@ -63,22 +65,24 @@ const EditAddressType = (props: any) => {
                 >
                   Edit Address Type
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
                   <div className="flex items-center">
-                  <input
-                        type="hidden"
-                        defaultValue={props.data.adty_id}
-                        placeholder='address type'
-
-                        {...register('adty_name', {
-                          required: 'Address Type is required'
-                        })}
-                      />
-                      {errors.adty_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.adty_name.message}
-                    </div>
-                  )}
+                    <input
+                      type="hidden"
+                      defaultValue={props.data.adty_id}
+                      placeholder="address type"
+                      {...register('adty_name', {
+                        required: 'Address Type is required',
+                      })}
+                    />
+                    {errors.adty_name && (
+                      <div className="w-3/4 text-xs text-red-500">
+                        {errors.adty_name.message}
+                      </div>
+                    )}
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
                       htmlFor="inline-full-name"

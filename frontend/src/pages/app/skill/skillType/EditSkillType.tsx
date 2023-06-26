@@ -7,12 +7,11 @@ import { useDispatch } from 'react-redux';
 import { reqUpdateSkillType } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditSkillType = (props: any) => {
-
   const dispatch = useDispatch();
 
   type FormValues = {
     skty_name: string;
-    skty_name_new : string;
+    skty_name_new: string;
   };
 
   const {
@@ -22,9 +21,9 @@ const EditSkillType = (props: any) => {
   } = useForm<FormValues>();
 
   const handleRegistration = async (data: FormValues) => {
-    console.log('ini',data);
+    console.log('ini', data);
     dispatch(reqUpdateSkillType(data));
-    props.closeModal()
+    props.closeModal();
   };
   return (
     <div>
@@ -63,13 +62,16 @@ const EditSkillType = (props: any) => {
                 >
                   Tambahkan Skill Type
                 </Dialog.Title>
-                <form className="space-y-6"  onSubmit={handleSubmit(handleRegistration)}>
+                <form
+                  className="space-y-6"
+                  onSubmit={handleSubmit(handleRegistration)}
+                >
                   <div className="flex items-center">
-                  <input
-                        type="hidden"
-                        defaultValue={props.data.skty_name}
-                        {...register('skty_name')}
-                      />
+                    <input
+                      type="hidden"
+                      defaultValue={props.data.skty_name}
+                      {...register('skty_name')}
+                    />
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
                       htmlFor="inline-full-name"
@@ -82,17 +84,16 @@ const EditSkillType = (props: any) => {
                         id="inline-full-name"
                         type="text"
                         defaultValue={props.data.skty_name}
-                        placeholder='skill type name'
-
+                        placeholder="skill type name"
                         {...register('skty_name', {
-                          required: 'Category name is required'
+                          required: 'Category name is required',
                         })}
                       />
                       {errors.skty_name && (
-                    <div className='w-3/4 text-xs text-red-500'>
-                      {errors.skty_name.message}
-                    </div>
-                  )}
+                        <div className="w-3/4 text-xs text-red-500">
+                          {errors.skty_name.message}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <div className="flex justify-end">

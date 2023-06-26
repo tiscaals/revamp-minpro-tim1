@@ -1,20 +1,24 @@
-import ActionTypesSales from "../action/actionType";
+import ActionTypesSales from '../action/actionType';
 
 const initialState = {
-    order: [],
-    messagee: '',
-    status: 0,
-    refresh: ''
-}
+  order: [],
+  messagee: '',
+  status: 0,
+  refresh: '',
+};
 
 function orderReducers(state = initialState, action: any) {
-    const {type, payload} = action;
-    switch (type) {
-        case ActionTypesSales.ADD_ORDER_RES:
-            return { messagee: payload.message, status: payload.status, refresh:false };
+  const { type, payload } = action;
+  switch (type) {
+    case ActionTypesSales.ADD_ORDER_RES:
+      return {
+        messagee: payload.message,
+        status: payload.status,
+        refresh: false,
+      };
     default:
-        return state;
-    }
+      return state;
+  }
 }
 
-export default orderReducers
+export default orderReducers;
