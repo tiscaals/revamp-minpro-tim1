@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
-import { reqUpdateCat } from '@/redux/actions/actionReducer';
+import { reqUpdateCat } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 

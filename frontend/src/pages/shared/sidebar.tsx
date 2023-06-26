@@ -140,7 +140,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       //trainer
       case 5:
       //recruiter
-      case 6:
+      case 9:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
           {
@@ -169,8 +169,8 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             name: 'Assignment',
           },
           {
-            to: '/postinghiring',
-            path: '/postinghiring',
+            to: '/app/jobs',
+            path: '/app/jobs',
             icon: <MdPostAdd />,
             name: 'Posting Hiring',
           },
@@ -181,6 +181,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             name: 'Bootcamp',
           },
         ]);
+        break;
       case 7:
         setListMenu([
           { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },

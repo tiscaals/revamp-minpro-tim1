@@ -27,6 +27,16 @@ import { SkillsModule } from './users/skills/skills.module';
 import { ProfileAddressModule } from './users/address/address.module';
 import { SalesModule } from './sales/sales.module';
 import { CurriculumModule } from './curriculum/program_entity/curriculum.module';
+import { SkillTypeModule } from './master/skill_type/skill_type.module';
+import { SkillTemplateModule } from './master/skill_template/skill_template.module';
+import { ModulesModule } from './master/modules/modules.module';
+import { RouteActionsModule } from './master/route_actions/route_actions.module';
+import { CategoryModule } from './master/category/category.module';
+import { CountryModule } from './master/country/country.module';
+import { CityModule } from './master/city/city.module';
+import { ProvincesModule } from './master/provinces/provinces.module';
+import { AddressModule } from './master/address/address.module';
+import { AddressTypeModule } from './master/address_type/address_type.module';
 
 @Module({
   imports: [
@@ -86,7 +96,19 @@ import { CurriculumModule } from './curriculum/program_entity/curriculum.module'
     ApplyBootcampModule,
     //End
 
-    SalesModule
+    SalesModule,
+
+    //Master-Ade
+    SkillTypeModule,
+    SkillTemplateModule,
+    ModulesModule,
+    RouteActionsModule,
+    CategoryModule,
+    CountryModule,
+    ProvincesModule,
+    CityModule,
+    AddressModule,
+    AddressTypeModule
   ],
   controllers: [AppController],
   providers: [AppService],

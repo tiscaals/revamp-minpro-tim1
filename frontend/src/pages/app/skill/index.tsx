@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SkillTemplete from './skillTemplete/skillTemplete';
 import SkillType from './skillType/skillType';
-import BreadcrumbsSlice from '../shared/breadcrumbs';
-import { reqSkillTemplete, reqSkillType } from '@/redux/actions/actionReducer';
+import BreadcrumbsSlice from '../../shared/breadcrumbs';
+import { reqSkillTemplete, reqSkillType } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const Index = () => {
   const { skillTemplete ,refreshSkillTemplete } = useSelector((state : any) => state.skillTempeleteReducer);

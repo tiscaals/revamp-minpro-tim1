@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
-import { reqUpdateCat, reqUpdateProv } from '@/redux/actions/actionReducer';
+import { reqUpdateCat, reqUpdateProv } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -13,7 +13,8 @@ type FormValues = {
 };
 
 const EditProv = (props: any) => {
-    console.log(props.data)
+    console.log(props.dataProv?.country_code)
+    const [selectedValue, setSelectedValue] = useState(props.dataProv?.country_code)
   const dispatch = useDispatch();
 
   const {
@@ -89,8 +90,20 @@ const EditProv = (props: any) => {
                       id="inline-full-name"
                       type="text"
                       defaultValue={props.dataProv?.prov_code}
-                      {...register('prov_code')}
+                      placeholder='5 Digit Province Code'
+                      {...register('prov_code', {
+                        required: 'Province Code is required',
+                        pattern: {
+                          value: /^[A-Z]{5}$/,
+                          message: 'Code must be 3 uppercase letters',
+                        },
+                      })}
                     />
+                    {errors.prov_code && (
+                  <div className='w-3/4 text-xs text-red-500'>
+                    {errors.prov_code.message}
+                  </div>
+                )}
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -106,8 +119,16 @@ const EditProv = (props: any) => {
                       id="inline-full-name"
                       type="text"
                       defaultValue={props.dataProv?.prov_name}
-                      {...register('prov_name')}
+                      placeholder='province name'
+                      {...register('prov_name', {
+                        required: 'Province Code is required'
+                      })}
                     />
+                    {errors.prov_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.prov_name.message}
+                    </div>
+                  )}
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -115,14 +136,14 @@ const EditProv = (props: any) => {
                     className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
                     htmlFor="inline-password"
                   >
-                    Province
+                    Country
                   </label>
                   <div className="w-2/3">
                     <select
+                    value={selectedValue}
                       {...register('prov_country_code')}
                       className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                    >
-                      <option value="">-- Pilih --</option>
+                      onChange={(e)=>setSelectedValue(e.target.value)}>
                       {props.dataCode?.map((ct: any) => (
                         <option key={ct.country_id} value={ct.country_code}>
                           {ct.country_name}

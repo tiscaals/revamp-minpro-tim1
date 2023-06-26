@@ -6,7 +6,7 @@ import EditProv from './editProv'
 import AddProv from './addProvince'
 import Swal from 'sweetalert2'
 import { useDispatch } from 'react-redux'
-import { reqDelProv } from '@/redux/actions/actionReducer'
+import { reqDelProv } from '@/pages/redux/master-ade-schema/actions/actionReducer'
 
 const Province = (props :any) => {
   const dispatch = useDispatch();
@@ -68,13 +68,17 @@ const Province = (props :any) => {
                     Province Code
                   </th>
                   <th scope="col" className="px-6 py-4 text-right">
-                <div className="flex justify-end">
-                    <button className="flex items-center" 
+
+
+                <div className="flex justify-end pr-7 ">
+                    <button className="flex items-center shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold  px-4 py-2 rounded"
                     onClick={()=>{setIsAdd(true); setDataCode(props.country)}}>
                     <GrAddCircle className="mr-1"></GrAddCircle>
                     <span className="text-sm">Add</span>
                     </button>
-                </div>
+                      </div>
+
+
                 </th>
                 </tr>
               </thead>
@@ -87,22 +91,39 @@ const Province = (props :any) => {
                     <td className="whitespace-nowrap px-6 py-4 font-medium">{prov.prov_name}</td>
                     <td className="whitespace-nowrap px-6 py-4 font-medium">{prov.prov_code}</td>
                     <td className="whitespace-nowrap px-6 py-4 text-right">
-                    <div className="flex items-center justify-end">
-                    <BsPencil className="mr-1" />
-                          <span className="mr-4 font-bold">
-                            <button onClick={() => {
-                            setDataCode(props.country);
+
+                    <div className="flex justify-end">
+                                  <div className='pt-2 shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold px-3 rounded-md'>
+                                    <div className="flex items-center">
+                                      <BsPencil className="mr-1" />
+                                      <span className="font-bold">
+                                    <button 
+                                      onClick={() => {
+                                        setDataCode(props.country);
                             setDataProv(prov);
                             setIsEdit(true);
-                          }}>Edit</button> 
-                            </span>
+                                      }}
+                                  >
+                            Edit
+                          </button> 
+                        </span>
+                      </div>
+                    </div>
+                  <span className='px-0.5'></span>
+
+
+                            <div className='py-2 shadow w-auto bg-red-500 hover:bg-red-700 focus:shadow-outline focus:outline-none text-white font-bold  px-3 rounded-md'>
+                            <div className="flex items-center">
                           <TiDeleteOutline className="mr-1" />
                           <span className="font-bold">
-                          <button
+                          <button 
                            onClick={()=>handleDelete(prov.prov_id)}
                           >Delete</button> 
                             </span>
-                    </div>
+                            </div>
+                            </div>
+                        </div>
+
                     </td>
                   </tr>
                  ))} 

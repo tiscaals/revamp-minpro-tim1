@@ -5,7 +5,7 @@ import { TiDeleteOutline } from 'react-icons/ti'
 import AddAddressType from './addAddressType'
 import EditAddressType from './EditAddressType'
 import Swal from 'sweetalert2'
-import { reqDelAdressType } from '@/redux/actions/actionReducer'
+import { reqDelAdressType } from '@/pages/redux/master-ade-schema/actions/actionReducer'
 import { useDispatch } from 'react-redux'
 
 const AddressType = (props : any) => {
@@ -63,13 +63,16 @@ const AddressType = (props : any) => {
                     Address Type
                   </th>
                   <th scope="col" className="px-6 py-4 text-right">
-                <div className="flex justify-end">
-                    <button className="flex items-center"
+
+
+                <div className="flex justify-end pr-7 ">
+                    <button className="flex items-center shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold  px-4 py-2 rounded"
                     onClick={()=>setIsAdd(true)}>
                     <GrAddCircle className="mr-1"></GrAddCircle>
                     <span className="text-sm">Add</span>
                     </button>
-                </div>
+                      </div>
+
                 </th>
                 </tr>
               </thead>
@@ -81,21 +84,41 @@ const AddressType = (props : any) => {
                   >
                     <td className="whitespace-nowrap px-6 py-4 font-medium">{addressType.adty_name}</td>
                     <td className="whitespace-nowrap px-6 py-4 text-right">
-                    <div className="flex items-center justify-end">
-                    <BsPencil className="mr-1" />
-                          <span className="mr-4 font-bold">
-                            <button onClick={() => {
-                            setDataAddType(addressType );
+
+                    <div className="flex justify-end">
+                                  <div className='pt-2 shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold px-3 rounded-md'>
+                                    <div className="flex items-center">
+                                      <BsPencil className="mr-1" />
+                                      <span className="font-bold">
+                                    <button 
+                                      onClick={() => {
+                                        setDataAddType(addressType );
                             setIsEdit(true);
-                          }}>Edit</button> 
-                            </span>
+                                      }}
+                                  >
+                            Edit
+                          </button> 
+                        </span>
+                      </div>
+                    </div>
+                  <span className='px-0.5'></span>
+
+
+                            <div className='py-2 shadow w-auto bg-red-500 hover:bg-red-700 focus:shadow-outline focus:outline-none text-white font-bold  px-3 rounded-md'>
+                            <div className="flex items-center">
                           <TiDeleteOutline className="mr-1" />
                           <span className="font-bold">
-                          <button
-                           onClick={()=>handleDelete(addressType.adty_id)}
+                          <button 
+                          onClick={()=>handleDelete(addressType.adty_id)}
                           >Delete</button> 
                             </span>
-                    </div>
+                            </div>
+                            </div>
+                        </div>
+
+
+
+
                     </td>
                   </tr>
                   ))} 

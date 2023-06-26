@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
-import { reqUpdateCat, reqUpdateCity } from '@/redux/actions/actionReducer';
+import { reqUpdateCat, reqUpdateCity } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -12,7 +12,8 @@ type FormValues = {
 };
 
 const EditCity = (props: any) => {
-    console.log(props.dataProv)
+  console.log(props.dataCity)
+    const [selectedValue, setSelectedValue] = useState(props.dataCity.prov_id)
   const dispatch = useDispatch();
 
   const {
@@ -88,8 +89,15 @@ const EditCity = (props: any) => {
                       id="inline-full-name"
                       type="text"
                       defaultValue={props.dataCity.city_name}
-                      {...register('city_name')}
+                      {...register('city_name', {
+                        required: 'City name is required'
+                      })}
                     />
+                    {errors.city_name && (
+                  <div className='w-3/4 text-xs text-red-500'>
+                    {errors.city_name.message}
+                  </div>
+                )}
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -101,10 +109,11 @@ const EditCity = (props: any) => {
                   </label>
                   <div className="w-2/3">
                     <select
+                    value={selectedValue} 
                       {...register('city_prov_id')}
                       className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                    >
-                      <option value="">-- Pilih --</option>
+                      onChange={(e)=>setSelectedValue(e.target.value)}>
+                      
                       {props.dataProv && props.dataProv[0]?.map((dt: any) => (
                         <option key={dt.prov_id} value={dt.prov_id}>
                           {dt.prov_name}

@@ -1,11 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
-import { Listbox } from '@headlessui/react';
-import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateSkillTemplete, reqCreateSkillType} from '@/redux/actions/actionReducer';
-import Index from '@/pages/locations';
+import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateSkillTemplete, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddST = (props: any) => {
   console.log(props)
@@ -18,7 +15,7 @@ const AddST = (props: any) => {
     skte_week : string;
     skte_orderby : string;
     skty_name : string;
-    skte_skte_id : number ;
+    skte_skte_id? : any;
   };
 
   const {
@@ -82,8 +79,18 @@ const AddST = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="text"
-                        {...register('skte_skill')}
+                        placeholder='skill'
+
+                        {...register('skte_skill', {
+                          required: 'Skill name is required'
+                        })}
                       />
+                      {errors.skte_skill && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.skte_skill.message}
+                    </div>
+                  )}
+
                     </div>
                   </div>
                   <div className="flex items-center">
@@ -98,7 +105,6 @@ const AddST = (props: any) => {
                       {...register('skty_name')}
                       className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
                     >
-                      <option value="">-- Pilih --</option>
                       {props.dataType?.map((dt: any) => (
                         <option key={dt.skty_name} value={dt.skty_name}>
                           {dt.skty_name}
@@ -116,10 +122,10 @@ const AddST = (props: any) => {
                     </label>
                     <div className="w-2/3">
                     <select
-                      {...register('skte_skte_id')}
+                      {...(e:any)=>{e.target.value?{...register('skte_skte_id')}:null}}
                       className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                    >
-                      <option value="">-- Pilih --</option>
+                      >
+                      <option ></option>
                       {props.dataParent[0].map((dp: any) => (
                         <option key={dp.skte_id} value={dp.skte_id}>
                           {dp.skte_skill}
@@ -140,8 +146,16 @@ const AddST = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="number"
-                        {...register('skte_week')}
+                        min={1}
+                        {...register('skte_week', {
+                          required: 'Week name is required'
+                        })}
                       />
+                      {errors.skte_week && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.skte_week.message}
+                    </div>
+                  )}
                     </div>
                     <label
                       className="text-gray-500 font-bold md:text-right flex-shrink-0 w-1/3 pr-2"
@@ -154,8 +168,16 @@ const AddST = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="number"
-                        {...register('skte_orderby')}
+                        min={1}
+                        {...register('skte_orderby', {
+                          required: 'Order by is required'
+                        })}
                       />
+                      {errors.skte_orderby && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.skte_orderby.message}
+                    </div>
+                  )}
                     </div>
                   </div>
                   <div className="flex items-center">

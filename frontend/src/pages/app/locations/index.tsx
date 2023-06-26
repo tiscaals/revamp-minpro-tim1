@@ -3,9 +3,9 @@ import AddressType from './addressType/addressType'
 import Country from './country/country'
 import Province from './provinces/province'
 import City from './city/city'
-import BreadcrumbsSlice from '../shared/breadcrumbs'
+import BreadcrumbsSlice from '../../shared/breadcrumbs'
 import { useDispatch, useSelector } from 'react-redux'
-import { reqGetAdressType, reqGetCity, reqGetCountry, reqGetProv } from '@/redux/actions/actionReducer'
+import { reqGetAdressType, reqGetCity, reqGetCountry, reqGetProv } from '@/pages/redux/master-ade-schema/actions/actionReducer'
 
 const index = () => {
   const { addressType , refreshAddressType} = useSelector((state : any) => state.addressTypeReducer);

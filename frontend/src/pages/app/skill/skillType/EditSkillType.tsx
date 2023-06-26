@@ -4,7 +4,7 @@ import { Listbox } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqUpdateSkillType } from '@/redux/actions/actionReducer';
+import { reqUpdateSkillType } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditSkillType = (props: any) => {
 
@@ -82,8 +82,17 @@ const EditSkillType = (props: any) => {
                         id="inline-full-name"
                         type="text"
                         defaultValue={props.data.skty_name}
-                        {...register('skty_name_new')}
+                        placeholder='skill type name'
+
+                        {...register('skty_name', {
+                          required: 'Category name is required'
+                        })}
                       />
+                      {errors.skty_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.skty_name.message}
+                    </div>
+                  )}
                     </div>
                   </div>
                   <div className="flex justify-end">

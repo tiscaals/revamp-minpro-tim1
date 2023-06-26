@@ -2,7 +2,7 @@ import React, { Fragment} from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import {reqUpdateModule} from '@/redux/actions/actionReducer';
+import {reqUpdateModule} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditModule = (props: any) => {
 console.log(props.data.module_name)
@@ -82,8 +82,17 @@ console.log(props.data.module_name)
                         id="inline-full-name"
                         type="text"
                         defaultValue={props.data.module_name}
-                        {...register('module_name')}
+                        placeholder='Module name'
+
+                        {...register('module_name', {
+                          required: 'Module is required'
+                        })}
                       />
+                      {errors.module_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.module_name.message}
+                    </div>
+                  )}
                     </div>
                   </div>
                   <div className="flex justify-end">

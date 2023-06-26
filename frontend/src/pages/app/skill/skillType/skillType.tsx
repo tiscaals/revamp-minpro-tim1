@@ -1,4 +1,4 @@
-import { reqDelSkillType, reqSkillType } from '@/redux/actions/actionReducer'
+import { reqDelSkillType, reqSkillType } from '@/pages/redux/master-ade-schema/actions/actionReducer'
 import React, { useEffect, useState } from 'react'
 import { BsPencil } from 'react-icons/bs'
 import { GrAddCircle } from 'react-icons/gr'
@@ -64,40 +64,53 @@ const SkillType = (props : any) => {
                     Type
                   </th>
                   <th scope="col" className="px-6 py-4 text-right">
-                <div className="flex justify-end">
-                    <button className="flex items-center"
-                    onClick={() => {
-                      // setDataCat(category);
-                      setIsAdd(true);
-                    }}>
+                  <div className="flex justify-end pr-7 ">
+                    <button className="flex items-center shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold  px-4 py-2 rounded"
+                    onClick={()=>setIsAdd(true)}>
                     <GrAddCircle className="mr-1"></GrAddCircle>
                     <span className="text-sm">Add</span>
                     </button>
-                </div>
-                </th>
-                </tr>
-              </thead>
-              <tbody >
-                {(props.skillType || []).map((stype : any, index : any) => (
-                  <tr
-                    key={index}
-                    className={index % 2 === 0 ? "bg-neutral-100 dark:bg-neutral-700" : "bg-white dark:bg-neutral-600"}
-                  >
-                    <td className="whitespace-nowrap px-6 py-4">{stype.skty_name}</td>
-                    <td className="whitespace-nowrap px-6 py-4 text-right">
-                    <div className="flex items-center justify-end">
-                          <BsPencil className="mr-1" />
-                          <span className="mr-4 font-bold">
-                            <button onClick={() => {
-                            setDataCat(stype );
-                            setIsEdit(true);
-                          }}>Edit</button> 
-                            </span>
+                      </div>
+                      </th>
+                      </tr>
+                    </thead>
+                         <tbody >
+                              {(props.skillType || []).map((stype : any, index : any) => (
+                                  <tr
+                                    key={index}
+                                      className={index % 2 === 0 ? "bg-neutral-100 dark:bg-neutral-700" : "bg-white dark:bg-neutral-600"}
+                                    >
+                                      <td className="whitespace-nowrap px-6 py-4">{stype.skty_name}</td>
+                                      <td className="whitespace-nowrap px-6 py-4 text-right">
+                                      <div className="flex justify-end">
+                                  <div className='pt-2 shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold px-3 rounded-md'>
+                                    <div className="flex items-center">
+                                      <BsPencil className="mr-1" />
+                                      <span className="font-bold">
+                                    <button 
+                                      onClick={() => {
+                                        setDataCat(stype );
+                                        setIsEdit(true);
+                                      }}
+                                  >
+                            Edit
+                          </button> 
+                        </span>
+                      </div>
+                    </div>
+                  <span className='px-0.5'></span>
+
+
+                            <div className='py-2 shadow w-auto bg-red-500 hover:bg-red-700 focus:shadow-outline focus:outline-none text-white font-bold  px-3 rounded-md'>
+                            <div className="flex items-center">
                           <TiDeleteOutline className="mr-1" />
                           <span className="font-bold">
-                          <button onClick={()=>handleDelete(stype)}
+                          <button 
+                          onClick={()=>handleDelete(stype)}
                           >Delete</button> 
                             </span>
+                            </div>
+                            </div>
                         </div>
                     </td>
                   </tr>

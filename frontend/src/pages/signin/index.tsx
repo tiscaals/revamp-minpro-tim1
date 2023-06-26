@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Checkbox } from '@material-tailwind/react';
 import { doReqLogin } from '../redux/users-schema/action/actionReducer';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const AuthLogin = () => {
   type FormValue = {
@@ -49,6 +50,7 @@ const AuthLogin = () => {
 
   const handleSignin = (data: any) => {
     dispacth(doReqLogin(data));
+    // router.push('/app')
 
     if (status === 400) {
       setIsError(message);
@@ -58,7 +60,12 @@ const AuthLogin = () => {
   useEffect((): any => {
     const token = Cookies.get('access_token');
     if (token) {
-      router.push('/');
+      const decoded = jwt.decode(token) as JwtPayload;
+      if (decoded.user_current_role == 2 || decoded.user_current_role == 10) {
+          router.push('/');
+      } else {
+        router.push('/app');
+      }
     }
   }, [handleSignin]);
 
