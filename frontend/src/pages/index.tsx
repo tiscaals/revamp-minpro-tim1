@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllProgramsReq } from '@/pages/redux/bootcamp-schema/action/actionReducer';
 import Footer from './footer';
 import Header from '@/pages/shared/header';
+import ComplexNavbar from '@/pages/shared/header_1'
 
 const LandingPage = () => {
   // let { programs, refresh } = useSelector((state: any) => state.programReducers);
@@ -40,7 +41,8 @@ const LandingPage = () => {
     <div>
       <div>
         <div>
-          <Header />
+          {/* <Header /> */}
+          <ComplexNavbar/>
           <div className="grid grid-cols-2 min-h-screen bg-gray-100 p-8">
             <div className="flex flex-col justify-center" id="join">
               <h1 className="text-left text-4xl font-bold text-gray-800 mb-6">

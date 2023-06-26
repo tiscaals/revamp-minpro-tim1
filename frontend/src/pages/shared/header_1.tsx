@@ -57,7 +57,6 @@ const profileMenuItems = [
   },
 ];
 
-
 const logoutAuth = async (id: any) => {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -444,9 +443,7 @@ export default function ComplexNavbar() {
 
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
-
   
- 
   React.useEffect(() => {
     window.addEventListener(
       "resize",
