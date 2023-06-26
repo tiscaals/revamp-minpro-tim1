@@ -19,6 +19,7 @@ import {
   getOneBatchesRes,
   addEvalsRes,
   UpdateChangeStatusBatchRes,
+  editTraineeStatusRes,
   // UpdateChangeStatusBatchRes,
 } from '../action/actionReducer';
 
@@ -173,6 +174,18 @@ function* handleUpdateChangeStatusBatch(action: any): any {
   }
 }
 
+function* handleUpdateChangeStatusTrainee(action: any): any {
+  try {
+    const result = yield call(
+      apiMethod.changeStatusTrainee,
+      action.payload
+    );
+    yield put(editTraineeStatusRes(result.data));
+  } catch (error) {
+    yield put(editTraineeStatusRes({ message: error, status: 400 }));
+  }
+}
+
 export {
   handleGetAllTalents,
   handleGetAllBatches,
@@ -190,4 +203,5 @@ export {
   handleGetAllTraineesByBatch,
   handleAddEvaluation,
   handleUpdateChangeStatusBatch,
+  handleUpdateChangeStatusTrainee
 };

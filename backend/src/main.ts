@@ -16,6 +16,7 @@ async function bootstrap() {
 
   // For User, curriculum
   app.use('/images', express.static('images'));
+  app.use('/profile', express.static('images/profile'));
   app.use('/files', express.static('files'));
   // End
   

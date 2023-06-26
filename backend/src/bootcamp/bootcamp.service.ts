@@ -468,7 +468,7 @@ export class BootcampService {
     console.log(id);
     try {
       //batr_trainee_entity_id
-      const data = await this.sequelize.query(`SELECT prap_user_entity_id as user_id,prap_prog_entity_id,user_first_name,user_last_name,user_photo,TO_CHAR(parog_action_date, 'FMMonth DD, YYYY') join_date FROM bootcamp.program_apply JOIN bootcamp.program_apply_progress on prap_user_entity_id=parog_user_entity_id and prap_prog_entity_id = parog_prog_entity_id left JOIN users.users ON user_entity_id= prap_user_entity_id WHERE (prap_status = 'recommendation' OR prap_status = 'passed') AND prap_prog_entity_id = ${id}`)
+      const data = await this.sequelize.query(`SELECT prap_user_entity_id as user_id,prap_prog_entity_id,user_name,user_first_name,user_last_name,user_photo,TO_CHAR(parog_action_date, 'FMMonth DD, YYYY') join_date FROM bootcamp.program_apply JOIN bootcamp.program_apply_progress on prap_user_entity_id=parog_user_entity_id and prap_prog_entity_id = parog_prog_entity_id left JOIN users.users ON user_entity_id= prap_user_entity_id WHERE (prap_status = 'recommendation' OR prap_status = 'passed') AND prap_prog_entity_id = ${id}`)
 
       if(data[0].length === 0) throw new Error('data tidak ditemukan')
 
@@ -510,14 +510,16 @@ export class BootcampService {
     }
   }
 
-  async setTraineeResign (batrid:any,body:{batr_review: string, batr_status: string}):Promise<any> {
+  
+  async setTraineeStatus (batrid:any,body:{batr_review: string, batr_status: string}):Promise<any> {
     try {
       const data = await this.sequelize.query(`select * from bootcamp.batch_trainee where batr_id = ${batrid}`)
       if(data[0].length === 0) throw new Error('data tidak ditemukan')
 
       await batch_trainee.update({
         batr_status: body.batr_status,
-        batr_review: body.batr_review
+        batr_review: body.batr_review,
+        batr_total_score: '0'
       },{
         where:{batr_id : batrid}
       })

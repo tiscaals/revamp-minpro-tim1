@@ -85,7 +85,8 @@ export default function CreateBatch() {
 
     console.log(newObj);
     dispatch(addBatchReq(newObj));
-    setIsAlert(true);
+    // setIsAlert(true);
+    router.push('/app/batch')
   };
 
   const activate = (item: any, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +139,8 @@ export default function CreateBatch() {
       };
     }
   }, [selTechno, batchType, selectedTrainer, selectedCoTrainer, isAlert]);
+
+  console.log(recstudents);
 
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
@@ -385,9 +388,9 @@ export default function CreateBatch() {
                   <div className="flex gap-4">
                     <Avatar className="w-10 h-10" src={item.user_photo} />
                     <div>
-                      <div>{item.user_first_name}</div>
+                      <div>{item.user_name}</div>
                       <div className="font-normal text-light-blue-200">
-                        {item.user_last_name}
+                        {item.user_first_name} {item.user_last_name}
                       </div>
                     </div>
                   </div>

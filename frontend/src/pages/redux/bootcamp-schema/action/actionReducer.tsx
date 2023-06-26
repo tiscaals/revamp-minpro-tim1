@@ -117,6 +117,20 @@ const UpdateChangeStatusBatchRes = (payload: any) => {
   };
 };
 
+const editTraineeStatusReq = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_UPDATE_TRAINEE_STATUS,
+    payload,
+  };
+};
+
+const editTraineeStatusRes = (payload: any) => {
+  return {
+    type: ActionTypes.RES_UPDATE_TRAINEE_STATUS,
+    payload,
+  };
+};
+
 const getAllTraineesByBatchReq = (payload: any) => {
   return {
     type: ActionTypes.REQ_GET_TRAINEES_BATCH,
@@ -247,4 +261,6 @@ export {
   UpdateChangeStatusBatchRes,
   addEvalsReq,
   addEvalsRes,
+  editTraineeStatusReq,
+  editTraineeStatusRes
 };

@@ -15,7 +15,7 @@ export default function CardLearn(props: any) {
           What you'll learn
         </Typography>
         <div className="grid grid-cols-1 lg:grid-cols-2">
-          {props.whattolearn.map(item => (
+          {props.whattolearn.map((item:any) => (
             <div className="flex gap-3">
               <HiCheck className="text-light-blue-500" />
               <Typography variant="small">{item}</Typography>

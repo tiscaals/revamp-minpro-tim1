@@ -132,7 +132,7 @@ export default function EditBatch() {
     return <div>....</div>;
   }
 
-  // console.log(batch);
+  console.log(checked);
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -403,9 +403,9 @@ export default function EditBatch() {
                   <div className="flex gap-4 justify-between">
                     <Avatar className="w-10 h-10" src={item.user_photo} />
                     <div>
-                      <div>{item.user_first_name}</div>
+                      <div>{item.user_name}</div>
                       <div className="font-normal text-light-blue-200">
-                        {item.user_last_name}
+                      {item.user_first_name} {item.user_last_name}
                       </div>
                     </div>
                   </div>

@@ -54,7 +54,7 @@ export default function Candidates() {
     year: date.getFullYear().toString(),
   });
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(2);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     dispatch(getAllRoutesReq());

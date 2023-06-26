@@ -17,7 +17,7 @@ import {
   Textarea,
 } from '@material-tailwind/react';
 import { batch, useDispatch, useSelector } from 'react-redux';
-import { getAllTraineesByBatchReq } from '@/pages/redux/bootcamp-schema/action/actionReducer';
+import { editTraineeStatusReq,getAllTraineesByBatchReq } from '@/pages/redux/bootcamp-schema/action/actionReducer';
 import { HiDotsVertical, HiOutlineChevronDown } from 'react-icons/hi';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -30,6 +30,11 @@ export default function evaluation() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
+  const [dataStatus, setDataStatus] = useState({
+    batr_id: 0,
+    batr_status: '',
+    batr_review: ''
+  })
 
   useEffect(() => {
     if (id) {
@@ -37,7 +42,7 @@ export default function evaluation() {
     }
   }, [id, refresh]);
 
-  if (trainees.length === 0) {
+  if (!trainees && trainees?.length === 0) {
     return <div>loading...</div>;
   }
 
@@ -46,19 +51,19 @@ export default function evaluation() {
     <div className="bg-white rounded-md">
       <div className="flex justify-between mb-5 p-4">
         <p className="grid content-center">
-          {storeTrainees?.batch_name}, Bootcamp {storeTrainees?.prog_title}{' '}
+          {trainees && trainees[0]?.batch_name}, Bootcamp {trainees && trainees[0]?.prog_title}
           Evaluation
         </p>
-        <Button>Back</Button>
       </div>
-      <div className="grid lg:grid-cols-5 gap-3">
+      <div className="grid lg:grid-cols-5 md:grid-cols-3 gap-3">
         {trainees?.map((item: any) => (
           <Card className="shadow-none">
-            <CardHeader floated={false} className="h-36">
+            {/* <button onClick={()=>setDataStatus({...dataStatus,batr_id:})}>on</button> */}
+            <CardHeader floated={false} className="min-h-36">
               <img
                 src={item.user_photo}
                 alt="profile-picture"
-                className="transform hover:scale-110 transition-transform"
+                className="transform hover:scale-110 transition-transform bg-contain w-full h-auto"
               />
               <div className="absolute right-0 top-0">
                 <Popover
@@ -70,6 +75,8 @@ export default function evaluation() {
                 >
                   <PopoverHandler>
                     <IconButton
+                      // onClick={()=> setDataStatus({...dataStatus,batr_id: item.batr_id})}
+                      // onClick={(e)=> setTes('a')}
                       variant="text"
                       className="text-white rounded-full bg-white bg-opacity-0 hover:bg-opacity-50"
                     >
@@ -94,25 +101,31 @@ export default function evaluation() {
                     </div>
                     {/* <Button variant='text'>Evaluation</Button> */}
                     <div className="flex flex-col gap-3">
-                      <Select label="Set Status">
-                        <Option>Resign</Option>
-                        <Option>Running</Option>
+                      <Select label="Set Status" onChange={(data:any)=> setDataStatus({...dataStatus,batr_status: data,batr_id: item.batr_id})}>
+                        <Option value='resign'>Resign</Option>
+                        <Option value='running'>Running</Option>
                       </Select>
-                      <Textarea label="review"></Textarea>
-                      <Button>Submit</Button>
+                      <Textarea label="review" onChange={(data:any)=> setDataStatus({...dataStatus,batr_review:data.target.value})}></Textarea>
+                      <Button onClick={()=> dispatch(editTraineeStatusReq(dataStatus))}>Submit</Button>
                     </div>
                   </PopoverContent>
                 </Popover>
               </div>
-              <Link href={`/app/batch/evaluation/${id}/${item.batr_id}`}>
+              {/* batr_total_score */}
+              {
+                item.batr_total_score > 0 ?
+                <div className="absolute pb-2 font-bold h-2/3 bottom-0 text-center w-full bg-gradient-to-t from-white to-transparent grid content-end text-xs">
+                Evaluated
+              </div>:
+                <Link href={`/app/batch/evaluation/${id}/${item.batr_id}`}>
                 <div className="absolute h-2/3 bottom-0 text-center w-full bg-gradient-to-t from-white to-transparent grid content-end text-xs">
-                  Click to Evaluate{' '}
+                  Click to Evaluate
                   <span className="flex justify-center mb-1">
-                    {' '}
-                    <HiOutlineChevronDown />{' '}
+                    <HiOutlineChevronDown />
                   </span>
                 </div>
               </Link>
+              }
             </CardHeader>
             <CardBody className="text-start">
               <Typography variant="small" color="blue-gray" className="mb-2">

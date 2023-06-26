@@ -133,6 +133,6 @@ export class BootcampController {
 
   @Patch('setresign/:batrid')
   settraineetoresign(@Param('batrid') batrid: number, @Body() body: any){
-    return this.bootcampService.setTraineeResign(batrid,body)
+    return this.bootcampService.setTraineeStatus(batrid,body)
   }
 }

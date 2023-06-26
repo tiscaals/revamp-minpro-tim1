@@ -35,6 +35,7 @@ import { BiCalendarPlus } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
+const batchPhoto = 'http://localhost:3003/'
 import {
   UpdateChangeStatusBatchReq,
   deleteBatchReq,
@@ -224,7 +225,7 @@ export default function BatchList() {
             </div>
           </div>
         </CardHeader>
-        <CardBody className="  px-0">
+        <CardBody className=" overflow-auto px-0">
           <table className="mt-4 w-full min-w-max text-left">
             <thead>
               <tr>
@@ -503,7 +504,15 @@ export default function BatchList() {
                                   <Menu.Item>
                                     {({ active }) => (
                                       <button
-                                        onClick={() => deleteaction(batch_id)}
+                                      onClick={() => dispatch(
+                                        UpdateChangeStatusBatchReq({
+                                          batch_id: selectedBatch.batch_id,
+                                          batch_entity_id: selectedBatch.batch_entity_id,
+                                          batch_reason: selectedBatch.batch_reason,
+                                          batch_status: "cancelled",
+                                          talent_status: 'idle',
+                                        })
+                                      )}
                                         className={`${
                                           active
                                             ? 'bg-light-blue-500 text-white'
@@ -529,7 +538,7 @@ export default function BatchList() {
                                     label="Change Status"
                                     onChange={(e: any) => setBatchstatus(e)}
                                     value={batchstatus}
-                                    disabled={batch_status === 'closed'}
+                                    disabled={batch_status === 'closed' || batch_status === 'cancelled'}
                                   >
                                     <Option value="running">
                                       <button className="group flex w-full items-center rounded-md px-2 py-2 text-sm text-black">

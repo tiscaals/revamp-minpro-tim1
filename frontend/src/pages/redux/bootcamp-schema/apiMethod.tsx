@@ -66,6 +66,11 @@ const updateChangeStatusBatch = (data: any) => {
 const createEvals = (data: any) => {
   return axios.post('/bootcamp/evaluation', data);
 };
+
+
+const changeStatusTrainee = (data:any) => {
+  return axios.patch(`/bootcamp/setresign/${data.batr_id}`,data)
+}
 export default {
   findAllBatch,
   createBatch,
@@ -83,4 +88,5 @@ export default {
   findAllTalents,
   createEvals,
   updateChangeStatusBatch,
+  changeStatusTrainee
 };
