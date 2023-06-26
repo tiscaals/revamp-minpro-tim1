@@ -25,22 +25,17 @@ import {
   PowerIcon,
   RocketLaunchIcon,
   Bars2Icon,
-  FaceSmileIcon,
-  PuzzlePieceIcon,
-  GiftIcon,
-} from '@heroicons/react/24/outline';
-import Logo from '../../../../public/logohitam.png';
+} from "@heroicons/react/24/outline";
+import Logo from '../../../public/logohitam.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
 import Cookies from 'js-cookie';
-import { BsCartFill } from 'react-icons/bs';
-// import { MdShoppingCart } from 'react-icons/';
-import { HiShoppingCart } from 'react-icons/hi';
+// import { useRouter } from 'next/router';
 import { doRequestGetProfile } from "@/pages/redux/users-schema/action/actionReducer";
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import defaultImage from '../../../images/default-avatar.jpg';
-import { useRouter } from 'next/router';
+import defaultImage from '../../images/default-avatar.jpg';
+import { useRouter } from "next/router";
 
 // profile menu component
 const profileMenuItems = [
@@ -61,7 +56,6 @@ const profileMenuItems = [
     icon: PowerIcon,
   },
 ];
-
 
 const logoutAuth = async (id: any) => {
   const router = useRouter()
@@ -442,7 +436,7 @@ function NavList() {
     </ul>
   );
 }
-
+ 
 export default function ComplexNavbar() {
   const router = useRouter()
   const dispatch = useDispatch()
@@ -450,8 +444,6 @@ export default function ComplexNavbar() {
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
 
-  
- 
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -466,13 +458,6 @@ export default function ComplexNavbar() {
         <div className="absolute top-2/4 left-2/4 hidden -translate-x-2/4 -translate-y-2/4 lg:block">
           <NavList />
         </div>
-        <IconButton
-          // onClick={()=>router.push('/sales/checkout')}
-          variant="text"
-          color='gray'
-        >
-            <HiShoppingCart className="h-6 w-6" />
-        </IconButton>
         <IconButton
           size="sm"
           color="blue-gray"

@@ -11,6 +11,7 @@ import {
   doRequestSearchJobPost,
 } from '../redux/jobhire-schema/action/actionReducer';
 import { useRouter } from 'next/router';
+import ComplexNavbar from '../shared/header_1';
 
 export default function Home() {
   const { job_post, search_jobpost, refresh } = useSelector(
@@ -332,7 +333,7 @@ export default function Home() {
 
   return (
     <div className="mx-auto w-[100%]">
-      <Header />
+      <ComplexNavbar />
       <div>
         <div className="w-full bg-light-blue-50">
           <div className="lg:w-3/4 mx-auto py-2 w-11/12">
