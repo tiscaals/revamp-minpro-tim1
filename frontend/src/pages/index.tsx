@@ -20,27 +20,27 @@ import next from '../../public/next.png'
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProgramsReq } from "@/pages/redux/bootcamp-schema/action/actionReducer";
 import Footer from "./footer";
-import { NavBar } from "../"
+import Header from "@/pages/shared/header"
 
 const LandingPage = () => {
-  let { programs, refresh } = useSelector((state: any) => state.programReducers);
+  // let { programs, refresh } = useSelector((state: any) => state.programReducers);
   const [isClient, setIsClient] = useState(false);
 
   // console.log('gambar',partnerShip.gambar)
 
-  console.log(programs)
+  // console.log(programs)
   const router = useRouter()
   const dispatch = useDispatch()
   useEffect(() => {
     setIsClient(true);
     dispatch(getAllProgramsReq())
-  }, [refresh]);
+  }, []);
 
   return (
     <div>
       <div>
         <div>
-          {/* <Navbar /> */}
+          <Header />
           <div className="grid grid-cols-2 min-h-screen bg-gray-100 p-8">
             <div className="flex flex-col justify-center" id="join">
               <h1 className="text-left text-4xl font-bold text-gray-800 mb-6">

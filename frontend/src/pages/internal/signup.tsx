@@ -259,7 +259,7 @@ const AuthSignUpInternal = () => {
 
               <div className="flex flex-col sm:flex-row justify-between">
                 <Button
-                  onClick={() => router.push('/signin')}
+                  onClick={() => router.push('/')}
                   variant="filled"
                   className="w-full py-3 mr-2 lg:px-16 md:px-12 sm:px-8 mt-10 bg-blue-800 rounded-sm
                   font-medium text-white uppercase"
