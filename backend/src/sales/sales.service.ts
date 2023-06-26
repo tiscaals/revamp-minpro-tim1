@@ -39,7 +39,6 @@ export class SalesService {
     try {
       await this.sequelize.query(
         `CALL sales.insert_cart_item(
-          :p_cait_id,
           :p_cait_quantity,
           :p_cait_unit_price,
           :p_cait_user_entity_id,
@@ -47,7 +46,6 @@ export class SalesService {
         )`,
         {
           replacements: {
-            p_cait_id: createSaleDto.p_cait_id,
             p_cait_quantity: createSaleDto.p_cait_quantity,
             p_cait_unit_price: createSaleDto.p_cait_unit_price,
             p_cait_user_entity_id: createSaleDto.p_cait_user_entity_id,
