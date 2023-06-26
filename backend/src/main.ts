@@ -14,10 +14,13 @@ async function bootstrap() {
 
   app.use('/image', express.static('images/job_photo'));
 
-  // For User
+  // For User, curriculum
   app.use('/images', express.static('images'));
   app.use('/files', express.static('files'));
   // End
+  
+  // curriculum
+  app.use('/videos', express.static('videos'));
 
   app.useGlobalPipes(new ValidationPipe())
 

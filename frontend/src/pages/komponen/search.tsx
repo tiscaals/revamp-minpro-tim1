@@ -12,6 +12,7 @@ const SearchBar = (props:any) => {
 
   useEffect(() => {
     dispatch(doRequestGetJobrole())
+    console.log("joro",job_role)
   }, [refresh]);
 
   const {

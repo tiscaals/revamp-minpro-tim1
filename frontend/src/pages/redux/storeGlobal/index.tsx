@@ -40,6 +40,10 @@ import cityReducers from "../users-schema/reducer/user-reducer/cityReducers";
 import rolesReducers from "../users-schema/reducer/user-reducer/roleReducer";
 import skillsReducers from "../users-schema/reducer/user-reducer/skillsReducers";
 
+import curriculumReducers from "../curriculum-schema/reducer/curriculumReducer"
+import SectionReducers from "../curriculum-schema/reducer/sectionReducers"
+import SectionUpReducers from "../curriculum-schema/reducer/sectUpReducers"
+
 const logger = createLogger();
 const saga = createSagaMiddleware();
 
@@ -83,6 +87,12 @@ const reducer = combineReducers({
     cityReducers,
     skillsReducers,
     rolesReducers,
+
+    // curriculum
+    curriculumReducers,
+    SectionReducers,
+    SectionUpReducers,
+
 });
 
 const store = configureStore({

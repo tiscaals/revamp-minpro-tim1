@@ -39,6 +39,13 @@ export default function App({ Component, pageProps }: AppProps) {
       router.pathname.startsWith('/bootcamp/confirm') ||
       router.pathname.startsWith('/profesional/apply') ||
       router.pathname.startsWith('/profesional/confirm') ||
+      router.pathname.startsWith('/sales/checkout') || 
+      router.pathname.startsWith('/sales/createorder') || 
+      router.pathname.startsWith('/sales/receipt') ||
+      // router.pathname.startsWith('/curriculum') ||
+      // router.pathname.startsWith('/curriculum/edit') ||
+      // router.pathname.startsWith('/curriculum/create') ||
+      router.pathname.startsWith('/jobs') ||
       router.pathname.startsWith('/error/error-403') ? (
         <Provider store={store}>
           <Component {...pageProps} />

@@ -17,7 +17,7 @@ import { handleAddBatch, handleAddEvaluation, handleDelete, handleEditBatch, han
 import { handleAddOrder, handleDelCart, handleGetAllCart, handleGetDiskon, handleGetPayment } from "../sales-schema/saga/salesSaga";
 
 import ActionTypesSales from "../sales-schema/action/actionType";
-
+import ActionTypeCurr from "../curriculum-schema/action/actionType";
 //Action Users
 import ActionTypesUsers from "../users-schema/action/actionType";
 import { handleAuthLogin } from "../users-schema/saga/auth-saga/authLoginSaga";
@@ -31,6 +31,7 @@ import { handleAddPhoneNumber, handleEditPhoneNumber, handleDeletePhoneNumber } 
 import { handleGetRole, handleUpdateRole } from "../users-schema/saga/user-saga/roleSaga";
 import { handleGetSkill, handleAddSkills, handleDeleteSkills } from "../users-schema/saga/user-saga/skillsSaga";
 import { handleGetAllUser, handleGetProfile, handleEditProfile, handleEditPassword } from "../users-schema/saga/user-saga/userSaga";
+import { handleAddAllCurr, handleAddSections, handleAddSectionsDetail, handleGetAll, handleGetAllCurr, handleGetCurr, handleGetCurrById, handleGetInstructor, handleUpdateProgram, handleViewSectionMerge, handleViewSectionMergeUp } from "../curriculum-schema/saga/curriculumSaga";
 //End Action Saga
 
 function* watchAll() {
@@ -140,6 +141,19 @@ function* watchAll() {
       takeEvery(ActionTypesSales.GET_DISKON, handleGetDiskon),
       takeEvery(ActionTypesSales.ADD_ORDER, handleAddOrder),
       takeEvery(ActionTypesSales.GET_PAYMENT, handleGetPayment),
+
+      // CURRICULUM
+      takeEvery(ActionTypeCurr.GET_CURRICULUM, handleGetAllCurr),
+      takeEvery(ActionTypeCurr.ADD_CURRICULUM, handleAddAllCurr),
+      takeEvery(ActionTypeCurr.GET_CURRNUMBER, handleGetCurr),
+      takeEvery(ActionTypeCurr.ADD_SECTION, handleAddSections),
+      takeEvery(ActionTypeCurr.ADD_SECTION_DETAIL, handleAddSectionsDetail),
+      takeEvery(ActionTypeCurr.UPDATE_CURRICULUM, handleUpdateProgram),
+      takeEvery(ActionTypeCurr.GET_SECTION_UP, handleViewSectionMergeUp),
+      takeEvery(ActionTypeCurr.GET_CURR_BY_ID, handleGetCurrById),
+      takeEvery(ActionTypeCurr.GET_SECT_MERGE, handleViewSectionMerge),
+      takeEvery(ActionTypeCurr.GET_ALL, handleGetAll),
+      takeEvery(ActionTypeCurr.GET_INSTRUCTOR, handleGetInstructor)
     ]);
   }
   

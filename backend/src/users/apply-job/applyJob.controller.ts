@@ -62,7 +62,7 @@ export class ApplyJobController {
   async applyJobs(
     @Param('id') id: string,
     @Body() updateApplyJobsDto: any,
-    @UploadedFiles() files: { [fieldname: string]: Multer.File[] },
+    @UploadedFiles() files: { [fieldname: string]: Express.Multer.File[] },
   ) {
     const images = [files.user_resume?.[0], files.userphoto?.[0]].filter(
       Boolean,

@@ -15,7 +15,7 @@ import Pagination from './pagination';
 
 const IndexUsers = () => {
   //Fn Untuk Reducer
-  const port = 'http://localhost:7300/';
+  const port = 'http://localhost:3003/images/user-image/';
   const dispatch = useDispatch();
   const router = useRouter();
   const { users, refresh, message, status } = useSelector(

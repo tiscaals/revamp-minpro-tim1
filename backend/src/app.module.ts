@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-// import { MasterModule } from './master/';
-import { CurriculumModule } from './curriculum/curriculum.module';
+import { MasterModule } from './master/master.module';
 import { PlacementModule } from './placement/placement.module';
 import { JobHireModule } from './job-hire/job-hire.module';
 // import { SalesModule } from './sales/sales.module';
@@ -26,6 +25,8 @@ import { PhoneModule } from './users/phone-number/phone.module';
 import { ProfileModule } from './users/profile/profile.module';
 import { SkillsModule } from './users/skills/skills.module';
 import { ProfileAddressModule } from './users/address/address.module';
+import { SalesModule } from './sales/sales.module';
+import { CurriculumModule } from './curriculum/program_entity/curriculum.module';
 
 @Module({
   imports: [
@@ -38,6 +39,15 @@ import { ProfileAddressModule } from './users/address/address.module';
       },
       {
         rootPath: join(__dirname, '..', 'files/user-media'), //For User
+      },
+      {
+        rootPath: join(__dirname, '..', 'files/curriculum-media'), //For Curriculum
+      },
+      {
+        rootPath: join(__dirname, '..', 'images/curriculum-images'), //For Curriculum
+      },
+      {
+        rootPath: join(__dirname, '..', 'videos/curriculum-videos'), //For Curriculum
       },
     ),
     SequelizeModule.forRootAsync({
@@ -52,6 +62,7 @@ import { ProfileAddressModule } from './users/address/address.module';
         autoLoadModels: true,
       }),
     }),
+    MasterModule,
     UsersModule,
     BootcampModule, 
     BankModule,
@@ -61,6 +72,8 @@ import { ProfileAddressModule } from './users/address/address.module';
     JobHireModule, 
     PlacementModule, 
     CurriculumModule, 
+
+    // Start Users Module
     AuthModule,
     ProfileAddressModule,
     ProfileModule,
@@ -70,7 +83,11 @@ import { ProfileAddressModule } from './users/address/address.module';
     ExperiencesModule,
     SkillsModule,
     ApplyJobModule,
-    ApplyBootcampModule,],
+    ApplyBootcampModule,
+    //End
+
+    SalesModule
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

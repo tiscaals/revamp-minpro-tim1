@@ -58,7 +58,7 @@ export class ProfileController {
   UpdateProfile(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-    @UploadedFile() file: Multer.File,
+    @UploadedFile() file: Express.Multer.File,
   ) {
     if (file) {
       updateUserDto.user_photo = file.filename;

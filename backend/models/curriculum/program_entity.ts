@@ -28,6 +28,10 @@ export interface program_entityAttributes {
   prog_cate_id?: number;
   prog_created_by?: number;
   prog_status?: string;
+  payment_type?: string;
+  prog_score?: number;
+  total_batch?: number;
+  prog_curr_regis?: string;
 }
 
 @Table({ tableName: 'program_entity', schema: 'curriculum', timestamps: false })
@@ -35,14 +39,7 @@ export class program_entity
   extends Model<program_entityAttributes, program_entityAttributes>
   implements program_entityAttributes
 {
-  @Column({
-    primaryKey: true,
-    autoIncrement: true,
-    type: DataType.INTEGER,
-    defaultValue: Sequelize.literal(
-      "nextval('curriculum.program_entity_prog_entity_id_seq'::regclass)",
-    ),
-  })
+  @Column({ primaryKey: true, autoIncrement: true, type: DataType.INTEGER })
   @Index({ name: 'program_entity_pkey', using: 'btree', unique: true })
   prog_entity_id?: number;
 
@@ -67,7 +64,11 @@ export class program_entity
   @Column({ allowNull: true, type: DataType.STRING(256) })
   prog_image?: string;
 
-  @Column({ allowNull: true, type: DataType.STRING(1) })
+  @Column({
+    allowNull: true,
+    type: DataType.STRING(1),
+    defaultValue: Sequelize.literal("'0'::bpchar"),
+  })
   prog_best_seller?: string;
 
   @Column({ allowNull: true, type: DataType.DECIMAL })
@@ -103,4 +104,16 @@ export class program_entity
 
   @Column({ allowNull: true, type: DataType.STRING(15) })
   prog_status?: string;
+
+  @Column({ allowNull: true, type: DataType.STRING(20) })
+  payment_type?: string;
+
+  @Column({ allowNull: true, type: DataType.INTEGER })
+  prog_score?: number;
+
+  @Column({ allowNull: true, type: DataType.INTEGER })
+  total_batch?: number;
+
+  @Column({ allowNull: true, type: DataType.STRING(100) })
+  prog_curr_regis?: string;
 }

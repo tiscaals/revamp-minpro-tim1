@@ -83,10 +83,16 @@ const CartPage: React.FC = () => {
   };
 
   const handleSearchAccountNumber = () => {
-    const matchingAccount = payment.find(
+    // const matchingAccount = payment.find(
+    //   (account: any) =>
+    //     account.usac_account_number.toLowerCase() === searchTerm.toLowerCase()
+    // );
+
+    const matchingAccount = Array.isArray(payment) ? payment.find(
       (account: any) =>
         account.usac_account_number.toLowerCase() === searchTerm.toLowerCase()
-    );
+    ) : undefined;
+    
 
     if (matchingAccount) {
       const matchingFintech = payment.find(
@@ -137,7 +143,8 @@ const CartPage: React.FC = () => {
     if (items && items?.length > 0) {
       const total = items?.reduce((accumulator: number, course: any) => {
         const price = parseFloat(course.prog_price.replace(/[^0-9.-]+/g, ""));
-        const matchingDiscount = diskon.find((d: any) => d.prog_entity_id === course.prog_entity_id);
+        // const matchingDiscount = diskon.find((d: any) => d.prog_entity_id === course.prog_entity_id);//
+        const matchingDiscount = Array.isArray(diskon) ? diskon.find((d: any) => d.prog_entity_id === course.prog_entity_id) : undefined;
         if (matchingDiscount) {
           const discount = parseFloat(matchingDiscount.spof_discount);
           const discountedPrice = price - (price * discount) / 100;
@@ -180,10 +187,11 @@ const CartPage: React.FC = () => {
   };
 
   const handleApplyDiscount = () => {
-    const matchingDiscount = diskon.find((d: any) =>
-      d.spof_description.toLowerCase().includes(searchTerm.toLowerCase()) &&
-      d.prog_entity_id === d.prog_entity_id
-    );
+    const matchingDiscount = Array.isArray(diskon) ? diskon.find((d: any) =>
+    d.spof_description.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    d.prog_entity_id === d.prog_entity_id
+  ) : undefined;
+
 
     if (matchingDiscount) {
       setDiscountApply(matchingDiscount);
@@ -221,8 +229,8 @@ const CartPage: React.FC = () => {
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">
-              {items &&
-                items.map((course: any, index: any) => {
+            {items && Array.isArray(items) &&
+              items.map((course: any, index: any) => {
                   console.log(items)
 
                   if (course.cait_id && !isNaN(course.cait_id)) {

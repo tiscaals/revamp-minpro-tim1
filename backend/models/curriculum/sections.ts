@@ -46,13 +46,25 @@ export class sections
   @Column({ allowNull: true, type: DataType.STRING(256) })
   sect_description?: string;
 
-  @Column({ allowNull: true, type: DataType.INTEGER })
+  @Column({
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal('0'),
+  })
   sect_total_section?: number;
 
-  @Column({ allowNull: true, type: DataType.INTEGER })
+  @Column({
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal('0'),
+  })
   sect_total_lecture?: number;
 
-  @Column({ allowNull: true, type: DataType.INTEGER })
+  @Column({
+    allowNull: true,
+    type: DataType.INTEGER,
+    defaultValue: Sequelize.literal('0'),
+  })
   sect_total_minute?: number;
 
   @Column({

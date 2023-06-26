@@ -27,7 +27,8 @@ const uploadGambar =  FileInterceptor('image', {
         console.log("fileName", fileName);
         cb(null, fileName);
       } catch (error) {
-        cb(error);
+        // cb(error);
+        return error.message
       }
     },
   }),
@@ -46,7 +47,7 @@ export class JobHireController {
   // JOB POSTING
   @Post()
   @UseInterceptors(uploadGambar)
-  createJopo(@Body() createJopo: any, @UploadedFile() image: Multer.File) {
+  createJopo(@Body() createJopo: any, @UploadedFile() image: Express.Multer.File) {
     return this.jobHireService.createJopo(createJopo, image);
   }
 
@@ -107,7 +108,7 @@ export class JobHireController {
 
   @Patch(':id')
   @UseInterceptors(uploadGambar)
-  updateJopo(@Param('id') id: string, @Body() updateJobHireDto: any, @UploadedFile() images: Multer.File) {
+  updateJopo(@Param('id') id: string, @Body() updateJobHireDto: any, @UploadedFile() images: Express.Multer.File) {
     return this.jobHireService.updateJopo(+id, updateJobHireDto, images);
   }
 
