@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllCurrReq } from '../redux/curriculum-schema/action/actionReducer';
+import { getAllCurrReq } from '../../redux/curriculum-schema/action/actionReducer';
 import { Menu, Transition } from '@headlessui/react';
 import { BsFillPencilFill, BsThreeDotsVertical, BsTrash } from 'react-icons/bs';
 import { Chip, Rating } from '@material-tailwind/react';
-import ContentLink from '../contentlink';
+import ContentLink from '../../contentlink';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import {
   CardBody,
@@ -14,7 +14,7 @@ import {
   Select,
   Option,
 } from '@material-tailwind/react';
-import Pagination from '../komponen/pagination';
+import Pagination from '../../komponen/pagination';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -83,7 +83,7 @@ const Curriculum = () => {
     <div>
       <ContentLink
         title="curriculum"
-        isilink="/curriculum/create"
+        isilink="/app/curriculum/create"
         button="Create"
       >
         <div className="w-full lg:pb-6">
@@ -214,7 +214,7 @@ const Curriculum = () => {
                                 //  </button>
                                 <Link
                                   href={{
-                                    pathname: '/curriculum/edit',
+                                    pathname: '/app/curriculum/edit',
                                     query: {
                                       id: item.prog_entity_id,
                                     },

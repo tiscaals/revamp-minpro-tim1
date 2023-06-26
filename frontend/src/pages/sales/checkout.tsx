@@ -45,7 +45,7 @@ const CartPage: React.FC = () => {
   const { items, message, refresh } = useSelector(
     (state: any) => state.salesReducers
   );
-  console.log(items, 'dqdaa');
+  
 
   const { diskon, pesan } = useSelector((state: any) => state.diskonReducers);
   const { payment, pesan1 } = useSelector(

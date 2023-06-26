@@ -1,5 +1,6 @@
 import ActionTypeJobHire from '../../redux/jobhire-schema/action/actionType';
 import ActionTypeMaster from '../../redux/master-schema/action/actionType';
+import ActionTypesPayment from '../../../pages/redux/payment/action/actionType';
 
 import { takeEvery, all } from 'redux-saga/effects';
 import {
@@ -130,6 +131,12 @@ import { handleAccountManager, handleGetEmployee, handleGetTalents, handleJobTyp
 import { handleCreateEmployee, handleDepartment, handleGetTalentsJob, handleMasterJoRo, handleSearchEmp, handleUpdateEmployee, handleUsersRoles, handledeptHistory, handlefindEmployee, handlesalHistory } from "../hr-schema/saga/empSaga";
 
 
+//Payment
+import { handleAddBank, handleDeleteBank, handleUpdateBank, handlegetAllBank } from '../payment/saga/bankSaga';
+import { handleAddFintech, handleDeleteFintech, handleUpdateFintech, handlegetAllFintech } from '../payment/saga/fintechSaga';
+import { handleDeleteUsersAccount, handleUpdateUsersAccount, handleaddUserAccount, handlegetAllUsersAccount } from '../payment/saga/usersAccountSaga';
+import { handlegetTOPUP } from '../payment/saga/topupSaga';
+import { handlegetAllTransaction } from '../payment/saga/transactionSaga';
 
 function* watchAll() {
   yield all([
@@ -273,6 +280,33 @@ function* watchAll() {
       takeEvery(ActionTypesHr.REQ_FIND_EMPLOYEE, handlefindEmployee),
       takeEvery(ActionTypesHr.REQ_DEPT_HISTORY, handledeptHistory),
       takeEvery(ActionTypesHr.REQ_SALARY_HISTORY, handlesalHistory),
+
+      //PAYMENT
+      
+      //Bank
+      takeEvery(ActionTypesPayment.REQ_GET_BANK, handlegetAllBank),
+    takeEvery(ActionTypesPayment.ADD_BANK, handleAddBank),
+    takeEvery(ActionTypesPayment.UPDATE_BANK, handleUpdateBank),
+    takeEvery(ActionTypesPayment.DELETE_BANK, handleDeleteBank),
+    // takeEvery(ActionTypes.REG_GET_BANK_ID,handleGetBankById),
+
+    //Fintech
+    takeEvery(ActionTypesPayment.REQ_GET_FINTECH, handlegetAllFintech),
+    takeEvery(ActionTypesPayment.ADD_FINTECH, handleAddFintech),
+    takeEvery(ActionTypesPayment.UPDATE_FINTECH,handleUpdateFintech),
+    takeEvery(ActionTypesPayment.DELETE_FINTECH,handleDeleteFintech),
+    
+    //UserAccount
+    takeEvery(ActionTypesPayment.REQ_GET_ACCOUNT, handlegetAllUsersAccount),
+    takeEvery(ActionTypesPayment.ADD_ACCOUNT, handleaddUserAccount),
+    takeEvery(ActionTypesPayment.UPDATE_ACCOUNT,handleUpdateUsersAccount),
+    takeEvery(ActionTypesPayment.DELETE_ACCOUNT,handleDeleteUsersAccount),
+
+      //Top Up
+    takeEvery(ActionTypesPayment.ADD_TOPUP,handlegetTOPUP),
+    
+      //Transaction
+    takeEvery(ActionTypesPayment.REQ_GET_TRANSACTION,handlegetAllTransaction),
     ]);
   }
 

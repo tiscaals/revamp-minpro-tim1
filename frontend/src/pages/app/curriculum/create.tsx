@@ -6,8 +6,8 @@ import {
   getCurrnumber,
   getInstructor,
   getSectionMerge,
-} from '../redux/curriculum-schema/action/actionReducer';
-import ContentLink from '../contentlink';
+} from '../../redux/curriculum-schema/action/actionReducer';
+import ContentLink from '../../contentlink';
 import {
   Accordion,
   AccordionBody,
@@ -23,47 +23,45 @@ import {
 } from '@material-tailwind/react';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import codexlogo from '../../images/codexlogo.png';
-// import { getAllCategory } from '../redux/master-schema/action/actionReducer';
+import codexlogo from '../../../../public/defaultPhoto.png';
 import { AiOutlinePlus } from 'react-icons/ai';
-// import { getUsers } from '../redux/users-schema/action/actionReducer'
-import Link from 'next/link';
 import { Viewer } from '@react-pdf-viewer/core';
 import { Select as SelectAntd } from 'antd';
 import ModalSection from './modals/showModalSection';
 import ModalSectionDetail from './modals/showModalSectDetail';
+import { reqCat } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
-// interface userEmployee {
-//   instructor: userEmployeeDetail[],
-//   refreshIns?: boolean
-// }
+interface userEmployee {
+  instructor: userEmployeeDetail[],
+  refreshIns?: boolean
+}
 
-// interface userEmployeeDetail {
-//   emp_entity_id?: number
-//   user_name: string
-//   user_photo: string
-// }
+interface userEmployeeDetail {
+  emp_entity_id?: number
+  user_name: string
+  user_photo: string
+}
 
 const NewCurr = () => {
   // let { users } = useSelector((state: any) => state.UsersReducers);
   // console.log('users: ', users);
 
-  let { get_currNum, refresh } = useSelector(
+  let { get_currNum, refreshCurr } = useSelector(
     (state: any) => state.curriculumReducers
   );
   // console.log('curr', get_currNum);
 
-  // let { category } = useSelector((state: any) => state.CategoryReducers);
-  // console.log('category', category);
+  let { category, refresh } = useSelector((state: any) => state.CatReduce);
+  console.log('category', category);
 
   let { section, refreshSect } = useSelector(
     (state: any) => state.SectionReducers
   );
   console.log('section: ', section);
 
-  // let { instructor, refreshIns }: userEmployee = useSelector(
-  //   (state: any) => state.InstructorReducers
-  // );
+  let { instructor, refreshIns }: userEmployee = useSelector(
+    (state: any) => state.InstructorReducers
+  );
 
   const dispatch = useDispatch();
   type FormValues = {
@@ -90,7 +88,7 @@ const NewCurr = () => {
 
   useEffect(() => {
     dispatch(getCurrnumber());
-    // dispatch(getAllCategory());
+    dispatch(reqCat());
     // dispatch(getUsers());
     dispatch(getSectionMerge());
     dispatch(getInstructor());
@@ -98,7 +96,7 @@ const NewCurr = () => {
     // setTimeout(() => {
     //   dispatch(getAllCurrReq());
     // }, 1000);
-  }, [refresh, refreshSect]);
+  }, [refreshCurr, refreshSect, refresh, refreshIns]);
 
   const [selectedImage, setSelectedImage]: any = useState(null);
   const [isImageSelected, setIsImageSelected]: any = useState(false);
@@ -143,10 +141,10 @@ const NewCurr = () => {
   const [IsSelectType, setIsSelectType] = useState('');
   const [selectedId, setSelectedId] = useState<number>();
 
-  //   useEffect(() => {
-  //     const nameImage = instructor?.find((item:any) => item.emp_entity_id === selectedId)
-  //     setSelectedImage(nameImage?.user_photo ?? null)
-  // }, [refreshIns, selectedId])
+    useEffect(() => {
+      const nameImage = instructor?.find((item:any) => item.emp_entity_id === selectedId)
+      setSelectedImage(nameImage?.user_photo ?? null)
+  }, [refreshIns, selectedId])
 
   // console.log('learning type:', isSelectLearning);
   // console.log('language type:', isSelectLanguage);
@@ -178,8 +176,8 @@ const NewCurr = () => {
     formData.append('description', data.description);
     formData.append('created_by', String(data.created_by));
 
-    dispatch(addCurrReq(formData));
     // console.log('form data : ', ...formData);
+    dispatch(addCurrReq(formData));
     // console.log(selectedImage);
   };
 
@@ -198,10 +196,10 @@ const NewCurr = () => {
     setSelectedFile(items);
     setOpens(!opens);
   };
-  // const handleChangeSelect = (value: userEmployeeDetail) => {
-  //       setSelectedImages(value.user_photo)
-  //       setSelectedId(value.emp_entity_id)
-  //   }
+  const handleChangeSelect = (value: userEmployeeDetail) => {
+        setSelectedImages(value.user_photo)
+        setSelectedId(value.emp_entity_id)
+    }
 
   const handleOpen = (index: any) => {
     setOpen(index === open ? null : index);
@@ -250,7 +248,7 @@ const NewCurr = () => {
   }
 
   return (
-    <ContentLink title="Create Curriculum" isilink="/curriculum" button="Back">
+    <ContentLink title="Create Curriculum" isilink="/app/curriculum" button="Back">
       <div>
         <form onSubmit={handleSubmit(handleRegistrationProgram)}>
           <div className="lg:grid lg:grid-cols-2">
@@ -311,11 +309,11 @@ const NewCurr = () => {
                       <div>
                         <h1 className="text-format">Category</h1>
                         <Select onChange={(e: any) => setIsSelectCategory(e)}>
-                          {/* {category.map((option: any) => (
+                          {category.map((option: any) => (
                             <Option key={option.cate_id} value={option.cate_id}>
                               {option.cate_name}
                             </Option>
-                          ))} */}
+                          ))}
                         </Select>
                       </div>
                     </div>
@@ -438,7 +436,7 @@ const NewCurr = () => {
                       />
                     </div>
                     {/* instructor */}
-                    {/* <div className="pb-2 lg:pb-0 lg:pl-4">
+                    <div className="pb-2 lg:pb-0 lg:pl-4">
                       <h1 className="text-format">Instructor</h1>
                       <SelectAntd
                         showSearch
@@ -464,13 +462,13 @@ const NewCurr = () => {
                         {...register('created_by')} // Menggunakan register untuk menghubungkan create_by dengan formulir
                       />
                       <Image
-                        src={process.env.imageUser + `/${selectedImages}`}
+                        src={process.env.imageUser + `${selectedImages}`}
                         width={100}
                         height={100}
                         quality={100}
                         alt="image"
                       />
-                    </div> */}
+                    </div> 
                     {/* what will you learn */}
                     <div className="pad-input my-4">
                       <h1 className="text-format">What Will You Learn</h1>

@@ -75,7 +75,7 @@ const sectionMerge = async () => {
 
 const sectionMergeUp = async (id: any) => {
   try {
-    console.log(id);
+    console.log("id",id);
     const response = await axios.get(`/program-entity/getMergedUp/${id}`);
     console.log('abg', response.data.mergedData[0]);
     return response;
@@ -97,6 +97,10 @@ const updateProgramEntity = async (id: any, data: any) => {
   });
 };
 
+const getUserHr = async()=>{
+  return await axios.get(`/program-entity/getUserHr`) 
+}
+
 export default {
   findAllCurr,
   createCurr,
@@ -110,4 +114,5 @@ export default {
   getAllTable,
   updateProgramEntity,
   sectionMergeUp,
+  getUserHr
 };

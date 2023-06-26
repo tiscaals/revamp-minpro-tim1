@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+const profile:string = 'http://localhost:3003/profile/'
 import { Fragment, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -79,6 +80,8 @@ const Employee = () => {
 
   const isDisabled = currentPage === 1;
   const isDisabledr = currentPage === totalPage;
+
+  console.log(currentItems, 'klklkl')
 
 
   useEffect(() => {
@@ -171,7 +174,7 @@ const Employee = () => {
                       <div className="flex items-center gap-3">
                         <Avatar
                           className="object-center object-cover"
-                          src={dt.user_photo}
+                          src={`${profile}${dt.user_photo}`}
                           alt={dt.user_name}
                           size="sm"
                         />

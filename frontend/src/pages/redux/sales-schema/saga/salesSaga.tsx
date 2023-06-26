@@ -19,6 +19,7 @@ function* handleGetAllCart(): any {
 
 function* handleDelCart(action: any): any {
   try {
+    console.log(action.payload, 'safddfa')
     const result = yield call(apimethod.deleteCartItems, action.payload);
     yield put(delCartRes(result.data));
   } catch (error) {

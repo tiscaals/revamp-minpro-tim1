@@ -48,6 +48,9 @@ import { AddressTypeModule } from './master/address_type/address_type.module';
       rootPath: join(__dirname, '..', 'images/user-image'), // Sesuaikan dengan path ke folder gambar
       },
       {
+        rootPath: join(__dirname, '..', 'images/profile'), // profile
+      },
+      {
         rootPath: join(__dirname, '..', 'images/user-image'), //For User
       },
       {

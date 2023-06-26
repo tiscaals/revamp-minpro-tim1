@@ -122,7 +122,7 @@ function* handleGetCurrById(action: any): any {
 
 function* handleGetInstructor(action: any): any {
   try {
-    const result = yield call(apimethod.getInstructor);
+    const result = yield call(apimethod.getUserHr);
     yield put(getInstructorRes(result.data[0]));
   } catch (error) {
     yield put(getInstructorRes({ message: error, status: 400 }));

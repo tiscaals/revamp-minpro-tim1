@@ -331,6 +331,78 @@ const updateCity = (data: any) => {
   return axios.patch(`city/${data.city_id}`, data);
 };
 
+//===============SCHEMA PAYMENT=================
+const findAllBank = () => {
+  // console.log("object");
+  return axios.get('/bank/all');
+};
+
+const createBank = (data: any) => {
+  // console.log(data);
+  return axios.post('/bank/Create', data);
+};
+
+const getByIdBank = (id: any) => {
+  // console.log("objec1t");
+  return axios.get(`/bank/${id}`);
+};
+
+const updateByIdBank = (data: any) => {
+//   console.log(data);
+  return axios.patch(`/bank/${data.id}`, data);
+};
+
+const deleteByIdBank = (id: any) => {
+  return axios.delete(`/bank/${id}`, id);
+};
+
+//Fintech
+const findAllFintech = () => {
+  return axios.get('/fintech/all');
+};
+
+const createFintech = (data: any) => {
+  return axios.post('/fintech/Create', data);
+};
+
+const updateByIdFintech = (data: any) => {
+    // console.log(data);
+    return axios.patch(`/fintech/${data.id}`, data);
+  };
+
+const deleteFintech = (id:any) => {
+    return axios.delete(`/fintech/${id}`,id)
+}
+
+//Top Up
+const TopupAccount= (data:any) =>{
+  return axios.post("/transaction-payment/Topup", data)
+}
+
+//Transaction
+const findAllTransaction= () =>{
+  return axios.get("/transaction-payment/View")
+}
+
+//UsersAccount
+const findAllUsersAccount = () => {
+  return axios.get('/users-account/all');
+};
+
+const createAccount = (data:any) => {
+  return axios.post('/users-account/create',data);
+};
+
+
+const updateUsersAccount = (data:any) => {
+  // console.log(data);
+  return axios.patch(`/users-account/Update/${data.usac_user_entity_id}`, data)
+}
+
+const deleteUsersAccount = (id:any) => {
+  return axios.delete(`/users-account/${id}`,id)
+}
+
 export default {
   findAllJob,
   findJobById,
@@ -397,4 +469,21 @@ export default {
   createST,
   updateST,
   updateDisplayRA,
+
+  //payment
+  findAllBank,
+  createBank,
+  deleteByIdBank,
+  updateByIdBank,
+  getByIdBank,
+  findAllFintech,
+  createFintech,
+  deleteFintech,
+  updateByIdFintech,
+  TopupAccount,
+  findAllUsersAccount,
+  updateUsersAccount,
+  deleteUsersAccount,
+  findAllTransaction,
+  createAccount
 };
