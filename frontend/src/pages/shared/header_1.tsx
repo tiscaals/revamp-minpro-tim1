@@ -26,7 +26,7 @@ import {
   RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
-import Logo from '../../../../public/logohitam.png';
+import Logo from '../../../public/logohitam.png';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 import Swal from 'sweetalert2';
@@ -34,7 +34,7 @@ import Cookies from 'js-cookie';
 // import { useRouter } from 'next/router';
 import { doRequestGetProfile } from "@/pages/redux/users-schema/action/actionReducer";
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import defaultImage from '../../../images/default-avatar.jpg';
+import defaultImage from '../../images/default-avatar.jpg';
 import { useRouter } from "next/router";
 
 // profile menu component
@@ -443,7 +443,7 @@ export default function ComplexNavbar() {
 
   const [isNavOpen, setIsNavOpen] = React.useState(false);
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
-  
+
   React.useEffect(() => {
     window.addEventListener(
       "resize",
