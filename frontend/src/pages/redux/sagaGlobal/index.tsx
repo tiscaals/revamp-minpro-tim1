@@ -34,6 +34,13 @@ import { handleGetAllUser, handleGetProfile, handleEditProfile, handleEditPasswo
 import { handleAddAllCurr, handleAddSections, handleAddSectionsDetail, handleGetAll, handleGetAllCurr, handleGetCurr, handleGetCurrById, handleGetInstructor, handleUpdateProgram, handleViewSectionMerge, handleViewSectionMergeUp } from "../curriculum-schema/saga/curriculumSaga";
 //End Action Saga
 
+//placement
+import ActionTypesHr from '../hr-schema/action/actionType'
+import { handleAccountManager, handleGetEmployee, handleGetTalents, handleJobType, handleSearchClient, handleTalentsEmployee } from "../hr-schema/saga/hrSaga";
+import { handleCreateEmployee, handleDepartment, handleGetTalentsJob, handleMasterJoRo, handleSearchEmp, handleUpdateEmployee, handleUsersRoles, handledeptHistory, handlefindEmployee, handlesalHistory } from "../hr-schema/saga/empSaga";
+
+
+
 function* watchAll() {
     yield all([
       // Auth
@@ -153,8 +160,28 @@ function* watchAll() {
       takeEvery(ActionTypeCurr.GET_CURR_BY_ID, handleGetCurrById),
       takeEvery(ActionTypeCurr.GET_SECT_MERGE, handleViewSectionMerge),
       takeEvery(ActionTypeCurr.GET_ALL, handleGetAll),
-      takeEvery(ActionTypeCurr.GET_INSTRUCTOR, handleGetInstructor)
-    ]);
-  }
+      takeEvery(ActionTypeCurr.GET_INSTRUCTOR, handleGetInstructor),
+
+
+    //placement
+        takeEvery(ActionTypesHr.REQ_GET_EMPLOYEE, handleGetEmployee),
+        takeEvery(ActionTypesHr.REQ_GET_SEARCH, handleSearchEmp),
+        takeEvery(ActionTypesHr.REQ_GET_DEPARTMENT, handleDepartment),
+        takeEvery(ActionTypesHr.REQ_GET_JOROMASTER, handleMasterJoRo),
+        takeEvery(ActionTypesHr.REQ_GET_USERSROLES, handleUsersRoles),
+        takeEvery(ActionTypesHr.REQ_GET_JOBTYPE, handleJobType),
+        takeEvery(ActionTypesHr.REQ_GET_AM, handleAccountManager),
+        takeEvery(ActionTypesHr.REQ_CREATE_DATA_EMPLOYEE, handleCreateEmployee),
+        takeEvery(ActionTypesHr.REQ_UPDATE_EMPLOYEE, handleUpdateEmployee),
+        takeEvery(ActionTypesHr.REQ_GET_TALENTS, handleGetTalents),
+        takeEvery(ActionTypesHr.REQ_GET_TALENTS_JOB, handleGetTalentsJob),
+        takeEvery(ActionTypesHr.REQ_SEARCH_CLIENT, handleSearchClient),
+        takeEvery(ActionTypesHr.REQ_TALENTS_EMPLOYEE, handleTalentsEmployee),
+        takeEvery(ActionTypesHr.REQ_FIND_EMPLOYEE, handlefindEmployee),
+        takeEvery(ActionTypesHr.REQ_DEPT_HISTORY, handledeptHistory),
+        takeEvery(ActionTypesHr.REQ_SALARY_HISTORY, handlesalHistory),
+    ])  
+    
+    }
   
   export default watchAll;

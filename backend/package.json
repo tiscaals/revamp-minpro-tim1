@@ -18,6 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
+    "hr_db": "stg -D postgres -d cekminpro -u postgres -x root -h localhost -p 5432 -o models/hr -s hr -i",
     "pgScript": "stg -D postgres -d db_minpro1 -u postgres -x 1234 -h localhost -p 5432 -o models/curriculum -s curriculum -i -c"
   },
   "dependencies": {
@@ -38,6 +39,7 @@
     "multer": "^1.4.5-lts.1",
     "pg": "^8.11.0",
     "postgres": "^3.3.5",
+    "react-multi-date-picker": "^4.1.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
     "sequelize": "^6.32.0",
