@@ -51,6 +51,7 @@ import {
   handleUpdateChangeStatusTrainee,
 } from '../bootcamp-schema/saga/batchsaga';
 import {
+  handleAddCart,
   handleAddOrder,
   handleDelCart,
   handleGetAllCart,
@@ -245,6 +246,7 @@ function* watchAll() {
 
     //SALES
     takeEvery(ActionTypesSales.GET_CART, handleGetAllCart),
+    takeEvery(ActionTypesSales.ADD_CART, handleAddCart),
     takeEvery(ActionTypesSales.DEL_CART, handleDelCart),
     takeEvery(ActionTypesSales.GET_DISKON, handleGetDiskon),
     takeEvery(ActionTypesSales.ADD_ORDER, handleAddOrder),

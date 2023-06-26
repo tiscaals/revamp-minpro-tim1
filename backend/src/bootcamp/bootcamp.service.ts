@@ -346,11 +346,22 @@ export class BootcampService {
         const dataBatch:any = await this.sequelize.query(`select batch_status from bootcamp.batch where batch_id = ${dataBody.batch_id}`)
         const batchStatus = dataBatch[0][0].batch_status
         if (dataBody.batch_status === batchStatus) throw new Error('Batch Sudah di Closed');
+        
+        const dataTalents:any = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${dataBody.batch_id}`)
 
-        const dataTalents = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${dataBody.batch_id}`)
+        for (let i = 0; i < dataTalents[0].length; i++) {
+            const talents = dataTalents[0][i]
+            const talentsStatus = talents.batr_status;
+
+            if (talentsStatus === 'running') {
+              throw new Error('Terdapat Peserta yang Masih BerStatus Running!');
+            }
+        }
+        
+        const dataTalentsPassed = await this.sequelize.query(`select * from bootcamp.selecttalent where batch_id = ${dataBody.batch_id} and batr_status = 'passed'`)
 
         const dataString = `[${JSON.stringify(dataBody)}]`;
-        const talentString = `${JSON.stringify(dataTalents[0])}`;
+        const talentString = `${JSON.stringify(dataTalentsPassed[0])}`;
         await this.sequelize.query(
           `call bootcamp.closebatch ('${dataString}','${talentString}')`,
         );

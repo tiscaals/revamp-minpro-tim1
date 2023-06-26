@@ -4,6 +4,10 @@ const findAllCartItems = () => {
   return axios.get('/sales-skema/view-cart');
 };
 
+const addCartItems = (data:any) => {
+  return axios.post('/sales-skema/insert-cart', data);
+};
+
 const deleteCartItems = (id: any) => {
   return axios.delete(`/sales-skema/hapus-cart/${id}`);
 };
@@ -26,6 +30,7 @@ const getPayment = () => {
 
 export default {
   findAllCartItems,
+  addCartItems,
   deleteCartItems,
   getDiskon,
   insertOrder,

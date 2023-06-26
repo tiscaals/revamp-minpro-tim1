@@ -29,6 +29,10 @@ import {
   PuzzlePieceIcon,
   GiftIcon,
 } from '@heroicons/react/24/outline';
+import { BsCartFill } from 'react-icons/bs';
+import { MdShoppingCart } from 'react-icons/';
+import { HiShoppingCart } from 'react-icons/hi';
+import { useRouter } from 'next/router';
 
 const colors = {
   blue: 'bg-blue-50 text-blue-500',
@@ -211,6 +215,7 @@ function NavList() {
 }
 
 export default function Navigation() {
+  const router = useRouter()
   const [openNav, setOpenNav] = React.useState(false);
 
   React.useEffect(() => {
@@ -234,7 +239,15 @@ export default function Navigation() {
         <div className="hidden lg:block">
           <NavList />
         </div>
-        <div className="hidden gap-2 lg:flex">
+        <div className="hidden gap-3 lg:flex">
+        <IconButton
+          onClick={()=>router.push('/sales/checkout')}
+          variant="text"
+          color='gray'
+        >
+            <HiShoppingCart className="h-6 w-6" />
+        </IconButton>
+
           <Button variant="text" size="sm" color="blue-gray">
             Sign In
           </Button>

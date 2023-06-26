@@ -31,6 +31,7 @@ import {
   HiX,
   HiOutlineClock,
 } from 'react-icons/hi';
+import { notifySuccess, notifyFailed } from '@/pages/alert';
 import { BiCalendarPlus } from 'react-icons/bi';
 import { useRouter } from 'next/router';
 import { Fragment, useEffect, useRef, useState } from 'react';
@@ -43,7 +44,7 @@ import {
 } from '../../redux/bootcamp-schema/action/actionReducer';
 import { useSelector } from 'react-redux';
 import MyPaginate from '../../bootcamp/components/pagination';
-import { ToastContainer, toast } from 'react-toastify';
+// import { ToastContainer, toast } from 'react-toastify';
 const TABS = [
   {
     label: 'All',
@@ -155,11 +156,11 @@ export default function BatchList() {
 
   useEffect(() => {
     setButtonSelect('all');
-    setTimeout(() => {
-      if (message) {
-        toast.success(message);
-      }
-    }, 30);
+    if (message) {
+      setTimeout(()=>{
+        notifySuccess('success',message)
+      },30)
+    }
   }, []);
 
   const changeStatusBatch = () => {

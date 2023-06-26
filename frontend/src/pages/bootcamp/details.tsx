@@ -15,6 +15,12 @@ import Instructor from './components/instructor';
 import Testi from './components/testimonials';
 import { RiWhatsappFill } from 'react-icons/ri';
 import { HiCalendar, HiLocationMarker } from 'react-icons/hi';
+import { addCartReq } from '../redux/sales-schema/action/actionReducer';
+import { useDispatch } from 'react-redux';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/router';
+
 
 const dataCurriculum = {
   name: 'Nodejs Fullstack',
@@ -46,7 +52,26 @@ const whatWillYouLearn = [
   'Version Control (e.g., Git)',
 ];
 
+
+
 export default function index() {
+    const dispatch = useDispatch();
+    const router = useRouter();
+    const {id, price} = router.query;
+    const handleInsertCartItems = () => {
+        const createCartItem = {
+            p_cait_quantity: 1,
+            p_cait_unit_price: price,
+            p_cait_user_entity_id: 2,
+            p_cait_prog_entity_id: id
+        };
+        dispatch(addCartReq(createCartItem));
+        toast.success('Item berhasil ditambahkan ke keranjang!', {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            // tambahkan opsi lain yang sesuai dengan kebutuhan Anda
+          });
+    }
+
   return (
     <div className="">
       <Navigation />
@@ -140,15 +165,18 @@ export default function index() {
               Apply Bootcamp
             </Button>
             <Button
-              size="lg"
+              size="sm"
               color="white"
-              variant="outlined"
-              className=" hover:scale-[1.02] focus:scale-[1.02] active:scale-100 mt-3"
+              variant="text"
+              className="mt-2"
               ripple={false}
               fullWidth={true}
+              onClick={handleInsertCartItems}
             >
-              Add to cart
+              <p className='font-bold'>Add to cart</p>
+              <p className='font-thin text-xs  '>Rp. {price}</p>
             </Button>
+              <ToastContainer />
           </CardFooter>
         </Card>
       </div>

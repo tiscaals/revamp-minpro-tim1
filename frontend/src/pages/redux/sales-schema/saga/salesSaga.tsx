@@ -1,6 +1,7 @@
 import { call, put } from 'redux-saga/effects';
 import apimethod from '../apimethod';
 import {
+  addCartRes,
   addOrderRes,
   delCartRes,
   getAllCartRes,
@@ -17,9 +18,18 @@ function* handleGetAllCart(): any {
   }
 }
 
+function* handleAddCart(action: any): any {
+  try {
+    // console.log(action.payload, 'safddfa')
+    const result = yield call(apimethod.addCartItems, action.payload);
+    yield put(addCartRes(result.data));
+  } catch (error) {
+    yield put(addCartRes({ message: error, status: 400 }));
+  }
+}
+
 function* handleDelCart(action: any): any {
   try {
-    console.log(action.payload, 'safddfa')
     const result = yield call(apimethod.deleteCartItems, action.payload);
     yield put(delCartRes(result.data));
   } catch (error) {
@@ -57,6 +67,7 @@ function* handleGetPayment(): any {
 
 export {
   handleGetAllCart,
+  handleAddCart,
   handleDelCart,
   handleGetDiskon,
   handleAddOrder,

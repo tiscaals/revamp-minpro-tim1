@@ -13,6 +13,20 @@ const getAllCartRes = (payload: any) => {
   };
 };
 
+const addCartReq = (payload:any) => {
+  return {
+    type: ActionTypesSales.ADD_CART,
+    payload,
+  };
+};
+
+const addCartRes = (payload: any) => {
+  return {
+    type: ActionTypesSales.ADD_CART_RES,
+    payload,
+  };
+};
+
 const delCartReq = (payload: any) => {
   return {
     type: ActionTypesSales.DEL_CART,
@@ -70,6 +84,8 @@ const getPaymentRes = (payload: any) => {
 export {
   getAllCartReq,
   getAllCartRes,
+  addCartReq,
+  addCartRes,
   delCartReq,
   delCartRes,
   getDiskonReq,
