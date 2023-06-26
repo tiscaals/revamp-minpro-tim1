@@ -31,7 +31,7 @@ export class PlacementService {
 
   async viewTalentsJob(): Promise<any> {
     try {
-      const query = `SELECT * FROM job_hire.pro_candidate_view`;
+      const query = `SELECT * FROM hr.pro_candidate_view`;
       const result = await this.sequelize.query(query);
       return messageHelper(result, 200, 'OK');
     } catch (error) {
@@ -219,7 +219,7 @@ export class PlacementService {
         
         const data = `${JSON.stringify(sendData)}`;
         // console.log("DATAAA", typeof(sendData.ecco_contract_no))
-        const query = `CALL hr.CCFromBootcamp_coba('[${data}]')`;
+        const query = `CALL hr.CCFromBootcamp('[${data}]')`;
         console.log(query);
         const result = await this.sequelize.query(query);
 
