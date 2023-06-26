@@ -44,13 +44,13 @@ const Bank = () => {
 
   }
   
-  
+  //======================================
   let { bank, message, refresh, status } = useSelector((state: any) => state.bankReducer);
   let { fintech } = useSelector((state: any) => state.fintechReducer);
   let { account } = useSelector((state: any) => state.AccountReducer);
   let { transaction } = useSelector((state: any) => state.transactionReducer);
   let { topup } = useSelector((state: any) => state.topupReducer);
-
+  //======================================
   const [isEdit, setisEdit] = useState(false);
   const [isEditBank, setIsEditBank] = useState(false);
   const [bankById, setBankById] = useState('');
@@ -58,10 +58,12 @@ const Bank = () => {
   const [whatToDelete, setWhatToDelete] = useState();
   const sourceIdRef = useRef("");
   const targetIdRef = useRef("");
+  //============SET FILTER=========================
   const [filterBank, setFilterBank] = useState(bank);
   const [filterFintech, setFilterFintech] = useState(fintech);
-  // const [filterTransaction, setFilterTransaction] = useState(transaction);
   const [filterUsersAccount, setFilterUsersAccount] = useState(account);
+  const [filterTransaction, setFilterTransaction] = useState(transaction);
+
   const [filterTopup, setFilterTopup] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -71,13 +73,11 @@ const Bank = () => {
   const [selectedType, setSelectedType] = useState<string>("");
   const [selected, setSelected]: any = useState(0);
   const [itemPerPage, setItemPerPage] = useState(5);
-  // const [currentPage, setCurrentPage]: any = useState(1);
   const [currentPage, setCurrentPage]: any = useState(1);
   const startIndex = (currentPage - 1) * itemPerPage;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [deleteUsersAccount, setDeleteUsersAccount]: any = useState(false);
   const endIndex = startIndex + itemPerPage;
-  const [filterTransaction, setFilterTransaction] = useState(transaction);
   const [selectedAccountNumberBank, setSelectedAccountNumberBank] = useState<string>("");
   const [selectedAccountNumberFinttech, setSelectedAccountNumberFinttech] = useState<string>("");
   const [selectedTypeSource, setSelectedTypeSource] = useState("");
@@ -85,8 +85,13 @@ const Bank = () => {
   const [activeTab,setActiveTab] = useState("bank")
   const [balance,setBalance] = useState(0)
   const totalPagesTransaction = Math.ceil(filterTransaction?.length / itemPerPage);
+
+  //Current FILTERR
   const currentItemTransaction = filterTransaction?.slice(startIndex, endIndex);
   const currentItemBank = filterBank?.slice(startIndex, endIndex);
+  const currentItemFintech = filterFintech?.slice(startIndex,endIndex);
+  const currentItemAccount = filterUsersAccount?.slice(startIndex,endIndex);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const {
@@ -95,6 +100,7 @@ const Bank = () => {
     formState: { errors },
   } = useForm();
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>, data: any) => {
     setSelected(data);
     setAnchorEl(event.currentTarget);
@@ -142,6 +148,7 @@ const Bank = () => {
   const [selectedAccountNumber, setSelectedAccountNumber] = useState<string>('');
   const [filteredOptions, setFilteredOptions] = useState<AccountNumberBank[]>(usacAccountNumberBank.options || []);
 
+  //================ HANDLE DELETE ==================
   const handleDeleteBank = async (id: any, data:any) => {
     try {
       const result = await Swal.fire({
@@ -203,34 +210,13 @@ const Bank = () => {
     }
   };
 
-  const handleFilterTransaction = (filter: any) => {
-    let newDatatransaction = [...transaction]; // Create a new array to store the filtered data
-
-    // Filter based on transaction number
-    if (filter.transaction_status_input) {
-      const inputValue = filter.transaction_status_input.toLowerCase();
-      newDatatransaction = newDatatransaction.filter((list) =>
-        list.trpa_code_number.toString().includes(inputValue)
-      );
-    }
-
-    // Filter based on transaction type
-    if (filter.selectedType) {
-      newDatatransaction = newDatatransaction.filter(
-        (list) => list.trpa_type === filter.selectedType
-      );
-    }
-    setFilterTransaction(newDatatransaction);
-  };
-
-  
-
   const handleTypeChange = (event:any) => {
     const selectedType = event.target.value as string;
     setSelectedType(selectedType);
     handleFilterTransaction({ selectedType }); // Memanggil handleFilterTransaction dengan filter yang diperbarui
   };
 
+  //==========================
 
   const handleTypeChangeSource = (value: string) => {
     setSelectedTypeSource(value);
@@ -253,6 +239,7 @@ const Bank = () => {
     window.location.reload();
   };
 
+  //=========== FILTER =========================
   const handleFilterBank = (filter: any) => {
     let newDatabank = [...bank]; // Create a new array to store the filtered data
     if (filter.bank_status_input) {
@@ -277,6 +264,40 @@ const Bank = () => {
     setFilterFintech(newDataFintech);
   };
 
+  const handleFilterAccount = (filter: any) => {
+    let newDataAccount = [...account];
+    if(filter.account_status_input) {
+      newDataAccount = newDataAccount.filter((akun) =>
+      akun.usac_account_number
+      .toLowerCase()
+      .includes(filter.account_status_input.toLowerCase())
+      );
+    }
+    setFilterUsersAccount(newDataAccount)
+  };
+
+  const handleFilterTransaction = (filter: any) => {
+    let newDatatransaction = [...transaction]; // Create a new array to store the filtered data
+
+    // Filter based on transaction number
+    if (filter.transaction_status_input) {
+      const inputValue = filter.transaction_status_input.toLowerCase();
+      newDatatransaction = newDatatransaction.filter((list) =>
+        list.trpa_code_number.toString().includes(inputValue)
+      );
+    }
+
+    // Filter based on transaction type
+    if (filter.selectedType) {
+      newDatatransaction = newDatatransaction.filter(
+        (list) => list.trpa_type === filter.selectedType
+      );
+    }
+    setFilterTransaction(newDatatransaction);
+  };
+
+ //==========================================
+
   const column4 = [
     { name: "Transaction Number" },
     { name: "Trx Date" },
@@ -296,7 +317,7 @@ const Bank = () => {
     { id: 4, type: "refund" },
   ];
 
-  // console.log(fintech);
+  //==========================================
 
   useEffect(() => {
     if(message){
@@ -325,7 +346,6 @@ const Bank = () => {
       topup
     ]);
 
-
   useEffect(() => {
     if (selectedAccountNumberBank !== "") {
       const selectedAccount = account.find(
@@ -350,7 +370,7 @@ const Bank = () => {
   }, [selectedAccountNumberBank, account, selectedAccountNumberFinttech]);
 
   
-//  console.log(selectedTypeTarget);
+  //================================
   
   const data = [
     {
@@ -367,8 +387,6 @@ const Bank = () => {
               >
                 Create
               </Link>
-
-
               
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch">
                   <div className=" w-full p-4 text-center">
@@ -403,8 +421,9 @@ const Bank = () => {
           <tbody className="">
             {(currentItemBank || []).map((data: any, index: any) => (
               <tr>
-                <td className="py-3 text-sm text-gray-600">{data.bank_code}</td>
-                <td className="py-3 text-sm text-gray-600">{data.bank_name}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{data.bank_code}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{data.bank_name}</td>
+                
                 <td>
                   <Menu as="div" className="relative inline-block text-left">
                     <div>
@@ -465,6 +484,42 @@ const Bank = () => {
             ))}
           </tbody>
         </table>
+        <nav className="flex items-center justify-center mt-5">
+            <ul className="pagination">
+              <li className={`pagination-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button
+                  className="pagination-link"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+              </li>
+            </ul>
+              {Array.from({ length: totalPagesTransaction }, (_, index) => (
+                <li
+                  key={index}
+                  className={`pagination-item ${currentPage === index + 1 ? 'active' : ''}`}
+                >
+                  <button
+                    className="pagination-link"
+                    onClick={() => handlePageChange(index + 1)}
+                    disabled={currentPage === index + 1}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className={`pagination-item ${currentPage === totalPagesTransaction ? 'disabled' : ''}`}>
+                <button
+                  className="pagination-link"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPagesTransaction}
+                >
+                  Next
+                </button>
+              </li>
+          </nav>
       </div>
       
       ),
@@ -483,24 +538,26 @@ const Bank = () => {
               >
                 Create
               </Link>
+
+
                 <div className="relative mb-4 flex w-full flex-wrap items-stretch ">
                   <div className=" w-full p-4 text-center">
                     <form onSubmit={handleSubmit(handleFilterFintech)}>
-
                       <input
                         type="search"
                         className=" px-2 py-1 rounded-xl border-gray-200 border-2"
                         {...register("fintech_status_input")}
                         placeholder="Fintech Name"
+                        aria-label='Fintech Name'
+                        aria-describedby='button-addon2'
                       />
-
                       <button className="order-0  ml-2 inline-flex items-center px-4 py-2 border border-transparent rounded-xl bg-red-500 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:order-1">
                         Search
                       </button>
+
                     </form>
                   </div>
                 </div>
-              
             </div>
           </div>
           <table className="min-w-full table-fixed ">
@@ -515,15 +572,15 @@ const Bank = () => {
             </thead>
 
             <tbody className="">
-              {(fintech || []).map((data: any, index: any) => (
+              {(currentItemFintech || []).map((data: any, index: any) => (
                 <tr
                 // key={data.id}
                 >
                   {/* <td className="py-3 text-sm text-gray-600">{index + 1}</td> */}
-                  <td className="py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {data.fint_code}
                   </td>
-                  <td className="py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {data.fint_name}
                   </td>
                   <td>
@@ -588,6 +645,42 @@ const Bank = () => {
               ))}
             </tbody>
           </table>
+          <nav className="flex items-center justify-center mt-5">
+            <ul className="pagination">
+              <li className={`pagination-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button
+                  className="pagination-link"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+              </li>
+            </ul>
+              {Array.from({ length: totalPagesTransaction }, (_, index) => (
+                <li
+                  key={index}
+                  className={`pagination-item ${currentPage === index + 1 ? 'active' : ''}`}
+                >
+                  <button
+                    className="pagination-link"
+                    onClick={() => handlePageChange(index + 1)}
+                    disabled={currentPage === index + 1}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className={`pagination-item ${currentPage === totalPagesTransaction ? 'disabled' : ''}`}>
+                <button
+                  className="pagination-link"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPagesTransaction}
+                >
+                  Next
+                </button>
+              </li>
+          </nav>
         </div>
       ),
     },
@@ -605,15 +698,28 @@ const Bank = () => {
               >
                 Create
               </Link>
-              <input
-                type="search"
-                className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                placeholder="Accounts Name"
-                aria-label="Accounts Name"
-                aria-describedby="button-addon2"
-              />
+
+              <div className="relative mb-4 flex w-full flex-wrap items-stretch ">
+                  <div className=" w-full p-4 text-center">
+                    <form onSubmit={handleSubmit(handleFilterAccount)}>
+                      <input
+                        type="search"
+                        className=" px-2 py-1 rounded-xl border-gray-200 border-2"
+                        {...register("account_status_input")}
+                        placeholder="Account Number"
+                        aria-label='Account Number'
+                        aria-describedby='button-addon2'
+                      />
+                      <button className="order-0  ml-2 inline-flex items-center px-4 py-2 border border-transparent rounded-xl bg-red-500 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:order-1">
+                        Search
+                      </button>
+
+                    </form>
+                  </div>
+                </div>
             </div>
           </div>
+
           <table className="min-w-full table-fixed ">
             <thead>
               <tr>
@@ -625,24 +731,21 @@ const Bank = () => {
               </tr>
             </thead>
             <tbody className="">
-              {(account || []).map((data: any, index: any) => (
+              {(currentItemAccount || []).map((data: any, index: any) => (
                 <tr 
                 key={index} 
                 >
-                  <td className="py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {data.usac_account_number}
                   </td> 
-                  <td className="py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {data.account_name}
                   </td>
-                  {/* <td className="py-3 text-sm text-gray-600">{index + 1}</td> */}
-                  <td className="py-3 text-sm text-gray-600">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {data.balance}
                   </td>
-                  <td className="py-3 text-sm text-gray-600">
-                    {data.usac_type}
-                  </td>
-
+                  <td className="px-6 py-4 whitespace-nowrap">{data.usac_type}</td>
+                  
                   <td>
                     <Menu as="div" className="relative inline-block text-left">
                       <div>
@@ -678,7 +781,7 @@ const Bank = () => {
                                     },
                                   }}
                                   onClick={() => EditAccount(data)}
-                                  // onClick={()=> setIsEditBank(true)}
+                                  
                                 >
                                   <BsPencilFill className="mr-2" /> 
                                   <span>Edit</span>
@@ -710,6 +813,42 @@ const Bank = () => {
               ))}
             </tbody>
           </table>
+          <nav className="flex items-center justify-center mt-5">
+            <ul className="pagination">
+              <li className={`pagination-item ${currentPage === 1 ? 'disabled' : ''}`}>
+                <button
+                  className="pagination-link"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+              </li>
+            </ul>
+              {Array.from({ length: totalPagesTransaction }, (_, index) => (
+                <li
+                  key={index}
+                  className={`pagination-item ${currentPage === index + 1 ? 'active' : ''}`}
+                >
+                  <button
+                    className="pagination-link"
+                    onClick={() => handlePageChange(index + 1)}
+                    disabled={currentPage === index + 1}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li className={`pagination-item ${currentPage === totalPagesTransaction ? 'disabled' : ''}`}>
+                <button
+                  className="pagination-link"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPagesTransaction}
+                >
+                  Next
+                </button>
+              </li>
+          </nav>
         </div>
       ),
     },
@@ -718,171 +857,175 @@ const Bank = () => {
       value: 'topup',
       contents: (
         <div className="min-w-[120px]">
-  <div>
-    <form onSubmit={handleSubmit(handleRegistrationTopup)}>
-      <div className="flex bg-white-100">
+          <div>
+            <form onSubmit={handleSubmit(handleRegistrationTopup)}>
+              <div className="flex bg-white-100">
 
-        <div className="w-1/2 text-center bg-gray-100">
-          <div className="relative flex w-80 ">
-              <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
-                Source Name:
-              </div>
-              <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-              <div className="w-72">
-                <label htmlFor="demo-simple-select-label" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200">
-                  <h2 className='text-3xl font-bold mb-4 bg-blue-300'>
-                    Bank Name
-                  </h2>
-                </label>
-                <select
-                // label=''
-                  // id="demo-simple-select"
-                  className="mt-1 block w-full py-2 px-3 border border-neutral-300 bg-white rounded-md shadow-sm text-base font-normal text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  value={selectedTypeSource}
-                  // {...register("selectedTypeTarget")}
-                  onChange={(e:any)=>handleTypeChangeSource(e.target.value)}
-                >
-                  <option value="">None</option>
-                  {bank?.map((userAccount: any) => (
-                    <option key={userAccount.bank_entity_id} value={userAccount.bank_name}>
-                      {userAccount.bank_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            </div>
-            
-            <div className="relative flex w-80 ">
-              <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
-                Account:
-              </div>
-              <Select label='BANK' onChange={(value: any) => {
-                  register("trpa_source_id", { value: value });
-                  setBalance(value.balance)
-                  // setSelectedAccountNumberFinttech(value.usac_account_number);
-                  sourceIdRef.current = value ? value.balance : "";
-                }}>
-                {
-                  usacAccountNumberBank.options && usacAccountNumberBank.options.map((item:any)=>(
-                    <Option key={item.usac_account_number} value={item}>{item.usac_account_number}</Option>
-                  ))
-                }
-              </Select>
-            </div>
-            <br />
-            <div className="relative flex w-80 ">
-              <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
-                Current Saldo:
-              </div>
-              <input
-                className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                aria-label=""
-                aria-describedby="button-addon2"
-                value={sourceIdRef.current}
-                disabled
-              />
-            </div>
-
-            
-            <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
-              <div className="mt-4">
-                <button
-                  type="submit"
-                  className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-                >
-                  Transfer
-                </button>
-              </div>
-              <div className="mt-4 ms-8">
-                <input
-                  className="mt-1 block w-full px-3 py-2 text-gray-600 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
-                  focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-                            disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
-                            invalid:border-pink-500 invalid:text-pink-600
-                            focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
-                  type="number"
-                  {...register("trpa_credit")}
-                  placeholder="Input Your Saldo Here"
-                  autoComplete="off"
-                />
-              </div>
-            </div>
-          
-        </div>
-
-
-        <div className="w-1/2 text-center bg-gray-100">
-          <div className="relative flex w-80 ">
-            <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
-                Target Name:
-              </div>
-            <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-              <div className="w-72">
-                <label htmlFor="demo-simple-select-label" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200">
-                <h2 className='text-3xl font-bold mb-4 bg-blue-300'>
-                Fintech Name
-                </h2>
-                </label>
-                <select
-                // label=''
-                  // id="demo-simple-select"
-                  className="mt-1 block w-full py-2 px-3 border border-neutral-300 bg-white rounded-md shadow-sm text-base font-normal text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  value={selectedTypeTarget}
-                  // {...register("selectedTypeTarget")}
-                  onChange={(e:any)=>handleTypeChangeTarget(e.target.value)}
-                >
-                  <option value="">None</option>
-                  {fintech?.map((userAccount: any) => (
-                    <option key={userAccount.fint_entity_id} value={userAccount.fint_name}>
-                      {userAccount.fint_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-            </div>
-            
-            <div className="relative flex w-80 ">
-              <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
-                Account:
-              </div>
-              <Select label='FINTECH' onChange={(value: any) => {
-                  register("trpa_target_id", { value: value });
-                  setBalance(value.balance)
-                  // setSelectedAccountNumberFinttech(value.usac_account_number);
-                  targetIdRef.current = value ? value.balance : "";
-                }}>
-                {
-                  usacAccountNumberFintech.options && usacAccountNumberFintech.options.map((item:any)=>(
-                    <Option key={item.usac_account_number} value={item}>{item.usac_account_number}</Option>
+                <div className="w-1/2 text-center bg-gray-100">
+                  <div className="relative flex w-80 ">
+                      <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
+                        Source Name:
+                      </div>
+                      <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                      <div className="w-72">
+                        <label htmlFor="demo-simple-select-label" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200">
+                          <h2 className='text-3xl font-bold mb-4 bg-blue-300'>
+                            Bank Name
+                          </h2>
+                        </label>
+                        <select
+                        // label=''
+                          // id="demo-simple-select"
+                          className="mt-1 block w-full py-2 px-3 border border-neutral-300 bg-white rounded-md shadow-sm text-base font-normal text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          value={selectedTypeSource}
+                          // {...register("selectedTypeTarget")}
+                          onChange={(e:any)=>handleTypeChangeSource(e.target.value)}
+                        >
+                          <option value="">None</option>
+                          {bank?.map((userAccount: any) => (
+                            <option key={userAccount.bank_entity_id} value={userAccount.bank_name}>
+                              {userAccount.bank_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    </div>
                     
-                  ))
-                }
-              </Select>
-            </div>
-            <br />
-            <div className="relative flex w-80 ">
-              <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
-                Current Saldo:
+                    <div className="relative flex w-80 ">
+                      <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
+                        Account:
+                      </div>
+                      
+                      <Select 
+                      label='BANK' 
+                      onChange={(value: any) => {
+                          register("trpa_source_id", { value: value });
+                          setBalance(value.balance)
+                          // setSelectedAccountNumberFinttech(value.usac_account_number);
+                          sourceIdRef.current = value ? value.balance : "";
+                        }}
+                        >
+                        {
+                          usacAccountNumberBank.options && usacAccountNumberBank.options.map((item:any)=>(
+                            <Option key={item.usac_account_number} value={item}>{item.usac_account_number}</Option>
+                          ))
+                        }
+                      </Select>
+
+                    </div>
+                    <br />
+                    <div className="relative flex w-80 ">
+                      <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
+                        Current Saldo:
+                      </div>
+                      <input
+                        className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                        aria-label=""
+                        aria-describedby="button-addon2"
+                        value={sourceIdRef?.current}
+                        disabled
+                      />
+                    </div>
+
+                    
+                    <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
+                      <div className="mt-4">
+                        <button
+                          type="submit"
+                          className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                        >
+                          Transfer
+                        </button>
+                      </div>
+                      <div className="mt-4 ms-8">
+                        <input
+                          className="mt-1 block w-full px-3 py-2 text-gray-600 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400
+                          focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
+                                    disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
+                                    invalid:border-pink-500 invalid:text-pink-600
+                                    focus:invalid:border-pink-500 focus:invalid:ring-pink-500"
+                          type="number"
+                          {...register("trpa_credit")}
+                          placeholder="Input Your Saldo Here"
+                          autoComplete="off"
+                        />
+                      </div>
+                    </div>
+                </div>
+                <div className="w-1/2 text-center bg-gray-100">
+                  <div className="relative flex w-80 ">
+                    <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
+                        Target Name:
+                      </div>
+                    <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+                      <div className="w-72">
+                        <label htmlFor="demo-simple-select-label" className="block text-sm font-medium text-neutral-700 dark:text-neutral-200">
+                        <h2 className='text-3xl font-bold mb-4 bg-blue-300'>
+                        Fintech Name
+                        </h2>
+                        </label>
+                        <select
+                        // label=''
+                          // id="demo-simple-select"
+                          className="mt-1 block w-full py-2 px-3 border border-neutral-300 bg-white rounded-md shadow-sm text-base font-normal text-neutral-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          value={selectedTypeTarget}
+                          // {...register("selectedTypeTarget")}
+                          onChange={(e:any)=>handleTypeChangeTarget(e.target.value)}
+                        >
+                          <option value="">None</option>
+                          {fintech?.map((userAccount: any) => (
+                            <option key={userAccount.fint_entity_id} value={userAccount.fint_name}>
+                              {userAccount.fint_name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                    </div>
+                    
+                    <div className="relative flex w-80 ">
+                      <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
+                        Account:
+                      </div>
+                    
+                      <Select 
+                      label='FINTECH' onChange={(value: any) => {
+                          register("trpa_target_id", { value: value });
+                          setBalance(value.balance)
+                          // setSelectedAccountNumberFinttech(value.usac_account_number);
+                          targetIdRef.current = value ? value.balance : "";
+                        }}
+                        >
+                        {
+                          usacAccountNumberFintech.options && usacAccountNumberFintech.options.map((item:any)=>(
+                            <Option key={item.usac_account_number} value={item}>{item.usac_account_number}</Option>
+                            
+                          ))
+                        }
+                      </Select>
+                      
+
+                    </div>
+                    <br />
+                    <div className="relative flex w-80 ">
+                      <div className="flex items-center whitespace-nowrap rounded px-3 py-1.5 text-base font-normal text-neutral-700 dark:text-neutral-200">
+                        Current Saldo:
+                      </div>
+                      <input
+                        className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
+                        aria-label=""
+                        aria-describedby="button-addon2"
+                        defaultValue={targetIdRef?.current}
+                        disabled
+                      />
+                    </div>
+                
+                </div>
               </div>
-              <input
-                className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-                aria-label=""
-                aria-describedby="button-addon2"
-                defaultValue={targetIdRef.current}
-                disabled
-              />
-            </div>
-         
+            </form>
+          </div>
         </div>
-      </div>
-    </form>
-  </div>
-</div>
-
-
-
       ),
     },
     {
@@ -891,25 +1034,23 @@ const Bank = () => {
       contents: (
         <div>
         <div className="mb-3">
+
           <div className="relative mb-4 flex w-full flex-wrap items-stretch ">
             <div className="w-full p-4 text-center">
               <form onSubmit={handleSubmit(handleFilterTransaction)}>
-                <label htmlFor="search" className="mr-2">
-                  Search
-                </label>
-      
                 <input
                   type="search"
                   className="px-2 py-1 rounded-xl border-gray-200 border-2"
                   {...register("transaction_status_input")}
                   name="transaction_status_input"
                   placeholder="Transaction number"
+                  aria-label='Transaction number'
+                  aria-describedby='button-addon2'
                 />
-      
                 <button className="order-0 ml-2 inline-flex items-center px-4 py-2 border border-transparent rounded-xl bg-blue-500 text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:order-1">
                   Search
                 </button>
-      
+                </form>
                 <div className="w-36 ml-8">
                   <label htmlFor="selectedType" className="mr-2">
                     Payment Type
@@ -929,7 +1070,7 @@ const Bank = () => {
                     ))}
                   </select>
                 </div>
-              </form>
+             
             </div>
           </div>
         </div>
@@ -986,7 +1127,7 @@ const Bank = () => {
                   Previous
                 </button>
               </li>
-            </ul>
+            </ul>   
               {Array.from({ length: totalPagesTransaction }, (_, index) => (
                 <li
                   key={index}
@@ -1012,19 +1153,6 @@ const Bank = () => {
               </li>
           </nav>
         </div>
-        {/* <Menu>
-                              <Button
-                                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded flex items-center mt-2 lg:mt-0"
-                                onClick={() => {
-                                  handleDeleteAccounts(
-                                    data.fint_entity_id,
-                                    data.fint_code
-                                  );
-                                }}
-                              >
-                                <span>Delete</span>
-                              </Button>
-                            </Menu>  */}
       </div>
       )
     },

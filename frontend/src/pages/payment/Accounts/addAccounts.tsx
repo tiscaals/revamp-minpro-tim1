@@ -71,6 +71,8 @@ const addAccounts = (show: any) => {
   const [selectedType, setSelectedType] = useState<string>("");
   const [selectedDesc, setSelectedDesc] = useState<string>("");
 
+
+
   const handleDescChange = (value: any) => {
     setSelectedDesc(value);
   };
@@ -196,7 +198,7 @@ setSelectedDesc(desc)
             </div>
 
            
-           <div className="flex justify-between mt-4">
+    <div className="flex justify-between mt-4">
   <span id="type-select-label">Type</span>
   <Select
     id="type-select"
@@ -214,11 +216,11 @@ setSelectedDesc(desc)
   <span id="desc-select-label">Desc</span>
   <Select
     id="desc-select"
-    value={selectedDesc}
+    value={selectedDesc || ""}
     onChange={(value) => handleDescChange(value)}
     className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
   >
-    {descOptions.map((option) => (
+    {descOptions.map((option:any):any => (
       <Option key={option.value} value={option.value}>
         {option.label}
       </Option>

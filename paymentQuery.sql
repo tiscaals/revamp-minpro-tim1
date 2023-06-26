@@ -57,6 +57,7 @@ WHERE tp.trpa_source_id = ua_source.usac_user_entity_id::varchar
   AND tp.trpa_target_id = ua_target.usac_user_entity_id::varchar;
 
 
+--create procedure agar entity_id ny,nambah secara otomatis
 CREATE OR REPLACE PROCEDURE payment.insertbank(In data JSON)
 LANGUAGE plpgsql
 AS $$
@@ -76,7 +77,7 @@ BEGIN
     RAISE NOTICE 'Inserted % bank entities.', new_bank_entity_id;
 END $$;
 
-
+--create procedure agar entity_id nya,nambah secara otomatsi
 CREATE OR REPLACE PROCEDURE payment.insertfintech(In data JSON)
 LANGUAGE plpgsql
 AS $$
@@ -97,7 +98,7 @@ BEGIN
 END $$;
 
 
-
+--create procedure agar mendapatkan bank_name dari bank atau fintech
 CREATE OR REPLACE PROCEDURE payment.createUserAccountWEntity(
     IN user_entity_id INT,
     IN usac_account_number VARCHAR(25),
@@ -165,6 +166,7 @@ BEGIN
 END $$;
 
 
+--create procedure agar update type dan bank_name ny dapat diganti
 CREATE OR REPLACE PROCEDURE payment.updateUserAccountWEntity(
     IN user_entity_id INT,
     IN usac_account_number_param VARCHAR(25),
@@ -260,7 +262,7 @@ END $$;
 
 
 
-
+--create procedure,agar TRX number dengan date now 
 CREATE OR REPLACE FUNCTION payment.generate_transaction_code() RETURNS VARCHAR(50)
 AS $$
 DECLARE
@@ -290,7 +292,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-
+--create procedure,agar saldo dari users account dari bank nya,bisa di transfer ke fintech
 CREATE OR REPLACE PROCEDURE payment.Topup(
     IN p_usac_account_number_bank VARCHAR(25),
     IN p_usac_account_number_fintech VARCHAR(25),
@@ -438,110 +440,3 @@ FROM
 JOIN
     users.users u ON tp.trpa_user_entity_id = u.user_entity_id;
 
-
---jika ingin menampilkan note trpa_note:
-CREATE OR REPLACE PROCEDURE payment.Topup(
-    IN p_usac_account_number_bank VARCHAR(25),
-    IN p_usac_account_number_fintech VARCHAR(25),
-    IN p_credit numeric,
-    IN p_trpa_type varchar(15),
-    IN p_trpa_note varchar(255)
-)
-LANGUAGE plpgsql
-AS $$
-DECLARE
-    v_bank_entity_id integer;
-    v_user_entity_id integer;
-    v_fint_entity_id integer;
-    v_bank_saldo numeric;
-    v_fint_saldo numeric;
-    v_trpa_code_number varchar(50);
-BEGIN
-    -- Mendapatkan informasi bank dari usac_account_number_bank
-    SELECT usac_bank_entity_id, usac_user_entity_id, usac_saldo,
-           usac_user_entity_id AS v_user_entity_id
-    INTO v_bank_entity_id, v_user_entity_id, v_bank_saldo
-    FROM payment.users_account
-    WHERE usac_account_number = p_usac_account_number_bank;
-
-    -- Mengecek apakah saldo mencukupi
-    IF v_bank_saldo < p_credit THEN
-        RAISE EXCEPTION 'Saldo tidak mencukupi';
-    END IF;
-
-    -- Mendapatkan kode transaksi menggunakan fungsi payment.generate_transaction_code()
-    SELECT payment.generate_transaction_code()
-    INTO v_trpa_code_number;
-
-    SELECT usac_user_entity_id, usac_fint_entity_id
-    INTO v_user_entity_id, v_fint_entity_id
-    FROM payment.users_account
-    WHERE usac_account_number = p_usac_account_number_fintech;
-
-    -- Mendapatkan saldo bank sebelum transaksi
-    SELECT usac_saldo INTO v_bank_saldo
-    FROM payment.users_account
-    WHERE usac_account_number = p_usac_account_number_bank;
-
-    -- Mengupdate nilai trpa_debet dengan saldo bank sebelum transaksi
-    v_bank_saldo := v_bank_saldo - p_credit;
-
-    -- Memasukkan data transaksi ke dalam tabel payment.transaction_payment
-    INSERT INTO payment.transaction_payment (trpa_code_number, trpa_debet, trpa_credit, trpa_type, trpa_note, trpa_source_id, trpa_target_id, trpa_user_entity_id)
-    VALUES (v_trpa_code_number, v_bank_saldo, p_credit, p_trpa_type, p_trpa_note, p_usac_account_number_bank, p_usac_account_number_fintech, v_user_entity_id);
-
-    -- Memperbarui saldo bank
-    UPDATE payment.users_account
-    SET usac_saldo = usac_saldo - p_credit,
-        usac_modified_date = now()
-    WHERE usac_account_number = p_usac_account_number_bank
-    RETURNING usac_saldo INTO v_bank_saldo;
-
-    -- Memperbarui saldo fintech
-    UPDATE payment.users_account
-    SET usac_saldo = usac_saldo + p_credit,
-        usac_modified_date = now()
-    WHERE usac_account_number = p_usac_account_number_fintech
-    RETURNING usac_saldo INTO v_fint_saldo;
-
-    -- Jika bank entity ID dan fintech entity ID berbeda, maka perlu dilakukan transfer antar bank
-    IF v_bank_entity_id != v_fint_entity_id THEN
-        -- Perbarui saldo bank fintech
-        UPDATE payment.users_account
-        SET usac_saldo = usac_saldo - p_credit,
-            usac_modified_date = now()
-        WHERE usac_account_number = p_usac_account_number_bank
-        AND usac_bank_entity_id = v_bank_entity_id
-        RETURNING usac_saldo INTO v_bank_saldo;
-
-        -- Perbarui saldo fintech
-        UPDATE payment.users_account
-        SET usac_saldo = usac_saldo + p_credit,
-            usac_modified_date = now()
-        WHERE usac_account_number = p_usac_account_number_fintech
-        AND usac_bank_entity_id = v_fint_entity_id
-        RETURNING usac_saldo INTO v_fint_saldo;
-    END IF;
-
-    -- Insert bank account record if it doesn't exist
-    INSERT INTO payment.users_account (usac_bank_entity_id, usac_user_entity_id, usac_account_number, usac_saldo, usac_type, usac_status)
-    SELECT v_bank_entity_id, v_user_entity_id, p_usac_account_number_bank, v_bank_saldo - p_credit, 'debet', 'active'
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM payment.users_account
-        WHERE usac_account_number = p_usac_account_number_bank
-    );
-
-    -- Insert fintech account record if it doesn't exist
-    INSERT INTO payment.users_account (usac_bank_entity_id, usac_user_entity_id, usac_account_number, usac_saldo, usac_type, usac_status)
-    SELECT v_fint_entity_id, v_user_entity_id, p_usac_account_number_fintech, v_fint_saldo + p_credit, 'kredit', 'active'
-    WHERE NOT EXISTS (
-        SELECT 1
-        FROM payment.users_account
-        WHERE usac_account_number = p_usac_account_number_fintech
-    );
-
-    -- Mengembalikan kode transaksi
-    PERFORM v_trpa_code_number;
-END;
-$$;
