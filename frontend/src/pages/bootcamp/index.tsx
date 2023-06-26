@@ -8,7 +8,6 @@ import MyFooter from './components/footer'
 import Testi from './components/testimonials'
 
 export default function index() {
-
   const data = [
     {
       "judul": "Node.js",

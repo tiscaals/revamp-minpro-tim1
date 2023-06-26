@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Logo from '../../../public/logohitam.png';
 import Image from 'next/image';
 import {
@@ -19,8 +19,15 @@ function ProfileMenu() {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);
+  const [adatoken, setAdatoken] = useState()
 
-  const token = Cookies.get('access_token');
+  const token:any = Cookies.get('access_token');
+
+  useEffect(()=>{
+    setAdatoken(token);
+  }, [token])
+
+  console.log("ada tokenn",adatoken)
 
   const logoutAuth = async () => {
     try {
@@ -45,7 +52,7 @@ function ProfileMenu() {
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen}>
-      {!token ? (
+      {!adatoken ? (
         <>
           <Button
             onClick={() => router.push('/signin')}

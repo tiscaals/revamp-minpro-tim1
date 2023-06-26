@@ -24,7 +24,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   const [listMenu, setListMenu] = useState([
-    { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
+    { to: '/app', path: '/app', icon: <MdCottage />, name: 'Home' },
   ]);
 
   //Decode Token
@@ -47,129 +47,121 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
       //Admin
       case 1:
         setListMenu([
-          { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/app/users', path: '/users', icon: <MdGroup />, name: 'User' },
+          { to: '/app', path: '/app', icon: <MdCottage />, name: 'Home' },
+          { to: '/app/users', path: '/app/users', icon: <MdGroup />, name: 'User' },
           {
-            to: '/category',
-            path: '/category',
+            to: '/app/category',
+            path: '/app/category',
             icon: <MdCategory />,
             name: 'Category',
           },
           {
-            to: '/skill',
-            path: '/skill',
+            to: '/app/batch',
+            path: '/app/batch',
             icon: <MdSportsMartialArts />,
-            name: 'Skill',
+            name: 'Batch',
           },
           {
-            to: '/modules',
-            path: '/modules',
+            to: '/app/candidate',
+            path: '/app/candidate',
+            icon: <MdSportsMartialArts />,
+            name: 'Candidate',
+          },
+          {
+            to: '/app/client',
+            path: '/app/client',
             icon: <MdViewModule />,
-            name: 'Modules',
+            name: 'Client',
           },
           {
-            to: '/locations',
-            path: '/locations',
+            to: '/app/curriculum',
+            path: '/app/curriculum',
+            icon: <MdLocationOn />,
+            name: 'Curriculum',
+          },
+          {
+            to: '/app/employee',
+            path: '/app/employee',
+            icon: <MdLocationOn />,
+            name: 'Employee',
+          },
+          {
+            to: '/app/jobs',
+            path: '/app/jobs',
+            icon: <MdLocationOn />,
+            name: 'Jobs',
+          },
+          {
+            to: '/app/locations',
+            path: '/app/locations',
             icon: <MdLocationOn />,
             name: 'Locations',
           },
-        ]);
-        break;
-
-      //Users
-      case 2:
-        setListMenu([
-          { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
           {
-            to: '/bootcamp/apply',
-            path: '/bootcamp',
-            icon: <MdGroup />,
-            name: 'Apply Bootcamp',
+            to: '/app/modules',
+            path: '/app/modules',
+            icon: <MdLocationOn />,
+            name: 'Modules',
           },
           {
-            to: '/profesional/apply',
-            path: '/profesional',
-            icon: <MdGroup />,
-            name: 'Apply Job',
-          },
-        ]);
-        break;
-
-      //Employee
-      case 3:
-        setListMenu([
-          //MENU BLM TAU
-          { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/user', path: '/user', icon: <MdGroup />, name: 'User' },
-          {
-            to: '/category',
-            path: '/category',
-            icon: <MdCategory />,
-            name: 'Category',
+            to: '/app/payment',
+            path: '/app/payment',
+            icon: <MdLocationOn />,
+            name: 'Payment',
           },
           {
-            to: '/product',
-            path: '/product',
-            icon: <MdShopTwo />,
-            name: 'Product',
+            to: '/app/placement',
+            path: '/app/placement',
+            icon: <MdLocationOn />,
+            name: 'Placement',
+          },
+          {
+            to: '/app/pro-candidate',
+            path: '/app/pro-candidate',
+            icon: <MdLocationOn />,
+            name: 'Pro-Candidate',
+          },
+          {
+            to: '/app/skill',
+            path: '/app/skill',
+            icon: <MdLocationOn />,
+            name: 'Skill',
+          },
+          {
+            to: '/app/talents',
+            path: '/app/talents',
+            icon: <MdLocationOn />,
+            name: 'Talents',
           },
         ]);
         break;
 
-      //Talent
-      case 4:
+      //HR
+      case 6:
         setListMenu([
-          //MENU BLM TAU
-          { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/user', path: '/user', icon: <MdGroup />, name: 'User' },
+          { to: '/app', path: '/app', icon: <MdCottage />, name: 'Home' },
           {
-            to: '/category',
-            path: '/category',
-            icon: <MdCategory />,
-            name: 'Category',
+            to: '/app/placement',
+            path: '/app/placement',
+            icon: <MdLocationOn />,
+            name: 'Placement',
           },
           {
-            to: '/product',
-            path: '/product',
-            icon: <MdShopTwo />,
-            name: 'Product',
+            to: '/app/pro-candidate',
+            path: '/app/pro-candidate',
+            icon: <MdLocationOn />,
+            name: 'Pro-Candidate',
+          },
+          {
+            to: '/app/employee',
+            path: '/app/employee',
+            icon: <MdLocationOn />,
+            name: 'Employee',
           },
         ]);
         break;
 
-      //trainer
-      case 5:
-        setListMenu([
-          //MENU BLM TAU
-          { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/user', path: '/user', icon: <MdGroup />, name: 'User' },
-          {
-            to: '/category',
-            path: '/category',
-            icon: <MdCategory />,
-            name: 'Category',
-          },
-          {
-            to: '/product',
-            path: '/product',
-            icon: <MdShopTwo />,
-            name: 'Product',
-          },
-        ]);
-        break;
-
-      //recruiter
-
-      case 7:
-        setListMenu([
-          { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
-          {
-            to: '/app/profesional/apply',
-            path: '/users',
-            icon: <MdGroup />,
-            name: 'Apply Job',
-          },
-        ]);
+      //Trainer
       case 8:
         setListMenu([
           { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
@@ -185,40 +177,24 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             icon: <MdGroup />,
             name: 'Candidate',
           },
+          {
+            to: '/app/talents',
+            path: '/app/talents',
+            icon: <MdLocationOn />,
+            name: 'Talents',
+          },
         ]);
         break;
+      
+      //Recruiter
       case 9:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          {
-            to: '/candidate',
-            path: '/app/candidate',
-            icon: <MdGroupAdd />,
-            name: 'Candidate',
-          },
           {
             to: '/app/batch',
             path: '/app/batch',
             icon: <MdCategory />,
             name: 'Batch',
-          },
-          {
-            to: '/app/talents',
-            path: '/app/talents',
-            icon: <MdGroups />,
-            name: 'Talents',
-          },
-          {
-            to: '/app/curriculum',
-            path: '/app/curriculum',
-            icon: <MdLibraryBooks />,
-            name: 'Curriculum',
-          },
-          {
-            to: '/app/assignment',
-            path: '/app/assignment',
-            icon: <MdAssignment />,
-            name: 'Assignment',
           },
           {
             to: '/app/jobs',
@@ -227,13 +203,20 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             name: 'Posting Hiring',
           },
           {
-            to: '/app/bootcamp',
-            path: '/bootcamp',
-            icon: <MdPostAdd />,
-            name: 'Bootcamp',
+            to: '/app/candidate',
+            path: '/app/candidate',
+            icon: <MdGroup />,
+            name: 'Candidate',
+          },
+          {
+            to: '/app/client',
+            path: '/app/client',
+            icon: <MdGroup />,
+            name: 'Client',
           },
         ]);
         break;
+
       default:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
