@@ -1,11 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
-import { Listbox } from '@headlessui/react';
-import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateCountry, reqCreateSkillType} from '@/redux/actions/actionReducer';
-import Index from '@/pages/locations';
+import { reqCreateAdressType, reqCreateCat, reqCreateCountry, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddCountry = (props: any) => {
 
@@ -77,6 +74,7 @@ const AddCountry = (props: any) => {
                     className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                     id="inline-full-name"
                     type="text"
+                    placeholder='3 Digit Province Code'
                     {...register('country_code', {
                       required: 'Code is required',
                       pattern: {
@@ -104,8 +102,16 @@ const AddCountry = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="text"
-                        {...register('country_name')}
+                        placeholder='Country Name'
+                        {...register('country_name', {
+                          required: 'Country Name is required'
+                        })}
                       />
+                      {errors.country_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.country_name.message}
+                    </div>
+                  )}
                     </div>
                   </div>
                   

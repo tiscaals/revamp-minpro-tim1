@@ -3,7 +3,7 @@ import { Transition, Dialog } from '@headlessui/react';
 import { Listbox } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateCat} from '@/redux/actions/actionReducer';
+import { reqCreateCat} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddCategory = (props: any) => {
   const [selected, setSelected] = useState('');

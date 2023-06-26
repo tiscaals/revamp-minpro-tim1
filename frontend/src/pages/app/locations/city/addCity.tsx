@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
-import { reqCreateCity, reqUpdateCat } from '@/redux/actions/actionReducer';
+import { reqCreateCity, reqUpdateCat } from '@/pages/redux/master-ade-schema/actions/actionReducer';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 
@@ -77,8 +77,18 @@ const AddCity = (props: any) => {
                       className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                       id="inline-full-name"
                       type="text"
-                      {...register('city_name')}
-                    />
+                      placeholder='City Name'
+
+                        {...register('city_name', {
+                          required: 'City name is required'
+                        })}
+                      />
+                      {errors.city_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.city_name.message}
+                    </div>
+                  )}
+                    
                   </div>
                 </div>
                 <div className="flex items-center">

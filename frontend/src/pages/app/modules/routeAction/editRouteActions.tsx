@@ -1,15 +1,12 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
-import { Listbox } from '@headlessui/react';
-import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateSkillType, reqUpdateRouteAction} from '@/redux/actions/actionReducer';
-import Index from '@/pages/locations';
+import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateSkillType, reqUpdateRouteAction} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditRA = (props: any) => {
-  console.log(props)
-
+  console.log(props.data.roac_module_name)
+  const [selectedValue, setSelectedValue] = useState(props.data.roac_module_name)
   const dispatch = useDispatch();
 
   type FormValues = {
@@ -115,9 +112,10 @@ const EditRA = (props: any) => {
                     </label>
                     <div className="w-2/3">
                     <select
+                     value={selectedValue} 
                       {...register('roac_module_name')}
                       className=" text-gray-700 bg-gray-200  rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full"
-                    >
+                      onChange={(e)=>setSelectedValue(e.target.value)}>
                       {props.dataModule?.map((dt: any) => (
                         <option key={dt.module_name} value={dt.module_name}
                         defaultValue={dt.module_name}>

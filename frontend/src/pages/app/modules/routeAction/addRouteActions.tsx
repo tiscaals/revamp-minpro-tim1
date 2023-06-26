@@ -1,12 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
-import { Listbox } from '@headlessui/react';
-import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import Select from 'react-select'
-import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateRouteAction, reqCreateSkillType} from '@/redux/actions/actionReducer';
-import Index from '@/pages/locations';
+import { reqCreateAdressType, reqCreateCat, reqCreateModule, reqCreateRouteAction, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddRA = (props: any) => {
   console.log(props.data)
@@ -94,8 +90,17 @@ const AddRA = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="text"
-                        {...register('roac_name')}
+                        placeholder='Route Actions'
+
+                        {...register('roac_name', {
+                          required: 'Module is required'
+                        })}
                       />
+                      {errors.roac_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.roac_name.message}
+                    </div>
+                  )}
                     </div>
                   </div>
                   <div className="flex items-center">
@@ -106,17 +111,18 @@ const AddRA = (props: any) => {
                     Module
                   </label>
                   <div className="w-2/3">
-                    <select
-                      {...register('roac_module_name')}
-                      className="text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
-                    >
-                      <option value="">-- Pilih --</option>
-                      {props.dataModule?.map((dt: any) => (
-                        <option key={dt.module_name} value={dt.module_name}>
-                          {dt.module_name}
-                        </option>
-                      ))}
-                    </select>
+                  <select
+                    className=" text-center rounded-md border-solid-gray-400 border-2 p-3 md:text-md w-full text-gray-900"
+                    {...register('roac_module_name')}
+                  >
+                    <option value="">-- Pilih --</option>
+                    {props.dataModule?.map((dt: any) => (
+                      <option key={dt.module_name} value={dt.module_name}>
+                        {dt.module_name}
+                      </option>
+                    ))}
+                  </select>
+
                   </div>
                
                     
@@ -149,8 +155,16 @@ const AddRA = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="number"
-                        {...register('roac_orderby')}
+                        {...register('roac_orderby', {
+                          required: 'Order is required'
+                        })}
                       />
+                      {errors.roac_orderby && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.roac_orderby.message}
+                    </div>
+                  )}
+
                     </div>
                   </div>
                   <div className="flex justify-end">

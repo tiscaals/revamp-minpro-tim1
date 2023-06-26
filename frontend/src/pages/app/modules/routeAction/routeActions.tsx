@@ -1,4 +1,4 @@
-import { reqDelRouteAction, reqUpdateDisplayRouteAction } from '@/redux/actions/actionReducer'
+import { reqDelRouteAction, reqUpdateDisplayRouteAction } from '@/pages/redux/master-ade-schema/actions/actionReducer'
 import React, { useState } from 'react'
 import { BsPencil } from 'react-icons/bs'
 import { GrAddCircle } from 'react-icons/gr'
@@ -90,13 +90,17 @@ const [isAdd, setIsAdd] = useState(false);
                     Order By
                   </th>
                   <th scope="col" className="px-6 py-4 text-right">
-                <div className="flex justify-end">
-                    <button className="flex items-center"
+
+
+                <div className="flex justify-end pr-7 ">
+                    <button className="flex items-center shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold  px-4 py-2 rounded"
                     onClick={()=>setIsAdd(true)}>
                     <GrAddCircle className="mr-1"></GrAddCircle>
                     <span className="text-sm">Add</span>
                     </button>
-                </div>
+                      </div>
+
+
                 </th>
                 </tr>
               </thead>
@@ -124,20 +128,40 @@ const [isAdd, setIsAdd] = useState(false);
 
                     <td className="whitespace-nowrap px-6 py-4 font-medium">{roac.roac_orderby}</td>
                     <td className="whitespace-nowrap px-6 py-4 text-right">
-                    <div className="flex items-center justify-end">
-                    <BsPencil className="mr-1" />
-                          <span className="mr-4 font-bold">
-                            <button onClick={() => {
-                            setData(roac);
-                            setIsEdit(true);
-                          }}>Edit</button> 
-                            </span>
+
+
+                    <div className="flex justify-end">
+                                  <div className='pt-2 shadow w-auto bg-blue-500 hover:bg-blue-700 focus:shadow-outline focus:outline-none text-white font-bold px-3 rounded-md'>
+                                    <div className="flex items-center">
+                                      <BsPencil className="mr-1" />
+                                      <span className="font-bold">
+                                    <button 
+                                      onClick={() => {
+                                        setData(roac);
+                            setIsEdit(true);;
+                                      }}
+                                  >
+                            Edit
+                          </button> 
+                        </span>
+                      </div>
+                    </div>
+                  <span className='px-0.5'></span>
+
+
+                            <div className='py-2 shadow w-auto bg-red-500 hover:bg-red-700 focus:shadow-outline focus:outline-none text-white font-bold  px-3 rounded-md'>
+                            <div className="flex items-center">
                           <TiDeleteOutline className="mr-1" />
                           <span className="font-bold">
-                          <button onClick={()=>handleDelete(roac.roac_id)}
+                          <button 
+                          onClick={()=>handleDelete(roac.roac_id)}
                           >Delete</button> 
                             </span>
-                    </div>
+                            </div>
+                            </div>
+                        </div>
+
+
                     </td>
                   </tr>
                  ))} 

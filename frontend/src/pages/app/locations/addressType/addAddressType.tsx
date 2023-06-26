@@ -1,11 +1,8 @@
 import React, { Fragment, useState } from 'react';
 import { Transition, Dialog } from '@headlessui/react';
-import { Listbox } from '@headlessui/react';
-import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateSkillType} from '@/redux/actions/actionReducer';
-import Index from '@/pages/locations';
+import { reqCreateAdressType, reqCreateCat, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const AddAddressType = (props: any) => {
 
@@ -76,8 +73,17 @@ const AddAddressType = (props: any) => {
                         className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                         id="inline-full-name"
                         type="text"
-                        {...register('adty_name')}
+                        placeholder='address type'
+
+                        {...register('adty_name', {
+                          required: 'Address Type is required'
+                        })}
                       />
+                      {errors.adty_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.adty_name.message}
+                    </div>
+                  )}
                     </div>
                   </div>
                   <div className="flex justify-end">

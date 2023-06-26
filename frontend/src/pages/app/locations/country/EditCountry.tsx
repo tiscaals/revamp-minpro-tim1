@@ -4,9 +4,8 @@ import { Listbox } from '@headlessui/react';
 import { HiChevronUpDown, HiCheck } from 'react-icons/hi2';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
-import { reqCreateAdressType, reqCreateCat, reqCreateCountry, reqCreateSkillType} from '@/redux/actions/actionReducer';
-import Index from '@/pages/locations';
-import {reqUpdateCountry} from '@/redux/actions/actionReducer';
+import { reqCreateAdressType, reqCreateCat, reqCreateCountry, reqCreateSkillType} from '@/pages/redux/master-ade-schema/actions/actionReducer';
+import {reqUpdateCountry} from '@/pages/redux/master-ade-schema/actions/actionReducer';
 
 const EditCountry = (props: any) => {
 
@@ -113,8 +112,17 @@ const EditCountry = (props: any) => {
                         id="inline-full-name"
                         type="text"
                         defaultValue={props.data.country_name}
-                        {...register('country_name')}
+                        placeholder='Country Name'
+                        {...register('country_name', {
+                          required: 'Country Name is required'
+                        })}
                       />
+                      {errors.country_name && (
+                    <div className='w-3/4 text-xs text-red-500'>
+                      {errors.country_name.message}
+                    </div>
+                  )}
+                      
                     </div>
                   </div>
                   
