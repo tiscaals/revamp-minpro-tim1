@@ -32,10 +32,10 @@ const ImgSlide = () => {
       <Slider {...settings}>
         {(job_photo || []).map((photo: any, index: any) => (
           <div className="p-2" key={index}>
-            <div className="shadow-md bg-white h-28 rounded-md flex items-center justify-center p-2">
+            <div className="shadow-md bg-white h-20 rounded-md flex items-center justify-center p-2">
               <img
                 src={`http://localhost:3003/image/${photo.jopho_filename}`}
-                className="object-contain h-28 w-auto m-4"
+                className="object-contain h-16 w-auto m-4"
                 alt="profile picture"
               />
             </div>

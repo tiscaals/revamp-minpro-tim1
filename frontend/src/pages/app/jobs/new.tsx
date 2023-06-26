@@ -30,6 +30,19 @@ import {
 } from '@/pages/redux/master-schema/action/actionReducer';
 import { Router, useRouter } from 'next/router';
 import { Button } from '@material-tailwind/react';
+import { PlusOutlined } from "@ant-design/icons";
+import { Modal, Upload } from "antd";
+import type { RcFile, UploadProps } from "antd/es/upload";
+import type { UploadFile } from "antd/es/upload/interface";
+import ReactEditor from "@/pages/komponen/react-quill";
+
+const getBase64 = (file: RcFile): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+});
 
 const JobCreate = () => {
   /*`````````` koneksi ke backend  ``````````````*/
@@ -45,13 +58,6 @@ const JobCreate = () => {
   let { work_type } = useSelector((state: any) => state.WorktypeReducers);
   let { job_role } = useSelector((state: any) => state.JobroleReducers);
   let { client } = useSelector((state: any) => state.ClientReducers);
-
-  // console.log('client',client[0])
-  // console.log('work',work_type)
-  // console.log('jobrole',job_role)
-  // console.log('Newedu',education[0]?.edu_code)
-  // console.log('new',job_post)
-  // console.log('new2',cur_number)
 
   type FormValues = {
     title: string;
@@ -120,21 +126,10 @@ const JobCreate = () => {
 
   /*````````````` fungsi untuk ganti foto dan hapus foto start ``````````````*/
 
-  const [selectedImage, setSelectedImage]: any = useState(imgDefault);
+  const [selectedImage, setSelectedImage]: any = useState(null);
   const [isImageSelected, setIsImageSelected]: any = useState(false);
 
   const fileInputRef: any = useRef(null);
-
-  const handlePhotoSelection = (event: any) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function (e: any) {
-      setSelectedImage(e.target.result);
-    };
-
-    reader.readAsDataURL(file);
-  };
 
   const handleImageChange = (event: any) => {
     const file = event.target.files[0];
@@ -143,11 +138,18 @@ const JobCreate = () => {
   };
 
   const handleRemoveImage = () => {
-    setSelectedImage(imgDefault);
+    setSelectedImage(null);
     setIsImageSelected(false);
     // fileInputRef.current.value = null;
   };
   /*```````````` fungsi untuk ganti foto dan hapus foto end ````````````*/
+
+  /* Button Cancel start */
+  const handleCancelButton = () => {
+    router.push("/app/jobs");
+  };
+
+  /* Button Cancel end*/
 
   /*````````````````` fungsi handle date start `````````````````````*/
 
@@ -155,34 +157,72 @@ const JobCreate = () => {
   const [endDate, setEndDate] = useState(null);
 
   const handleStartDateChange = (date: any) => {
+    register("start_date", registerOptions.start_date);
     setStartDate(date);
     setEndDate(null);
     if (date) {
-      const formattedDate: any = format(date.$d, 'dd-MM-yyyy');
-      setValue('start_date', formattedDate); // Set the value of "StartPeriod" field in the form
+      const formattedDate: any = format(date.$d, "dd-MM-yyyy");
+      setValue("start_date", formattedDate);
     }
   };
 
   const handleEndDateChange = (date: any) => {
     setEndDate(date);
     if (date) {
-      const formattedDate: any = format(date.$d, 'dd-MM-yyyy');
-      setValue('end_date', formattedDate); // Set the value of "StartPeriod" field in the form
+      const formattedDate: any = format(date.$d, "dd-MM-yyyy");
+      setValue("end_date", formattedDate);
     }
   };
 
   const isEndDateDisabled = !startDate;
-  const minEndDate = startDate ? dayjs(startDate).add(1, 'day') : null;
+  const minEndDate = startDate ? dayjs(startDate).add(1, "day") : null;
 
   /*``````````````` fungsi handle date end`````````````````` */
 
+  /* ------------------------------ COBA UPLOAD ---------------------------*/
+
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList]:any = useState<UploadFile[]>([])
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handleChange: UploadProps['onChange'] = ({ fileList: newFileList }) =>
+  setFileList(newFileList);
+
+  const handlePreview = async (file: UploadFile) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj as RcFile);
+    }
+
+    setPreviewImage(file.url || (file.preview as string));
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url!.substring(file.url!.lastIndexOf("/") + 1)
+    );
+  };
+
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  // console.log('IMAGE',fileList)
+
+  /* ----------------------------------------------------------------------*/
+
   const handleRegistration = async (data: any) => {
+    let newDate:any = data.start_date.split('-').reverse().join('-')
+    let newDateEnd:any = data.end_date.split('-').reverse().join('-')
     const formData: any = new FormData();
     formData.append('jopo_emp_entity_id', data.emp_entity_id);
     formData.append('jopo_number', cur_number);
     formData.append('jopo_title', data.title);
-    formData.append('jopo_start_date', data.start_date);
-    formData.append('jopo_end_date', data.end_date);
+    formData.append('jopo_start_date', newDate);
+    formData.append('jopo_end_date', newDateEnd);
     formData.append('jopo_min_salary', data.min_salary);
     formData.append('jopo_max_salary', data.max_salary);
     formData.append('jopo_min_experience', data.min_experience);
@@ -196,7 +236,7 @@ const JobCreate = () => {
     formData.append('jopo_clit_id', data.client.clit_id);
     formData.append('jopo_addr_id', data.client.addr_id);
     formData.append('jopo_description', data.description);
-    formData.append('image', data.image[0]);
+    formData.append('image', data.image[0].originFileObj);
     let type = data.image[0]?.type;
     let imageType = type?.split('/')[1];
     formData.append('image_type', imageType);
@@ -208,7 +248,7 @@ const JobCreate = () => {
     dispatch(doRequestAddJobPost(formData));
     router.push('/app/jobs');
     console.log('aa', ...formData);
-    console.log(data);
+    // console.log(newDate);
   };
 
   const registerOptions = {
@@ -256,9 +296,9 @@ const JobCreate = () => {
                         className="w-full"
                         size="small"
                       />
-                      {/* <p className="px-2 text-red-800">
+                      <p className="px-2 text-red-800">
                         {errors?.title && errors.title.message}
-                      </p> */}
+                      </p>
                     </div>
                     {/* Date */}
                     <div className="pad-input">
@@ -309,9 +349,9 @@ const JobCreate = () => {
                             min: 1,
                           }}
                         />
-                        {/* <p className="px-2 text-red-800">
+                        <p className="px-2 text-red-800">
                           {errors?.min_salary && errors.min_salary.message}
-                        </p> */}
+                        </p>
                       </div>
                       <div>
                         <h1 className="text-format">Max Salary</h1>
@@ -327,9 +367,9 @@ const JobCreate = () => {
                             min: 1,
                           }}
                         />
-                        {/* <p className="px-2 text-red-800">
+                        <p className="px-2 text-red-800">
                           {errors?.max_salary && errors.max_salary.message}
-                        </p> */}
+                        </p>
                       </div>
                     </div>
 
@@ -351,10 +391,10 @@ const JobCreate = () => {
                             min: 0,
                           }}
                         />
-                        {/* <p className="px-2 text-red-800">
+                        <p className="px-2 text-red-800">
                           {errors?.min_experience &&
                             errors.min_experience.message}
-                        </p> */}
+                        </p>
                       </div>
                       <div>
                         <h1 className="text-format">Max Eperience</h1>
@@ -372,10 +412,10 @@ const JobCreate = () => {
                             min: 1,
                           }}
                         />
-                        {/* <p className="px-2 text-red-800">
+                        <p className="px-2 text-red-800">
                           {errors?.max_experience &&
                             errors.max_experience.message}
-                        </p> */}
+                        </p>
                       </div>
                     </div>
                     {/* Primary Skill */}
@@ -389,9 +429,9 @@ const JobCreate = () => {
                         className="w-full"
                         size="small"
                       />
-                      {/* <p className="px-2 text-red-800">
+                      <p className="px-2 text-red-800">
                         {errors?.primary_skill && errors.primary_skill.message}
-                      </p> */}
+                      </p>
                     </div>
                     {/* Secondary Skill */}
                     <div className="pad-input">
@@ -404,10 +444,10 @@ const JobCreate = () => {
                         className="w-full"
                         size="small"
                       />
-                      {/* <p className="px-2 text-red-800">
+                      <p className="px-2 text-red-800">
                         {errors?.secondary_skill &&
                           errors.secondary_skill.message}
-                      </p> */}
+                      </p>
                     </div>
 
                     {/*  Specification Role */}
@@ -488,9 +528,9 @@ const JobCreate = () => {
                         className="w-full"
                         size="small"
                       />
-                      {/* <p className="px-2 text-red-800">
+                      <p className="px-2 text-red-800">
                         {errors?.benefit && errors.benefit.message}
-                      </p> */}
+                      </p>
                     </div>
 
                     {/* Search Client */}
@@ -522,21 +562,26 @@ const JobCreate = () => {
                           />
                         )}
                       />
-                      {/* <p className="px-2 text-red-800">
+                      <p className="px-2 text-red-800">
                         {errors?.client && errors.client.message}
-                      </p> */}
+                      </p>
                     </div>
                     {/* Description */}
                     <div className="pad-input">
                       <h1 className="text-format">Description</h1>
                       {/* <CKEditor /> */}
-                      <TextField
+                      {/* <TextField
                         id="outlined-multiline-static"
                         multiline
                         rows={4}
                         placeholder="Description"
                         className="w-full"
                         {...register('description')}
+                      /> */}
+                      <ReactEditor
+                        register={register}
+                        setValue={setValue}
+                        inputName={"description"}
                       />
                     </div>
                   </div>
@@ -563,31 +608,29 @@ const JobCreate = () => {
                     </div>
                     <div className="w-full pl-[33px] justify-center lg:pl-0">
                       <div className="pb-10">
-                        <Image
-                          src={selectedImage}
-                          alt="gambar"
-                          height={300}
-                          width={300}
-                          className="pb-6"
-                        ></Image>
-
-                        <div className="flex items-center">
-                          <button
-                            className="px-2 py-[1.5px] w-24 text-center border border-black bg-gray-400 bg-opacity-20 mr-5 hover:bg-gray-300"
-                            onClick={handleRemoveImage}
-                            type="button"
-                          >
-                            Remove
-                          </button>
-                          <input
-                            id="file-upload"
-                            type="file"
-                            accept="image/*"
-                            {...register('image')}
-                            onChange={handleImageChange}
-                            // ref={fileInputRef}
-                          ></input>
-                        </div>
+                        <Upload
+                          listType="picture-circle"
+                          onPreview={handlePreview}
+                          fileList={fileList}
+                          onChange={(value) => {
+                            handleChange(value)
+                            setValue('image',fileList)
+                          }}
+                        >
+                          {fileList.length >= 1 ? null : uploadButton}
+                        </Upload>
+                        <Modal
+                          open={previewOpen}
+                          title={previewTitle}
+                          footer={null}
+                          onCancel={handleCancel}
+                        >
+                          <img
+                            alt="example"
+                            style={{ width: "100%" }}
+                            src={previewImage}
+                          />
+                        </Modal>
                       </div>
                       {/* Switch Publish & Remote */}
                       <div className="items-center">
@@ -645,12 +688,6 @@ const JobCreate = () => {
                 <div className="bg-white border-t-2 shadow-gray-200 shadow-inner">
                   <div className="text-right p-4">
                     <Button type="submit">Save</Button>
-                    {/* <button type="submit" className="button-foot">
-                      Save
-                    </button> */}
-                    {/* <button type="button" className="button-foot">
-                      Cancel
-                    </button> */}
                   </div>
                 </div>
               </div>

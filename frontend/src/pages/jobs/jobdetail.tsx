@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import CardJob from '../komponen/cardjob';
 import { useRouter } from 'next/router';
-import Header from '../shared/header';
+import ComplexNavbar from '../shared/header_1';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   doRequestGetEmprange,
@@ -27,6 +27,7 @@ import {
 
 const JobDetail = () => {
   const router = useRouter();
+  const [loadedData, setLoadedData]: any = useState(null);
   const { id, title, name }: any = router.query;
   const { job_detail, refresh } = useSelector(
     (state: any) => state.JobPostReducers
@@ -61,6 +62,10 @@ const JobDetail = () => {
     dispatch(doRequestGetEmprange());
   }, [job_detail]);
 
+  useEffect(() => {
+    setLoadedData(job_detail);
+  }, [job_detail]);
+
   if (!id) {
     return (
       <div className="relative flex min-h-screen flex-col justify-center items-center">
@@ -82,7 +87,7 @@ const JobDetail = () => {
 
   return (
     <>
-      <Header />
+      <ComplexNavbar />
       <div className="container grid lg:grid-cols-2 w-3/4 mx-auto">
         <div>
           {/* Section Nama Perusahaan Start    */}
@@ -220,7 +225,7 @@ const JobDetail = () => {
                   </div>
                   <div className="grid grid-cols-2 pt-5 max-w-lg gap-4">
                     <div className="flex items-center w-full">
-                      <Button fullWidth>Apply</Button>
+                      <Button fullWidth onClick={()=>router.push('/profesional/apply')}>Apply</Button>
                     </div>
                     <div className="flex items-center w-full">
                       <Button
@@ -251,9 +256,16 @@ const JobDetail = () => {
                   <h1 className="text-lg mb-5 md:text-xl lg:text-2xl">
                     Description
                   </h1>
-                  <p className="font-medium text-sm max-w-2xl mb-16 md:text-lg">
+                  {/* <p className="font-medium text-sm max-w-2xl mb-16 md:text-lg">
                     {job_detail?.jopo_description}
-                  </p>
+                  </p> */}
+                  <div
+                    className="font-base text-sm max-w-2xl mb-10 md:text-lg"
+                    dangerouslySetInnerHTML={{
+                      __html: loadedData?.jopo_description,
+                    }}
+                  />
+
 
                   <h1 className="text-lg mb-5 md:text-xl lg:text-2xl">
                     Primary Skills
