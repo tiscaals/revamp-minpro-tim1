@@ -30,26 +30,26 @@ import { CurriculumModule } from './curriculum/program_entity/curriculum.module'
 
 @Module({
   imports: [
-    // ServeStaticModule.forRoot(
-    //   {
-    //   rootPath: join(__dirname, '..', 'images'), // Sesuaikan dengan path ke folder gambar
-    //   },
-    //   {
-    //     rootPath: join(__dirname, '..', 'images/user-image'), //For User
-    //   },
-    //   {
-    //     rootPath: join(__dirname, '..', 'files/user-media'), //For User
-    //   },
-    //   {
-    //     rootPath: join(__dirname, '..', 'files/curriculum-media'), //For Curriculum
-    //   },
-    //   {
-    //     rootPath: join(__dirname, '..', 'images/curriculum-images'), //For Curriculum
-    //   },
-    //   {
-    //     rootPath: join(__dirname, '..', 'videos/curriculum-videos'), //For Curriculum
-    //   },
-    // ),
+    ServeStaticModule.forRoot(
+      {
+      rootPath: join(__dirname, '..', 'images'), // Sesuaikan dengan path ke folder gambar
+      },
+      {
+        rootPath: join(__dirname, '..', 'images/user-image'), //For User
+      },
+      {
+        rootPath: join(__dirname, '..', 'files/user-media'), //For User
+      },
+      {
+        rootPath: join(__dirname, '..', 'files/curriculum-media'), //For Curriculum
+      },
+      {
+        rootPath: join(__dirname, '..', 'images/curriculum-images'), //For Curriculum
+      },
+      {
+        rootPath: join(__dirname, '..', 'videos/curriculum-videos'), //For Curriculum
+      },
+    ),
     SequelizeModule.forRootAsync({
       useFactory: () => ({
         dialect: 'postgres',

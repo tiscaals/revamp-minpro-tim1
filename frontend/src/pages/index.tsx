@@ -1,39 +1,39 @@
 import React, { useState, useEffect } from "react";
 
 import Image from "next/image";
-import logo from "../../public/logo.png";
-import courseImage from "../../public/logo.png";
+import logo from "../../public/codexlogo.png";
+import courseImage from "../../public/codexlogo.png";
 import ReactPlayer from "react-player";
 // import FAQ from "./components/faq";
 // import Footer from "./components/footer";
-import { MyPage } from "npm";
-import astra from "../../public/astra.png";
-import bumn from "../../public/bumn.png";
-import mahaka from "../../public/mahakax.png";
-import { alumniTestimoni, partnerShip } from "@/data";
+import astra from "../../public/codexlogo.png";
+import bumn from "../../public/codexlogo.png";
+import mahaka from "../../public/codexlogo.png";
+import { alumniTestimoni, partnerShip } from "@/pages/data";
 import AccordionLandingPage from "./accordion";
 import { useRouter } from "next/router";
-import node from '../../public/node.png'
-import java from '../../public/java.png'
-import flutter from '../../public/flutter.png'
-import dotnet from '../../public/dotnet.png'
+import node from '../../public/codexlogo.png'
+import java from '../../public/codexlogo.png'
+import flutter from '../../public/codexlogo.png'
+import dotnet from '../../public/codexlogo.png'
 import next from '../../public/next.png'
 import { useDispatch, useSelector } from "react-redux";
-import { reqGetProgName } from "@/redux/bootcampSchema/action/actionReducer";
+import { getAllProgramsReq } from "@/pages/redux/bootcamp-schema/action/actionReducer";
 import Footer from "./footer";
+import { NavBar } from "../"
 
-const LandingPage: MyPage = () => {
-  let { progname, refresh } = useSelector((state: any) => state.prognameReducer);
+const LandingPage = () => {
+  let { programs, refresh } = useSelector((state: any) => state.programReducers);
   const [isClient, setIsClient] = useState(false);
 
   // console.log('gambar',partnerShip.gambar)
 
-  console.log(progname)
+  console.log(programs)
   const router = useRouter()
   const dispatch = useDispatch()
   useEffect(() => {
     setIsClient(true);
-    dispatch(reqGetProgName())
+    dispatch(getAllProgramsReq())
   }, [refresh]);
 
   return (
@@ -442,5 +442,5 @@ const LandingPage: MyPage = () => {
   );
 };
 
-LandingPage.Layout = "Guest";
+// LandingPage.Layout = "Guest";
 export default LandingPage;

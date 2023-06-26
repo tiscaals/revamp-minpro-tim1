@@ -32,6 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
       {router.pathname.startsWith('/signin') ||
+      router.pathname.startsWith('/') ||
       router.pathname.startsWith('/external/signup') ||
       router.pathname.startsWith('/internal/signup') ||
       router.pathname.startsWith('/signup/confirm') ||
