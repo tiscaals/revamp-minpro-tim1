@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import logo from '../../images/codexlogo.png';
-
 import {
   MdCottage,
   MdGroup,
@@ -19,36 +18,21 @@ import {
   MdGroupAdd,
 } from 'react-icons/md';
 import { useEffect } from 'react';
-import Cookies from 'js-cookie';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   const [listMenu, setListMenu] = useState([
     { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
   ]);
-
-  //Decode Token
-  let decoded: any;
-  const token = Cookies.get('access_token');
-  //End
-
+  let token: any;
   useEffect(() => {
-    if (token) {
-      try {
-        decoded = jwt.decode(token) as JwtPayload;
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      console.log('tokens not found');
-    }
-
-    switch (decoded?.user_current_role) {
-      //Admin
+    token = localStorage.getItem('AuthToken');
+    // const decoded:any = jwt.verify(token, `SECRETKEY`);
+    const decoded = { role_id: 5, username: 'Tamariska' }; //INI DUMMY NTAR HAPUS AJA AKTIFIN YG ATAS
+    switch (decoded.role_id) {
+      //admin
       case 1:
         setListMenu([
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
-          { to: '/app/users', path: '/users', icon: <MdGroup />, name: 'User' },
           {
             to: '/category',
             path: '/category',
@@ -76,26 +60,28 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         ]);
         break;
 
-      //Users
+      //direksi/busdev
       case 2:
         setListMenu([
+          //MENU BLM TAU
           { to: '/', path: '/', icon: <MdCottage />, name: 'Home' },
+          { to: '/user', path: '/user', icon: <MdGroup />, name: 'User' },
           {
-            to: '/bootcamp/apply',
-            path: '/bootcamp',
-            icon: <MdGroup />,
-            name: 'Apply Bootcamp',
+            to: '/category',
+            path: '/category',
+            icon: <MdCategory />,
+            name: 'Category',
           },
           {
-            to: '/profesional/apply',
-            path: '/profesional',
-            icon: <MdGroup />,
-            name: 'Apply Job',
+            to: '/product',
+            path: '/product',
+            icon: <MdShopTwo />,
+            name: 'Product',
           },
         ]);
         break;
 
-      //Employee
+      //hr
       case 3:
         setListMenu([
           //MENU BLM TAU
@@ -116,7 +102,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         ]);
         break;
 
-      //Talent
+      //talent
       case 4:
         setListMenu([
           //MENU BLM TAU
@@ -181,22 +167,6 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             name: 'Bootcamp',
           },
         ]);
-      case 7:
-        setListMenu([
-          { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
-          {
-            to: '/app/profesional/apply',
-            path: '/users',
-            icon: <MdGroup />,
-            name: 'Apply Job',
-          },
-        ]);
-      case 8:
-        setListMenu([
-          { to: '/', path: '/', icon: <MdGroup />, name: 'Home' },
-          { to: '/app/batch', path: '/app/batch', icon: <MdGroup />, name: 'Batch' },
-          { to: '/app/candidate', path: '/app/candidate', icon: <MdGroup />, name: 'Candidate' },
-        ]);
         break;
       default:
         setListMenu([
@@ -212,7 +182,7 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   return (
     <div
       ref={ref}
-      className="fixed w-56 h-full bg-indigo-900 text-white shadow-sm z-10 py-4 px-6"
+      className="fixed w-56 h-full bg-blue-700 shadow-sm z-10 py-4 px-6"
     >
       <div className="flex justify-center mt-4 mb-4">
         <Image className="w-full h-auto" src={logo} alt="company logo" />
@@ -224,8 +194,8 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
             <div
               className={`rounded-sm px-3 py-3 text-xs uppercase font-bold flex items-center ${
                 router.pathname == mn.path
-                  ? 'bg-light-blue-100 text-indigo-500 hover:text-indigo-800'
-                  : 'text-blue-gray-100 hover:text-blue-gray-300'
+                  ? 'bg-blue-100 text-blue-600 hover:text-blue-800'
+                  : 'text-gray-100 hover:text-gray-400'
               }`}
             >
               <div className="mr-2">{mn.icon}</div>
