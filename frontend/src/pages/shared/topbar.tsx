@@ -62,6 +62,8 @@ export default function TopBar({ showNav, setShowNav }: any) {
       setProfileImage(defaultImage.src);
     }
   }, [profile?.user_photo]);
+
+  
   return (
     <div
       className={`bg-white fixed z-10 w-full h-16 flex justify-between items-center transition-all duration-[400ms] ${

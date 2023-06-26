@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Logo from "../../../public/logohitam.png"
 import Image from "next/image";
 import {
@@ -14,19 +14,66 @@ import {
   ChevronDownIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import Swal from "sweetalert2";
 
 function ProfileMenu() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const closeMenu = () => setIsMenuOpen(false);
+  
+  const token = Cookies.get('access_token');
+  
+  const logoutAuth = async () => {
+    try {
+      const result = await Swal.fire({
+        title: 'logout confirm',
+        text: 'are you sure want to exit?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+      });
+
+      if (result.isConfirmed) {
+        Cookies.remove('access_token');
+        router.push('/');
+      }
+    } catch (error) {
+      Swal.fire('Error!', 'Failed to logout. Please try again.', 'error');
+    }
+  };
 
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} >
-      <Button
-        variant="gradient"
-        className="flex items-center gap-1 p-2 lg:ml-auto"
-      >
-          Sign Up
-      </Button>
+      {!token ?
+      <>
+        <Button
+        onClick={()=>router.push('/signin')}
+          variant="text"
+          className="flex items-center gap-1 p-2 lg:ml-auto"
+        >
+            Sign In
+        </Button>
+
+        <Button
+        onClick={()=>router.push('/external/signup')}
+          variant="gradient"
+          className="flex items-center gap-1 p-2 lg:ml-auto"
+        >
+            Sign Up
+        </Button>
+      </>:
+      (<Button
+        onClick={logoutAuth}
+          variant="gradient"
+          className="flex items-center gap-1 p-2 lg:ml-auto"
+        >
+            Log out
+        </Button>)
+      }
     </Menu>
   );
 }
@@ -97,13 +144,17 @@ export default function Header() {
             <IconButton
             size="sm"
             color="blue-gray"
-            variant="text"
+            // variant="text"
             onClick={toggleIsNavOpen}
             className="ml-auto mr-2 lg:hidden"
             >
               <Bars2Icon className="h-6 w-6" />
             </IconButton>
-            <ProfileMenu />
+            <div className="absolute right-0">
+              <div className="flex gap-3">
+                <ProfileMenu />
+              </div>
+            </div>
         </div>
         <Collapse open={isNavOpen} className="overflow-scroll">
             <NavList />
