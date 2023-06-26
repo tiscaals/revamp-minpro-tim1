@@ -4,6 +4,7 @@ import { UpdateApplyJobsDto } from '../dto/update-user.dto';
 import { users } from 'models/users/users';
 import * as fs from 'fs-extra';
 
+const port = process.env.PORT
 @Injectable()
 export class ApplyJobService {
   constructor(private sequelize: Sequelize) {}
@@ -23,7 +24,7 @@ export class ApplyJobService {
           user_field_study: updateApplyJobsDto.user_field_study,
           user_phone_number: updateApplyJobsDto.user_phone_number,
           user_resume: updateApplyJobsDto.user_resume,
-          user_filelink: `http://localhost:7300/files/user-media/${updateApplyJobsDto.user_resume}`,
+          user_filelink: `http://localhost:${port}/files/user-media/${updateApplyJobsDto.user_resume}`,
           user_filesize: updateApplyJobsDto.user_filesize,
           user_filetype: updateApplyJobsDto.user_filetype,
           role_id: updateApplyJobsDto.role_id,

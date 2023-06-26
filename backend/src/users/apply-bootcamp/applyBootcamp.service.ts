@@ -3,6 +3,7 @@ import { Sequelize } from 'sequelize-typescript';
 import { users } from 'models/users/users';
 import * as fs from 'fs-extra';
 
+const port = process.env.PORT
 @Injectable()
 export class ApplyBootcampService {
   constructor(private sequelize: Sequelize) {}
@@ -22,7 +23,7 @@ export class ApplyBootcampService {
           user_field_study: updateBootcamp.user_field_study,
           user_phone_number: updateBootcamp.user_phone_number,
           user_resume: updateBootcamp.user_resume,
-          user_filelink: `http://localhost:7300/files/user-media/${updateBootcamp.user_resume}`,
+          user_filelink: `http://localhost:${port}/files/user-media/${updateBootcamp.user_resume}`,
           user_filesize: updateBootcamp.user_filesize,
           user_filetype: updateBootcamp.user_filetype,
           role_id: updateBootcamp.role_id,
