@@ -13,6 +13,7 @@ async function bootstrap() {
   app.enableCors()
 
   app.use('/image', express.static('images/job_photo'));
+  app.use('/profile', express.static('images/profile'));
 
   // For User, curriculum
   app.use('/images', express.static('images'));

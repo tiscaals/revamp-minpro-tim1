@@ -5,11 +5,12 @@ import {
   resDelCat,
   resUpdateCat,
 } from '../actions/actionReducer';
-import apiMethod from '@/pages/api/apiMethod';
+import apiMethod from '@/pages/api/apimethod';
 
 function* handleGetCat(): any {
   try {
     const result = yield call(apiMethod.getallCat);
+    console.log("result", result)
     yield put(resCat(result.data));
   } catch (error) {
     yield put(resCat({ message: error, status: 400 }));

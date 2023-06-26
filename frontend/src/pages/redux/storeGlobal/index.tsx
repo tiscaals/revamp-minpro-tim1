@@ -43,8 +43,25 @@ import skillsReducers from '../users-schema/reducer/user-reducer/skillsReducers'
 import curriculumReducers from "../curriculum-schema/reducer/curriculumReducer"
 import SectionReducers from "../curriculum-schema/reducer/sectionReducers"
 import SectionUpReducers from "../curriculum-schema/reducer/sectUpReducers"
+import InstructorReducers from "../curriculum-schema/reducer/instructorReducers"
+
 import hrReducers from "../hr-schema/reducer/hrReducer";
 import empReducers from "../hr-schema/reducer/empReducer";
+import CatReduce from '../master-ade-schema/reducer/categoryReduce';
+import SkillTempeleteReduce from '../master-ade-schema/reducer/skillTempleteReduce';
+import SkillTypeReduce from '../master-ade-schema/reducer/skilltypeReduce';
+import ModulesReduce from '../master-ade-schema/reducer/modulesReduce';
+import AddressTypeReduce from '../master-ade-schema/reducer/addressTypeReduce';
+import routeActionsReduce from '../master-ade-schema/reducer/routeActionsReducer';
+import CountryReduce from '../master-ade-schema/reducer/countryReducer';
+import ProvReduce from '../master-ade-schema/reducer/provReducer';
+import CityReduce from '../master-ade-schema/reducer/cityReducer';
+import bankReducer from '../payment/reducer/BankReducer';
+import fintechReducer from '../payment/reducer/FintechReducer';
+import AccountReducer from '../payment/reducer/AccountReducer';
+import transactionReducer from '../payment/reducer/TransactionReducer';
+import topupReducer from '../payment/reducer/TopupReducer';
+
 const logger = createLogger();
 const saga = createSagaMiddleware();
 
@@ -78,6 +95,15 @@ const reducer = combineReducers({
   paymentReducers,
 
   //MASTER
+  CatReduce,
+  SkillTempeleteReduce,
+  SkillTypeReduce,
+  ModulesReduce,
+  AddressTypeReduce,
+  routeActionsReduce,
+  CountryReduce,
+  ProvReduce,
+  CityReduce,
 
   //USER
   userReducers,
@@ -89,14 +115,22 @@ const reducer = combineReducers({
   skillsReducers,
   rolesReducers,
 
-    // curriculum
-    curriculumReducers,
-    SectionReducers,
-    SectionUpReducers,
+  // curriculum
+  curriculumReducers,
+  SectionReducers,
+  SectionUpReducers,
+  InstructorReducers,
 
-    //placement
-    hrReducers,
-    empReducers,
+  //placement
+  hrReducers,
+  empReducers,
+
+  //Payment
+  bankReducer,
+  fintechReducer,
+  AccountReducer,
+  transactionReducer,
+  topupReducer,
 
 });
 

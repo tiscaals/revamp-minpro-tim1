@@ -18,7 +18,7 @@ const Category = () => {
   const [dataCat, setDataCat] = useState('');
   const [listEdit, setListEdit] = useState('');
   const { category, message, refresh } = useSelector(
-    (state: any) => state.catReducer
+    (state: any) => state.CatReduce
   );
   const dispatch = useDispatch();
   console.log(category);

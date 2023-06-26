@@ -5,23 +5,23 @@ const findAllCartItems = () => {
 };
 
 const deleteCartItems = (id: any) => {
-  return axios.delete(`/sales/hapus-cart/${id}`);
+  return axios.delete(`/sales-skema/hapus-cart/${id}`);
 };
 
 const getDiskon = () => {
-  return axios.get('/sales/view-diskon');
+  return axios.get('/sales-skema/view-diskon');
 };
 
 const insertOrder = (data: any) => {
-  return axios.post('/sales/insert-order-detail', data);
+  return axios.post('/sales-skema/insert-order-detail', data);
 };
 
 const insertOrderJson = (data: any) => {
-  return axios.post('/sales/insert-order-json', data);
+  return axios.post('/sales-skema/insert-order-json', data);
 };
 
 const getPayment = () => {
-  return axios.get('/sales/view-payment');
+  return axios.get('/sales-skema/view-payment');
 };
 
 export default {

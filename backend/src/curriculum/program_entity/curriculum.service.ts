@@ -186,6 +186,30 @@ export class CurriculumService {
       
     }
   }
+  async MergeSectionUp(id:number){
+    try {
+      const section = await this.sequelize
+        .query(`SELECT * FROM curriculum.sections WHERE sect_prog_entity_id = ${id};
+      `);
+      const sectionDetail = await this.sequelize.query(`SELECT *
+      FROM curriculum.section_detail
+      JOIN curriculum.section_detail_material
+      ON section_detail.secd_id = section_detail_material.sedm_secd_id;
+      `);
+
+      const mergedData = section[0].map((sections:any)=>{
+        const sectDet = sectionDetail[0].filter((sectDetail:any)=> sectDetail.secd_sect_id === sections.sect_id)
+        return{
+          ...sections,
+          sectionDetail: sectDet
+        }
+      })
+
+      return { mergedData }
+    } catch (error) {
+      
+    }
+  }
 
 //   find one program
   async findOneCurr(id:number){
@@ -229,6 +253,15 @@ export class CurriculumService {
     try {
       const paramProgram = `[${JSON.stringify(updateProgramEntityDto)}]`;
       const result = await this.sequelize.query(`CALL curriculum.update_section('${id}','${paramProgram}')`)
+      return result
+    } catch (error) {
+      return error.message
+    }
+  }
+
+  async findAllUserHr(){
+    try {
+      const result = await this.sequelize.query("SELECT employee.emp_entity_id, users.user_name, users.user_photo FROM hr.employee JOIN users.users ON users.user_entity_id = employee.emp_entity_id")
       return result
     } catch (error) {
       return error.message

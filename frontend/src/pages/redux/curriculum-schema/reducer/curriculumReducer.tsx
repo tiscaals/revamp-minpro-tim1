@@ -6,7 +6,7 @@ const initialState = {
   getCurrById: [],
   message: '',
   status: 0,
-  refresh: '',
+  refreshCurr: '',
 };
 
 function CurriculumReducers(state = initialState, action: any) {

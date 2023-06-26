@@ -33,6 +33,10 @@ export class CurriculumController {
   MergeSection() {
     return this.programEntityService.MergeSection();
   }
+  @Get('getMergedUp')
+  MergeSectionUp(@Param('id') id: string) {
+    return this.programEntityService.MergeSectionUp(+id);
+  }
   @Get('getOne/:id')
   findOneCurr(@Param('id') id: string) {
     return this.programEntityService.findOneCurr(+id);
@@ -152,6 +156,10 @@ export class CurriculumController {
   @Get('currentNumber')
   findCurrRegNumber() {
     return this.programEntityService.findCurrRegNumber();
+  }
+  @Get('getUserHr')
+  findAllUserHr() {
+    return this.programEntityService.findAllUserHr();
   }
 
   @Put('updateSection/:id')
