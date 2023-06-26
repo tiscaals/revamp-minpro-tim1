@@ -67,7 +67,7 @@ const AuthLogin = () => {
         router.push('/app');
       }
     }
-  }, [handleSignin]);
+  }, [handleSignin, refresh]);
 
   return (
     <div>

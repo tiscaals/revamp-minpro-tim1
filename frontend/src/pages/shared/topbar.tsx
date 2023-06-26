@@ -1,4 +1,4 @@
-// import { GoThreeBars } from 'react-icons/go';
+import { GiHamburgerMenu } from 'react-icons/gi';
 import { Menu, Transition } from '@headlessui/react';
 import { BsPencilFill, BsPersonCircle, BsCaretDownFill } from 'react-icons/bs';
 import { BiLogInCircle, BiLogOutCircle } from 'react-icons/bi';
@@ -70,10 +70,10 @@ export default function TopBar({ showNav, setShowNav }: any) {
       }`}
     >
       <div className="pl-4 md:pl-16">
-        {/* <GoThreeBars
+        <GiHamburgerMenu
           className="h-8 w-8 text-gray-700 cursor-pointer hover:text-gray-400"
           onClick={() => setShowNav(!showNav)}
-        /> */}
+        />
       </div>
       <div className="flex items-center pr-4 md:pr-16 ">
         <span className="tetx-sm"> {profile?.user_name} </span>

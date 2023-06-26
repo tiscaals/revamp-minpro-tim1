@@ -131,6 +131,11 @@ export class BootcampController {
     return this.bootcampService.getTraineesByBatchId(id)
   }
 
+  @Get('prapuser/:id')
+  findPrapParogPerId(@Param('id') id:number){
+    return this.bootcampService.getPrapParogUser(id)
+  }
+
   @Patch('setresign/:batrid')
   settraineetoresign(@Param('batrid') batrid: number, @Body() body: any){
     return this.bootcampService.setTraineeStatus(batrid,body)
