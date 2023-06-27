@@ -132,8 +132,8 @@ const Apply = () => {
         console.log('ApplyJobs', ...formData);
         console.log('dataAply', data);
 
-        dispatch(doRequestApplyBootcamp(formData));
-        router.push('/bootcamp/confirm');
+        // dispatch(doRequestApplyBootcamp(formData));
+        // router.push('/bootcamp/confirm');
       }
     } catch (error) {
       console.error('Apply Error:', error);
