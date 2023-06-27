@@ -37,13 +37,13 @@ const profileMenuItems = [
     {
       label: "My Profile",
       icon: UserCircleIcon,
-      diklik:"/"
+      diklik:"/my-profile"
     },
-    {
-      label: "Edit Profile",
-      icon: Cog6ToothIcon,
-      diklik:"/"
-    },
+    // {
+    //   label: "Edit Profile",
+    //   icon: Cog6ToothIcon,
+    //   diklik:"/"
+    // },
     {
       label: "Cart",
       icon: InboxArrowDownIcon,
@@ -145,6 +145,7 @@ function ProfileMenu() {
               className="border border-blue-500 p-0.5"
               src={profileImage}
             />
+            <h1 className="ml-2">{profile?.user_name}</h1>
             <ChevronDownIcon
               strokeWidth={2.5}
               className={`h-3 w-3 transition-transform ${
