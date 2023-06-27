@@ -548,7 +548,7 @@ export class BootcampService {
 
   async getPrapParogUser(id:number){
     try {
-      let data:any = await this.sequelize.query(`select * from bootcamp.program_apply_progress join bootcamp.program_apply on parog_user_entity_id = prap_user_entity_id and parog_prog_entity_id = prap_prog_entity_id where parog_user_entity_id = ${id}`)
+      let data:any = await this.sequelize.query(`select * from bootcamp.prapusers where parog_user_entity_id = ${id}`)
       data = data[0]
       if(!data) throw new Error('Data tidak ditemukan')
       

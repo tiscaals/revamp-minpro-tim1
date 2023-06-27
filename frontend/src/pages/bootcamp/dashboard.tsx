@@ -1,61 +1,65 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navigation from './components/navbar'
 import {
     Card,
     CardBody,
-    CardFooter,
     Typography,
-    Button,
   } from "@material-tailwind/react";
-import { HiArrowLongRight, HiRocketLaunch } from 'react-icons/hi2';
+  import Cookies from 'js-cookie';
+  import jwt, { JwtPayload } from 'jsonwebtoken';
 import { HiTicket } from 'react-icons/hi2';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllParogPrapUserReq } from '../redux/bootcamp-schema/action/actionReducer';
 
 export default function () {
+  const [decoded, setDecoded] = useState<any>()
+    const dispatch = useDispatch()
+    const {praps} = useSelector((state:any)=> state.prapsReducers)
+    
+    const token = Cookies.get('access_token')
+    
+    useEffect(()=>{
+      if(token){
+        try {
+          setDecoded(jwt.decode(token) as JwtPayload)
+        } catch (error) {
+          console.log(error)
+        }
+      }else{
+        console.log('token not found')
+      }
+    },[token])
+
+    useEffect(()=>{
+        dispatch(getAllParogPrapUserReq(decoded?.user_entity_id))
+    },[token,decoded])
+
+    console.log(decoded,'anjay');
   return (
     <div>
         <Navigation/>
         <div className='flex gap-3'>
-        <Card className="mt-6 w-60">
-      <CardBody>
-        <HiTicket className="text-blue-500 w-12 h-12 mb-4" />
-        <Typography variant="h6" color="blue-gray" className="mb-2">
-          .Net framework App
-        </Typography>
-        <Typography variant='small'>
-          Apply Date: July 12 2023 <br />
-          Status: Passed <br />
-          Last Progress: Waiting List
-        </Typography>
-      </CardBody>
-      <CardFooter className="pt-0">
-        <a href="#" className="inline-block">
-          <Button size="sm" variant="text" className="flex items-center gap-2">
-            Check Progress
-            <HiArrowLongRight strokeWidth={2} className="w-3 h-3" />
-          </Button>
-        </a>
-      </CardFooter>
-        </Card>
-        <Card className="mt-6 w-60">
-      <CardBody>
-        <HiTicket className="text-red-500 w-12 h-12 mb-4" />
-        <Typography variant="h6" color="blue-gray" className="mb-2">
-          Nodejs App
-        </Typography>
-        <Typography variant='small'>
-          Apply Date: July 12 2023 <br />
-          Status: Failed <br />
-          Last Progress: Waiting List
-        </Typography>
-      </CardBody>
-      <CardFooter className="pt-0">
-        <a href="#" className="inline-block">
-          <Button size="sm" variant="text" color='red' className="flex items-center gap-2">
-            Failed
-          </Button>
-        </a>
-      </CardFooter>
-        </Card>
+          {
+            praps.length === 0? 
+            <div>data tidak ada</div>:
+            praps?.map((item:any)=>(
+              <>
+              <Card className="mt-6 w-60">
+              <CardBody>
+                <HiTicket className="text-blue-500 w-12 h-12 mb-4" />
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  {item.prog_title} App
+                </Typography>
+                <Typography variant='small'>
+                  Apply Date: {item.to_char} <br />
+                  Status: {item.prap_status} <br />
+                  Last Progress: {item.parog_progress_name}
+                </Typography>
+              </CardBody>
+                </Card>
+              </>
+            ))
+          }
         </div>
     </div>
   )

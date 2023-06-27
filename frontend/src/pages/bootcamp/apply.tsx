@@ -92,7 +92,7 @@ const Apply = () => {
   };
 
   const handleApply = async (data: any) => {
-    console.log(data);
+    console.log(id);
     try {
       const result = await Swal.fire({
         title: 'Apply Confirmation',
@@ -127,13 +127,13 @@ const Apply = () => {
         let fileType = type?.split('/')[1];
         formData.append('user_filetype', fileType);
         formData.append('role_id', 10);
-        formData.append('prap_prog_entity_id', 1);
+        formData.append('prap_prog_entity_id', id);
 
         console.log('ApplyJobs', ...formData);
         console.log('dataAply', data);
 
-        dispatch(doRequestApplyBootcamp(formData));
-        router.push('/bootcamp/confirm');
+        // dispatch(doRequestApplyBootcamp(formData));
+        // router.push('/bootcamp/confirm');
       }
     } catch (error) {
       console.error('Apply Error:', error);
@@ -146,7 +146,7 @@ const Apply = () => {
   //End
 
   useEffect(() => {
-    if (token) {
+    if (token && id) {
       try {
         decoded = jwt.decode(token) as JwtPayload;
         dispatch(doRequestGetProfile(decoded.user_entity_id));
@@ -156,7 +156,7 @@ const Apply = () => {
     } else {
       console.log('tokens not found');
     }
-  }, [refresh, profile?.user_photo]);
+  }, [refresh, profile?.user_photo,token,id]);
 
   return (
     <div className="grid place-items-center mx-2 sm:my-auto">

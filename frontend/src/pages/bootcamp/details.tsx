@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navigation from './components/navbar';
 import BootcampCard from './components/card';
 import Material from './components/material';
 import CardLearn from './components/card2';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import {
   Button,
   Card,
@@ -13,14 +14,12 @@ import {
 } from '@material-tailwind/react';
 import Instructor from './components/instructor';
 import Testi from './components/testimonials';
-import { RiWhatsappFill } from 'react-icons/ri';
-import { HiCalendar, HiLocationMarker } from 'react-icons/hi';
 import { addCartReq } from '../redux/sales-schema/action/actionReducer';
 import { useDispatch } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
-
+import Cookies from 'js-cookie';
 
 const dataCurriculum = {
   name: 'Nodejs Fullstack',
@@ -55,6 +54,7 @@ const whatWillYouLearn = [
 
 
 export default function index() {
+  const [decoded, setDecoded] = useState<any>()
     const dispatch = useDispatch();
     const router = useRouter();
     const {id, price} = router.query;
@@ -62,7 +62,7 @@ export default function index() {
         const createCartItem = {
             p_cait_quantity: 1,
             p_cait_unit_price: price,
-            p_cait_user_entity_id: 2,
+            p_cait_user_entity_id: decoded?.user_entity_id,
             p_cait_prog_entity_id: id
         };
         dispatch(addCartReq(createCartItem));
@@ -71,6 +71,22 @@ export default function index() {
             // tambahkan opsi lain yang sesuai dengan kebutuhan Anda
           });
     }
+
+    const token = Cookies.get('access_token')
+
+    useEffect(()=>{
+      if(token && id){
+        try {
+          setDecoded(jwt.decode(token) as JwtPayload)
+        } catch (error) {
+          console.log(error)
+        }
+      }else{
+        console.log('token not found')
+      }
+    },[id])
+
+    console.log(decoded);
 
   return (
     <div className="">
@@ -84,18 +100,6 @@ export default function index() {
           />
           <CardLearn whattolearn={whatWillYouLearn} />
           <Material />
-          {/* <Card className="mt-6 shadow-none">
-            <CardBody>
-              <Typography variant="h5" color="blue-gray" className="mb-2">
-                Description
-              </Typography>
-              <Typography>
-                Ini bedanya sama deskripsi diatas apa yaaaaaaaaaaaaaaa
-                lurrrrrrrrrrrr tolong diisi aja gatau ahhhhhh uhhhhhhh
-                hmmmmmmmmmmmmmmmmmmm
-              </Typography>
-            </CardBody>
-          </Card> */}
           <br />
           <Instructor />
           <br />
@@ -156,6 +160,12 @@ export default function index() {
           </CardBody>
           <CardFooter className="mt-12 p-0">
             <Button
+            onClick={()=>router.push({
+              pathname:'/bootcamp/apply',
+              query: {
+                id: id
+              }
+            })}
               size="lg"
               color="white"
               className="text-blue-500 hover:scale-[1.02] focus:scale-[1.02] active:scale-100"

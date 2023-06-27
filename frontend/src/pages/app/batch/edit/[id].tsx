@@ -1,18 +1,15 @@
-import React, { useState, useEffect, useRef, Fragment } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   Input,
   Button,
   Avatar,
-  Select,
-  Option,
   Textarea,
   Typography,
 } from '@material-tailwind/react';
 import { HiPlusSm, HiMinusSm } from 'react-icons/hi';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  addBatchReq,
   editReq,
   getAllProgramsReq,
   getAllRecStudentReq,
@@ -20,7 +17,6 @@ import {
   getOneBatchesReq,
 } from '../../../redux/bootcamp-schema/action/actionReducer';
 import { useRouter } from 'next/router';
-import BreadcrumbsSlice from '@/pages/shared/breadcrumbs';
 
 export default function EditBatch() {
   const date = new Date();
@@ -90,6 +86,7 @@ export default function EditBatch() {
     }
     dispatch(getAllTrainersReq());
     dispatch(getAllProgramsReq());
+
   }, [id]);
 
   useEffect(() => {
@@ -132,7 +129,7 @@ export default function EditBatch() {
     return <div>....</div>;
   }
 
-  console.log(checked);
+  console.log(decoded);
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>

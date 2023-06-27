@@ -10,6 +10,7 @@ import {
   Typography,
   Alert,
 } from '@material-tailwind/react';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import {
   HiPlusSm,
   HiMinusSm,
@@ -24,6 +25,7 @@ import {
   getAllTrainersReq,
 } from '../../redux/bootcamp-schema/action/actionReducer';
 import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 export default function CreateBatch() {
   const date = new Date();
@@ -42,6 +44,8 @@ export default function CreateBatch() {
   const [batchType, setBatchType] = useState<string>('');
   const [isAlert, setIsAlert] = useState(false);
   const [counter, setCounter] = useState(5);
+  const [decoded, setDecoded] = useState<any>()
+  const token = Cookies.get('access_token')
 
   const [filterStudents, setFilterStudents] = useState<any>({
     month_number: date.getMonth(),
@@ -60,7 +64,7 @@ export default function CreateBatch() {
     data.batch_status = 'open';
 
     //PIC diambil dari user yang login (recruiter)
-    data.batch_pic_id = 4;
+    data.batch_pic_id = decoded.user_current_role;
 
     let newTrainer = {
       tpro_emp_entity_id: data.trainer.emp_entity_id,
@@ -138,9 +142,20 @@ export default function CreateBatch() {
         clearTimeout(timer);
       };
     }
-  }, [selTechno, batchType, selectedTrainer, selectedCoTrainer, isAlert]);
 
-  console.log(recstudents);
+    if(token){
+      try {
+        setDecoded(jwt.decode(token) as JwtPayload)
+      } catch (error) {
+        console.log(error)
+      }
+    }else{
+      console.log('token not found')
+    }
+
+  }, [selTechno, batchType, selectedTrainer, selectedCoTrainer, isAlert, token]);
+
+  // console.log(decoded);
 
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">

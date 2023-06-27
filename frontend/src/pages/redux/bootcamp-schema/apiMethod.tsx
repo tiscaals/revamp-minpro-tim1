@@ -55,6 +55,10 @@ const findAllTraineesBatch = (id: number) => {
   return axios.get(`/bootcamp/batchtrainees/${id}`);
 };
 
+const findAllPrapUser = (id: number) => {
+  return axios.get(`/bootcamp/prapuser/${id}`);
+};
+
 const findAllTalents = () => {
   return axios.get('/bootcamp/talents');
 };
@@ -66,7 +70,6 @@ const updateChangeStatusBatch = (data: any) => {
 const createEvals = (data: any) => {
   return axios.post('/bootcamp/evaluation', data);
 };
-
 
 const changeStatusTrainee = (data:any) => {
   return axios.patch(`/bootcamp/setresign/${data.batr_id}`,data)
@@ -88,5 +91,6 @@ export default {
   findAllTalents,
   createEvals,
   updateChangeStatusBatch,
-  changeStatusTrainee
+  changeStatusTrainee,
+  findAllPrapUser
 };
