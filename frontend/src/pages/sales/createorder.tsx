@@ -19,6 +19,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { BiCartDownload } from 'react-icons/bi';
 import NavBar from '../komponen/navBar';
+import ComplexNavbar from '../shared/header_1';
 
 const ApplyButton = styled(Button)(({ theme }) => ({
   backgroundColor: '#3f51b5',
@@ -244,9 +245,9 @@ const CreateOrder: React.FC = () => {
 
   return (
     <>
-      <NavBar />
+      <ComplexNavbar />
       <ToastContainer />
-      <div className="container mx-auto p-4">
+      <div className="container mx-auto mt-6 p-4">
         <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
           <p className="text-lg font-bold text-red-600">
             <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">

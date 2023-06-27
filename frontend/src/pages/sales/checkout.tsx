@@ -110,14 +110,15 @@ const CartPage: React.FC = () => {
       ? payment.find(
           (account: any) =>
             account.usac_account_number.toLowerCase() ===
-            searchTerm.toLowerCase()
+            searchTerm.toLowerCase() 
         )
       : undefined;
 
     if (matchingAccount) {
       const matchingFintech = payment.find(
         (account: any) =>
-          account.fint_name.toLowerCase() === selectedFintech.toLowerCase()
+          account.fint_name?.toLowerCase() === selectedFintech.toLowerCase() &&
+          account.bank_name?.toLowerCase() === selectedFintech.toLowerCase()
       );
 
       if (
@@ -239,7 +240,7 @@ const CartPage: React.FC = () => {
     <>
       <ComplexNavbar />
       <ToastContainer />
-      <div className="container mt-12 mx-auto p-4">
+      <div className="container mt-6 mx-auto p-4">
         <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
           <p className="text-lg font-bold text-red-600">
             <span className="cart-icon bg-red-500 text-white px-2 py-1 rounded mr-2">
@@ -398,9 +399,9 @@ const CartPage: React.FC = () => {
                         className={`${
                           active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
                         } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
-                        onClick={() => handleAccountFintechClick('GoTo')}
+                        onClick={() => handleAccountFintechClick('shopee')}
                       >
-                        GoTo
+                        Paylater
                       </button>
                     )}
                   </Menu.Item>
@@ -416,6 +417,54 @@ const CartPage: React.FC = () => {
                       </button>
                     )}
                   </Menu.Item>
+                  {/* <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('BCA')}
+                      >
+                        BCA
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('BNI')}
+                      >
+                        BNI
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('BRI')}
+                      >
+                        BRI
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${
+                          active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                        } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('MANDIRI')}
+                      >
+                        MANDIRI
+                      </button>
+                    )}
+                  </Menu.Item> */}
                 </Menu.Items>
               </Menu>
               <IconButton>

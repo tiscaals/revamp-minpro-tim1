@@ -51,7 +51,7 @@ export default function Candidates() {
   useEffect(() => {
     dispatch(doRequestGetRoac());
     dispatch(doRequestGetCandidate());
-    console.log('CANDIDATES', candidates);
+    console.log('ROAC', routes);
   }, [route, refresh]);
 
   useEffect(() => {
@@ -110,7 +110,7 @@ export default function Candidates() {
       {routes ? (
         <Tabs value={selectRoute}>
           <TabsHeader className="my-5">
-            {routes.map((item: any, index: any) => (
+            {routes.map((item: any) => (
               <Tab
                 key={item.roac_name}
                 value={item.roac_name}
@@ -161,7 +161,7 @@ export default function Candidates() {
                     color="blue-gray"
                     className="opacity-70 italic"
                   >
-                    {dt.uspo_ponty_code}
+                    {/* {dt.uspo_ponty_code} */}
                     {dt.uspo_number}
                   </Typography>
                 </td>
@@ -256,8 +256,8 @@ export default function Candidates() {
                                           }}
                                           className={
                                             score < 50
-                                              ? 'bg-red-100 text-red-800'
-                                              : 'bg-green-100 text-green-800'
+                                              ? 'bg-red-200 text-red-900'
+                                              : 'bg-green-200 text-green-900'
                                           }
                                           value={
                                             score < 50 ? 'Failed' : 'Passed'

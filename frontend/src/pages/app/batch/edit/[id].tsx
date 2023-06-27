@@ -52,7 +52,7 @@ export default function EditBatch() {
       trainee: checked,
       instructors: [
         { tpro_emp_entity_id: +data.trainer },
-        { tpro_emp_entity_id: +data.cotrainer },
+        { tpro_emp_entity_id: data.cotrainer? +data.cotrainer.emp_entity_id: 2, },
       ],
     };
     dispatch(editReq(newObj));
@@ -129,7 +129,7 @@ export default function EditBatch() {
     return <div>....</div>;
   }
 
-  console.log(decoded);
+  // console.log(decoded);
   return (
     <div className="w-full bg-white rounded-md p-10 mx-auto ">
       <form onSubmit={handleSubmit(onSubmit)}>

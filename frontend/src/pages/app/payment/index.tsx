@@ -140,9 +140,6 @@ const Bank = () => {
       (account: AccountNumberBank) =>
         account.account_name === selectedTypeTarget
     ),
-    // getOptionLabel: (option: AccountNumberBank) => option.usac_account_number,
-    // isOptionEqualToValue: (option: AccountNumberBank, value: AccountNumberBank) =>
-    // option.usac_account_number === value.usac_account_number
   }
 
   const [selectedAccountNumber, setSelectedAccountNumber] = useState<string>('');

@@ -21,7 +21,6 @@ import {
   DialogBody,
   Card,
 } from '@material-tailwind/react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import codexlogo from '../../../../public/defaultPhoto.png';
 import { AiOutlinePlus } from 'react-icons/ai';
@@ -62,6 +61,7 @@ const NewCurr = () => {
   let { instructor, refreshIns }: userEmployee = useSelector(
     (state: any) => state.InstructorReducers
   );
+  console.log("inst", instructor)
 
   const dispatch = useDispatch();
   type FormValues = {
@@ -174,7 +174,7 @@ const NewCurr = () => {
     formData.append('tag_skill', data.tag_skill);
     formData.append('item_learning', data.item_learning);
     formData.append('description', data.description);
-    formData.append('created_by', String(data.created_by));
+    // formData.append('created_by', String(data.created_by));
 
     // console.log('form data : ', ...formData);
     dispatch(addCurrReq(formData));
@@ -190,7 +190,7 @@ const NewCurr = () => {
   const [opens, setOpens] = useState(false);
   const [selectedFile, setSelectedFile] = useState<any>(null);
   const [selectedImages, setSelectedImages] = useState<string | null>(null);
-  console.log('cek: ', selectedFile);
+  console.log('cek: ', selectedImages);
 
   const handleOpens = (items: any) => {
     setSelectedFile(items);
@@ -462,7 +462,7 @@ const NewCurr = () => {
                         {...register('created_by')} // Menggunakan register untuk menghubungkan create_by dengan formulir
                       />
                       <Image
-                        src={process.env.imageUser + `${selectedImages}`}
+                        src={process.env.imageUser + `/${selectedImages}`}
                         width={100}
                         height={100}
                         quality={100}

@@ -64,14 +64,14 @@ export default function CreateBatch() {
     data.batch_status = 'open';
 
     //PIC diambil dari user yang login (recruiter)
-    data.batch_pic_id = decoded.user_current_role;
+    data.batch_pic_id = 2;
 
     let newTrainer = {
       tpro_emp_entity_id: data.trainer.emp_entity_id,
     };
 
     let newCoTrainer = {
-      tpro_emp_entity_id: data.cotrainer.emp_entity_id,
+      tpro_emp_entity_id: data.cotrainer? data.cotrainer.emp_entity_id: 2,
     };
 
     let newTrainee = [];
@@ -331,8 +331,8 @@ export default function CreateBatch() {
               <Select
                 onChange={setSelectedCoTrainer}
                 label="Co-Trainer"
-                inputProps={{ ...register('cotrainer', { required: true }) }}
-                error={errors.cotrainer ? true : false}
+                inputProps={{ ...register('cotrainer') }}
+                // error={errors.cotrainer ? true : false}
               >
                 {(trainers || []).map((item: any) => (
                   <Option value={item}>{item.user_first_name}</Option>

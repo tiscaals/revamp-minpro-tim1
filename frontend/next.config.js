@@ -6,7 +6,7 @@ const nextConfig = {
   },
   env:{
     API_URL:"http://localhost:3003",
-    imageUser:"http://localhost:3003/images/user-image/"
+    imageUser:"http://localhost:3003/images/user-image"
   }
 }
 

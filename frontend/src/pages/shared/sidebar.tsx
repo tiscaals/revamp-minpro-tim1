@@ -17,10 +17,18 @@ import {
   MdPostAdd,
   MdLibraryBooks,
   MdGroupAdd,
+  MdWork,
+  MdPayments,
 } from 'react-icons/md';
 import { useEffect } from 'react';
 import Cookies from 'js-cookie';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { BsFillBookFill } from 'react-icons/bs';
+import { FaList, FaMap, FaUserCheck, FaUsers, FaUserTie } from 'react-icons/fa';
+import { GrContactInfo } from 'react-icons/gr';
+import { AiOutlineUsergroupAdd } from 'react-icons/ai';
+import { BiSolidUserDetail } from 'react-icons/bi';
+import { HiUserGroup } from 'react-icons/hi';
 
 const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
   const [listMenu, setListMenu] = useState([
@@ -64,31 +72,31 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
           {
             to: '/app/candidate',
             path: '/app/candidate',
-            icon: <MdSportsMartialArts />,
+            icon: <AiOutlineUsergroupAdd />,
             name: 'Candidate',
           },
           {
             to: '/app/client',
             path: '/app/client',
-            icon: <MdViewModule />,
+            icon: <HiUserGroup />,
             name: 'Client',
           },
           {
             to: '/app/curriculum',
             path: '/app/curriculum',
-            icon: <MdLocationOn />,
+            icon: <BsFillBookFill />, 
             name: 'Curriculum',
           },
           {
             to: '/app/employee',
             path: '/app/employee',
-            icon: <MdLocationOn />,
+            icon: <FaUsers />,
             name: 'Employee',
           },
           {
             to: '/app/jobs',
             path: '/app/jobs',
-            icon: <MdLocationOn />,
+            icon: <MdWork/>,
             name: 'Jobs',
           },
           {
@@ -100,37 +108,37 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
           {
             to: '/app/modules',
             path: '/app/modules',
-            icon: <MdLocationOn />,
+            icon: <FaList />,
             name: 'Modules',
           },
           {
             to: '/app/payment',
             path: '/app/payment',
-            icon: <MdLocationOn />,
+            icon: <MdPayments />,
             name: 'Payment',
           },
           {
             to: '/app/placement',
             path: '/app/placement',
-            icon: <MdLocationOn />,
+            icon: <FaMap />,
             name: 'Placement',
           },
           {
             to: '/app/pro-candidate',
             path: '/app/pro-candidate',
-            icon: <MdLocationOn />,
+            icon: <FaUserTie />,
             name: 'Pro-Candidate',
           },
           {
             to: '/app/skill',
             path: '/app/skill',
-            icon: <MdLocationOn />,
+            icon: <BiSolidUserDetail />,
             name: 'Skill',
           },
           {
             to: '/app/talents',
             path: '/app/talents',
-            icon: <MdLocationOn />,
+            icon: <FaUserCheck />,
             name: 'Talents',
           },
         ]);
@@ -143,19 +151,19 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
           {
             to: '/app/placement',
             path: '/app/placement',
-            icon: <MdLocationOn />,
+            icon: <FaMap />,
             name: 'Placement',
           },
           {
             to: '/app/pro-candidate',
             path: '/app/pro-candidate',
-            icon: <MdLocationOn />,
+            icon: <FaUserTie />,
             name: 'Pro-Candidate',
           },
           {
             to: '/app/employee',
             path: '/app/employee',
-            icon: <MdLocationOn />,
+            icon: <FaUsers />,
             name: 'Employee',
           },
         ]);
@@ -168,19 +176,19 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
           {
             to: '/app/batch',
             path: '/app/batch',
-            icon: <MdGroup />,
+            icon: <MdSportsMartialArts />,
             name: 'Batch',
           },
           {
             to: '/app/candidate',
             path: '/app/candidate',
-            icon: <MdGroup />,
+            icon: <AiOutlineUsergroupAdd />,
             name: 'Candidate',
           },
           {
             to: '/app/talents',
             path: '/app/talents',
-            icon: <MdLocationOn />,
+            icon: <FaUserCheck />,
             name: 'Talents',
           },
         ]);
@@ -193,25 +201,25 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
           {
             to: '/app/batch',
             path: '/app/batch',
-            icon: <MdCategory />,
+            icon: <MdSportsMartialArts />,
             name: 'Batch',
           },
           {
             to: '/app/jobs',
             path: '/app/jobs',
-            icon: <MdPostAdd />,
-            name: 'Posting Hiring',
+            icon: <MdWork/>,
+            name: 'Jobs',
           },
           {
             to: '/app/candidate',
             path: '/app/candidate',
-            icon: <MdGroup />,
+            icon: <AiOutlineUsergroupAdd />,
             name: 'Candidate',
           },
           {
             to: '/app/client',
             path: '/app/client',
-            icon: <MdGroup />,
+            icon: <HiUserGroup />,
             name: 'Client',
           },
         ]);
@@ -223,8 +231,6 @@ const SideBar = forwardRef(({}, ref: LegacyRef<HTMLDivElement>) => {
         ]);
         break;
     }
-
-    // console.log(listMenu);
   }, []);
   const router = useRouter();
 

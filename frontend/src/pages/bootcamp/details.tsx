@@ -20,6 +20,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
+import ComplexNavbar from '../shared/header_1'
 
 const dataCurriculum = {
   name: 'Nodejs Fullstack',
@@ -90,7 +91,7 @@ export default function index() {
 
   return (
     <div className="">
-      <Navigation />
+      <ComplexNavbar />
       <br />
       <div className="flex lg:flex-row flex-col max-w-screen-xl mx-auto">
         <div className="lg:w-4/6">

@@ -11,7 +11,7 @@ function* handleGetCat(): any {
   try {
     const result = yield call(apiMethod.getallCat);
     console.log("result", result)
-    yield put(resCat(result.data));
+    yield put(resCat(result.data[0]));
   } catch (error) {
     yield put(resCat({ message: error, status: 400 }));
   }

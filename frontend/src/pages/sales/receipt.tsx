@@ -9,6 +9,7 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import { getAllCartReq } from '../redux/sales-schema/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import NavBar from '../komponen/navBar';
+import ComplexNavbar from '../shared/header_1';
 
 const Invoice: React.FC = () => {
   const { items, message, refresh } = useSelector(
@@ -48,8 +49,13 @@ const Invoice: React.FC = () => {
 
   return (
     <>
-      <NavBar />
-      <div className="container mx-auto p-4">
+      <ComplexNavbar />
+      <div className="container mx-auto mt-6 p-4">
+      <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">
+          <p className="text-lg font-bold text-gray-900">
+            Receipt
+          </p>
+        </div>
         <div className="grid grid-cols-1 gap-4 mt-8 sm:grid-cols-2">
           <div className="col-span-1">
             <div className="grid grid-cols-1 gap-4">

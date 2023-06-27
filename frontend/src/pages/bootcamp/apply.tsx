@@ -127,13 +127,13 @@ const Apply = () => {
         let fileType = type?.split('/')[1];
         formData.append('user_filetype', fileType);
         formData.append('role_id', 10);
-        formData.append('prap_prog_entity_id', id);
+        formData.append('prap_prog_entity_id', 2);
 
         console.log('ApplyJobs', ...formData);
         console.log('dataAply', data);
 
-        // dispatch(doRequestApplyBootcamp(formData));
-        // router.push('/bootcamp/confirm');
+        dispatch(doRequestApplyBootcamp(formData));
+        router.push('/bootcamp/confirm');
       }
     } catch (error) {
       console.error('Apply Error:', error);

@@ -236,6 +236,7 @@ const JobDetail = () => {
                             idJob: id
                           }
                         }}
+                        className='bg-blue-500 py-3 px-14 rounded-lg text-white text-sm uppercase font-semibold'
                       >
                         Apply
                       </Link>

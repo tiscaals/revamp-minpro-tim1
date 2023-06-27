@@ -5,6 +5,7 @@ import {
 import { UserPlusIcon } from '@heroicons/react/24/solid';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Menu, Transition } from '@headlessui/react';
+
 import {
   Card,
   CardHeader,
@@ -46,6 +47,7 @@ import {
 import { useSelector } from 'react-redux';
 import MyPaginate from '../../bootcamp/components/pagination';
 import Cookies from 'js-cookie';
+const port = 'http://localhost:3003/images/user-image/';
 // import { ToastContainer, toast } from 'react-toastify';
 const TABS = [
   {
@@ -324,7 +326,7 @@ export default function BatchList() {
                             <div className="flex -space-x-4 overflow-hidden">
                               {trainees.slice(0, 3).map((poto: any) => (
                                 <Avatar
-                                  src={poto.user_photo}
+                                  src={`${poto.user_photo}`}
                                   size="sm"
                                   className="inline-block rounded-full ring-2 ring-white"
                                 />
@@ -446,8 +448,8 @@ export default function BatchList() {
                                             : false
                                         }
                                         onClick={() =>{
-                                          decoded.user_current_role !== 9?
-                                          alert('Fungsi ini hanya tersedia untuk recruiter'):
+                                          // decoded.user_current_role !== 9?
+                                          // alert('Fungsi ini hanya tersedia untuk recruiter'):
                                           router.push(
                                             `/app/batch/edit/${batch_id}`
                                           )
