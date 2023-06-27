@@ -20,6 +20,7 @@ import {
   addEvalsRes,
   UpdateChangeStatusBatchRes,
   editTraineeStatusRes,
+  getAllParogPrapUserRes,
   // UpdateChangeStatusBatchRes,
 } from '../action/actionReducer';
 
@@ -186,6 +187,18 @@ function* handleUpdateChangeStatusTrainee(action: any): any {
   }
 }
 
+function* handleGetPrapUser(action: any): any {
+  try {
+    const result = yield call(
+      apiMethod.findAllPrapUser,
+      action.payload
+    );
+    yield put(getAllParogPrapUserRes(result.data));
+  } catch (error) {
+    yield put(getAllParogPrapUserRes({ message: error, status: 400 }));
+  }
+}
+
 export {
   handleGetAllTalents,
   handleGetAllBatches,
@@ -203,5 +216,6 @@ export {
   handleGetAllTraineesByBatch,
   handleAddEvaluation,
   handleUpdateChangeStatusBatch,
-  handleUpdateChangeStatusTrainee
+  handleUpdateChangeStatusTrainee,
+  handleGetPrapUser
 };

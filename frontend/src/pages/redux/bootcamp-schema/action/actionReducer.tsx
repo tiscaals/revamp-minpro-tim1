@@ -145,6 +145,20 @@ const getAllTraineesByBatchRes = (payload: any) => {
   };
 };
 
+const getAllParogPrapUserReq = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_GET_PRAP_PAROG,
+    payload,
+  };
+};
+
+const getAllParogPrapUserRes = (payload: any) => {
+  return {
+    type: ActionTypes.RES_GET_PRAP_PAROG,
+    payload,
+  };
+};
+
 const addBatchReq = (payload: any) => {
   return {
     type: ActionTypes.REQ_CREATE_BATCH,
@@ -262,5 +276,7 @@ export {
   addEvalsReq,
   addEvalsRes,
   editTraineeStatusReq,
-  editTraineeStatusRes
+  editTraineeStatusRes,
+  getAllParogPrapUserReq,
+  getAllParogPrapUserRes
 };

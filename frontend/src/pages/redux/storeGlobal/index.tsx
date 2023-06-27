@@ -61,6 +61,7 @@ import fintechReducer from '../payment/reducer/FintechReducer';
 import AccountReducer from '../payment/reducer/AccountReducer';
 import transactionReducer from '../payment/reducer/TransactionReducer';
 import topupReducer from '../payment/reducer/TopupReducer';
+import prapsReducers from '../bootcamp-schema/reducer/prapParogReducer';
 
 const logger = createLogger();
 const saga = createSagaMiddleware();
@@ -87,6 +88,7 @@ const reducer = combineReducers({
   candidateReducers,
   traineeReducers,
   evalReducers,
+  prapsReducers,
 
   //SALES
   salesReducers,

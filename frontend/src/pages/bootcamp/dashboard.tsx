@@ -1,61 +1,45 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navigation from './components/navbar'
 import {
     Card,
     CardBody,
-    CardFooter,
     Typography,
-    Button,
   } from "@material-tailwind/react";
-import { HiArrowLongRight, HiRocketLaunch } from 'react-icons/hi2';
 import { HiTicket } from 'react-icons/hi2';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllParogPrapUserReq } from '../redux/bootcamp-schema/action/actionReducer';
 
 export default function () {
+    const dispatch = useDispatch()
+    const {praps} = useSelector((state:any)=> state.prapsReducers)
+    
+    useEffect(()=>{
+        dispatch(getAllParogPrapUserReq(100))
+    },[])
+    console.log(praps,'anjay');
   return (
     <div>
         <Navigation/>
         <div className='flex gap-3'>
-        <Card className="mt-6 w-60">
-      <CardBody>
-        <HiTicket className="text-blue-500 w-12 h-12 mb-4" />
-        <Typography variant="h6" color="blue-gray" className="mb-2">
-          .Net framework App
-        </Typography>
-        <Typography variant='small'>
-          Apply Date: July 12 2023 <br />
-          Status: Passed <br />
-          Last Progress: Waiting List
-        </Typography>
-      </CardBody>
-      <CardFooter className="pt-0">
-        <a href="#" className="inline-block">
-          <Button size="sm" variant="text" className="flex items-center gap-2">
-            Check Progress
-            <HiArrowLongRight strokeWidth={2} className="w-3 h-3" />
-          </Button>
-        </a>
-      </CardFooter>
-        </Card>
-        <Card className="mt-6 w-60">
-      <CardBody>
-        <HiTicket className="text-red-500 w-12 h-12 mb-4" />
-        <Typography variant="h6" color="blue-gray" className="mb-2">
-          Nodejs App
-        </Typography>
-        <Typography variant='small'>
-          Apply Date: July 12 2023 <br />
-          Status: Failed <br />
-          Last Progress: Waiting List
-        </Typography>
-      </CardBody>
-      <CardFooter className="pt-0">
-        <a href="#" className="inline-block">
-          <Button size="sm" variant="text" color='red' className="flex items-center gap-2">
-            Failed
-          </Button>
-        </a>
-      </CardFooter>
-        </Card>
+          {
+            praps?.map((item:any)=>(
+              <>
+              <Card className="mt-6 w-60">
+              <CardBody>
+                <HiTicket className="text-blue-500 w-12 h-12 mb-4" />
+                <Typography variant="h6" color="blue-gray" className="mb-2">
+                  {item.prog_title} App
+                </Typography>
+                <Typography variant='small'>
+                  Apply Date: {item.to_char} <br />
+                  Status: {item.prap_status} <br />
+                  Last Progress: {item.parog_progress_name}
+                </Typography>
+              </CardBody>
+                </Card>
+              </>
+            ))
+          }
         </div>
     </div>
   )

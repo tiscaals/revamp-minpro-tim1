@@ -3,6 +3,7 @@ import {
   ChevronUpDownIcon,
 } from '@heroicons/react/24/outline';
 import { UserPlusIcon } from '@heroicons/react/24/solid';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Menu, Transition } from '@headlessui/react';
 import {
   Card,
@@ -44,6 +45,7 @@ import {
 } from '../../redux/bootcamp-schema/action/actionReducer';
 import { useSelector } from 'react-redux';
 import MyPaginate from '../../bootcamp/components/pagination';
+import Cookies from 'js-cookie';
 // import { ToastContainer, toast } from 'react-toastify';
 const TABS = [
   {
@@ -83,18 +85,22 @@ const TABLE_HEAD = [
 ];
 
 export default function BatchList() {
+
   const [query, setQuery] = useState('');
   const { batches, refresh, message } = useSelector(
     (state: any) => state.batchReducers
   );
+
   const [selectedBatch, setSelectedBatch] = useState<any>({
     batch_id: 0,
     batch_entity_id: 0,
     batch_reason: '',
     batch_status: '',
   });
+
   const dispatch = useDispatch();
   const [batchstatus, setBatchstatus] = useState();
+  const [decoded, setDecoded] = useState<any>()
   const [buttonSelect, setButtonSelect] = useState('');
 
   // console.log(batchstatus);
@@ -146,36 +152,44 @@ export default function BatchList() {
   const currentItems = filteredBatch?.slice(startIndex, endIndex);
 
   const router = useRouter();
+  const token = Cookies.get('access_token')
+
   useEffect(() => {
     dispatch(getAllBatchesReq());
-  }, [buttonSelect, refresh]);
-
-  const deleteaction = (batchid: any) => {
-    dispatch(deleteBatchReq(batchid));
-  };
+  }, [buttonSelect, refresh,token]);
+  // console.log(decoded,'decoded');
 
   useEffect(() => {
     setButtonSelect('all');
-    if (message) {
-      setTimeout(()=>{
-        notifySuccess('success',message)
-      },30)
+    if(token){
+      try {
+        setDecoded(jwt.decode(token) as JwtPayload)
+      } catch (error) {
+        console.log(error)
+      }
+    }else{
+      console.log('token not found')
     }
   }, []);
 
   const changeStatusBatch = () => {
-    dispatch(
-      UpdateChangeStatusBatchReq({
-        batch_id: selectedBatch.batch_id,
-        batch_entity_id: selectedBatch.batch_entity_id,
-        batch_reason: selectedBatch.batch_reason,
-        batch_status: batchstatus,
-        talent_status: 'idle',
-      })
-    );
+    if(batchstatus === 'closed' || 'running'){
+      decoded.user_current_role !== 8
+      alert("fungsi ini hanya tersedia untuk trainer")
+    }else{
+      dispatch(
+        UpdateChangeStatusBatchReq({
+          batch_id: selectedBatch.batch_id,
+          batch_entity_id: selectedBatch.batch_entity_id,
+          batch_reason: selectedBatch.batch_reason,
+          batch_status: batchstatus,
+          talent_status: 'idle',
+        })
+      );
+    }
   };
 
-  console.log(selectedBatch);
+  // console.log(decoded);
 
   return (
     <>
@@ -427,14 +441,17 @@ export default function BatchList() {
                                       <button
                                         disabled={
                                           batch_status !== 'open' &&
-                                          batch_status !== 'pending'
+                                          batch_status !== 'pending' 
                                             ? true
                                             : false
                                         }
-                                        onClick={() =>
+                                        onClick={() =>{
+                                          decoded.user_current_role !== 9?
+                                          alert('Fungsi ini hanya tersedia untuk recruiter'):
                                           router.push(
                                             `/app/batch/edit/${batch_id}`
                                           )
+                                        }
                                         }
                                         className={`${
                                           active
@@ -450,7 +467,6 @@ export default function BatchList() {
                                             : 'text-light-blue-500'
                                         } `}
                                           aria-hidden="true"
-                                          // disabled={}
                                         />
                                         Edit
                                       </button>
@@ -505,15 +521,19 @@ export default function BatchList() {
                                   <Menu.Item>
                                     {({ active }) => (
                                       <button
-                                      onClick={() => dispatch(
-                                        UpdateChangeStatusBatchReq({
-                                          batch_id: selectedBatch.batch_id,
-                                          batch_entity_id: selectedBatch.batch_entity_id,
-                                          batch_reason: selectedBatch.batch_reason,
-                                          batch_status: "cancelled",
-                                          talent_status: 'idle',
-                                        })
-                                      )}
+                                      onClick={() => {
+                                        decoded.user_current_role !== 9?
+                                        alert('Fungsi ini hanya tersedia untuk recruiter'):
+                                        dispatch(
+                                          UpdateChangeStatusBatchReq({
+                                            batch_id: selectedBatch.batch_id,
+                                            batch_entity_id: selectedBatch.batch_entity_id,
+                                            batch_reason: selectedBatch.batch_reason,
+                                            batch_status: "cancelled",
+                                            talent_status: 'idle',
+                                          })
+                                        )
+                                      }}
                                         className={`${
                                           active
                                             ? 'bg-light-blue-500 text-white'
