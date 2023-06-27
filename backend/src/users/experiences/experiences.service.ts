@@ -17,13 +17,13 @@ export class ExperiencesService {
     createExperiencesDto: CreateExperiencesDto,
   ): Promise<any> {
     try {
-      const checkCount = await users_experiences.count({
-        where: { usex_entity_id: createExperiencesDto.usex_entity_id },
-      });
+      // const checkCount = await users_experiences.count({
+      //   where: { usex_entity_id: createExperiencesDto.usex_entity_id },
+      // });
 
-      if (checkCount >= 1) {
-        throw new Error('experiences has been filled in');
-      }
+      // if (checkCount >= 1) {
+      //   throw new Error('experiences has been filled in');
+      // }
 
       const endDate = createExperiencesDto.usex_end_date || null;
       const result = await users_experiences.create({

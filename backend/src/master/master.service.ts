@@ -63,7 +63,7 @@ export class MasterService {
 
   async findRouteAction() {
     try {
-      const query = `SELECT * FROM master.route_actions  WHERE roac_module_name = 'Job Hire'`;
+      const query = `SELECT * FROM master.route_actions  WHERE roac_module_name = 'Job Hire' ORDER BY roac_orderby`;
       const result = await this.sequelize.query(query);
       return result[0];
     } catch (error) {

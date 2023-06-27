@@ -97,12 +97,12 @@ export class AddressServices {
 
   async removeAddress(id: number): Promise<any> {
     try {
-      await address.destroy({
-        where: { addr_id: id },
-      });
-
       await users_address.destroy({
         where: { etad_addr_id: id },
+      });
+
+      await address.destroy({
+        where: { addr_id: id },
       });
 
       return { message: 'delete address successfully', status: 200 };

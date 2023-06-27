@@ -23,7 +23,7 @@ export class UsersAccountService {
   
       const createAccountResult = await this.sequelize.query(
         `
-        CALL payment.createUserAccountWEntity(
+        CALL payment.createuseraccountwentity(
           :user_entity_id,
           :usac_account_number,
           :usac_saldo,

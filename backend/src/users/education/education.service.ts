@@ -15,15 +15,15 @@ export class EducationServices {
 
   async addEducation(createEducationDto: CreateEducationDto): Promise<any> {
     try {
-      const educationCount = await users_education.count({
-        where: {
-          usdu_entity_id: createEducationDto.usdu_entity_id,
-        },
-      });
+      // const educationCount = await users_education.count({
+      //   where: {
+      //     usdu_entity_id: createEducationDto.usdu_entity_id,
+      //   },
+      // });
 
-      if (educationCount >= 1) {
-        throw new Error('education has been filled in');
-      }
+      // if (educationCount >= 1) {
+      //   throw new Error('education has been filled in');
+      // }
 
       const result = await users_education.create({
         usdu_entity_id: createEducationDto.usdu_entity_id,
