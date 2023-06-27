@@ -2,6 +2,7 @@ import { call, put } from 'redux-saga/effects';
 import apiMethod from '../../../api/apimethod';
 import {
   doResponseGetCandidate,
+  doResponseCreateProCandidate,
   doResponseUpdateCandidate,
 } from '../action/actionReducer';
 
@@ -12,6 +13,16 @@ export function* handleGetProCandidate(): any {
     yield put(doResponseGetCandidate(result.data));
   } catch (error) {
     yield put(doResponseGetCandidate({ message: error, status: 400 }));
+  }
+}
+
+export function* handleCreateProCandidate(action: any): any {
+  try {
+    const result = yield call(apiMethod.createProCandidate, action.payload);
+    console.log('talentSaga', result.data);
+    yield put(doResponseCreateProCandidate(result.data));
+  } catch (error) {
+    yield put(doResponseCreateProCandidate({ message: error, status: 400 }));
   }
 }
 

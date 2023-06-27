@@ -6,14 +6,15 @@ import { Menu, Transition } from '@headlessui/react';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { BiEdit, BiMessageAltDetail } from 'react-icons/bi';
 import { useRouter } from 'next/router';
-import SwitchDetail from './switchdetail';
-import Detail from './detail';
+// import SwitchDetail from './switchdetail';
+// import Detail from './detail';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   reqplacement,
   reqtalents,
 } from '../../redux/hr-schema/action/actionReducer';
 import JoinPlacement from './joinplacement';
+const profile:string = 'http://localhost:3003/profile/'
 
 const Placement = () => {
   let { placement, talents, message, status, refresh } = useSelector(
@@ -65,105 +66,6 @@ const Placement = () => {
       </div>
     );
   }
-
-  // let item = [
-  //   {
-  //     id: 1,
-  //     nama: 'a',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 2,
-  //     nama: 'b',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 3,
-  //     nama: 'c',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 4,
-  //     nama: 'd',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 5,
-  //     nama: 'f',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 6,
-  //     nama: 'g',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 7,
-  //     nama: 'i',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 8,
-  //     nama: 'j',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 9,
-  //     nama: 'susan',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 10,
-  //     nama: 'k',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 11,
-  //     nama: 'l',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  //   {
-  //     id: 12,
-  //     nama: 'm',
-  //     status: 'iddle',
-  //     batch: 'Batch #3',
-  //     skill: 'Java',
-  //     image: gambar,
-  //   },
-  // ];
 
   return (
     <>
@@ -223,7 +125,7 @@ const Placement = () => {
               <label>ID = {dtl.user_entity_id} </label>
               <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                 <img
-                  src={dtl.user_photo}
+                  src={`${profile}${dtl.user_photo}`}
                   alt="profile"
                   className="h-64 w-80 rounded-t-lg object-cover object-center"
                 // className="h-full w-full rounded-t-lg object-cover object-center lg:h-full lg:w-full"
@@ -261,7 +163,7 @@ const Placement = () => {
                       Join Placement
                     </button>
                     <div>
-                      <Menu
+                      {/* <Menu
                         as="div"
                         className="relative inline-block text-left"
                       >
@@ -343,7 +245,7 @@ const Placement = () => {
                             </div>
                           </Menu.Items>
                         </Transition>
-                      </Menu>
+                      </Menu> */}
                     </div>
                   </div>
                 </div>
@@ -352,7 +254,7 @@ const Placement = () => {
           ))}
         </div>
       </div>
-      {isAction ? (
+      {/* {isAction ? (
         <SwitchDetail
           show={isAction}
           data={isId}
@@ -369,7 +271,7 @@ const Placement = () => {
         />
       ) : (
         ''
-      )}
+      )} */}
       {isJoin ? (
         <JoinPlacement
           show={isJoin}

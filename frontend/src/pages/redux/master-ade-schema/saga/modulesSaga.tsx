@@ -1,4 +1,4 @@
-import apiMethod from '@/pages/api/apiMethod';
+import apiMethod from '@/pages/api/apimethod';
 import { call, put } from 'redux-saga/effects';
 import {
   resCreateModule,

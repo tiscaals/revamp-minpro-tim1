@@ -6,7 +6,7 @@ import {
   resSkillTemplete,
   resUpdateSkillTemplete,
 } from '../actions/actionReducer';
-import apiMethod from '@/pages/api/apiMethod';
+import apiMethod from '@/pages/api/apimethod';
 
 function* handleGetSkillTemplete(): any {
   try {

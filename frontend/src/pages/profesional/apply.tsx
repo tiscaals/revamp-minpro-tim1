@@ -14,6 +14,7 @@ import Link from 'next/link';
 import { BsFiletypeDoc } from 'react-icons/bs';
 import { useForm } from 'react-hook-form';
 import Swal from 'sweetalert2';
+import { doRequestCreateProCandidate } from '../redux/jobhire-schema/action/actionReducer';
 
 const Apply = () => {
   type FormValue = {
@@ -45,6 +46,10 @@ const Apply = () => {
   const { profile, refresh, status, message }: any = useSelector(
     (state: any) => state.settingReducers
   );
+
+  const { idJob }:any = router.query; 
+
+  console.log("IIII", idJob);
 
   const [selectedPhotoFile, setSelectedPhotoFile] = useState(null);
   const [selectedPhotoURL, setSelectedPhotoURL] = useState('');
@@ -126,18 +131,28 @@ const Apply = () => {
         let fileType = type?.split('/')[1];
         formData.append('user_filetype', fileType);
         formData.append('role_id', data.role_id);
+        
+        // formData.append('user_entity_id', profile?.user_entity_id);
+        // formData.append('entity_id', idJob);
+        const newObj = {
+          user_entity_id: profile?.user_entity_id,
+          entity_id: idJob
+        }
 
         console.log('ApplyJobs', ...formData);
-        console.log('dataAply', data);
+        console.log('dataAply', newObj);
 
         dispatch(doRequestApplyJob(formData));
-        dispatch(doRequestApplyJob(formData));
+        
+        dispatch(doRequestCreateProCandidate(newObj));
         router.push('/profesional/confirm');
       }
     } catch (error) {
       console.error('Apply Error:', error);
     }
   };
+
+
 
   //Decode Token
   let decoded: any;
@@ -173,6 +188,19 @@ const Apply = () => {
           onSubmit={handleSubmit(handleApply)}
         >
           <div>
+            {/* <div>
+              <label htmlFor="role_id"></label>
+              <input
+                type="text"
+                defaultValue={idJob}
+                {...register('role_id')}
+              />
+              <input
+                type="text"
+                defaultValue={profile?.user_entity_id}
+                {...register('role_id')}
+              />
+            </div> */}
             <div>
               <label htmlFor="role_id"></label>
               <input

@@ -86,8 +86,10 @@ const updateStatus = (data: any) => {
 
 /*-------- TALENT APPLY ---------*/
 
-const createTalent = () => {
-  
+const createProCandidate = (data:any) => {
+  // console.log(data, 'aaaab')
+  // return data
+  return axios.post('/job-hire/talent', data)
 }
 
 const findProCandidate = () => {
@@ -418,6 +420,7 @@ export default {
   searchPostJob,
   updateStatus,
 
+  createProCandidate,
   findProCandidate,
   updateCandidate,
 

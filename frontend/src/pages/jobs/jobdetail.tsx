@@ -24,6 +24,7 @@ import {
   doRequestGetJobrole,
   doRequestGetWorktype,
 } from '../redux/master-schema/action/actionReducer';
+import Link from 'next/link';
 
 const JobDetail = () => {
   const router = useRouter();
@@ -225,7 +226,19 @@ const JobDetail = () => {
                   </div>
                   <div className="grid grid-cols-2 pt-5 max-w-lg gap-4">
                     <div className="flex items-center w-full">
-                      <Button fullWidth onClick={()=>router.push('/profesional/apply')}>Apply</Button>
+                      {/* <Button fullWidth onClick={()=>router.push('/profesional/apply')}>
+                        Apply
+                      </Button> */}
+                      <Link
+                        href={{
+                          pathname: '/profesional/apply',
+                          query: {
+                            idJob: id
+                          }
+                        }}
+                      >
+                        Apply
+                      </Link>
                     </div>
                     <div className="flex items-center w-full">
                       <Button

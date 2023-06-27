@@ -30,7 +30,7 @@ import {
   getDiskonReq,
   getPaymentReq,
 } from '../redux/sales-schema/action/actionReducer';
-import NavBar from '../komponen/navBar';
+import ComplexNavbar from '../shared/header_1';
 import ChevronDownIcon from '@heroicons/react/24/solid/ChevronDownIcon';
 
 const ApplyButton = styled(Button)(({ theme }) => ({
@@ -237,7 +237,7 @@ const CartPage: React.FC = () => {
 
   return (
     <>
-      <NavBar />
+      <ComplexNavbar />
       <ToastContainer />
       <div className="container mt-12 mx-auto p-4">
         <div className="flex items-center p-4 bg-white rounded-lg shadow-lg">

@@ -1,7 +1,7 @@
 import ActionTypeJobHire from '../../redux/jobhire-schema/action/actionType';
 import ActionTypeMaster from '../../redux/master-schema/action/actionType';
 import ActionTypesPayment from '../../../pages/redux/payment/action/actionType';
-
+import ActionTypesAde from '../../../pages/redux/master-ade-schema/actions/actionType'
 import { takeEvery, all } from 'redux-saga/effects';
 import {
   handleAddJobPost,
@@ -21,6 +21,7 @@ import {
   handleUpdateClient,
 } from '../jobhire-schema/saga/clientsaga';
 import {
+  handleCreateProCandidate,
   handleGetProCandidate,
   handleUpdateCandidate,
 } from '../jobhire-schema/saga/talentSaga';
@@ -138,6 +139,15 @@ import { handleAddFintech, handleDeleteFintech, handleUpdateFintech, handlegetAl
 import { handleDeleteUsersAccount, handleUpdateUsersAccount, handleaddUserAccount, handlegetAllUsersAccount } from '../payment/saga/usersAccountSaga';
 import { handlegetTOPUP } from '../payment/saga/topupSaga';
 import { handlegetAllTransaction } from '../payment/saga/transactionSaga';
+import { handleCreateCat, handleDelCat, handleGetCat, handleupdateCat } from '../master-ade-schema/saga/catSaga';
+import { handleCreateSkillType, handleDelSkillType, handleGeSkillType, handleUpdateSkillType } from '../master-ade-schema/saga/skillType';
+import { handleCreateSkillTemplete, handleDelSkillTemplete, handleGetSkillTemplete, handleUpdateSkillTemplete } from '../master-ade-schema/saga/skillTempeleteSaga';
+import { handleCreateModule, handleDelModule, handleGetModule, handleUpdateModule } from '../master-ade-schema/saga/modulesSaga';
+import { handleCreateAddressType, handleDelAddressType, handleUpdateAddressType } from '../master-ade-schema/saga/addressTypeSaga';
+import { handleCreateRouteActions, handleDelRouteActions, handleGetRouteActions, handleUpdateDisplayRouteActions, handleUpdateRouteActions } from '../master-ade-schema/saga/routeActionsReduce';
+import { handleCreateCountry, handleDelCountry, handleGetCountry, handleUpdateCountry } from '../master-ade-schema/saga/countrySaga';
+import { handleCreateProv, handleDelProv, handleGetProv, handleUpdateProv } from '../master-ade-schema/saga/provSaga';
+import { handleCreateCity, handleDelCity, handleUpdateCity } from '../master-ade-schema/saga/citySaga';
 
 function* watchAll() {
   yield all([
@@ -207,6 +217,7 @@ function* watchAll() {
 
     takeEvery(ActionTypeJobHire.REQ_GET_EMPRANGE, handleGetEmprange),
 
+    takeEvery(ActionTypeJobHire.REQ_ADD_PROCANDIDATE, handleCreateProCandidate),
     takeEvery(ActionTypeJobHire.REQ_GET_CANDIDATE, handleGetProCandidate),
     takeEvery(ActionTypeJobHire.REQ_UPDATE_CANDIDATE, handleUpdateCandidate),
 
@@ -309,7 +320,57 @@ function* watchAll() {
     
       //Transaction
     takeEvery(ActionTypesPayment.REQ_GET_TRANSACTION,handlegetAllTransaction),
-    ]);
+  
+    
+    // master
+    takeEvery(ActionTypesAde.GET_CAT, handleGetCat),
+    takeEvery(ActionTypesAde.SKILL_TYPE, handleGeSkillType),
+    takeEvery(ActionTypesAde.UPDATE_CAT, handleupdateCat),
+    takeEvery(ActionTypesAde.DELETE_CAT, handleDelCat),
+    takeEvery(ActionTypesAde.CREATE_CAT, handleCreateCat),
+    takeEvery(ActionTypesAde.CREATE_SKILLTYPE, handleCreateSkillType),
+    takeEvery(ActionTypesAde.DELETE_SKILLTYPE, handleDelSkillType),
+    takeEvery(ActionTypesAde.UPDATE_SKILLTYPE, handleUpdateSkillType),
+
+    takeEvery(ActionTypesAde.SKILL_TEMPLETE, handleGetSkillTemplete),
+    takeEvery(ActionTypesAde.DEL_SKILL_TEMPLETE, handleDelSkillTemplete),
+    takeEvery(ActionTypesAde.CREATE_SKILL_TEMPLETE, handleCreateSkillTemplete),
+    takeEvery(ActionTypesAde.UPDATE_SKILL_TEMPLETE, handleUpdateSkillTemplete),
+
+    takeEvery(ActionTypesAde.GET_MODULE, handleGetModule),
+    takeEvery(ActionTypesAde.CREATE_MODULE, handleCreateModule),
+    takeEvery(ActionTypesAde.DEL_MODULE, handleDelModule),
+    takeEvery(ActionTypesAde.UPDATE_MODULE, handleUpdateModule),
+
+    takeEvery(ActionTypesAde.GET_ADDRESSTYPE, handleGetAddressType),
+    takeEvery(ActionTypesAde.CREATE_ADDTYPE, handleCreateAddressType),
+    takeEvery(ActionTypesAde.DEL_ADDTYPE, handleDelAddressType),
+    takeEvery(ActionTypesAde.UPDATE_ADDTYPE, handleUpdateAddressType),
+
+    takeEvery(ActionTypesAde.GET_ROUTE_ACTIONS, handleGetRouteActions),
+    takeEvery(ActionTypesAde.DEL_ROUTE_ACTIONS, handleDelRouteActions),
+    takeEvery(ActionTypesAde.CREATE_ROUTE_ACTIONS, handleCreateRouteActions),
+    takeEvery(ActionTypesAde.UPDATE_ROUTE_ACTIONS, handleUpdateRouteActions),
+    takeEvery(
+      ActionTypesAde.UPDATE_DISPLAY_ROUTE_ACTIONS,
+      handleUpdateDisplayRouteActions
+    ),
+
+    takeEvery(ActionTypesAde.GET_COUNTRY, handleGetCountry),
+    takeEvery(ActionTypesAde.DEL_COUNTRY, handleDelCountry),
+    takeEvery(ActionTypesAde.CREATE_COUNTRY, handleCreateCountry),
+    takeEvery(ActionTypesAde.UPDATE_COUNTRY, handleUpdateCountry),
+
+    takeEvery(ActionTypesAde.GET_PROV, handleGetProv),
+    takeEvery(ActionTypesAde.DEL_PROV, handleDelProv),
+    takeEvery(ActionTypesAde.CREATE_PROV, handleCreateProv),
+    takeEvery(ActionTypesAde.UPDATE_PROV, handleUpdateProv),
+
+    takeEvery(ActionTypesAde.GET_CITY, handleGetCity),
+    takeEvery(ActionTypesAde.DEL_CITY, handleDelCity),
+    takeEvery(ActionTypesAde.CREATE_CITY, handleCreateCity),
+    takeEvery(ActionTypesAde.UPDATE_CITY, handleUpdateCity),
+  ]);
   }
 
   

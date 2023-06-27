@@ -33,7 +33,7 @@ export class CurriculumController {
   MergeSection() {
     return this.programEntityService.MergeSection();
   }
-  @Get('getMergedUp')
+  @Get('getMergedUp/:id')
   MergeSectionUp(@Param('id') id: string) {
     return this.programEntityService.MergeSectionUp(+id);
   }

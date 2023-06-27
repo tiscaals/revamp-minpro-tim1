@@ -125,6 +125,20 @@ export const doResponseSearchJobPost = (payload: any) => {
 };
 
 /*------------ TALENT APPLY SECTION -------------*/
+export const doRequestCreateProCandidate = (payload: any) => {
+  return {
+    type: ActionTypes.REQ_ADD_PROCANDIDATE,
+    payload,
+  };
+};
+
+export const doResponseCreateProCandidate = (payload: any) => {
+  return {
+    type: ActionTypes.RES_ADD_PROCANDIDATE,
+    payload,
+  };
+};
+
 export const doRequestGetCandidate = () => {
   return {
     type: ActionTypes.REQ_GET_CANDIDATE,

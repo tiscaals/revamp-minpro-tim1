@@ -16,7 +16,7 @@ export const resCat = (payload: any) => {
 };
 
 export const reqUpdateCat = (payload: any) => {
-  console.log('PAYLOAD', payload);
+  // console.log('PAYLOAD', payload);
   return {
     type: ActionTypes.UPDATE_CAT,
     payload,

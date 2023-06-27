@@ -1,4 +1,4 @@
-const ActionTypes = {
+const ActionTypesAde = {
   GET_CAT: 'GET_CAT',
   GET_CAT_RESPONSE: 'GET_CAT_RESPONSE',
   UPDATE_CAT: 'UPDATE_CAT',
@@ -84,4 +84,4 @@ const ActionTypes = {
   UPDATE_CITY_RESPONSE: 'UPDATE_CITY_RESPONSE',
 };
 
-export default ActionTypes;
+export default ActionTypesAde;

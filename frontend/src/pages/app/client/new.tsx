@@ -60,22 +60,8 @@ const NewClient = () => {
   const router = useRouter();
   const handleRegistration = async (data: any) => {
     dispatch(doRequestAddClient(data));
-    router.push('/client');
+    router.push('/app/client');
   };
-
-  // const LeafletMap = () => {
-  //   useEffect(() => {
-  //     const map = L.map('map');
-
-  //     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  //       attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors',
-  //     }).addTo(map);
-
-  //     map.setView([51.505, -0.09], 13); // Koordinat awal peta
-  //   }, []);
-
-  //   return <div id="map" style={{ height: '400px', width: '100%' }}></div>;
-  // };
 
   return (
     <ContentLink title="Tambah Client" isilink="/client" button="Back">

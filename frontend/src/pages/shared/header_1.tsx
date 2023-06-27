@@ -47,7 +47,7 @@ const profileMenuItems = [
     {
       label: "Cart",
       icon: InboxArrowDownIcon,
-      diklik:"/"
+      diklik:"/sales/checkout"
     },
   ];
 
@@ -158,7 +158,7 @@ function ProfileMenu() {
                 return (
                 <MenuItem
                     key={label}
-                    onClick={closeMenu}
+                    onClick={()=>router.push(diklik)}
                     className={`flex items-center gap-2 rounded`}
                 >
                     {React.createElement(icon, {
@@ -201,8 +201,14 @@ function ProfileMenu() {
 }
 
 const hiringMenu = [
-  "Our Graduates",
-  "Professional Hiring"
+  {
+    name: "Our Graduates",
+    link: ""
+  },
+  {
+    name: "Professional Hiring",
+    link: "/jobs"
+  }
 ]
 
 const aboutMenu = [
@@ -250,6 +256,8 @@ function NavListHiring() {
     onMouseLeave: () => setIsMenuOpen(false),
   };
 
+  const router = useRouter()
+
   return (
     <React.Fragment>
       <Menu open={isMenuOpen} handler={setIsMenuOpen}>
@@ -274,8 +282,8 @@ function NavListHiring() {
           className="hidden w-fit overflow-visible lg:grid"
         >
           <List>
-            {hiringMenu.map((item) => (
-              <ListItem key={item}>{item}</ListItem>
+            {hiringMenu.map(({name, link}) => (
+              <ListItem key={name}  onClick={()=>router.push(link)}>{name}</ListItem>
             ))}
           </List>
         </MenuList>

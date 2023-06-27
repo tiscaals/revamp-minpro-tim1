@@ -242,11 +242,14 @@ export class PlacementService {
           emp_entity_id : createHrDto.emp_entity_id,
           emp_hire_date : createHrDto.emp_hire_date,
           emp_type : createHrDto.emp_type,
-          emp_joro_id : createHrDto.emp_joro_id,
-          edhi_dept_id: createHrDto.edhi_dept_id
+          emp_joro_id : parseInt(createHrDto.emp_joro_id),
+          // edhi_entity_id : createHrDto.emp_entity_id,
+          edhi_start_date :createHrDto.emp_hire_date,
+          edhi_end_date :  createHrDto.emp_end_contract,
+          edhi_dept_id: parseInt(createHrDto.edhi_dept_id)
         };   
         const data = `${JSON.stringify(sendData)}`;
-        const query = `CALL hr.updateEmp('[${data}]')`;
+        const query = `CALL hr.updateEmp('${data}')`;
         console.log(query);
         const result = await this.sequelize.query(query);
 

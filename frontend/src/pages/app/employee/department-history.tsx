@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { reqdepthistory, reqfindemployee } from "../../redux/hr-schema/action/actionReducer";
-
+const profile:string = 'http://localhost:3003/profile/'
 import { Button, Card, CardBody, CardHeader, Input, Typography, ButtonGroup, CardFooter } from '@material-tailwind/react';
 import Link from "next/link";
 
@@ -62,7 +62,7 @@ const DepartmentHistory = (props: any) => {
                             </Typography>
                         </div>
                         <div className='mt-5 grid grid-cols-9 gap-4'>
-                            <img src={findEmp.user_photo} alt="profile" className='h-20 w-20 object-cover object-center rounded-full' />
+                            <img src={`${profile}${findEmp.user_photo}`} alt="profile" className='h-20 w-20 object-cover object-center rounded-full' />
 
                             <div className='items-center'>
                                 <h1>{'@' + findEmp.user_name}</h1>

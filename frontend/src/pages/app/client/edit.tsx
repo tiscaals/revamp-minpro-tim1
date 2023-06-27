@@ -75,7 +75,7 @@ const EditClient = () => {
   const handleRegistration = async (data: any) => {
     console.log(data);
     dispatch(doRequestUpdateClient(data));
-    router.push('/client');
+    router.push('/app/client');
   };
 
   // console.log('TESTNEW',loadedData)

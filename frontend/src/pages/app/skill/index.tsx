@@ -10,10 +10,10 @@ import {
 
 const Index = () => {
   const { skillTemplete, refreshSkillTemplete } = useSelector(
-    (state: any) => state.skillTempeleteReducer
+    (state: any) => state.SkillTempeleteReduce
   );
   const { skillType, refreshSkillType } = useSelector(
-    (state: any) => state.skillTypeReducer
+    (state: any) => state.SkillTypeReduce
   );
   const dispatch = useDispatch();
   console.log('skill', skillTemplete);

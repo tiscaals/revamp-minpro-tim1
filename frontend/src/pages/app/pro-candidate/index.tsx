@@ -109,24 +109,6 @@ export default function Candidates() {
       </div>
       {routes ? (
         <Tabs value={selectRoute}>
-          {/* <div className="flex justify-end">
-            <div className="w-72">
-              <Select label="Select Filtered">
-                <Option>Filter by Year</Option>
-                <Option>Filter by Month</Option>
-                <Option>Filter by Week</Option>
-              </Select>
-            </div>
-            <div className="w-13">
-              <Select label="Select">
-                <Option>Material Tailwind HTML</Option>
-                <Option>Material Tailwind React</Option>
-                <Option>Material Tailwind Vue</Option>
-                <Option>Material Tailwind Angular</Option>
-                <Option>Material Tailwind Svelte</Option>
-              </Select>
-            </div>
-          </div> */}
           <TabsHeader className="my-5">
             {routes.map((item: any, index: any) => (
               <Tab
@@ -158,7 +140,7 @@ export default function Candidates() {
               <tr key={dt.id}>
                 <td className="py-3 text-gray-900">
                   <Avatar
-                    src={`http://localhost:3003/image/profile/${dt.user_photo}`}
+                    src={`http://localhost:3003/images/user-image/${dt.user_photo}`}
                   />
                 </td>
                 <td className="py-3 text-gray-900">

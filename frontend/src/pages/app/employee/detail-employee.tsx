@@ -10,7 +10,7 @@ import { Button, Card, CardBody, CardHeader, Input, Typography, ButtonGroup, Car
 import { HiMagnifyingGlass } from 'react-icons/hi2';
 import { FaUserPlus } from 'react-icons/fa';
 import Link from 'next/link';
-
+const profile:string = 'http://localhost:3003/profile/'
 
 const DetailEmployee = (props: any) => {
     let { findEmp, refresh } = useSelector((state: any) => state.empReducers)
@@ -49,7 +49,7 @@ const DetailEmployee = (props: any) => {
                             </Typography>
                         </div>
                         <div className='mt-5 grid grid-cols-9 gap-4'>
-                            <img src={findEmp?.user_photo} alt="profile" className='h-20 w-20 object-cover object-center rounded-full' />
+                            <img src={`${profile}${findEmp.user_photo}`} alt="profile" className='h-20 w-20 object-cover object-center rounded-full' />
 
                             <div className='items-center'>
                                 <h1>{'@' + findEmp?.user_name}</h1>

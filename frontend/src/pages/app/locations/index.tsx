@@ -14,13 +14,13 @@ import {
 
 const index = () => {
   const { addressType, refreshAddressType } = useSelector(
-    (state: any) => state.addressTypeReducer
+    (state: any) => state.AddressTypeReduce
   );
   const { country, refreashCountry } = useSelector(
-    (state: any) => state.countryReducer
+    (state: any) => state.CountryReduce
   );
-  const { prov, refreshProv } = useSelector((state: any) => state.provReducer);
-  const { city, refreshCity } = useSelector((state: any) => state.cityReducer);
+  const { prov, refreshProv } = useSelector((state: any) => state.ProvReduce);
+  const { city, refreshCity } = useSelector((state: any) => state.CityReduce);
   const dispatch = useDispatch();
 
   useEffect(() => {

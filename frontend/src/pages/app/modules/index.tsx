@@ -10,10 +10,10 @@ import {
 
 const index = () => {
   const { modules, refreshModules } = useSelector(
-    (state: any) => state.modulesReducer
+    (state: any) => state.ModulesReduce
   );
   const { routeActions, refreshRouteActions } = useSelector(
-    (state: any) => state.routeActionsReducer
+    (state: any) => state.routeActionsReduce
   );
   const dispatch = useDispatch();
   console.log('object', routeActions);

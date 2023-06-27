@@ -23,7 +23,7 @@ const EditProfile = (props: any) => {
   } = useForm<FormValue>();
 
   const dispatch = useDispatch();
-  const port = 'http://localhost:7300/images/user-image/';
+  const port = 'http://localhost:3003/images/user-image/';
 
   const editProfileValidation = {
     user_entity_id: { required: 'id required' },

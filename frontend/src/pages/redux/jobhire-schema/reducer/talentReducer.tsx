@@ -14,6 +14,12 @@ function TalentReducers(state = initialState, action: any) {
   switch (type) {
     case ActionTypes.RES_GET_CANDIDATE:
       return { ...state, candidates: payload, refresh: true };
+    case ActionTypes.RES_ADD_PROCANDIDATE:
+    return {
+      message: payload.message,
+      status: payload.status,
+      refresh: false,
+    };
     case ActionTypes.RES_UPDATE_CANDIDATE:
       return {
         message: payload.message,

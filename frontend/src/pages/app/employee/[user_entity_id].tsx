@@ -103,7 +103,7 @@ const CreateEmployee = (props: any) => {
 
     dispatch(reqdataemployee(data));
 
-    router.push('/employee');
+    router.push('/app/employee');
   };
 
   const filteredEmployee = user_entity_id
