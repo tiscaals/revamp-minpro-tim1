@@ -86,6 +86,10 @@ const updateStatus = (data: any) => {
 
 /*-------- TALENT APPLY ---------*/
 
+const createTalent = () => {
+  
+}
+
 const findProCandidate = () => {
   return axios.get('/job-hire/talent');
 };

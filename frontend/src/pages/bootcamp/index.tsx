@@ -6,6 +6,7 @@ import { HiArrowCircleLeft, HiSearch } from 'react-icons/hi'
 import Card3 from './components/bootcampcard'
 import MyFooter from './components/footer'
 import Testi from './components/testimonials'
+import ComplexNavbar from '../shared/header_1'
 
 export default function index() {
   const data = [
@@ -92,7 +93,7 @@ export default function index() {
   ]
   return (
     <div>
-        <Navigation />
+        <ComplexNavbar />
         <div className='max-w-screen-xl mx-auto mt-5 '>
             <MyCarousel/>
             <br />

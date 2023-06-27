@@ -12,7 +12,7 @@ export default function BreadcrumbsSlice() {
     <div className="text-gray-900">
       <Breadcrumbs>
         <Link
-          href={'/'}
+          href={'/app'}
           className={`capitalize flex items-center mx-1 ${
             parts.length == 0
               ? 'font-medium opacity-100 text-blue-500'

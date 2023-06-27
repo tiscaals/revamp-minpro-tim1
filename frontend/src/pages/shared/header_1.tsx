@@ -9,21 +9,16 @@ import {
   MenuList,
   MenuItem,
   Avatar,
-  Card,
   IconButton,
   List,
   ListItem,
 } from "@material-tailwind/react";
 import {
-  CubeTransparentIcon,
   UserCircleIcon,
-  CodeBracketSquareIcon,
-  Square3Stack3DIcon,
   ChevronDownIcon,
   Cog6ToothIcon,
   InboxArrowDownIcon,
   PowerIcon,
-  RocketLaunchIcon,
   Bars2Icon,
 } from "@heroicons/react/24/outline";
 import Logo from '../../../public/logohitam.png';
@@ -39,50 +34,22 @@ import { useRouter } from "next/router";
 
 // profile menu component
 const profileMenuItems = [
-  {
-    label: "My Profile",
-    icon: UserCircleIcon,
-  },
-  {
-    label: "Edit Profile",
-    icon: Cog6ToothIcon,
-  },
-  {
-    label: "Cart",
-    icon: InboxArrowDownIcon,
-  },
-  {
-    label: "Sign Out",
-    icon: PowerIcon,
-  },
-];
-
-const logoutAuth = async (id: any) => {
-  const router = useRouter()
-  const dispatch = useDispatch()
-  const port = 'http://localhost:3003/images/user-image/';
-  const { profile }: any = useSelector((state: any) => state.settingReducers);
-  const [profileImage, setProfileImage] = useState(''); 
-
-  try {
-    const result = await Swal.fire({
-      title: 'logout confirm',
-      text: 'are you sure want to exit?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
-    });
-
-    if (result.isConfirmed) {
-      Cookies.remove('access_token');
-      router.push('/');
-    }
-  } catch (error) {
-    Swal.fire('Error!', 'Failed to logout. Please try again.', 'error');
-  }
-};
+    {
+      label: "My Profile",
+      icon: UserCircleIcon,
+      diklik:"/"
+    },
+    {
+      label: "Edit Profile",
+      icon: Cog6ToothIcon,
+      diklik:"/"
+    },
+    {
+      label: "Cart",
+      icon: InboxArrowDownIcon,
+      diklik:"/"
+    },
+  ];
 
 function ProfileMenu() {
   const router = useRouter()
@@ -101,6 +68,27 @@ function ProfileMenu() {
   useEffect(()=>{
     setAdatoken(token);
   }, [token])
+
+  const logoutAuth = async (id: any) => {    
+    try {
+      const result = await Swal.fire({
+        title: 'logout confirm',
+        text: 'are you sure want to exit?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+      });
+  
+      if (result.isConfirmed) {
+        Cookies.remove('access_token');
+        router.push('/');
+      }
+    } catch (error) {
+      Swal.fire('Error!', 'Failed to logout. Please try again.', 'error');
+    }
+  };
 
 
   useEffect(() => {
@@ -166,58 +154,51 @@ function ProfileMenu() {
           </Button>
         </MenuHandler>
         <MenuList className="p-1">
-          {profileMenuItems.map(({ label, icon }, key) => {
-            const isLastItem = key === profileMenuItems.length - 1;
-            return (
-              <MenuItem
-                key={label}
-                onClick={closeMenu}
-                className={`flex items-center gap-2 rounded ${
-                  isLastItem
-                    ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                    : ""
-                }`}
-              >
-                {React.createElement(icon, {
-                  className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
-                  strokeWidth: 2,
+            {profileMenuItems.map(({ label, icon, diklik }, key) => {
+                return (
+                <MenuItem
+                    key={label}
+                    onClick={closeMenu}
+                    className={`flex items-center gap-2 rounded`}
+                >
+                    {React.createElement(icon, {
+                    className: `h-4 w-4`,
+                    strokeWidth: 2,
+                    })}
+                    <Typography
+                    as="span"
+                    variant="small"
+                    className="font-normal"
+                    color="inherit"
+                    >
+                    {label}
+                    </Typography>
+                </MenuItem>
+                );
+            })}
+            <MenuItem
+                onClick={logoutAuth}
+                className={`flex items-center gap-2 rounded hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10`}
+            >
+                {React.createElement(PowerIcon, {
+                className: `h-4 w-4 text-red-500`,
+                strokeWidth: 2,
                 })}
                 <Typography
-                  as="span"
-                  variant="small"
-                  className="font-normal"
-                  color={isLastItem ? "red" : "inherit"}
+                as="span"
+                variant="small"
+                className="font-normal"
+                color="red"
                 >
-                  {label}
+                Sign Out
                 </Typography>
-              </MenuItem>
-            );
-          })}
+            </MenuItem>
         </MenuList>
       </Menu>
     )}
     </>
   );
 }
-
-// nav list menu
-const navListMenuItems = [
-  {
-    title: "@material-tailwind/html",
-    description:
-      "Learn how to use @material-tailwind/html, packed with rich components and widgets.",
-  },
-  {
-    title: "@material-tailwind/react",
-    description:
-      "Learn how to use @material-tailwind/react, packed with rich components for React.",
-  },
-  {
-    title: "Material Tailwind PRO",
-    description:
-      "A complete set of UI Elements for building faster websites in less time.",
-  },
-];
 
 const hiringMenu = [
   "Our Graduates",

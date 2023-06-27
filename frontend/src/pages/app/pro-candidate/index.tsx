@@ -32,12 +32,6 @@ import {
   doRequestUpdateCandidate,
 } from '../../redux/jobhire-schema/action/actionReducer';
 import Pagination from '../../komponen/pagination';
-// import {
-//   editParogReq,
-//   editPrapReq,
-//   getAllCandidatesReq,
-//   getAllRoutesReq,
-// } from '../redux/bootcamp-schema/action/actionReducer';
 
 export default function Candidates() {
   const dispatch = useDispatch();

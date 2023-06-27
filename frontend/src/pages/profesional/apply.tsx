@@ -131,6 +131,7 @@ const Apply = () => {
         console.log('dataAply', data);
 
         dispatch(doRequestApplyJob(formData));
+        dispatch(doRequestApplyJob(formData));
         router.push('/profesional/confirm');
       }
     } catch (error) {

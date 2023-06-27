@@ -354,7 +354,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="max-w-screen-2xl xl:w-3/4 w-11/12 mx-auto p-2">
+        <div className="max-w-screen-2xl w-full mx-auto p-2">
           <h2 className="py-5 text-sm">Lowongan Pekerjaan di Indonesia</h2>
           <div className="lg:flex justify-start md:block mx-auto">
             <FilterComp
@@ -380,6 +380,7 @@ export default function Home() {
             handlePageChange={handlePageChange}
           ></Pagination>
         </div>
+
       </div>
     </div>
   );

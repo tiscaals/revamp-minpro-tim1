@@ -32,7 +32,7 @@ const SearchBar = (props: any) => {
     <div className="p-4">
       <div className="relative lg:flex lg:flex-wrap justify-between items-center lg:justify-center mx-auto">
         <div className="pb-2 lg:pb-0 lg:pl-4">
-          <div className="lg:w-72 md:w-auto bg-white rounded-md">
+          <div className="lg:w-64 md:w-auto bg-white rounded-md">
             <Input
               label="Jabatan, Kata Kunci, Perusahaan"
               type="text"
@@ -45,7 +45,7 @@ const SearchBar = (props: any) => {
         </div>
 
         <div className="pb-2 lg:pb-0 lg:pl-4">
-          <div className="lg:w-72 md:w-auto bg-white rounded-md">
+          <div className="lg:w-64 md:w-auto bg-white rounded-md">
             <Input
               label="Lokasi"
               type="text"
