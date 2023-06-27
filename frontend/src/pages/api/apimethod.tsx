@@ -4,6 +4,10 @@ const findAllCartItems=()=>{
     return axios.get("/sales/view-cart")
 }
 
+const addCartItem=(data:any)=>{
+    return axios.post('sales/insert-cart',data)
+}
+
 const deleteCartItems=(id:any)=>{
     return axios.delete(`/sales/hapus-cart/${id}`)
 }
@@ -26,6 +30,7 @@ const getPayment=()=>{
 
 export default {
     findAllCartItems,
+    addCartItem,
     deleteCartItems,
     getDiskon,
     insertOrder,

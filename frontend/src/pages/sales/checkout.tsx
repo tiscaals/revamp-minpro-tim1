@@ -18,7 +18,7 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import ShoppingCartCheckoutIcon from '@mui/icons-material/ShoppingCartCheckout';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import { MdCancel } from 'react-icons/md';
-import { delCartReq, getAllCartReq, getDiskonReq, getPaymentReq } from '../redux/action/actionReducer';
+import { addCartReq, delCartReq, getAllCartReq, getDiskonReq, getPaymentReq } from '../redux/action/actionReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -195,11 +195,42 @@ const CartPage: React.FC = () => {
     }
   };
 
+  // const handleApplyDiscount = () => {
+  //   const matchingDiscount = diskon.find((d: any) =>
+  //     d.spof_description.toLowerCase().includes(searchTerm.toLowerCase()) &&
+  //     d.prog_entity_id === diskon.prog_entity_id
+  //   );
+  
+  //   if (matchingDiscount) {
+  //     setDiscountApply(matchingDiscount);
+  //     const discount = parseFloat(matchingDiscount.spof_discount);
+  //     const discountedPrice = totalPrice - (totalPrice * discount) / 100;
+  //     setTotalPrice(discountedPrice);
+  //     isSetDiscountApplied(true);
+  //     toast.success('Discount applied');
+  //   } else {
+  //     toast.error('No matching discount found');
+  //   }
+  // };
+  
+
   const handleCancelDiscount = () => {
     setTotalPrice(originalPrice);
     isSetDiscountApplied(false);
     toast.success('Discount cancelled');
   };
+
+  const handleInsertCartItem = () => {
+    const createCartItem = {
+      p_cait_quantity: 1,
+      p_cait_unit_price: 20,
+      p_cait_user_entity_id: 100,
+      p_cait_prog_entity_id: 200,
+    };
+  
+  dispatch(addCartReq(createCartItem))
+  }
+   
 
   return (
     <>
@@ -357,6 +388,28 @@ const CartPage: React.FC = () => {
                         onClick={() => handleAccountFintechClick('OVO')}
                       >
                         OVO
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('BCA')}
+                      >
+                        BCA
+                      </button>
+                    )}
+                  </Menu.Item>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        className={`${active ? 'bg-gray-100 text-gray-900' : 'text-gray-700'
+                          } group flex rounded-md items-center w-full px-2 py-2 text-sm`}
+                        onClick={() => handleAccountFintechClick('MANDIRI')}
+                      >
+                        MANDIRI
                       </button>
                     )}
                   </Menu.Item>
