@@ -117,8 +117,7 @@ const CartPage: React.FC = () => {
     if (matchingAccount) {
       const matchingFintech = payment.find(
         (account: any) =>
-          account.fint_name?.toLowerCase() === selectedFintech.toLowerCase() &&
-          account.bank_name?.toLowerCase() === selectedFintech.toLowerCase()
+          account.fint_name?.toLowerCase() === selectedFintech.toLowerCase() 
       );
 
       if (
